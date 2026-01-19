@@ -3,14 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\PageController;
 
 // ------------------------
-// Public Routes   routes/web.php 
+// Public Routes   routes/web.php
 // ------------------------
-Route::get('/', function () {
-    return redirect()->route('products.index');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('admin/orders/{order}/invoice', [App\Http\Controllers\Admin\OrderController::class, 'invoice'])->name('admin.orders.invoice');
 
@@ -20,6 +19,9 @@ Route::get('/products/{product}', [ProductController::class, 'show'])->name('pro
 
 // Order Tracking
 Route::get('/track-order', [ProductController::class, 'trackOrder'])->name('track.order');
+
+// Testimonials Page
+Route::get('/testimonials', [HomeController::class, 'testimonials'])->name('testimonials');
 Route::post('/checkReferral', [ProductController::class, 'checkReferral'])->name('checkReferral');
 
 // Checkout Routes
@@ -68,7 +70,7 @@ Route::prefix('agent')->name('agent.')->group(function () {
         Route::post('/logout', [App\Http\Controllers\Agent\AuthController::class, 'logout'])->name('logout');
 
         Route::get('/dashboard', [App\Http\Controllers\Agent\DashboardController::class, 'index'])->name('dashboard');
-        Route::get('/referrals', [App\Http\Controllers\Agent\DashboardController::class, 'referrals'])->name('referrals');
+
         Route::get('/commissions', [App\Http\Controllers\Agent\DashboardController::class, 'commissions'])->name('commissions');
         Route::get('/share-referral', [App\Http\Controllers\Agent\DashboardController::class, 'shareReferral'])->name('share.referral');
         Route::get('/profile', [App\Http\Controllers\Agent\DashboardController::class, 'profile'])->name('profile');
@@ -126,6 +128,78 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Settlements
         Route::resource('settlements', App\Http\Controllers\Admin\SettlementController::class)->except(['edit', 'update']);
         Route::put('/settlements/{settlement}/status', [App\Http\Controllers\Admin\SettlementController::class, 'updateStatus'])->name('settlements.update-status');
+
+        // Site Content Management
+        Route::prefix('site-content')->name('site-content.')->group(function () {
+            // Sliders
+            Route::get('/sliders', [App\Http\Controllers\Admin\SiteContentController::class, 'sliders'])->name('sliders');
+            Route::get('/sliders/create', [App\Http\Controllers\Admin\SiteContentController::class, 'createSlider'])->name('sliders.create');
+            Route::post('/sliders', [App\Http\Controllers\Admin\SiteContentController::class, 'storeSlider'])->name('sliders.store');
+            Route::get('/sliders/{id}/edit', [App\Http\Controllers\Admin\SiteContentController::class, 'editSlider'])->name('sliders.edit');
+            Route::put('/sliders/{id}', [App\Http\Controllers\Admin\SiteContentController::class, 'updateSlider'])->name('sliders.update');
+            Route::delete('/sliders/{id}', [App\Http\Controllers\Admin\SiteContentController::class, 'deleteSlider'])->name('sliders.delete');
+
+            // About Section
+            Route::get('/about', [App\Http\Controllers\Admin\SiteContentController::class, 'aboutSection'])->name('about');
+            Route::put('/about', [App\Http\Controllers\Admin\SiteContentController::class, 'updateAboutSection'])->name('about.update');
+
+            // Featured Book
+            Route::get('/featured-book', [App\Http\Controllers\Admin\SiteContentController::class, 'featuredBook'])->name('featured-book');
+            Route::put('/featured-book', [App\Http\Controllers\Admin\SiteContentController::class, 'updateFeaturedBook'])->name('featured-book.update');
+
+            // Testimonial Videos
+            Route::get('/testimonials', [App\Http\Controllers\Admin\SiteContentController::class, 'testimonialVideos'])->name('testimonials');
+            Route::get('/testimonials/create', [App\Http\Controllers\Admin\SiteContentController::class, 'createTestimonialVideo'])->name('testimonials.create');
+            Route::post('/testimonials', [App\Http\Controllers\Admin\SiteContentController::class, 'storeTestimonialVideo'])->name('testimonials.store');
+            Route::get('/testimonials/{id}/edit', [App\Http\Controllers\Admin\SiteContentController::class, 'editTestimonialVideo'])->name('testimonials.edit');
+            Route::put('/testimonials/{id}', [App\Http\Controllers\Admin\SiteContentController::class, 'updateTestimonialVideo'])->name('testimonials.update');
+            Route::delete('/testimonials/{id}', [App\Http\Controllers\Admin\SiteContentController::class, 'deleteTestimonialVideo'])->name('testimonials.delete');
+
+            // Order Flow
+            Route::get('/order-flow', [App\Http\Controllers\Admin\SiteContentController::class, 'orderFlow'])->name('order-flow');
+            Route::get('/order-flow/create', [App\Http\Controllers\Admin\SiteContentController::class, 'createOrderFlowStep'])->name('order-flow.create');
+            Route::post('/order-flow', [App\Http\Controllers\Admin\SiteContentController::class, 'storeOrderFlowStep'])->name('order-flow.store');
+            Route::get('/order-flow/{id}/edit', [App\Http\Controllers\Admin\SiteContentController::class, 'editOrderFlowStep'])->name('order-flow.edit');
+            Route::put('/order-flow/{id}', [App\Http\Controllers\Admin\SiteContentController::class, 'updateOrderFlowStep'])->name('order-flow.update');
+            Route::delete('/order-flow/{id}', [App\Http\Controllers\Admin\SiteContentController::class, 'deleteOrderFlowStep'])->name('order-flow.delete');
+
+            // WhatsApp Flow
+            Route::get('/whatsapp-flow', [App\Http\Controllers\Admin\SiteContentController::class, 'whatsappFlow'])->name('whatsapp-flow');
+            Route::get('/whatsapp-flow/create', [App\Http\Controllers\Admin\SiteContentController::class, 'createWhatsappFlowStep'])->name('whatsapp-flow.create');
+            Route::post('/whatsapp-flow', [App\Http\Controllers\Admin\SiteContentController::class, 'storeWhatsappFlowStep'])->name('whatsapp-flow.store');
+            Route::get('/whatsapp-flow/{id}/edit', [App\Http\Controllers\Admin\SiteContentController::class, 'editWhatsappFlowStep'])->name('whatsapp-flow.edit');
+            Route::put('/whatsapp-flow/{id}', [App\Http\Controllers\Admin\SiteContentController::class, 'updateWhatsappFlowStep'])->name('whatsapp-flow.update');
+            Route::delete('/whatsapp-flow/{id}', [App\Http\Controllers\Admin\SiteContentController::class, 'deleteWhatsappFlowStep'])->name('whatsapp-flow.delete');
+
+            // Promo Banners
+            Route::get('/promo-banners', [App\Http\Controllers\Admin\SiteContentController::class, 'promoBanners'])->name('promo-banners');
+            Route::get('/promo-banners/create', [App\Http\Controllers\Admin\SiteContentController::class, 'createPromoBanner'])->name('promo-banners.create');
+            Route::post('/promo-banners', [App\Http\Controllers\Admin\SiteContentController::class, 'storePromoBanner'])->name('promo-banners.store');
+            Route::get('/promo-banners/{id}/edit', [App\Http\Controllers\Admin\SiteContentController::class, 'editPromoBanner'])->name('promo-banners.edit');
+            Route::put('/promo-banners/{id}', [App\Http\Controllers\Admin\SiteContentController::class, 'updatePromoBanner'])->name('promo-banners.update');
+            Route::delete('/promo-banners/{id}', [App\Http\Controllers\Admin\SiteContentController::class, 'deletePromoBanner'])->name('promo-banners.delete');
+
+            // Site Settings
+            Route::get('/settings', [App\Http\Controllers\Admin\SiteContentController::class, 'siteSettings'])->name('settings');
+            Route::put('/settings', [App\Http\Controllers\Admin\SiteContentController::class, 'updateSiteSettings'])->name('settings.update');
+
+            // Blogs
+            Route::get('/blogs', [App\Http\Controllers\Admin\SiteContentController::class, 'blogs'])->name('blogs');
+            Route::get('/blogs/create', [App\Http\Controllers\Admin\SiteContentController::class, 'createBlog'])->name('blogs.create');
+            Route::post('/blogs', [App\Http\Controllers\Admin\SiteContentController::class, 'storeBlog'])->name('blogs.store');
+            Route::get('/blogs/{id}/edit', [App\Http\Controllers\Admin\SiteContentController::class, 'editBlog'])->name('blogs.edit');
+            Route::put('/blogs/{id}', [App\Http\Controllers\Admin\SiteContentController::class, 'updateBlog'])->name('blogs.update');
+            Route::delete('/blogs/{id}', [App\Http\Controllers\Admin\SiteContentController::class, 'deleteBlog'])->name('blogs.delete');
+
+            // Contact Settings
+            Route::get('/contact-settings', [App\Http\Controllers\Admin\SiteContentController::class, 'contactSettings'])->name('contact-settings');
+            Route::put('/contact-settings', [App\Http\Controllers\Admin\SiteContentController::class, 'updateContactSettings'])->name('contact-settings.update');
+
+            // Contact Messages
+            Route::get('/contact-messages', [App\Http\Controllers\Admin\SiteContentController::class, 'contactMessages'])->name('contact-messages');
+            Route::get('/contact-messages/{id}', [App\Http\Controllers\Admin\SiteContentController::class, 'viewContactMessage'])->name('contact-messages.view');
+            Route::delete('/contact-messages/{id}', [App\Http\Controllers\Admin\SiteContentController::class, 'deleteContactMessage'])->name('contact-messages.delete');
+        });
     });
 });
 
@@ -135,6 +209,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::get('/register', function () {
     return redirect()->route('agent.register');
 });
+
+// Blog Routes
+Route::get('/blog', [HomeController::class, 'blogIndex'])->name('blog.index');
+Route::get('/blog/{slug}', [HomeController::class, 'blogShow'])->name('blog.show');
+
+// Contact Page
+Route::get('/contact-us', [HomeController::class, 'contactPage'])->name('contact');
+Route::post('/contact-us', [HomeController::class, 'submitContact'])->name('contact.submit');
 
 // ------------------------
 // CMS Pages catch-all (LAST ROUTE)

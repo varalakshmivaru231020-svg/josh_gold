@@ -1,4 +1,4 @@
-@extends('layouts.Distributor')
+@extends('layouts.agent')
 
 @section('title', 'My Referrals')
 
@@ -6,7 +6,7 @@
 <div class="container-fluid px-4">
     <h1 class="mt-4">My Referrals</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="{{ route('Distributor.dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('agent.dashboard') }}">Dashboard</a></li>
         <li class="breadcrumb-item active">Referrals</li>
     </ol>
     
@@ -75,7 +75,7 @@
                 <i class="fas fa-users fa-4x text-muted mb-4"></i>
                 <h4>No referrals yet</h4>
                 <p class="text-muted mb-4">Start sharing your referral code to earn commissions!</p>
-                <a href="{{ route('Distributor.share.referral') }}" class="btn btn-primary">
+                <a href="{{ route('agent.share.referral') }}" class="btn btn-primary">
                     <i class="fas fa-share-alt me-2"></i>Share Referral Code
                 </a>
             </div>

@@ -1,16 +1,17 @@
-@extends('layouts.app')
+@extends('layouts.lawfirm')
 
-@section('title', 'Bank Details')
+@section('title', 'Bank Details - Bengaluru Law House')
 
 @section('content')
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-lg border-0">
-                <div class="card-header bg-gradient-success text-white">
-                    <h4 class="mb-0"><i class="fas fa-university me-2"></i>Payment Information</h4>
-                </div>
-                <div class="card-body p-4">
+<section class="auth-section">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="auth-card">
+                    <div class="auth-header bank-header">
+                        <h4 class="mb-0"><i class="fas fa-university me-2"></i>Payment Information</h4>
+                    </div>
+                    <div class="auth-body">
 
                     @if(session('success'))
                         <div class="alert alert-success">{{ session('success') }}</div>
@@ -21,7 +22,7 @@
                         Please provide your bank details or UPI ID for receiving commissions and settlements.
                     </div>
                     
-                    <form method="POST" action="{{ route('Distributor.bank-details') }}">
+                    <form method="POST" action="{{ route('agent.bank-details') }}">
                         @csrf
                         
                         <h5 class="mb-3">Bank Account Details</h5>
@@ -88,14 +89,121 @@
                             <button type="submit" class="btn btn-success btn-lg">
                                 <i class="fas fa-save me-2"></i>Save & Continue
                             </button>
-                            <a href="{{ route('Distributor.dashboard') }}" class="btn btn-outline-secondary">
+                            <a href="{{ route('agent.dashboard') }}" class="btn btn-outline-secondary">
                                 Skip for now
                             </a>
                         </div>
                     </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 @endsection
+
+@push('styles')
+<style>
+.auth-section {
+    margin-top: 80px;
+    min-height: calc(100vh - 80px);
+    background: var(--cream-primary);
+    padding: 40px 0;
+}
+
+.auth-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow-medium);
+    overflow: hidden;
+}
+
+.auth-header {
+    background: var(--navy-deep);
+    color: var(--cream-primary);
+    padding: 1.5rem 2rem;
+    border-bottom: 3px solid var(--gold-primary);
+}
+
+.auth-header.bank-header {
+    background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+}
+
+.auth-header h4 {
+    color: white;
+    font-family: var(--font-heading);
+}
+
+.auth-body {
+    padding: 2rem;
+}
+
+.auth-body h5 {
+    color: var(--navy-deep);
+    font-weight: 600;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--gold-primary);
+    margin-bottom: 1rem;
+}
+
+.auth-body .form-label {
+    color: var(--navy-deep);
+    font-weight: 500;
+}
+
+.auth-body .form-control {
+    border: 2px solid rgba(201, 162, 39, 0.2);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+}
+
+.auth-body .form-control:focus {
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 0 0.2rem rgba(201, 162, 39, 0.15);
+}
+
+.auth-body .alert-info {
+    background: rgba(26, 35, 50, 0.05);
+    border: 1px solid rgba(26, 35, 50, 0.1);
+    color: var(--navy-deep);
+}
+
+.auth-body .alert-warning {
+    background: rgba(201, 162, 39, 0.1);
+    border: 1px solid rgba(201, 162, 39, 0.3);
+    color: var(--navy-deep);
+}
+
+.auth-body .btn-success {
+    background: var(--gold-primary);
+    border-color: var(--gold-primary);
+    color: var(--navy-deep);
+    font-weight: 600;
+}
+
+.auth-body .btn-success:hover {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+}
+
+.auth-body .btn-outline-secondary {
+    border-color: rgba(26, 35, 50, 0.3);
+    color: var(--navy-deep);
+}
+
+.auth-body .btn-outline-secondary:hover {
+    background: rgba(26, 35, 50, 0.05);
+}
+
+@media (max-width: 767px) {
+    .auth-section {
+        margin-top: 70px;
+        padding: 20px 0;
+    }
+
+    .auth-body {
+        padding: 1.5rem;
+    }
+}
+</style>
+@endpush

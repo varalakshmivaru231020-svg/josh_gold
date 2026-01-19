@@ -1,20 +1,21 @@
-@extends('layouts.app')
+@extends('layouts.lawfirm')
 
-@section('title', 'Distributor Registration')
+@section('title', 'Distributor Registration - Bengaluru Law House')
 
 @section('content')
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-lg border-0">
-                <div class="card-header bg-gradient-primary text-white">
-                    <h4 class="mb-0">
-                        <i class="fas fa-user-plus me-2"></i>
-                        Distributor Registration
-                    </h4>
-                </div>
+<section class="auth-section">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <h4 class="mb-0">
+                            <i class="fas fa-user-plus me-2"></i>
+                            Distributor Registration
+                        </h4>
+                    </div>
 
-                <div class="card-body p-4">
+                    <div class="auth-body">
                     <form id="registrationForm" method="POST" action="{{ route('agent.register') }}">
                         @csrf
 
@@ -142,11 +143,133 @@
                         </div>
 
                     </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
+@endsection
+
+@push('styles')
+<style>
+.auth-section {
+    margin-top: 80px;
+    min-height: calc(100vh - 80px);
+    background: var(--cream-primary);
+    padding: 40px 0;
+}
+
+.auth-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow-medium);
+    overflow: hidden;
+}
+
+.auth-header {
+    background: var(--navy-deep);
+    color: var(--cream-primary);
+    padding: 1.5rem 2rem;
+    border-bottom: 3px solid var(--gold-primary);
+}
+
+.auth-header h4 {
+    color: var(--cream-primary);
+    font-family: var(--font-heading);
+}
+
+.auth-body {
+    padding: 2rem;
+}
+
+.auth-body .form-label {
+    color: var(--navy-deep);
+    font-weight: 500;
+}
+
+.auth-body .form-control {
+    border: 2px solid rgba(201, 162, 39, 0.2);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+}
+
+.auth-body .form-control:focus {
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 0 0.2rem rgba(201, 162, 39, 0.15);
+}
+
+.auth-body .input-group-text {
+    background: var(--cream-primary);
+    border: 2px solid rgba(201, 162, 39, 0.2);
+    border-right: none;
+    color: var(--navy-deep);
+}
+
+.auth-body .input-group .form-control {
+    border-left: none;
+}
+
+.auth-body .input-group .btn-outline-primary {
+    background: var(--gold-primary);
+    border-color: var(--gold-primary);
+    color: var(--navy-deep);
+    font-weight: 600;
+}
+
+.auth-body .input-group .btn-outline-primary:hover {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+}
+
+.auth-body .btn-primary {
+    background: var(--gold-primary);
+    border-color: var(--gold-primary);
+    color: var(--navy-deep);
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+}
+
+.auth-body .btn-primary:hover {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+}
+
+.auth-body .btn-outline-primary {
+    border-color: var(--gold-primary);
+    color: var(--navy-deep);
+}
+
+.auth-body .btn-outline-primary:hover {
+    background: var(--gold-primary);
+    color: var(--navy-deep);
+}
+
+.auth-body a {
+    color: var(--gold-dark);
+}
+
+.auth-body a:hover {
+    color: var(--gold-primary);
+}
+
+.auth-body .form-check-input:checked {
+    background-color: var(--gold-primary);
+    border-color: var(--gold-primary);
+}
+
+@media (max-width: 767px) {
+    .auth-section {
+        margin-top: 70px;
+        padding: 20px 0;
+    }
+
+    .auth-body {
+        padding: 1.5rem;
+    }
+}
+</style>
+@endpush
 
 @push('scripts')
 <script>
@@ -209,4 +332,3 @@ document.getElementById('mobile').addEventListener('input', function () {
 });
 </script>
 @endpush
-@endsection

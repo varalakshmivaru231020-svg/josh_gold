@@ -1,16 +1,17 @@
-@extends('layouts.app')
+@extends('layouts.lawfirm')
 
-@section('title', 'Track Order')
+@section('title', 'Track Order - Bengaluru Law House')
 
 @section('content')
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0"><i class="fas fa-shipping-fast me-2"></i>Track Your Order</h4>
-                </div>
-                <div class="card-body">
+<section class="track-order-section">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="track-card">
+                    <div class="track-header">
+                        <h4 class="mb-0"><i class="fas fa-shipping-fast me-2"></i>Track Your Order</h4>
+                    </div>
+                    <div class="track-body">
                     <!-- Search Form -->
                     <div class="mb-5">
                         <form action="{{ route('track.order') }}" method="GET">
@@ -277,19 +278,122 @@
                         </div>
                     </div>
                     @endif
-                </div>
-                <div class="card-footer text-center bg-light">
-                    <small class="text-muted">
-                        Need help finding your order number? Check your confirmation email or contact support.
-                    </small>
+                    </div>
+                    <div class="track-footer">
+                        <small>
+                            Need help finding your order number? Check your confirmation email or contact support.
+                        </small>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
+@endsection
 
 @push('styles')
 <style>
+.track-order-section {
+    margin-top: 80px;
+    min-height: calc(100vh - 80px);
+    background: var(--cream-primary);
+    padding: 40px 0;
+}
+
+.track-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow-medium);
+    overflow: hidden;
+}
+
+.track-header {
+    background: var(--navy-deep);
+    color: var(--cream-primary);
+    padding: 1.5rem 2rem;
+    border-bottom: 3px solid var(--gold-primary);
+}
+
+.track-header h4 {
+    color: var(--cream-primary);
+    font-family: var(--font-heading);
+}
+
+.track-body {
+    padding: 2rem;
+}
+
+.track-footer {
+    background: rgba(26, 35, 50, 0.03);
+    padding: 1rem 2rem;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.track-body .input-group-lg .form-control {
+    border: 2px solid rgba(201, 162, 39, 0.3);
+    border-radius: 8px 0 0 8px;
+}
+
+.track-body .input-group-lg .form-control:focus {
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 0 0.2rem rgba(201, 162, 39, 0.15);
+}
+
+.track-body .input-group-lg .btn {
+    background: var(--gold-primary);
+    border: 2px solid var(--gold-primary);
+    color: var(--navy-deep);
+    font-weight: 600;
+    border-radius: 0 8px 8px 0;
+}
+
+.track-body .input-group-lg .btn:hover {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+}
+
+.track-body .card {
+    border: 1px solid rgba(201, 162, 39, 0.2);
+    border-radius: 8px;
+}
+
+.track-body .card-header {
+    background: rgba(26, 35, 50, 0.03);
+    border-bottom: 2px solid var(--gold-primary);
+    color: var(--navy-deep);
+}
+
+.track-body .card-header h5,
+.track-body .card-header h6 {
+    color: var(--navy-deep);
+}
+
+.track-body .badge.bg-success {
+    background: var(--gold-primary) !important;
+    color: var(--navy-deep);
+}
+
+.track-body .badge.bg-info {
+    background: var(--navy-deep) !important;
+}
+
+.track-body .text-primary {
+    color: var(--gold-primary) !important;
+}
+
+.track-body .btn-success {
+    background: var(--gold-primary);
+    border-color: var(--gold-primary);
+    color: var(--navy-deep);
+    font-weight: 600;
+}
+
+.track-body .btn-success:hover {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+}
+
 .timeline {
     position: relative;
     padding-left: 30px;
@@ -302,7 +406,7 @@
     top: 0;
     bottom: 0;
     width: 2px;
-    background-color: #e9ecef;
+    background-color: rgba(201, 162, 39, 0.3);
 }
 
 .timeline-item {
@@ -316,7 +420,7 @@
 }
 
 .timeline-item.active .timeline-marker {
-    color: #4e73df;
+    color: var(--gold-primary);
 }
 
 .timeline-item.cancelled .timeline-marker {
@@ -339,6 +443,30 @@
 .timeline-content {
     padding-left: 15px;
 }
+
+.timeline-content h6 {
+    color: var(--navy-deep);
+}
+
+.alert-warning {
+    background: rgba(201, 162, 39, 0.1);
+    border: 1px solid rgba(201, 162, 39, 0.3);
+    color: var(--navy-deep);
+}
+
+.display-1.text-primary {
+    color: var(--gold-primary) !important;
+}
+
+@media (max-width: 767px) {
+    .track-order-section {
+        margin-top: 70px;
+        padding: 20px 0;
+    }
+
+    .track-body {
+        padding: 1.5rem;
+    }
+}
 </style>
 @endpush
-@endsection

@@ -35,33 +35,23 @@ class DashboardController extends Controller
         return view('agent.dashboard', compact('stats', 'recentCommissions', 'agent'));
     }
 
-    /**
-     * Show agent referrals with commission counts
-     */
-    public function referrals()
-    {
-        $agent = Auth::guard('agent')->user();
-        $referrals = $agent->referrals()
-            ->withCount([
-                'commissions as total_commissions',
-                'commissions as pending_commissions' => fn($q) => $q->where('status', 'pending'),
-                'commissions as settled_commissions' => fn($q) => $q->where('status', 'settled'),
-            ])
-            ->paginate(10);
-
-        return view('agent.referrals', compact('referrals'));
-    }
 
     /**
      * Show agent commissions list
      */
-    public function commissions()
+    public function commissions(Request $request)
     {
         $agent = Auth::guard('agent')->user();
-        $commissions = $agent->commissions()
+        
+        $query = $agent->commissions()
             ->with('order.product')
-            ->orderByDesc('created_at')
-            ->paginate(15);
+            ->orderByDesc('created_at');
+
+        if ($request->has('status') && in_array($request->status, ['pending', 'settled'])) {
+            $query->where('status', $request->status);
+        }
+
+        $commissions = $query->paginate(15)->withQueryString();
 
         return view('agent.commissions', compact('commissions'));
     }

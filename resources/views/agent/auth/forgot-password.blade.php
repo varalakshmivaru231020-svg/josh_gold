@@ -1,66 +1,145 @@
-@extends('layouts.app')
+@extends('layouts.lawfirm')
 
-@section('title', 'Forgot Password - Distributor')
+@section('title', 'Forgot Password - Bengaluru Law House')
 
 @section('content')
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5">
-            <div class="card shadow-lg border-0">
+<section class="auth-section">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <h3 class="mb-0">
+                            <i class="fas fa-lock me-2"></i>
+                            Forgot Password
+                        </h3>
+                    </div>
 
-                <div class="card-header bg-gradient-primary text-white text-center py-4">
-                    <h3 class="mb-0">
-                        <i class="fas fa-lock me-2"></i>
-                        Forgot Password
-                    </h3>
-                </div>
+                    <div class="auth-body">
+                        @if(session('error'))
+                            <div class="alert alert-danger">{{ session('error') }}</div>
+                        @endif
 
-                <div class="card-body p-5">
+                        @if(session('success'))
+                            <div class="alert alert-success">{{ session('success') }}</div>
+                        @endif
 
-                    @if(session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
-                    @endif
+                        <form method="POST" action="{{ route('agent.forgot-password.sendOtp') }}">
+                            @csrf
 
-                    @if(session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
-                    <form method="POST" action="{{ route('agent.forgot-password.sendOtp') }}">
-                        @csrf
-
-                        <div class="mb-4">
-                            <label class="form-label">Registered Mobile Number</label>
-                            <div class="input-group">
-                                <span class="input-group-text">+91</span>
-                                <input
-                                    type="text"
-                                    name="mobile"
-                                    class="form-control"
-                                    maxlength="10"
-                                    required
-                                >
+                            <div class="mb-4">
+                                <label class="form-label">Registered Mobile Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">+91</span>
+                                    <input type="text" name="mobile" class="form-control" maxlength="10" required>
+                                </div>
                             </div>
-                        </div>
 
-                        <button type="submit" class="btn btn-primary btn-lg w-100">
-                            Send OTP
-                        </button>
+                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                                Send OTP
+                            </button>
 
-                        <div class="text-center mt-4">
-                            <a href="{{ route('agent.login') }}">
-                                Back to Login
-                            </a>
-                        </div>
-
-                    </form>
-
+                            <div class="text-center mt-4">
+                                <a href="{{ route('agent.login') }}">Back to Login</a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 @endsection
+
+@push('styles')
+<style>
+.auth-section {
+    margin-top: 80px;
+    min-height: calc(100vh - 80px);
+    background: var(--cream-primary);
+    padding: 40px 0;
+}
+
+.auth-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow-medium);
+    overflow: hidden;
+}
+
+.auth-header {
+    background: var(--navy-deep);
+    color: var(--cream-primary);
+    padding: 1.5rem 2rem;
+    text-align: center;
+    border-bottom: 3px solid var(--gold-primary);
+}
+
+.auth-header h3 {
+    color: var(--cream-primary);
+    font-family: var(--font-heading);
+}
+
+.auth-body {
+    padding: 2.5rem;
+}
+
+.auth-body .form-label {
+    color: var(--navy-deep);
+    font-weight: 500;
+}
+
+.auth-body .form-control {
+    border: 2px solid rgba(201, 162, 39, 0.2);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+}
+
+.auth-body .form-control:focus {
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 0 0.2rem rgba(201, 162, 39, 0.15);
+}
+
+.auth-body .input-group-text {
+    background: var(--cream-primary);
+    border: 2px solid rgba(201, 162, 39, 0.2);
+    border-right: none;
+    color: var(--navy-deep);
+}
+
+.auth-body .input-group .form-control {
+    border-left: none;
+}
+
+.auth-body .btn-primary {
+    background: var(--gold-primary);
+    border-color: var(--gold-primary);
+    color: var(--navy-deep);
+    font-weight: 600;
+}
+
+.auth-body .btn-primary:hover {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+}
+
+.auth-body a {
+    color: var(--gold-dark);
+}
+
+.auth-body a:hover {
+    color: var(--gold-primary);
+}
+
+@media (max-width: 767px) {
+    .auth-section {
+        margin-top: 70px;
+        padding: 20px 0;
+    }
+
+    .auth-body {
+        padding: 1.5rem;
+    }
+}
+</style>
+@endpush

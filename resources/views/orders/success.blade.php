@@ -1,23 +1,24 @@
-@extends('layouts.app')
+@extends('layouts.lawfirm')
 
-@section('title', 'Order Confirmation')
+@section('title', 'Order Confirmation - Bengaluru Law House')
 
 @section('content')
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <!-- Success Card -->
-            <div class="card border-success mb-4">
-                <div class="card-header bg-success text-white">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-check-circle fa-2x me-3"></i>
-                        <div>
-                            <h4 class="mb-0">Order Confirmed!</h4>
-                            <p class="mb-0">Thank you for your purchase</p>
+<section class="success-section">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Success Card -->
+                <div class="success-card">
+                    <div class="success-header">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle fa-2x me-3"></i>
+                            <div>
+                                <h4 class="mb-0">Order Confirmed!</h4>
+                                <p class="mb-0">Thank you for your purchase</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="card-body">
+                    <div class="success-body">
                     <div class="text-center mb-4">
                         <div class="display-1 text-success mb-3">
                             <i class="fas fa-check-circle"></i>
@@ -186,41 +187,127 @@
                         </div>
                     </div> -->
                     @endif
+                    </div>
                 </div>
-                <!-- <div class="card-footer bg-transparent text-center">
-                    <small class="text-muted">
-                        Need help? <a href="mailto:support@agentreferral.com">Contact Support</a> or call +91 9876543210
-                    </small>
-                </div> -->
             </div>
-            
-            <!-- Order Summary Email -->
-            <!-- <div class="text-center mt-4">
-                <p class="text-muted">
-                    <i class="fas fa-envelope me-2"></i>
-                    An order confirmation has been sent to 
-                    @if($order->customer_email)
-                    <strong>{{ $order->customer_email }}</strong>
-                    @else
-                    your registered mobile number
-                    @endif
-                </p>
-            </div> -->
         </div>
     </div>
-</div>
+</section>
+@endsection
+
+@push('styles')
+<style>
+.success-section {
+    margin-top: 80px;
+    min-height: calc(100vh - 80px);
+    background: var(--cream-primary);
+    padding: 40px 0;
+}
+
+.success-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow-medium);
+    overflow: hidden;
+}
+
+.success-header {
+    background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+    color: white;
+    padding: 1.5rem 2rem;
+    border-bottom: 3px solid var(--gold-primary);
+}
+
+.success-header h4,
+.success-header p {
+    color: white;
+}
+
+.success-header h4 {
+    font-family: var(--font-heading);
+}
+
+.success-body {
+    padding: 2rem;
+}
+
+.success-body .display-1.text-success {
+    color: #28a745 !important;
+}
+
+.success-body h2 {
+    color: var(--navy-deep);
+}
+
+.success-body .lead {
+    color: var(--text-muted);
+}
+
+.success-body .card {
+    border: 1px solid rgba(201, 162, 39, 0.2);
+    border-radius: 8px;
+}
+
+.success-body .card-header {
+    background: rgba(26, 35, 50, 0.03);
+    border-bottom: 2px solid var(--gold-primary);
+    color: var(--navy-deep);
+}
+
+.success-body .card-header h6 {
+    color: var(--navy-deep);
+}
+
+.success-body .badge.bg-success {
+    background: var(--gold-primary) !important;
+    color: var(--navy-deep);
+}
+
+.success-body .text-success {
+    color: #28a745 !important;
+}
+
+.success-body .text-primary {
+    color: var(--navy-deep) !important;
+}
+
+.success-body .btn-primary {
+    background: var(--gold-primary);
+    border-color: var(--gold-primary);
+    color: var(--navy-deep);
+    font-weight: 600;
+}
+
+.success-body .btn-primary:hover {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+}
+
+@media (max-width: 767px) {
+    .success-section {
+        margin-top: 70px;
+        padding: 20px 0;
+    }
+
+    .success-body {
+        padding: 1.5rem;
+    }
+}
+</style>
+@endpush
 
 @push('scripts')
 <script>
-$(document).ready(function() {
+document.addEventListener('DOMContentLoaded', function() {
     // Print order receipt
     function printReceipt() {
         window.print();
     }
-    
+
     // Add print button event listener
-    $('.print-receipt').click(printReceipt);
+    document.querySelectorAll('.print-receipt').forEach(function(btn) {
+        btn.addEventListener('click', printReceipt);
+    });
 });
 </script>
 @endpush
-@endsection

@@ -1,20 +1,21 @@
-@extends('layouts.app')
+@extends('layouts.lawfirm')
 
-@section('title', 'Distributor Login')
+@section('title', 'Distributor Login - Bengaluru Law House')
 
 @section('content')
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-5">
-            <div class="card shadow-lg border-0">
-                <div class="card-header bg-gradient-primary text-white text-center py-4">
-                    <h3 class="mb-0">
-                        <i class="fas fa-user-tie me-2"></i>
-                        Distributor Login
-                    </h3>
-                </div>
+<section class="auth-section">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="auth-card">
+                    <div class="auth-header">
+                        <h3 class="mb-0">
+                            <i class="fas fa-user-tie me-2"></i>
+                            Distributor Login
+                        </h3>
+                    </div>
 
-                <div class="card-body p-5">
+                    <div class="auth-body">
                     <form method="POST" action="{{ route('agent.login') }}">
                         @csrf
                         
@@ -77,43 +78,162 @@
                             </a>
                         </div>
                     </form>
+                    </div>
+
+                    <div class="auth-footer">
+                        <small>Distributor Login – Restricted Access</small>
+                    </div>
                 </div>
 
-                <div class="card-footer text-center bg-light py-3">
-                    <small class="text-muted">
-                        Distributor Login – Restricted Access
-                    </small>
+                <div class="text-center mt-4">
+                    <a href="{{ route('products.index') }}" class="back-link">
+                        <i class="fas fa-arrow-left me-1"></i>
+                        Back to Store
+                    </a>
                 </div>
-            </div>
-
-            <div class="text-center mt-4">
-                <a href="{{ route('products.index') }}" class="text-decoration-none">
-                    <i class="fas fa-arrow-left me-1"></i>
-                    Back to Store
-                </a>
             </div>
         </div>
     </div>
-</div>
+</section>
+@endsection
+
+@push('styles')
+<style>
+.auth-section {
+    margin-top: 80px;
+    min-height: calc(100vh - 80px);
+    background: var(--cream-primary);
+    padding: 40px 0;
+}
+
+.auth-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow-medium);
+    overflow: hidden;
+}
+
+.auth-header {
+    background: var(--navy-deep);
+    color: var(--cream-primary);
+    padding: 1.5rem 2rem;
+    text-align: center;
+    border-bottom: 3px solid var(--gold-primary);
+}
+
+.auth-header h3 {
+    color: var(--cream-primary);
+    font-family: var(--font-heading);
+}
+
+.auth-body {
+    padding: 2.5rem;
+}
+
+.auth-body .form-label {
+    color: var(--navy-deep);
+    font-weight: 500;
+}
+
+.auth-body .form-control {
+    border: 2px solid rgba(201, 162, 39, 0.2);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+}
+
+.auth-body .form-control:focus {
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 0 0.2rem rgba(201, 162, 39, 0.15);
+}
+
+.auth-body .input-group-text {
+    background: var(--cream-primary);
+    border: 2px solid rgba(201, 162, 39, 0.2);
+    border-right: none;
+    color: var(--navy-deep);
+}
+
+.auth-body .input-group .form-control {
+    border-left: none;
+}
+
+.auth-body .btn-primary {
+    background: var(--gold-primary);
+    border-color: var(--gold-primary);
+    color: var(--navy-deep);
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+}
+
+.auth-body .btn-primary:hover {
+    background: var(--gold-dark);
+    border-color: var(--gold-dark);
+}
+
+.auth-body .btn-outline-secondary {
+    border-color: rgba(201, 162, 39, 0.3);
+    color: var(--navy-deep);
+}
+
+.auth-body a {
+    color: var(--gold-dark);
+}
+
+.auth-body a:hover {
+    color: var(--gold-primary);
+}
+
+.auth-footer {
+    background: rgba(26, 35, 50, 0.03);
+    padding: 1rem 2rem;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.back-link {
+    color: var(--navy-deep);
+    text-decoration: none;
+}
+
+.back-link:hover {
+    color: var(--gold-primary);
+}
+
+@media (max-width: 767px) {
+    .auth-section {
+        margin-top: 70px;
+        padding: 20px 0;
+    }
+
+    .auth-body {
+        padding: 1.5rem;
+    }
+}
+</style>
+@endpush
 
 @push('scripts')
 <script>
-$(document).ready(function () {
-
+document.addEventListener('DOMContentLoaded', function() {
     // Mobile number formatting (10 digits)
-    $('#mobile').on('input', function () {
-        this.value = this.value.replace(/\D/g, '').slice(0, 10);
-    });
+    var mobileInput = document.getElementById('mobile');
+    if (mobileInput) {
+        mobileInput.addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '').slice(0, 10);
+        });
+    }
 
     // Password visibility toggle
-    $('.password-toggle').on('click', function () {
-        const input = $('#password');
-        const type = input.attr('type') === 'password' ? 'text' : 'password';
-        input.attr('type', type);
-        $(this).find('i').toggleClass('fa-eye fa-eye-slash');
-    });
-
+    var toggleBtn = document.querySelector('.password-toggle');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function() {
+            var input = document.getElementById('password');
+            var type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+    }
 });
 </script>
 @endpush
-@endsection

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class PageController extends Controller
 {
@@ -49,16 +50,29 @@ class PageController extends Controller
         $request->validate([
             'title'   => 'required|string|max:255',
             'content' => 'required',
+            'banner_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'banner_title' => 'nullable|string|max:255',
         ]);
 
         $page = Page::findOrFail($id);
 
-        $page->update([
+        $data = [
             'title'        => $request->title,
             'slug'         => Str::slug($request->title),
             'content'      => $request->content,
+            'banner_title' => $request->banner_title,
             'is_published' => $request->has('is_published'),
-        ]);
+        ];
+
+        if ($request->hasFile('banner_image')) {
+            // Delete old banner if exists
+            if ($page->banner_image) {
+                Storage::disk('public')->delete($page->banner_image);
+            }
+            $data['banner_image'] = $request->file('banner_image')->store('pages', 'public');
+        }
+
+        $page->update($data);
 
         return redirect()->route('admin.pages.index')
             ->with('success', 'Page updated successfully.');

@@ -1,4 +1,4 @@
-@extends('layouts.Distributor')
+@extends('layouts.agent')
 
 @section('title', 'Share Referral Code')
 
@@ -6,7 +6,7 @@
 <div class="container-fluid px-4">
     <h1 class="mt-4">Share Referral Code</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="{{ route('Distributor.dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('agent.dashboard') }}">Dashboard</a></li>
         <li class="breadcrumb-item active">Share</li>
     </ol>
     
@@ -19,10 +19,10 @@
                     Your Referral Code
                 </div>
                 <div class="card-body text-center py-5">
-                    <div class="display-1 mb-4 font-monospace">{{ $Distributor->referral_code }}</div>
-                    
+                    <div class="display-1 mb-4 font-monospace">{{ $agent->referral_code }}</div>
+
                     <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
-                        <button class="btn btn-primary btn-lg copy-btn" data-text="{{ $Distributor->referral_code }}">
+                        <button class="btn btn-primary btn-lg copy-btn" data-text="{{ $agent->referral_code }}">
                             <i class="fas fa-copy me-2"></i>Copy Code
                         </button>
                         <button class="btn btn-success btn-lg" id="generateQrBtn">
@@ -43,25 +43,25 @@
                 <div class="card-body">
                     <div class="row g-3">
                         <div class="col-6">
-                            <a href="https://wa.me/?text={{ urlencode('Use my referral code ' . $Distributor->referral_code . ' to get 10% discount on all products! Shop now: ' . url('/products')) }}" 
+                            <a href="https://wa.me/?text={{ urlencode('Use my referral code ' . $agent->referral_code . ' to get 10% discount on all products! Shop now: ' . url('/products')) }}"
                                target="_blank" class="btn btn-success w-100">
                                 <i class="fab fa-whatsapp me-2"></i>WhatsApp
                             </a>
                         </div>
                         <div class="col-6">
-                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url('/products?ref=' . $Distributor->referral_code)) }}" 
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url('/products?ref=' . $agent->referral_code)) }}"
                                target="_blank" class="btn btn-primary w-100">
                                 <i class="fab fa-facebook me-2"></i>Facebook
                             </a>
                         </div>
                         <div class="col-6">
-                            <a href="https://twitter.com/intent/tweet?text={{ urlencode('Get 10% discount using referral code: ' . $Distributor->referral_code . ' Shop now: ' . url('/products?ref=' . $Distributor->referral_code)) }}" 
+                            <a href="https://twitter.com/intent/tweet?text={{ urlencode('Get 10% discount using referral code: ' . $agent->referral_code . ' Shop now: ' . url('/products?ref=' . $agent->referral_code)) }}"
                                target="_blank" class="btn btn-info w-100">
                                 <i class="fab fa-twitter me-2"></i>Twitter
                             </a>
                         </div>
                         <div class="col-6">
-                            <a href="mailto:?subject=Get 10% Discount&body=Use my referral code {{ $Distributor->referral_code }} to get 10% discount on all products!%0D%0A%0D%0AShop now: {{ url('/products?ref=' . $Distributor->referral_code) }}" 
+                            <a href="mailto:?subject=Get 10% Discount&body=Use my referral code {{ $agent->referral_code }} to get 10% discount on all products!%0D%0A%0D%0AShop now: {{ url('/products?ref=' . $agent->referral_code) }}"
                                class="btn btn-danger w-100">
                                 <i class="fas fa-envelope me-2"></i>Email
                             </a>
@@ -96,15 +96,15 @@
                         <h6>Link Statistics</h6>
                         <div class="row text-center">
                             <div class="col-4">
-                                <div class="display-6 text-primary">{{ $Distributor->referrals->count() }}</div>
+                                <div class="display-6 text-primary">{{ $agent->referrals->count() }}</div>
                                 <small class="text-muted">Total Referrals</small>
                             </div>
                             <div class="col-4">
-                                <div class="display-6 text-success">{{ $Distributor->commissions->where('status', 'settled')->count() }}</div>
+                                <div class="display-6 text-success">{{ $agent->commissions->where('status', 'settled')->count() }}</div>
                                 <small class="text-muted">Settled Commissions</small>
                             </div>
                             <div class="col-4">
-                                <div class="display-6 text-warning">{{ $Distributor->commissions->where('status', 'pending')->count() }}</div>
+                                <div class="display-6 text-warning">{{ $agent->commissions->where('status', 'pending')->count() }}</div>
                                 <small class="text-muted">Pending Commissions</small>
                             </div>
                         </div>

@@ -1,3 +1,7 @@
+@php
+    $siteLogo = \App\Models\SiteSetting::get('site_logo');
+    $logoUrl = $siteLogo ? asset('storage/' . $siteLogo) : asset('blr.jpg');
+@endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin Panel') - {{ config('app.name') }}</title>
-    
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -16,280 +20,436 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <!-- Summernote -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        /* Admin Layout Styles */
-        .sb-nav-fixed #layoutSidenav #layoutSidenav_nav {
+        :root {
+            --sidebar-width: 260px;
+            --sidebar-collapsed-width: 0px;
+            --topbar-height: 60px;
+            --primary-color: #4f46e5;
+            --primary-hover: #4338ca;
+            --sidebar-bg: #1e293b;
+            --sidebar-hover: #334155;
+            --sidebar-active: #3b82f6;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            min-height: 100vh;
+        }
+
+        /* Top Navbar */
+        .admin-topbar {
             position: fixed;
-            top: 80px;
+            top: 0;
             left: 0;
-            height: calc(100vh - 80px);
-            z-index: 1035;
-        }
-        
-        .sb-nav-fixed #layoutSidenav #layoutSidenav_content {
-            padding-left: 225px;
-            top: 56px;
-        }
-        
-        #layoutSidenav {
-            display: flex;
-        }
-        
-        #layoutSidenav_nav {
-            flex-basis: 225px;
-            flex-shrink: 0;
-            transition: transform 0.15s ease-in-out;
-            z-index: 1038;
-        }
-        
-        #layoutSidenav_content {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-width: 0;
-            flex-grow: 1;
-            min-height: calc(100vh - 56px);
-            margin-left: -100px;
-        }
-        
-        .sb-sidenav {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            flex-wrap: nowrap;
-        }
-        
-        .sb-sidenav .sb-sidenav-menu {
-            flex-grow: 1;
-        }
-        
-        .sb-sidenav .sb-sidenav-menu .nav {
-            flex-direction: column;
-            flex-wrap: nowrap;
-        }
-        
-        .sb-sidenav .sb-sidenav-menu .nav .sb-sidenav-menu-heading {
-            padding: 1.75rem 1rem 0.75rem;
-            font-size: 0.75rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .sb-sidenav .sb-sidenav-menu .nav .nav-link {
+            right: 0;
+            height: var(--topbar-height);
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
             display: flex;
             align-items: center;
-            padding-top: 0.75rem;
-            padding-bottom: 0.75rem;
-            position: relative;
-            color: rgba(255, 255, 255, 0.5);
+            padding: 0 1rem;
+            z-index: 1040;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        
-        /* FIX: Reset pagination icon size */
-        
-        .sb-sidenav .sb-sidenav-menu .nav .nav-link .sb-nav-link-icon {
+
+        .admin-topbar .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #1e293b;
+            text-decoration: none;
+            min-width: 200px;
+        }
+
+        .admin-topbar .brand img {
+            height: 36px;
+            border-radius: 6px;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 8px;
+            color: #64748b;
+            transition: all 0.2s;
+            margin-right: 1rem;
+        }
+
+        .toggle-btn:hover {
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .toggle-btn i {
+            font-size: 1.25rem;
+        }
+
+        .topbar-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-dropdown .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            color: #1e293b;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .user-dropdown .dropdown-toggle:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .user-dropdown .dropdown-toggle::after {
+            margin-left: 0.5rem;
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            position: fixed;
+            top: var(--topbar-height);
+            left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--topbar-height));
+            background: var(--sidebar-bg);
+            overflow-y: auto;
+            overflow-x: hidden;
+            z-index: 1030;
+            transition: transform 0.3s ease, width 0.3s ease;
+        }
+
+        /* Custom Scrollbar for Sidebar */
+        .admin-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .admin-sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .admin-sidebar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 3px;
+        }
+
+        .admin-sidebar::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        .sidebar-menu {
+            padding: 1rem 0;
+        }
+
+        .menu-heading {
+            padding: 1rem 1.25rem 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #64748b;
+        }
+
+        .menu-item {
+            padding: 0 0.75rem;
+            margin-bottom: 2px;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: #cbd5e1;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
             font-size: 0.9rem;
-            padding-right: 0.5rem;
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .sb-sidenav .sb-sidenav-menu .nav .nav-link:hover {
-            color: rgba(255, 255, 255, 0.75);
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        
-        .sb-sidenav .sb-sidenav-menu .nav .nav-link.active {
-            color: #fff;
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-        
-        .sb-sidenav .sb-sidenav-menu .nav .nav-link.active .sb-nav-link-icon {
-            color: #fff;
-        }
-        
-        .sb-sidenav .sb-sidenav-footer {
-            padding: 0.75rem;
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .sb-sidenav-dark {
-            background-color: #212529;
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .sb-sidenav-dark .sb-sidenav-menu .nav-link {
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .sb-sidenav-dark .sb-sidenav-menu .nav-link:hover {
-            color: rgba(255, 255, 255, 0.75);
-        }
-        
-        .sb-sidenav-dark .sb-sidenav-menu .nav-link.active {
-            color: #fff;
-        }
-        
-        /* Mobile responsiveness */
-        @media (max-width: 767.98px) {
-            .sb-nav-fixed #layoutSidenav #layoutSidenav_nav {
-                transform: translateX(-225px);
-            }
-            
-            .sb-nav-fixed #layoutSidenav #layoutSidenav_content {
-                padding-left: 0;
-            }
-            
-            .sb-nav-fixed.sb-sidenav-toggled #layoutSidenav #layoutSidenav_nav {
-                transform: translateX(0);
-            }
-            
-            .sb-nav-fixed.sb-sidenav-toggled #layoutSidenav #layoutSidenav_content {
-                padding-left: 0;
-            }
+            font-weight: 500;
         }
 
-        @media (max-width: 767.98px) {
-            #layoutSidenav_nav {
-                transform: translateX(-225px);
+        .menu-link:hover {
+            background: var(--sidebar-hover);
+            color: #fff;
+        }
+
+        .menu-link.active {
+            background: var(--sidebar-active);
+            color: #fff;
+        }
+
+        .menu-link i {
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .sidebar-footer {
+            padding: 1rem 1.25rem;
+            border-top: 1px solid #334155;
+            margin-top: auto;
+        }
+
+        .sidebar-footer-text {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .sidebar-footer-name {
+            color: #cbd5e1;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        /* Main Content */
+        .admin-main {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--topbar-height);
+            min-height: calc(100vh - var(--topbar-height));
+            padding: 1.5rem;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Sidebar Toggle States */
+        body.sidebar-collapsed .admin-sidebar {
+            transform: translateX(-100%);
+        }
+
+        body.sidebar-collapsed .admin-main {
+            margin-left: 0;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 991.98px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
             }
 
-            #layoutSidenav_content {
+            .admin-main {
                 margin-left: 0;
             }
 
-            body.sb-sidenav-toggled #layoutSidenav_nav {
+            body.sidebar-open .admin-sidebar {
                 transform: translateX(0);
             }
 
-            body.sb-sidenav-toggled #layoutSidenav_content {
-                margin-left: 0;
-                 width: 60%;
+            body.sidebar-open .sidebar-overlay {
+                display: block;
             }
         }
-        
-        /* Main content styling */
-        .container-fluid {
-            padding-top: 1.5rem;
+
+        /* Sidebar Overlay for Mobile */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: var(--topbar-height);
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1025;
         }
-        
+
         /* Card styling */
         .card {
-            margin-bottom: 1.5rem;
             border: none;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
         }
-        
+
         .card-header {
-            border-bottom: 1px solid #e3e6f0;
-            background-color: #f8f9fc;
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 1.25rem;
+            font-weight: 600;
+            border-radius: 12px 12px 0 0 !important;
         }
-        
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
         /* Alert styling */
         .alert {
             border: none;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
         }
-        
+
+        .alert-success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .alert-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
         /* Table styling */
         .table {
             margin-bottom: 0;
         }
-        
+
         .table thead th {
-            border-top: none;
-            border-bottom-width: 1px;
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
             font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            padding: 0.875rem 1rem;
         }
-        
-        /* Badge styling */
-        .badge {
-            font-weight: 500;
+
+        .table tbody td {
+            padding: 1rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #f1f5f9;
         }
-        
-        /* Progress bar styling */
-        .progress {
-            margin-bottom: 1rem;
+
+        .table tbody tr:hover {
+            background: #f8fafc;
         }
-        
-        /* Form control styling */
-        .form-control:focus, .form-select:focus {
-            border-color: #bac8f3;
-            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
-        }
-        
+
         /* Button styling */
         .btn {
             font-weight: 500;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
         }
-        
-        /* Avatar */
-        .avatar-sm {
-            width: 2.5rem;
-            height: 2.5rem;
+
+        .btn-primary {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
         }
-        
-        .avatar-md {
-            width: 3.5rem;
-            height: 3.5rem;
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            border-color: var(--primary-hover);
         }
-        
-        .avatar-lg {
-            width: 4.5rem;
-            height: 4.5rem;
+
+        /* Badge styling */
+        .badge {
+            font-weight: 500;
+            padding: 0.4em 0.75em;
+            border-radius: 6px;
         }
-        
-        .avatar-xl {
-            width: 5.5rem;
-            height: 5.5rem;
+
+        /* Form styling */
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            padding: 0.625rem 1rem;
         }
-        
-        .avatar-title {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
         }
-        
+
+        .form-label {
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Page Title */
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0;
+        }
+
         /* Footer */
-        footer {
-            border-top: 1px solid #e3e6f0;
+        .admin-footer {
+            padding: 1.5rem;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.85rem;
+            border-top: 1px solid #e2e8f0;
+            background: #fff;
+            margin-top: 2rem;
+            border-radius: 12px;
+        }
+
+        /* Dropdown menu */
+        .dropdown-menu {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 0.5rem;
+        }
+
+        .dropdown-item {
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .dropdown-item:hover {
+            background: #f1f5f9;
         }
     </style>
     @stack('styles')
 </head>
-<body class="sb-nav-fixed">
+<body>
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- Top Navbar -->
-    <nav class="navbar navbar-expand navbar-dark bg-dark fixed-top">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
-                <img src="{{asset('blr.jpg')}}" height="40" style="padding-right:10px;">Admin
-            </a>
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-2 me-lg-0 text-white" id="sidebarToggle" href="#">
-                <i class="fas fa-bars"></i>
-            </button>
-            
-            <!-- Right Side -->
-            <div class="d-flex align-items-center ms-auto">
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user me-1"></i>{{ Auth::guard('admin')->user()->name }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="fas fa-user-cog me-2"></i>Profile</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li>
-                                <form method="POST" action="{{ route('admin.logout') }}" class="dropdown-item p-0">
-                                    @csrf
-                                    <button type="submit" class="btn btn-link text-decoration-none text-dark p-0 ps-2">
-                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
+    <nav class="admin-topbar">
+        <button class="toggle-btn" id="sidebarToggle" type="button">
+            <i class="fas fa-bars"></i>
+        </button>
+        <a class="brand" href="{{ route('admin.dashboard') }}">
+            <img src="{{ $logoUrl }}" alt="Logo">
+            <span>Admin Panel</span>
+        </a>
+
+        <div class="topbar-right">
+            <div class="dropdown user-dropdown">
+                <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-user-circle"></i>
+                    <span class="d-none d-md-inline">{{ Auth::guard('admin')->user()->name }}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="fas fa-user-cog me-2"></i>Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <form method="POST" action="{{ route('admin.logout') }}">
+                            @csrf
+                            <button type="submit" class="dropdown-item text-danger">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </div>
@@ -297,96 +457,167 @@
     </nav>
 
     <!-- Sidebar -->
-    <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
-            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                <div class="sb-sidenav-menu">
-                    <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Main</div>
-                        <a class="nav-link" href="{{ route('admin.dashboard') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Dashboard
-                        </a>
-                        
-                        <div class="sb-sidenav-menu-heading">Management</div>
-                        <a class="nav-link" href="{{ route('admin.products.index') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-box"></i></div>
-                            Products
-                        </a>
-                        <a class="nav-link" href="{{ route('admin.orders.index') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
-                            Orders
-                        </a>
-                        <a class="nav-link" href="{{ route('admin.agents.index') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                            Agents
-                        </a>
-                        <a class="nav-link" href="{{ route('admin.commissions.index') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-money-bill-wave"></i></div>
-                            Commissions
-                        </a>
-                        <a class="nav-link" href="{{ route('admin.settlements.index') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-hand-holding-usd"></i></div>
-                            Settlements
-                        </a>
-                      <a class="nav-link {{ Route::is('admin.pages.*') ? 'active' : '' }}"
-                         href="{{ route('admin.pages.index') }}">
-                          <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
-                          Pages
-                      </a>
-                        
-                        <div class="sb-sidenav-menu-heading">System</div>
-                        <a class="nav-link" href="{{ route('admin.profile') }}">
-                            <div class="sb-nav-link-icon"><i class="fas fa-cog"></i></div>
-                            Settings
-                        </a>
-                    </div>
-                </div>
-                <div class="sb-sidenav-footer">
-                    <div class="small">Logged in as:</div>
-                    {{ Auth::guard('admin')->user()->name }}
-                </div>
-            </nav>
+    <aside class="admin-sidebar" id="adminSidebar">
+        <div class="sidebar-menu">
+            <!-- Main -->
+            <div class="menu-heading">Main</div>
+            <div class="menu-item">
+                <a href="{{ route('admin.dashboard') }}" class="menu-link {{ Route::is('admin.dashboard') ? 'active' : '' }}">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+
+            <!-- Management -->
+            <div class="menu-heading">Management</div>
+            <div class="menu-item">
+                <a href="{{ route('admin.products.index') }}" class="menu-link {{ Route::is('admin.products.*') ? 'active' : '' }}">
+                    <i class="fas fa-box"></i>
+                    <span>Products</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.orders.index') }}" class="menu-link {{ Route::is('admin.orders.*') ? 'active' : '' }}">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Orders</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.agents.index') }}" class="menu-link {{ Route::is('admin.agents.*') ? 'active' : '' }}">
+                    <i class="fas fa-users"></i>
+                    <span>Agents</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.commissions.index') }}" class="menu-link {{ Route::is('admin.commissions.*') ? 'active' : '' }}">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>Commissions</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.settlements.index') }}" class="menu-link {{ Route::is('admin.settlements.*') ? 'active' : '' }}">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span>Settlements</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.pages.index') }}" class="menu-link {{ Route::is('admin.pages.*') ? 'active' : '' }}">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Pages</span>
+                </a>
+            </div>
+
+            <!-- Site Content -->
+            <div class="menu-heading">Site Content</div>
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.sliders') }}" class="menu-link {{ Route::is('admin.site-content.sliders*') ? 'active' : '' }}">
+                    <i class="fas fa-images"></i>
+                    <span>Sliders</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.about') }}" class="menu-link {{ Route::is('admin.site-content.about*') ? 'active' : '' }}">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About Section</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.featured-book') }}" class="menu-link {{ Route::is('admin.site-content.featured-book*') ? 'active' : '' }}">
+                    <i class="fas fa-book"></i>
+                    <span>Featured Book</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.testimonials') }}" class="menu-link {{ Route::is('admin.site-content.testimonials*') ? 'active' : '' }}">
+                    <i class="fas fa-video"></i>
+                    <span>Videos</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.order-flow') }}" class="menu-link {{ Route::is('admin.site-content.order-flow*') ? 'active' : '' }}">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>Order Flow</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.whatsapp-flow') }}" class="menu-link {{ Route::is('admin.site-content.whatsapp-flow*') ? 'active' : '' }}">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp Flow</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.promo-banners') }}" class="menu-link {{ Route::is('admin.site-content.promo-banners*') ? 'active' : '' }}">
+                    <i class="fas fa-ad"></i>
+                    <span>Promo Banners</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.settings') }}" class="menu-link {{ Route::is('admin.site-content.settings*') ? 'active' : '' }}">
+                    <i class="fas fa-cog"></i>
+                    <span>Site Settings</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.blogs') }}" class="menu-link {{ Route::is('admin.site-content.blogs*') ? 'active' : '' }}">
+                    <i class="fas fa-newspaper"></i>
+                    <span>Blog Posts</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.contact-settings') }}" class="menu-link {{ Route::is('admin.site-content.contact-settings*') ? 'active' : '' }}">
+                    <i class="fas fa-address-card"></i>
+                    <span>Contact Settings</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.contact-messages') }}" class="menu-link {{ Route::is('admin.site-content.contact-messages*') ? 'active' : '' }}">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact Messages</span>
+                    @php $unreadCount = \App\Models\ContactMessage::unread()->count(); @endphp
+                    @if($unreadCount > 0)
+                    <span class="badge bg-danger ms-auto">{{ $unreadCount }}</span>
+                    @endif
+                </a>
+            </div>
+
+            <!-- System -->
+            <div class="menu-heading">System</div>
+            <div class="menu-item">
+                <a href="{{ route('admin.profile') }}" class="menu-link {{ Route::is('admin.profile') ? 'active' : '' }}">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
         </div>
 
-        <!-- Main Content -->
-        <div id="layoutSidenav_content">
-            <main>
-                <div class="container-fluid px-4">
-                    @if(session('success'))
-                        <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    @endif
-                    
-                    @if(session('error'))
-                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
-                            {{ session('error') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    @endif
-                    
-                    @yield('content')
-                </div>
-            </main>
-            
-            <!-- Footer -->
-            <footer class="py-4 bg-light mt-auto" style="padding-left:20px;">
-                <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">
-                            &copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
-                        </div>
-                        <div>
-                            <a href="#">Privacy Policy</a> &middot;
-                            <a href="#">Terms &amp; Conditions</a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+        <div class="sidebar-footer">
+            <div class="sidebar-footer-text">Logged in as:</div>
+            <div class="sidebar-footer-name">{{ Auth::guard('admin')->user()->name }}</div>
         </div>
-    </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        @endif
+
+        @yield('content')
+
+        <footer class="admin-footer">
+            &copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
+        </footer>
+    </main>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -397,32 +628,48 @@
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        $(document).ready(function() {
-            // Sidebar toggle functionality
-            $('#sidebarToggle').click(function (e) {
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('adminSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const body = document.body;
+
+            // Check screen size
+            function isMobile() {
+                return window.innerWidth < 992;
+            }
+
+            // Toggle sidebar
+            sidebarToggle.addEventListener('click', function(e) {
                 e.preventDefault();
 
-                if ($('body').hasClass('sb-sidenav-toggled')) {
-                    // Sidebar is open → close it
-                    $('body').removeClass('sb-sidenav-toggled');
-                  //alert("removed");
+                if (isMobile()) {
+                    body.classList.toggle('sidebar-open');
                 } else {
-                    // Sidebar is closed → open it
-                    $('body').addClass('sb-sidenav-toggled');
-                  //alert("opened");
+                    body.classList.toggle('sidebar-collapsed');
+                }
+            });
+
+            // Close sidebar when clicking overlay (mobile)
+            overlay.addEventListener('click', function() {
+                body.classList.remove('sidebar-open');
+            });
+
+            // Handle resize
+            window.addEventListener('resize', function() {
+                if (!isMobile()) {
+                    body.classList.remove('sidebar-open');
                 }
             });
 
             // Initialize DataTables
-            $('table').each(function() {
-                if ($(this).hasClass('dataTable')) {
-                    $(this).DataTable();
-                }
+            $('table.dataTable').each(function() {
+                $(this).DataTable();
             });
-            
+
             // Initialize Select2
             $('.select2').select2();
-            
+
             // Initialize Summernote
             $('.summernote').summernote({
                 height: 200,

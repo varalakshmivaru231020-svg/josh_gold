@@ -1,375 +1,843 @@
-@extends('layouts.app')
+@extends('layouts.lawfirm')
 
-@section('title', $product->name)
+@section('title', $product->name . ' - Bengaluru Law House')
 
 @section('content')
-<div class="container py-4">
-    <!-- Breadcrumb -->
-    <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Products</a></li>
-            <li class="breadcrumb-item active">{{ $product->name }}</li>
-        </ol>
-    </nav>
-    
-    <div class="row">
-        <!-- Product Images -->
-        <div class="col-lg-6">
-            <div class="card mb-4">
-                <div class="card-body p-0">
-                    @if($product->images && count($product->images) > 0)
-                    <div class="glide product-main-slider">
-                        <div class="glide__track" data-glide-el="track">
-                            <ul class="glide__slides">
-                                @foreach($product->images as $image)
-                                <li class="glide__slide">
-                                    <img src="{{ asset('storage/' . $image) }}" 
-                                         class="img-fluid rounded" 
-                                         alt="{{ $product->name }}">
-                                </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                        @if(count($product->images) > 1)
-                        <div class="glide__arrows" data-glide-el="controls">
-                            <button class="glide__arrow glide__arrow--left" data-glide-dir="<">
-                                <i class="fas fa-chevron-left"></i>
-                            </button>
-                            <button class="glide__arrow glide__arrow--right" data-glide-dir=">">
-                                <i class="fas fa-chevron-right"></i>
-                            </button>
-                        </div>
+    <!-- Page Hero -->
+    <section class="page-hero-mini">
+        <div class="container">
+            <nav aria-label="breadcrumb" class="breadcrumb-wrapper fade-up">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Publications</a></li>
+                    <li class="breadcrumb-item active">{{ Str::limit($product->name, 30) }}</li>
+                </ol>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Product Detail Section -->
+    <section class="section section-light product-detail-section">
+        <div class="container">
+            <div class="row g-5">
+                <!-- Product Images -->
+                <div class="col-lg-6">
+                    <div class="product-gallery fade-up">
+                        @if($product->images && count($product->images) > 0)
+                            <div class="glide product-main-slider">
+                                <div class="glide__track" data-glide-el="track">
+                                    <ul class="glide__slides">
+                                        @foreach($product->images as $image)
+                                            <li class="glide__slide">
+                                                <div class="main-image-wrapper">
+                                                    <img src="{{ asset('storage/' . $image) }}" alt="{{ $product->name }}">
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                @if(count($product->images) > 1)
+                                    <div class="glide__arrows" data-glide-el="controls">
+                                        <button class="glide__arrow glide__arrow--left" data-glide-dir="<">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        <button class="glide__arrow glide__arrow--right" data-glide-dir=">">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <!-- Thumbnail Navigation -->
+                            @if(count($product->images) > 1)
+                                <div class="thumbnail-wrapper">
+                                    @foreach($product->images as $index => $image)
+                                        <div class="thumbnail-item {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}">
+                                            <img src="{{ asset('storage/' . $image) }}" alt="{{ $product->name }}">
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        @else
+                            <div class="no-image-placeholder">
+                                <i class="fas fa-book"></i>
+                                <span>No Image Available</span>
+                            </div>
                         @endif
                     </div>
-                    
-                    <!-- Thumbnail Navigation -->
-                    @if(count($product->images) > 1)
-                    <div class="glide product-thumbnail-slider mt-3">
-                        <div class="glide__track" data-glide-el="track">
-                            <ul class="glide__slides">
-                                @foreach($product->images as $image)
-                                <li class="glide__slide">
-                                    <img src="{{ asset('storage/' . $image) }}" 
-                                         class="img-thumbnail" 
-                                         alt="{{ $product->name }}"
-                                         style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;">
-                                </li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
-                    @endif
-                    @else
-                    <div class="text-center py-5 bg-light rounded">
-                        <i class="fas fa-image fa-5x text-muted mb-3"></i>
-                        <p class="text-muted">No images available</p>
-                    </div>
-                    @endif
                 </div>
-            </div>
-        </div>
-        
-        <!-- Product Details -->
-        <div class="col-lg-6">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <!-- Product Header -->
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div>
-                            <h1 class="h2 mb-1">{{ $product->name }}</h1>
-                            @if($product->stock > 0)
-                            <span class="badge bg-success">
-                                <i class="fas fa-check-circle me-1"></i>In Stock
-                            </span>
-                            @else
-                            <span class="badge bg-danger">
-                                <i class="fas fa-times-circle me-1"></i>Out of Stock
-                            </span>
-                            @endif
-                        </div>
-                        <div class="text-end">
-                            <div class="display-4 text-primary mb-0">₹{{ number_format($product->price, 2) }}</div>
-                            <small class="text-muted">Including taxes</small>
-                        </div>
-                    </div>
-                    
-                    <!-- Stock Info -->
-                    <!-- <div class="alert alert-info mb-4">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <i class="fas fa-box me-2"></i>
-                                <strong>Stock Available:</strong> {{ $product->stock }} units
-                            </div>
-                            @if($product->stock <= 10 && $product->stock > 0)
-                            <span class="badge bg-warning">Low Stock</span>
-                            @endif
-                        </div>
-                    </div> -->
-                    
-                    <!-- Referral Discount -->
-                    
-                    <!-- Product Description -->
-                    <div class="mb-4">
-                        <h5 class="mb-3">Description</h5>
-                        <div class="product-description">
-                            {!! $product->description !!}
-                        </div>
-                    </div>
-                    
-                    <!-- Purchase Form -->
-                    @if($product->stock > 0)
-                    <div class="card bg-light mb-4">
-                        <div class="card-body">
-                            <h5 class="mb-3">Purchase Details</h5>
-                            <form id="purchaseForm" action="{{ route('checkout', $product) }}" method="GET">
-                                <!-- Quantity Selector -->
-                                <div class="mb-4">
-                                    <label for="quantity" class="form-label">Quantity</label>
-                                    <div class="d-flex align-items-center">
-                                        <button type="button" class="btn btn-outline-secondary" id="decrementQty">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                        <input type="number" 
-                                               id="quantity" 
-                                               name="quantity" 
-                                               value="1" 
-                                               min="1" 
-                                               max="{{ $product->stock }}"
-                                               class="form-control text-center mx-2" 
-                                               style="width: 80px;">
-                                        <button type="button" class="btn btn-outline-secondary" id="incrementQty">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                        <!-- <span class="ms-3 text-muted">Max: {{ $product->stock }}</span> -->
-                                    </div>
-                                </div>
 
-                               @if(request()->has('ref'))
-                                <div class="alert alert-success mb-4">
-                                    <div class="d-flex align-items-center">
-                                        <i class="fas fa-tag fa-2x me-3"></i>
-                                        <div>
-                                            <h5 class="mb-1">Discount Available!</h5>
-                                            <p class="mb-0">Use referral code <code>{{ request('ref') }}</code> to get discount on this product.</p>
+                <!-- Product Details -->
+                <div class="col-lg-6">
+                    <div class="product-info slide-right">
+                        <!-- Product Header -->
+                        <div class="product-header">
+                            <span class="product-category-label">Legal Publication</span>
+                            <h1 class="product-title">{{ $product->name }}</h1>
+                        </div>
+
+                        <!-- Price -->
+                        <div class="product-price-section">
+                            <div class="current-price">{{ number_format($product->price, 2) }}</div>
+                            <span class="price-note">Inclusive of all taxes</span>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="product-description-section">
+                            <h5>Description</h5>
+                            <div class="description-content">
+                                {!! $product->description !!}
+                            </div>
+                        </div>
+
+                        <!-- Purchase Form -->
+                        @if($product->stock > 0)
+                            <div class="purchase-form-section">
+                                <form id="purchaseForm" action="{{ route('checkout', $product) }}" method="GET">
+                                    <!-- Quantity -->
+                                    <div class="form-group quantity-group">
+                                        <label>Quantity</label>
+                                        <div class="quantity-selector">
+                                            <button type="button" class="qty-btn" id="decrementQty">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                            <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ $product->stock }}" readonly>
+                                            <button type="button" class="qty-btn" id="incrementQty">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
                                         </div>
                                     </div>
-                                </div>
-                                @else
-                                <div class="alert alert-warning mb-4">
-                                    <i class="fas fa-info-circle me-2"></i>
-                                    Have a referral code? Apply it at checkout to get discount!
-                                </div>
-                                @endif
-                                            
-                                <!-- Referral Code -->
-                                <div class="mb-4">
-                                    <label for="referral_code" class="form-label">Referral Code (Optional)</label>
 
-                                    <div class="input-group">
-                                        <input type="text"
-                                               class="form-control"
-                                               id="referral_code"
-                                               name="referral_code"
-                                               value="{{ request('ref') }}"
-                                               placeholder="Enter referral code for discount">
-
-                                        <button class="btn btn-outline-secondary" type="button" id="applyReferral">
-                                            Apply
-                                        </button>
+                                    <!-- Referral Code -->
+                                    <div class="form-group referral-group">
+                                        <label>Referral Code (Optional)</label>
+                                        <div class="referral-input-wrapper">
+                                            <input type="text" class="form-control" id="referral_code" name="referral_code" value="{{ request('ref') }}" placeholder="Enter referral code for discount">
+                                            <button class="btn-apply" type="button" id="applyReferral">Apply</button>
+                                        </div>
+                                        <small id="referralMessage" class="referral-message"></small>
                                     </div>
 
-                                    <!-- Message -->
-                                    <small id="referralMessage" class="d-block mt-2"></small>
-                                </div>
+                                    <!-- Price Summary -->
+                                    <div class="price-summary">
+                                        <div class="summary-row">
+                                            <span>Unit Price</span>
+                                            <span><span id="unitPrice">{{ number_format($product->price, 2) }}</span></span>
+                                        </div>
+                                        <div class="summary-row">
+                                            <span>Quantity</span>
+                                            <span><span id="selectedQty">1</span> unit(s)</span>
+                                        </div>
+                                        <div class="summary-row discount-row d-none" id="discountRow">
+                                            <span class="text-success">Discount</span>
+                                            <span class="text-success">-<span id="discountAmount">0.00</span></span>
+                                        </div>
+                                        <div class="summary-row total-row">
+                                            <span>Total Amount</span>
+                                            <span class="total-amount"><span id="totalAmount">{{ number_format($product->price, 2) }}</span></span>
+                                        </div>
+                                    </div>
 
-                                
-                                <!-- Price Summary -->
-                                <div class="mb-4">
-                                    <h6>Price Summary</h6>
-                                    <table class="table table-sm">
-                                        <tr>
-                                            <td>Unit Price:</td>
-                                            <td class="text-end">₹<span id="unitPrice">{{ number_format($product->price, 2) }}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Quantity:</td>
-                                            <td class="text-end"><span id="selectedQty">1</span> units</td>
-                                        </tr>
-                                        <tr id="discountRow" class="d-none">
-                                            <td class="text-success">Discount:</td>
-                                            <td class="text-end text-success">-₹<span id="discountAmount">0.00</span></td>
-                                        </tr>
-                                        <tr class="table-primary">
-                                            <td><strong>Total Amount:</strong></td>
-                                            <td class="text-end"><strong>₹<span id="totalAmount">{{ number_format($product->price, 2) }}</span></strong></td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                
-                                <!-- Action Buttons -->
-                                <div class="d-grid gap-2">
-                                    <button type="submit" class="btn btn-primary btn-lg">
-                                        <i class="fas fa-shopping-cart me-2"></i>Proceed to Checkout
+                                    <!-- CTA Button -->
+                                    <button type="submit" class="btn-checkout">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        Proceed to Checkout
                                     </button>
-                                    <!-- <a href="{{ route('products.index') }}" class="btn btn-outline-secondary">
-                                        <i class="fas fa-arrow-left me-2"></i>Continue Shopping
-                                    </a> -->
+                                </form>
+                            </div>
+                        @else
+                            <div class="out-of-stock-notice">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <div>
+                                    <strong>Currently Out of Stock</strong>
+                                    <p>This publication is currently unavailable. Please check back later or contact us for updates.</p>
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-                    @else
-                    <div class="alert alert-danger">
-                        <i class="fas fa-exclamation-triangle me-2"></i>
-                        This product is currently out of stock. Please check back later.
-                    </div>
-                    @endif
-                    
-                    <!-- Become Agent CTA -->
-                    <!-- <div class="text-center mt-4">
-                        <div class="card bg-gradient-info text-white">
-                            <div class="card-body">
-                                <h5 class="mb-2">Want to earn commissions?</h5>
-                                <p class="mb-3">Become an agent and earn 5% on every sale using your referral code.</p>
-                                <a href="{{ route('agent.register') }}" class="btn btn-light">
-                                    <i class="fas fa-user-plus me-2"></i>Become an Agent
-                                </a>
+                            </div>
+                        @endif
+
+                        <!-- Trust Badges -->
+                        <div class="trust-badges">
+                            <div class="trust-badge">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Secure Payment</span>
+                            </div>
+                            <div class="trust-badge">
+                                <i class="fas fa-truck"></i>
+                                <span>Fast Delivery</span>
+                            </div>
+                            <div class="trust-badge">
+                                <i class="fas fa-certificate"></i>
+                                <span>Authentic</span>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    
+    </section>
+
     <!-- Related Products -->
-    <!-- @if($relatedProducts->count() > 0)
-    <div class="row mt-5">
-        <div class="col-12">
-            <h3 class="mb-4">Related Products</h3>
-            <div class="row g-4">
-                @foreach($relatedProducts as $relatedProduct)
-                <div class="col-xl-3 col-lg-4 col-md-6">
-                    <div class="card product-card h-100">
-                        @if($relatedProduct->images && count($relatedProduct->images) > 0)
-                        <img src="{{ asset('storage/' . $relatedProduct->images[0]) }}" 
-                             class="card-img-top product-img" 
-                             alt="{{ $relatedProduct->name }}">
-                        @else
-                        <div class="card-img-top product-img bg-light d-flex align-items-center justify-content-center">
-                            <i class="fas fa-image fa-3x text-muted"></i>
-                        </div>
-                        @endif
-                        
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ $relatedProduct->name }}</h5>
-                            <p class="card-text text-muted small mb-3">
-                                {{ Str::limit(strip_tags($relatedProduct->description), 60) }}
-                            </p>
-                            
-                            <div class="mt-auto">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="text-primary mb-0">₹{{ number_format($relatedProduct->price, 2) }}</h5>
-                                    @if($relatedProduct->stock > 0)
-                                    <span class="badge bg-success">In Stock</span>
+    @if($relatedProducts->count() > 0)
+        <section class="section section-cream">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-label fade-up">You May Also Like</p>
+                    <h2 class="section-title fade-up delay-1">Related Publications</h2>
+                    <div class="section-divider fade-up delay-2"></div>
+                </div>
+
+                <div class="row g-4">
+                    @foreach($relatedProducts as $relatedProduct)
+                        <div class="col-xl-3 col-lg-4 col-md-6">
+                            <div class="publication-card fade-up">
+                                <div class="publication-image">
+                                    @if($relatedProduct->images && count($relatedProduct->images) > 0)
+                                        <img src="{{ asset('storage/' . $relatedProduct->images[0]) }}" alt="{{ $relatedProduct->name }}">
+                                    @else
+                                        <div class="publication-placeholder">
+                                            <i class="fas fa-book"></i>
+                                        </div>
                                     @endif
                                 </div>
-                                
-                                <a href="{{ route('products.show', $relatedProduct) }}" 
-                                   class="btn btn-outline-primary w-100">
-                                    <i class="fas fa-eye me-2"></i>View Details
-                                </a>
+                                <div class="publication-content">
+                                    <span class="publication-category">Legal Publication</span>
+                                    <h5 class="publication-title">{{ $relatedProduct->name }}</h5>
+                                    <div class="publication-price">
+                                        {{ number_format($relatedProduct->price, 2) }}
+                                    </div>
+                                    <a href="{{ route('products.show', $relatedProduct) }}" class="btn-view-details">
+                                        <i class="fas fa-eye"></i> View Details
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
-        </div>
-    </div>
-    @endif -->
-</div>
+        </section>
+    @endif
+
+@endsection
 
 @push('styles')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css">
 <style>
-.product-main-slider .glide__slide img {
-    width: 100%;
-    height: 400px;
-    object-fit: contain;
-}
+    /* Mini Page Hero */
+    .page-hero-mini {
+        background: var(--navy-deep);
+        padding: 120px 0 30px;
+    }
 
-.product-thumbnail-slider .glide__slide img {
-    transition: border-color 0.3s;
-}
+    .breadcrumb-wrapper {
+        margin: 0;
+    }
 
-.product-thumbnail-slider .glide__slide img:hover,
-.product-thumbnail-slider .glide__slide.glide__slide--active img {
-    border-color: #4e73df;
-}
+    .breadcrumb {
+        background: transparent;
+        padding: 0;
+        margin: 0;
+    }
 
-.glide__arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.8);
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #333;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
+    .breadcrumb-item a {
+        color: var(--gold-primary);
+        text-decoration: none;
+    }
 
-.glide__arrow--left {
-    left: 10px;
-}
+    .breadcrumb-item a:hover {
+        color: var(--gold-light);
+    }
 
-.glide__arrow--right {
-    right: 10px;
-}
+    .breadcrumb-item.active {
+        color: rgba(250, 248, 243, 0.7);
+    }
 
-.product-description {
-    line-height: 1.8;
-}
+    .breadcrumb-item + .breadcrumb-item::before {
+        color: rgba(250, 248, 243, 0.5);
+    }
 
-.product-description img {
-    max-width: 100%;
-    height: auto;
-}
+    /* Product Detail Section */
+    .product-detail-section {
+        padding-top: 4rem;
+    }
+
+    /* Product Gallery */
+    .product-gallery {
+        position: sticky;
+        top: 120px;
+    }
+
+    .main-image-wrapper {
+        background: var(--white);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: var(--shadow-soft);
+        padding: 2rem;
+    }
+
+    .main-image-wrapper img {
+        width: 100%;
+        height: 400px;
+        object-fit: contain;
+    }
+
+    .product-main-slider {
+        position: relative;
+    }
+
+    .product-main-slider .glide__arrow {
+        background: var(--navy-primary);
+        color: var(--white);
+        width: 45px;
+        height: 45px;
+        border: none;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        transition: var(--transition-fast);
+        box-shadow: var(--shadow-medium);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .product-main-slider .glide__arrow:hover {
+        background: var(--gold-primary);
+        color: var(--navy-deep);
+    }
+
+    .product-main-slider .glide__arrow--left { left: 15px; }
+    .product-main-slider .glide__arrow--right { right: 15px; }
+
+    /* Thumbnails */
+    .thumbnail-wrapper {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        justify-content: center;
+    }
+
+    .thumbnail-item {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: var(--transition-fast);
+        background: var(--white);
+        padding: 0.5rem;
+    }
+
+    .thumbnail-item:hover,
+    .thumbnail-item.active {
+        border-color: var(--gold-primary);
+    }
+
+    .thumbnail-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .no-image-placeholder {
+        background: var(--cream-dark);
+        border-radius: 8px;
+        height: 400px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--navy-muted);
+    }
+
+    .no-image-placeholder i {
+        font-size: 5rem;
+        margin-bottom: 1rem;
+        opacity: 0.3;
+    }
+
+    /* Product Info */
+    .product-info {
+        padding-left: 2rem;
+    }
+
+    .product-category-label {
+        display: inline-block;
+        font-size: 0.85rem;
+        color: var(--gold-dark);
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        margin-bottom: 0.75rem;
+        font-weight: 500;
+    }
+
+    .product-title {
+        font-size: 2.25rem;
+        color: var(--navy-deep);
+        margin-bottom: 1rem;
+        line-height: 1.3;
+    }
+
+    /* Price Section */
+    .product-price-section {
+        background: var(--cream-dark);
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+    }
+
+    .current-price {
+        font-family: var(--font-heading);
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--navy-deep);
+        line-height: 1;
+    }
+
+    .current-price::before {
+        content: '\20B9';
+    }
+
+    .price-note {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        display: block;
+        margin-top: 0.5rem;
+    }
+
+    /* Description */
+    .product-description-section {
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+        border-bottom: 1px solid rgba(201, 162, 39, 0.15);
+    }
+
+    .product-description-section h5 {
+        font-size: 1.1rem;
+        color: var(--navy-deep);
+        margin-bottom: 1rem;
+    }
+
+    .description-content {
+        color: var(--text-muted);
+        line-height: 1.8;
+    }
+
+    .description-content img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Purchase Form */
+    .purchase-form-section {
+        background: var(--white);
+        border: 1px solid rgba(201, 162, 39, 0.15);
+        border-radius: 8px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        color: var(--navy-deep);
+        margin-bottom: 0.75rem;
+        font-size: 0.95rem;
+    }
+
+    /* Quantity Selector */
+    .quantity-selector {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid rgba(201, 162, 39, 0.3);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .qty-btn {
+        background: var(--cream-dark);
+        border: none;
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        transition: var(--transition-fast);
+        color: var(--navy-primary);
+    }
+
+    .qty-btn:hover {
+        background: var(--gold-primary);
+        color: var(--navy-deep);
+    }
+
+    .quantity-selector input {
+        width: 60px;
+        text-align: center;
+        border: none;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--navy-deep);
+        background: var(--white);
+    }
+
+    /* Referral Input */
+    .referral-input-wrapper {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .referral-input-wrapper .form-control {
+        flex: 1;
+        border: 1px solid rgba(201, 162, 39, 0.3);
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+    }
+
+    .referral-input-wrapper .form-control:focus {
+        border-color: var(--gold-primary);
+        outline: none;
+        box-shadow: 0 0 0 3px var(--gold-glow);
+    }
+
+    .btn-apply {
+        background: var(--navy-primary);
+        color: var(--white);
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition-fast);
+    }
+
+    .btn-apply:hover {
+        background: var(--gold-primary);
+        color: var(--navy-deep);
+    }
+
+    .btn-apply.applied {
+        background: #28a745;
+    }
+
+    .referral-message {
+        display: block;
+        margin-top: 0.5rem;
+        font-size: 0.85rem;
+    }
+
+    .referral-message.success {
+        color: #28a745;
+    }
+
+    .referral-message.error {
+        color: #dc3545;
+    }
+
+    /* Price Summary */
+    .price-summary {
+        background: var(--cream-primary);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        font-size: 0.95rem;
+        color: var(--text-muted);
+    }
+
+    .summary-row.total-row {
+        border-top: 2px solid var(--gold-primary);
+        margin-top: 0.75rem;
+        padding-top: 1rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--navy-deep);
+    }
+
+    .total-amount::before {
+        content: '\20B9';
+    }
+
+    .discount-row span::before {
+        content: '\20B9';
+    }
+
+    .summary-row:not(.total-row):not(.discount-row) span:last-child::before {
+        content: '\20B9';
+    }
+
+    .summary-row.discount-row span:last-child::before {
+        content: '';
+    }
+
+    /* Checkout Button */
+    .btn-checkout {
+        width: 100%;
+        background: var(--gold-primary);
+        color: var(--navy-deep);
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        transition: var(--transition-medium);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+    }
+
+    .btn-checkout:hover {
+        background: var(--navy-primary);
+        color: var(--white);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium);
+    }
+
+    /* Out of Stock Notice */
+    .out-of-stock-notice {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        background: rgba(220, 53, 69, 0.1);
+        border: 1px solid rgba(220, 53, 69, 0.2);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .out-of-stock-notice i {
+        color: #dc3545;
+        font-size: 1.5rem;
+        margin-top: 0.25rem;
+    }
+
+    .out-of-stock-notice strong {
+        display: block;
+        color: #dc3545;
+        margin-bottom: 0.5rem;
+    }
+
+    .out-of-stock-notice p {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+    }
+
+    /* Trust Badges */
+    .trust-badges {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .trust-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    .trust-badge i {
+        color: var(--gold-primary);
+        font-size: 1.1rem;
+    }
+
+    /* Related Products (reusing existing styles) */
+    .publication-card {
+        background: var(--white);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: var(--shadow-soft);
+        transition: var(--transition-medium);
+        height: 100%;
+    }
+
+    .publication-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-medium);
+    }
+
+    .publication-image {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+        background: var(--cream-dark);
+    }
+
+    .publication-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition-slow);
+    }
+
+    .publication-card:hover .publication-image img {
+        transform: scale(1.05);
+    }
+
+    .publication-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .publication-placeholder i {
+        font-size: 3rem;
+        color: var(--navy-muted);
+        opacity: 0.3;
+    }
+
+    .publication-content {
+        padding: 1.5rem;
+    }
+
+    .publication-category {
+        font-size: 0.8rem;
+        color: var(--gold-dark);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .publication-title {
+        font-size: 1.1rem;
+        color: var(--navy-deep);
+        margin-bottom: 0.75rem;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .publication-price {
+        font-family: var(--font-heading);
+        font-size: 1.5rem;
+        color: var(--navy-primary);
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .publication-price::before {
+        content: '\20B9';
+    }
+
+    .btn-view-details {
+        width: 100%;
+        background: var(--navy-primary);
+        color: var(--white);
+        padding: 0.75rem;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        transition: var(--transition-medium);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        text-decoration: none;
+    }
+
+    .btn-view-details:hover {
+        background: var(--gold-primary);
+        color: var(--navy-deep);
+    }
+
+    /* Responsive */
+    @media (max-width: 991px) {
+        .product-gallery {
+            position: relative;
+            top: 0;
+            margin-bottom: 2rem;
+        }
+
+        .product-info {
+            padding-left: 0;
+        }
+
+        .product-title {
+            font-size: 1.75rem;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .page-hero-mini {
+            padding: 100px 0 20px;
+        }
+
+        .main-image-wrapper img {
+            height: 300px;
+        }
+
+        .thumbnail-item {
+            width: 60px;
+            height: 60px;
+        }
+
+        .trust-badges {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
 </style>
 @endpush
 
 @push('scripts')
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
-
 <script>
-$(document).ready(function () {
-
-    /* -----------------------------
-       SLIDERS (UNCHANGED)
-    ------------------------------*/
-    if ($('.product-main-slider').length) {
-        new Glide('.product-main-slider', {
+document.addEventListener('DOMContentLoaded', function() {
+    // Main Slider
+    if (document.querySelector('.product-main-slider')) {
+        const mainSlider = new Glide('.product-main-slider', {
             type: 'carousel',
             perView: 1,
-            autoplay: 3000,
-            hoverpause: true
+            autoplay: false
         }).mount();
-    }
 
-    /* -----------------------------
-       PRICE & REFERRAL LOGIC
-    ------------------------------*/
+        // Thumbnail click handler
+        document.querySelectorAll('.thumbnail-item').forEach(function(thumb, index) {
+            thumb.addEventListener('click', function() {
+                mainSlider.go('=' + index);
+                document.querySelectorAll('.thumbnail-item').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Update active thumbnail on slide change
+        mainSlider.on('run', function() {
+            const index = mainSlider.index;
+            document.querySelectorAll('.thumbnail-item').forEach((t, i) => {
+                t.classList.toggle('active', i === index);
+            });
+        });
+    }
+});
+
+$(document).ready(function () {
     const quantityInput = $('#quantity');
     const unitPrice = parseFloat({{ $product->price }});
 
     let referralApplied = false;
-    let discountPerUnit = 25; // FIXED DISCOUNT (₹25 per item)
+    let discountPerUnit = 25;
 
     function updatePrice() {
         const quantity = parseInt(quantityInput.val()) || 1;
@@ -381,7 +849,6 @@ $(document).ready(function () {
         if (referralApplied) {
             discount = discountPerUnit * quantity;
             total = subtotal - discount;
-
             $('#discountRow').removeClass('d-none');
             $('#discountAmount').text(discount.toFixed(2));
         } else {
@@ -393,9 +860,6 @@ $(document).ready(function () {
         $('#totalAmount').text(total.toFixed(2));
     }
 
-    /* -----------------------------
-       QUANTITY HANDLERS
-    ------------------------------*/
     $('#incrementQty').click(function () {
         let v = parseInt(quantityInput.val());
         const max = parseInt(quantityInput.attr('max'));
@@ -415,23 +879,15 @@ $(document).ready(function () {
 
     quantityInput.on('input', updatePrice);
 
-    /* -----------------------------
-       APPLY REFERRAL (AJAX)
-    ------------------------------*/
     $('#applyReferral').click(function () {
-
         const referralCode = $('#referral_code').val().trim();
         const messageBox = $('#referralMessage');
 
         if (referralCode === '') {
-            messageBox
-                .removeClass()
-                .addClass('text-danger')
-                .text('Please enter a referral code.');
+            messageBox.removeClass().addClass('referral-message error').text('Please enter a referral code.');
             return;
         }
 
-        // Disable button during request
         $('#applyReferral').prop('disabled', true).text('Checking...');
 
         $.ajax({
@@ -444,65 +900,30 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.success) {
                     referralApplied = true;
-
-                    messageBox
-                        .removeClass()
-                        .addClass('text-success')
-                        .text(response.message);
-
-                    $('#applyReferral')
-                        .text('Applied')
-                        .removeClass('btn-outline-secondary')
-                        .addClass('btn-success');
-
+                    messageBox.removeClass().addClass('referral-message success').text(response.message);
+                    $('#applyReferral').text('Applied').addClass('applied');
                     updatePrice();
                 } else {
                     referralApplied = false;
-
-                    messageBox
-                        .removeClass()
-                        .addClass('text-danger')
-                        .text(response.message);
-
-                    $('#applyReferral')
-                        .prop('disabled', false)
-                        .text('Apply');
-
+                    messageBox.removeClass().addClass('referral-message error').text(response.message);
+                    $('#applyReferral').prop('disabled', false).text('Apply');
                     updatePrice();
                 }
             },
             error: function () {
                 referralApplied = false;
-
-                messageBox
-                    .removeClass()
-                    .addClass('text-danger')
-                    .text('Something went wrong. Please try again.');
-
-                $('#applyReferral')
-                    .prop('disabled', false)
-                    .text('Apply');
-
+                messageBox.removeClass().addClass('referral-message error').text('Something went wrong. Please try again.');
+                $('#applyReferral').prop('disabled', false).text('Apply');
                 updatePrice();
             }
         });
     });
 
-    /* -----------------------------
-       RESET REFERRAL IF CODE CHANGES
-    ------------------------------*/
     $('#referral_code').on('input', function () {
         referralApplied = false;
-
         $('#discountRow').addClass('d-none');
         $('#discountAmount').text('0.00');
-
-        $('#applyReferral')
-            .prop('disabled', false)
-            .removeClass('btn-success')
-            .addClass('btn-outline-secondary')
-            .text('Apply');
-
+        $('#applyReferral').prop('disabled', false).removeClass('applied').text('Apply');
         $('#referralMessage').text('');
         updatePrice();
     });
@@ -510,6 +931,4 @@ $(document).ready(function () {
     updatePrice();
 });
 </script>
-
 @endpush
-@endsection
