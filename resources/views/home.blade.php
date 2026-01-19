@@ -235,6 +235,7 @@
     @endif
 
     <!-- Order Flow Section -->
+    {{--
     @if($orderFlowSteps && $orderFlowSteps->count() > 0)
     <section class="section order-flow-section">
         <div class="container">
@@ -264,6 +265,7 @@
         </div>
     </section>
     @endif
+    --}}
 
     <!-- WhatsApp Order Flow Section -->
     @if($whatsappFlowSteps && $whatsappFlowSteps->count() > 0)

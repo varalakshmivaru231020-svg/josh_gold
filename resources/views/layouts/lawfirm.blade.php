@@ -33,7 +33,7 @@
     <!-- Preloader -->
     <div class="preloader" id="preloader">
         <div class="preloader-icon">
-            <img src="{{ $logoUrl }}" alt="Bengaluru Law House" class="preloader-logo" style="height: 60px; width: auto; animation: pulse 2s infinite;">
+            <img src="{{ $logoUrl }}" alt="Bengaluru Law House" class="preloader-logo" style="height: 120px; width: auto; animation: pulse 2s infinite;">
         </div>
     </div>
 
@@ -206,10 +206,10 @@
                                     <li><a href="{{ route('agent.register') }}">Become Distributor</a></li>
                                     <li><a href="{{ route('track.order') }}">Track Order</a></li>
                                 </ul>
-                                <div class="footer-badge">
-                                    <img src="https://razorpay.com/assets/razorpay-logo-new.svg" alt="Razorpay" style="height: 25px; filter: brightness(0) invert(1);">
+                                {{-- <div class="footer-badge">
+                                    {{-- <svg style="width:100%;height:100%;" viewBox="0 0 140 30" preserveAspectRatio="none" width="100%" height="100%"><use href="#svg-1619784944_5908"></use></svg> --}}
                                     <span>Secure Payments</span>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
