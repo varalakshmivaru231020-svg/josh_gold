@@ -108,8 +108,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (videoId) {
                 const iframe = document.createElement('iframe');
-                const origin = window.location.origin;
-                iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${origin}`;
+                // Removed origin and enablejsapi to prevent Error 153
+                iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
                 iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
                 iframe.allowFullscreen = true;
 
