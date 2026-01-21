@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Embed Test</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; text-align: center; }
+        .container { max-width: 800px; margin: 0 auto; }
+        iframe { width: 100%; height: 450px; border: none; }
+        .status { margin: 20px 0; padding: 10px; background: #eee; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube Embed Isolation Test</h1>
+        <p>This file tests if the video <strong>YDHmqPw2_6E</strong> allows embedding on this domain.</p>
+        
+        <div class="status">
+            <strong>Video ID:</strong> YDHmqPw2_6E<br>
+            <strong>Embed URL:</strong> https://www.youtube.com/embed/YDHmqPw2_6E
+        </div>
+
+        <!-- 1. Basic Embed -->
+        <h3>1. Basic Embed (No params)</h3>
+        <iframe src="https://www.youtube.com/embed/YDHmqPw2_6E"></iframe>
+
+        <!-- 2. Embed with Modest Branding -->
+        <h3>2. Embed with Params</h3>
+        <iframe src="https://www.youtube.com/embed/YDHmqPw2_6E?autoplay=0&rel=0&modestbranding=1&playsinline=1"></iframe>
+    </div>
+</body>
+</html>
