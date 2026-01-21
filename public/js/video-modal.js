@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listeners
     videoThumbnails.forEach(thumbnail => {
         thumbnail.addEventListener('click', function () {
-            let videoId = this.dataset.youtubeId;
+            let videoId = this.dataset.youtubeUrl || this.dataset.youtubeId;
 
             // Helper to extract ID if a full URL is provided
             if (videoId) {
