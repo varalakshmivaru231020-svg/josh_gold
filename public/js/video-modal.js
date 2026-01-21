@@ -91,7 +91,21 @@ document.addEventListener('DOMContentLoaded', function () {
     // Event listeners
     videoThumbnails.forEach(thumbnail => {
         thumbnail.addEventListener('click', function () {
-            const videoId = this.dataset.youtubeId;
+            let videoId = this.dataset.youtubeId;
+
+            // Helper to extract ID if a full URL is provided
+            if (videoId) {
+                videoId = videoId.trim();
+                // Check if it looks like a URL
+                if (videoId.match(/^https?:\/\//) || videoId.includes('youtube.com') || videoId.includes('youtu.be')) {
+                    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                    const match = videoId.match(regExp);
+                    if (match && match[2].length === 11) {
+                        videoId = match[2];
+                    }
+                }
+            }
+
             if (videoId) {
                 const iframe = document.createElement('iframe');
                 const origin = window.location.origin;
