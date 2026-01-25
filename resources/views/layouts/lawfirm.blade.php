@@ -62,11 +62,11 @@
                                 <i class="fas fa-newspaper nav-icon"></i> News
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs('testimonials') ? 'active' : '' }}" href="{{ route('testimonials') }}">
                                 <i class="fas fa-video nav-icon"></i> Videos
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/about-us') }}">
                                 <i class="fas fa-info-circle nav-icon"></i> About Us
@@ -178,7 +178,7 @@
                                 <ul class="footer-links">
                                     <li><a href="{{ url('/') }}">Home</a></li>
                                     <li><a href="{{ route('products.index') }}">Publications</a></li>
-                                    <li><a href="{{ route('testimonials') }}">Videos</a></li>
+                                    {{-- <li><a href="{{ route('testimonials') }}">Videos</a></li> --}}
                                     <li><a href="{{ url('/about-us') }}">About Us</a></li>
                                     <li><a href="{{ url('/contact-us') }}">Contact Us</a></li>
                                 </ul>

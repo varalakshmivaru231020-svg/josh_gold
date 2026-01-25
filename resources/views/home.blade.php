@@ -164,7 +164,7 @@
     </section>
     @endif
 
-    <!-- Videos Section -->
+    {{-- Videos Section - Commented out
     @if($testimonialVideos && $testimonialVideos->count() > 0)
     <section class="section videos-section">
         <div class="container">
@@ -179,8 +179,8 @@
                 @foreach($testimonialVideos->take(3) as $video)
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="video-card">
-                        <div class="video-thumbnail" 
-                             data-youtube-id="{{ $video->youtube_id }}" 
+                        <div class="video-thumbnail"
+                             data-youtube-id="{{ $video->youtube_id }}"
                              data-youtube-url="{{ $video->youtube_url ?? '' }}">
                             <img src="https://img.youtube.com/vi/{{ $video->youtube_id }}/maxresdefault.jpg"
                                  alt="{{ $video->title }}"
@@ -206,7 +206,7 @@
                         @foreach($testimonialVideos->skip(3) as $video)
                         <div class="swiper-slide">
                             <div class="video-card video-card-sm">
-                                <div class="video-thumbnail" 
+                                <div class="video-thumbnail"
                                      data-youtube-id="{{ $video->youtube_id }}"
                                      data-youtube-url="{{ $video->youtube_url ?? '' }}">
                                     <img src="https://img.youtube.com/vi/{{ $video->youtube_id }}/mqdefault.jpg"
@@ -237,6 +237,7 @@
         </div>
     </section>
     @endif
+    --}}
 
     <!-- Order Flow Section -->
     {{--

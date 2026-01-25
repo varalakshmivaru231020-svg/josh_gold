@@ -1,3 +1,7 @@
+@php
+    $siteLogo = \App\Models\SiteSetting::get('site_logo');
+    $logoPath = $siteLogo ? storage_path('app/public/' . $siteLogo) : public_path('blr.jpg');
+@endphp
 <!DOCTYPE html>
 <html>
 <head>
@@ -82,7 +86,7 @@
         </div>
 
         <div class="company-logo">
-            <img src="{{ public_path('blr.jpg') }}" alt="Company Logo">
+            <img src="{{ $logoPath }}" alt="Company Logo">
         </div>
     </div>
 
@@ -134,16 +138,14 @@
             <th class="text-right">Qty</th>
             <th class="text-right">Unit Price</th>
             <th class="text-right">Subtotal</th>
-            <th class="text-right">Total</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td>{{ $order->product->name }}</td>
             <td>{{ $order->product->name ?? 'Product Removed' }}</td>
+            <td class="text-right">{{ $order->quantity }}</td>
             <td class="text-right">₹{{ number_format($order->unit_price,2) }}</td>
             <td class="text-right">₹{{ number_format($order->subtotal,2) }}</td>
-            <td class="text-right">₹{{ number_format($order->total,2) }}</td>
         </tr>
         </tbody>
     </table>
