@@ -13,6 +13,8 @@ class AboutSection extends Model
         'subtitle',
         'content',
         'image',
+        'hero_image',
+        'id_card_image',
         'years_experience',
         'designation',
         'name_kn',

@@ -122,6 +122,8 @@ class SiteContentController extends Controller
             'subtitle'         => 'nullable|string|max:255',
             'content'          => 'required|string',
             'image'            => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'hero_image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'id_card_image'    => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'years_experience' => 'nullable|string|max:50',
             'designation'      => 'nullable|string|max:255',
             'name_kn'          => 'nullable|string|max:255',
@@ -133,14 +135,31 @@ class SiteContentController extends Controller
         ]);
 
         $about = AboutSection::first();
-        $data = $request->except('image');
+        $data = $request->except(['image', 'hero_image', 'id_card_image']);
         $data['is_active'] = $request->has('is_active');
 
+        // Handle Main Image (About Page)
         if ($request->hasFile('image')) {
             if ($about && $about->image) {
                 Storage::disk('public')->delete($about->image);
             }
             $data['image'] = $request->file('image')->store('about', 'public');
+        }
+
+        // Handle Hero Image
+        if ($request->hasFile('hero_image')) {
+            if ($about && $about->hero_image) {
+                Storage::disk('public')->delete($about->hero_image);
+            }
+            $data['hero_image'] = $request->file('hero_image')->store('about/hero', 'public');
+        }
+
+        // Handle ID Card Image
+        if ($request->hasFile('id_card_image')) {
+            if ($about && $about->id_card_image) {
+                Storage::disk('public')->delete($about->id_card_image);
+            }
+            $data['id_card_image'] = $request->file('id_card_image')->store('about/id_card', 'public');
         }
 
         if ($about) {

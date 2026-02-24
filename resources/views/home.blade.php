@@ -44,10 +44,11 @@
                     <div class="portrait-bracket bracket-br"></div>
                     
                     <div class="hero-portrait-lux">
-                        @if(isset($about) && $about->image)
+                        @if(isset($about) && $about->hero_image)
+                            <img src="{{ asset('storage/' . $about->hero_image) }}" alt="Adv. Veerendrababu Nanjegowda">
+                        @elseif(isset($about) && $about->image)
                             <img src="{{ asset('storage/' . $about->image) }}" alt="Adv. Veerendrababu Nanjegowda">
                         @else
-                            {{-- Falls back to a high-quality placeholder if no image in admin --}}
                             <img src="{{ asset('blr.jpg') }}" alt="Adv. Veerendrababu Nanjegowda">
                         @endif
                         
@@ -91,7 +92,9 @@
                         <div class="frame-edge edge-bl"></div>
                     </div>
                     
-                    @if(isset($about) && $about->image)
+                    @if(isset($about) && $about->id_card_image)
+                        <img src="{{ asset('storage/' . $about->id_card_image) }}" alt="Adv. Veerendrababu Nanjegowda" class="id-main-image">
+                    @elseif(isset($about) && $about->image)
                         <img src="{{ asset('storage/' . $about->image) }}" alt="Adv. Veerendrababu Nanjegowda" class="id-main-image">
                     @else
                         <img src="{{ asset('blr.jpg') }}" alt="Adv. Veerendrababu Nanjegowda" class="id-main-image">
@@ -116,7 +119,14 @@
                                 @if($siteLogo)
                                     <img src="{{ asset('storage/' . $siteLogo) }}" alt="Seal">
                                 @else
-                                    <div class="id-seal-fallback">⚖</div>
+                                    <div class="id-seal-fallback">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 65%; height: 65%;">
+                                            <path d="M12 3L4 7V11C4 16.5 7.5 21.5 12 23C16.5 21.5 20 16.5 20 11V7L12 3Z" stroke="#0c1428" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <circle cx="12" cy="12" r="4" stroke="#0c1428" stroke-width="1.5"/>
+                                            <line x1="12" y1="8" x2="12" y2="16" stroke="#0c1428" stroke-width="1.5" stroke-linecap="round"/>
+                                            <line x1="9" y1="12" x2="15" y2="12" stroke="#0c1428" stroke-width="1.5" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
                                 @endif
                             </div>
                             <div class="id-brand-titles">
@@ -343,17 +353,14 @@
                     {!! $featuredBook->description !!}
                 </div>
 
-                {{-- Purchase button hidden as per request --}}
-                {{-- 
                 <div class="fb-price-box mb-5">
                     <span class="fb-price-label">Price: </span>
                     <span class="fb-price-gold">₹{{ number_format($featuredBook->price, 2) }}</span>
                 </div>
 
                 <a href="{{ $featuredBook->product_id ? route('products.show', $featuredBook->product_id) : ($featuredBook->button_link ?? route('products.index')) }}" class="btn-purchase-lux">
-                    <i class="fas fa-shopping-cart me-2"></i> {{ $featuredBook->button_text ?? 'PURCHASE' }}
+                    <i class="fas fa-shopping-cart me-2"></i> {{ $featuredBook->button_text ?? 'PURCHASE NOW' }}
                 </a>
-                --}}
             </div>
         </div>
     </div>
@@ -393,7 +400,11 @@
                 @endif
                 <div class="pub-card-body">
                     <p class="pub-desc">{{ Str::limit(strip_tags($product->description), 180) }}</p>
-                    {{-- View Details hidden as per request --}}
+                    <div class="mt-4">
+                        <a href="{{ route('products.show', $product) }}" class="btn-royal-sm">
+                            View Details <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
             @empty
@@ -2310,12 +2321,6 @@
 
 @push('scripts')
 <script>
-    window.addEventListener('scroll', function() {
-        const header = document.getElementById('mainHeader');
-        if (header) {
-            if (window.scrollY > 50) header.classList.add('scrolled');
-            else header.classList.remove('scrolled');
-        }
-    });
+    // Local script simplified; header logic is handled in the main layout
 </script>
 @endpush

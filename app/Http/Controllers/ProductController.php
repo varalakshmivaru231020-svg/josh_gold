@@ -19,7 +19,7 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        if (!$product->is_active || $product->stock <= 0) {
+        if (!$product->is_active) {
             abort(404);
         }
 

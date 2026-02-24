@@ -81,16 +81,44 @@
                         </div>
                     </div>
 
-                    <div class="mb-3 text-dark">
-                        <label for="image" class="form-label">Shared Profile Image</label>
+                    <div class="mb-4 text-dark">
+                        <label for="image" class="form-label fw-bold">1. Biography Page Image</label>
                         @if($about && $about->image)
                         <div class="mb-2">
-                            <img src="{{ asset('storage/' . $about->image) }}" alt="{{ $about->title ?? 'About' }}" class="img-fluid rounded shadow-sm" style="max-height: 200px;">
+                            <img src="{{ asset('storage/' . $about->image) }}" alt="Biography" class="img-fluid rounded shadow-sm border" style="max-height: 120px;">
                         </div>
                         @endif
                         <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*">
-                        <small class="text-muted d-block">This image is used in Hero and ID Card sections.</small>
+                        <small class="text-muted">Used on the dedicated "About Us" page.</small>
                         @error('image')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4 text-dark">
+                        <label for="hero_image" class="form-label fw-bold">2. Hero Portrait (Homepage)</label>
+                        @if($about && $about->hero_image)
+                        <div class="mb-2">
+                            <img src="{{ asset('storage/' . $about->hero_image) }}" alt="Hero" class="img-fluid rounded shadow-sm border" style="max-height: 120px;">
+                        </div>
+                        @endif
+                        <input type="file" class="form-control @error('hero_image') is-invalid @enderror" id="hero_image" name="hero_image" accept="image/*">
+                        <small class="text-muted">Used in the top Hero section of the homepage.</small>
+                        @error('hero_image')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4 text-dark">
+                        <label for="id_card_image" class="form-label fw-bold">3. ID Card Photo (Homepage)</label>
+                        @if($about && $about->id_card_image)
+                        <div class="mb-2">
+                            <img src="{{ asset('storage/' . $about->id_card_image) }}" alt="ID Card" class="img-fluid rounded shadow-sm border" style="max-height: 120px;">
+                        </div>
+                        @endif
+                        <input type="file" class="form-control @error('id_card_image') is-invalid @enderror" id="id_card_image" name="id_card_image" accept="image/*">
+                        <small class="text-muted">Used in the Digital Identity Card section.</small>
+                        @error('id_card_image')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
