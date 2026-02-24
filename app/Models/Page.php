@@ -13,4 +13,9 @@ class Page extends Model
     {
         return 'slug';
     }
+
+    public function sections()
+    {
+        return $this->hasMany(PageSection::class)->ordered();
+    }
 }

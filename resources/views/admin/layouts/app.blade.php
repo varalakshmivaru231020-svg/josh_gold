@@ -579,6 +579,46 @@
                     @endif
                 </a>
             </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.services') }}" class="menu-link {{ Route::is('admin.site-content.services*') ? 'active' : '' }}">
+                    <i class="fas fa-balance-scale"></i>
+                    <span>Legal Practice</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.stats') }}" class="menu-link {{ Route::is('admin.site-content.stats*') ? 'active' : '' }}">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Counters / Stats</span>
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.offices') }}" class="menu-link {{ Route::is('admin.site-content.offices*') ? 'active' : '' }}">
+                    <i class="fas fa-building"></i>
+                    <span>Our Offices</span>
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.social-links') }}" class="menu-link {{ Route::is('admin.site-content.social-links*') ? 'active' : '' }}">
+                    <i class="fas fa-share-alt"></i>
+                    <span>Connect Content</span>
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.gallery') }}" class="menu-link {{ Route::is('admin.site-content.gallery*') ? 'active' : '' }}">
+                    <i class="fas fa-camera"></i>
+                    <span>Photo Gallery</span>
+                </a>
+            </div>
+
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.beyond-bar') }}" class="menu-link {{ Route::is('admin.site-content.beyond-bar*') ? 'active' : '' }}">
+                    <i class="fas fa-clapperboard"></i>
+                    <span>Beyond the Bar</span>
+                </a>
+            </div>
 
             <!-- System -->
             <div class="menu-heading">System</div>

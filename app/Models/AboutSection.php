@@ -14,6 +14,13 @@ class AboutSection extends Model
         'content',
         'image',
         'years_experience',
+        'designation',
+        'name_kn',
+        'qualifications',
+        'tagline',
+        'stat_courts',
+        'stat_books',
+        'stat_offices',
         'is_active',
     ];
 

@@ -14,6 +14,11 @@ use App\Models\Product;
 use App\Models\SiteSetting;
 use App\Models\Blog;
 use App\Models\ContactMessage;
+use App\Models\Service;
+use App\Models\Stat;
+use App\Models\Office;
+use App\Models\SocialLink;
+use App\Models\GalleryPhoto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -113,11 +118,18 @@ class SiteContentController extends Controller
     public function updateAboutSection(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'subtitle' => 'nullable|string|max:255',
-            'content' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'title'            => 'required|string|max:255',
+            'subtitle'         => 'nullable|string|max:255',
+            'content'          => 'required|string',
+            'image'            => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'years_experience' => 'nullable|string|max:50',
+            'designation'      => 'nullable|string|max:255',
+            'name_kn'          => 'nullable|string|max:255',
+            'qualifications'   => 'nullable|string|max:255',
+            'tagline'          => 'nullable|string',
+            'stat_courts'      => 'nullable|string|max:50',
+            'stat_books'       => 'nullable|string|max:50',
+            'stat_offices'     => 'nullable|string|max:50',
         ]);
 
         $about = AboutSection::first();
@@ -641,4 +653,424 @@ class SiteContentController extends Controller
         return redirect()->route('admin.site-content.contact-messages')
             ->with('success', 'Message deleted successfully.');
     }
+
+    // ==================== SERVICES ====================
+    public function services()
+    {
+        $services = Service::ordered()->paginate(10);
+        return view('admin.site-content.services.index', compact('services'));
+    }
+
+    public function createService()
+    {
+        return view('admin.site-content.services.create');
+    }
+
+    public function storeService(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'icon' => 'nullable|string|max:100',
+            'sort_order' => 'nullable|integer',
+        ]);
+
+        $data = $request->all();
+        $data['is_active'] = $request->has('is_active');
+
+        Service::create($data);
+
+        return redirect()->route('admin.site-content.services')
+            ->with('success', 'Service added successfully.');
+    }
+
+    public function editService($id)
+    {
+        $service = Service::findOrFail($id);
+        return view('admin.site-content.services.edit', compact('service'));
+    }
+
+    public function updateService(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'icon' => 'nullable|string|max:100',
+            'sort_order' => 'nullable|integer',
+        ]);
+
+        $service = Service::findOrFail($id);
+        $data = $request->all();
+        $data['is_active'] = $request->has('is_active');
+
+        $service->update($data);
+
+        return redirect()->route('admin.site-content.services')
+            ->with('success', 'Service updated successfully.');
+    }
+
+    public function deleteService($id)
+    {
+        Service::findOrFail($id)->delete();
+        return redirect()->route('admin.site-content.services')
+            ->with('success', 'Service deleted successfully.');
+    }
+
+    // ==================== OFFICES ====================
+    public function offices()
+    {
+        $offices = Office::ordered()->paginate(10);
+        return view('admin.site-content.offices.index', compact('offices'));
+    }
+
+    public function createOffice()
+    {
+        return view('admin.site-content.offices.create');
+    }
+
+    public function storeOffice(Request $request)
+    {
+        $request->validate([
+            'title'      => 'required|string|max:255',
+            'subtitle'   => 'nullable|string|max:255',
+            'address'    => 'nullable|string',
+            'phone'      => 'nullable|string|max:50',
+            'mobile'     => 'nullable|string|max:50',
+            'email'      => 'nullable|string|max:100',
+            'website'    => 'nullable|string|max:255',
+            'icon'       => 'nullable|string|max:100',
+            'image'      => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:8192',
+            'color'      => 'nullable|string|max:20',
+            'sort_order' => 'nullable|integer',
+        ]);
+
+        $data = $request->except('image');
+        $data['is_active'] = $request->has('is_active');
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('offices', 'public');
+        }
+
+        Office::create($data);
+
+        return redirect()->route('admin.site-content.offices')
+            ->with('success', 'Office added successfully.');
+    }
+
+    public function editOffice($id)
+    {
+        $office = Office::findOrFail($id);
+        return view('admin.site-content.offices.edit', compact('office'));
+    }
+
+    public function updateOffice(Request $request, $id)
+    {
+        $request->validate([
+            'title'      => 'required|string|max:255',
+            'subtitle'   => 'nullable|string|max:255',
+            'address'    => 'nullable|string',
+            'phone'      => 'nullable|string|max:50',
+            'mobile'     => 'nullable|string|max:50',
+            'email'      => 'nullable|string|max:100',
+            'website'    => 'nullable|string|max:255',
+            'icon'       => 'nullable|string|max:100',
+            'image'      => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:8192',
+            'color'      => 'nullable|string|max:20',
+            'sort_order' => 'nullable|integer',
+        ]);
+
+        $office = Office::findOrFail($id);
+        $data = $request->except('image');
+        $data['is_active'] = $request->has('is_active');
+
+        if ($request->hasFile('image')) {
+            if ($office->image) Storage::disk('public')->delete($office->image);
+            $data['image'] = $request->file('image')->store('offices', 'public');
+        }
+
+        $office->update($data);
+
+        return redirect()->route('admin.site-content.offices')
+            ->with('success', 'Office updated successfully.');
+    }
+
+    public function deleteOffice($id)
+    {
+        $office = Office::findOrFail($id);
+        if ($office->image) Storage::disk('public')->delete($office->image);
+        $office->delete();
+        return redirect()->route('admin.site-content.offices')
+            ->with('success', 'Office deleted successfully.');
+    }
+
+    // ==================== SOCIAL LINKS ====================
+    public function socialLinks()
+    {
+        $links = SocialLink::ordered()->get();
+        return view('admin.site-content.social-links.index', compact('links'));
+    }
+
+    public function createSocialLink()
+    {
+        return view('admin.site-content.social-links.create');
+    }
+
+    public function storeSocialLink(Request $request)
+    {
+        $request->validate([
+            'platform' => 'required|string|max:100',
+            'url' => 'required|url',
+            'icon' => 'nullable|string|max:100',
+            'sort_order' => 'nullable|integer',
+        ]);
+
+        $data = $request->all();
+        $data['is_active'] = $request->has('is_active');
+
+        SocialLink::create($data);
+
+        return redirect()->route('admin.site-content.social-links')
+            ->with('success', 'Social link added successfully.');
+    }
+
+    public function editSocialLink($id)
+    {
+        $link = SocialLink::findOrFail($id);
+        return view('admin.site-content.social-links.edit', compact('link'));
+    }
+
+    public function updateSocialLink(Request $request, $id)
+    {
+        $request->validate([
+            'platform' => 'required|string|max:100',
+            'url' => 'required|url',
+            'icon' => 'nullable|string|max:100',
+            'sort_order' => 'nullable|integer',
+        ]);
+
+        $link = SocialLink::findOrFail($id);
+        $data = $request->all();
+        $data['is_active'] = $request->has('is_active');
+
+        $link->update($data);
+
+        return redirect()->route('admin.site-content.social-links')
+            ->with('success', 'Social link updated successfully.');
+    }
+
+    public function deleteSocialLink($id)
+    {
+        SocialLink::findOrFail($id)->delete();
+        return redirect()->route('admin.site-content.social-links')
+            ->with('success', 'Social link deleted successfully.');
+    }
+
+    // ==================== STATS ====================
+    public function stats()
+    {
+        $stats = Stat::ordered()->get();
+        return view('admin.site-content.stats.index', compact('stats'));
+    }
+
+    public function createStat()
+    {
+        return view('admin.site-content.stats.create');
+    }
+
+    public function storeStat(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'count' => 'required|integer',
+            'suffix' => 'nullable|string|max:20',
+            'icon' => 'nullable|string|max:100',
+            'sort_order' => 'nullable|integer',
+        ]);
+
+        $data = $request->all();
+        $data['is_active'] = $request->has('is_active');
+
+        Stat::create($data);
+
+        return redirect()->route('admin.site-content.stats')
+            ->with('success', 'Stat added successfully.');
+    }
+
+    public function editStat($id)
+    {
+        $stat = Stat::findOrFail($id);
+        return view('admin.site-content.stats.edit', compact('stat'));
+    }
+
+    public function updateStat(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'count' => 'required|integer',
+            'suffix' => 'nullable|string|max:20',
+            'icon' => 'nullable|string|max:100',
+            'sort_order' => 'nullable|integer',
+        ]);
+
+        $stat = Stat::findOrFail($id);
+        $data = $request->all();
+        $data['is_active'] = $request->has('is_active');
+
+        $stat->update($data);
+
+        return redirect()->route('admin.site-content.stats')
+            ->with('success', 'Stat updated successfully.');
+    }
+
+    public function deleteStat($id)
+    {
+        Stat::findOrFail($id)->delete();
+        return redirect()->route('admin.site-content.stats')
+            ->with('success', 'Stat deleted successfully.');
+    }
+
+    // ==================== GALLERY PHOTOS ====================
+    public function galleryPhotos()
+    {
+        $photos = GalleryPhoto::ordered()->paginate(20);
+        return view('admin.site-content.gallery.index', compact('photos'));
+    }
+
+    public function createGalleryPhoto()
+    {
+        return view('admin.site-content.gallery.create');
+    }
+
+    public function storeGalleryPhoto(Request $request)
+    {
+        $request->validate([
+            'image'      => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:8192',
+            'title'      => 'nullable|string|max:255',
+            'caption'    => 'nullable|string|max:255',
+            'category'   => 'nullable|string|max:100',
+            'sort_order' => 'nullable|integer',
+        ]);
+
+        $data = $request->except('image');
+        $data['is_active'] = $request->has('is_active');
+        $data['image'] = $request->file('image')->store('gallery', 'public');
+
+        GalleryPhoto::create($data);
+
+        return redirect()->route('admin.site-content.gallery')
+            ->with('success', 'Photo uploaded successfully.');
+    }
+
+    public function editGalleryPhoto($id)
+    {
+        $photo = GalleryPhoto::findOrFail($id);
+        return view('admin.site-content.gallery.edit', compact('photo'));
+    }
+
+    public function updateGalleryPhoto(Request $request, $id)
+    {
+        $request->validate([
+            'image'      => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:8192',
+            'title'      => 'nullable|string|max:255',
+            'caption'    => 'nullable|string|max:255',
+            'category'   => 'nullable|string|max:100',
+            'sort_order' => 'nullable|integer',
+        ]);
+
+        $photo = GalleryPhoto::findOrFail($id);
+        $data = $request->except('image');
+        $data['is_active'] = $request->has('is_active');
+
+        if ($request->hasFile('image')) {
+            Storage::disk('public')->delete($photo->image);
+            $data['image'] = $request->file('image')->store('gallery', 'public');
+        }
+
+        $photo->update($data);
+
+        return redirect()->route('admin.site-content.gallery')
+            ->with('success', 'Photo updated successfully.');
+    }
+
+    public function deleteGalleryPhoto($id)
+    {
+        $photo = GalleryPhoto::findOrFail($id);
+        Storage::disk('public')->delete($photo->image);
+        $photo->delete();
+        return redirect()->route('admin.site-content.gallery')
+            ->with('success', 'Photo deleted successfully.');
+    }
+
+    // ==================== BEYOND THE BAR SECTION ====================
+    public function beyondBar()
+    {
+        $settings = [
+            'bb_eyebrow'       => SiteSetting::get('bb_eyebrow', 'BEYOND THE BAR'),
+            'bb_title'         => SiteSetting::get('bb_title', 'Filmmaker, Journalist & Cultural Visionary'),
+            'bb_image_top'     => SiteSetting::get('bb_image_top'),
+            'bb_image_left'    => SiteSetting::get('bb_image_left'),
+            'bb_image_right'   => SiteSetting::get('bb_image_right'),
+            
+            'bb_item1_title'   => SiteSetting::get('bb_item1_title', 'Filmmaker, Director & Lead Actor'),
+            'bb_item1_desc'    => SiteSetting::get('bb_item1_desc', 'Produced, directed and acted in the Kannada film Swayam Krushi — transforming stories of farmers and the soil into powerful cinema that honours Karnataka\'s rural heritage.'),
+            'bb_item1_icon'    => SiteSetting::get('bb_item1_icon', 'fas fa-clapperboard'),
+            
+            'bb_item2_title'   => SiteSetting::get('bb_item2_title', 'Senior Journalist & Chief Editor'),
+            'bb_item2_desc'    => SiteSetting::get('bb_item2_desc', 'Served as Chief Editor of Mussanje (Kannada evening daily) and editorial head of V News 24 (Kannada TV channel) — a career built on truth, accountability and fearless reporting.'),
+            'bb_item2_icon'    => SiteSetting::get('bb_item2_icon', 'fas fa-newspaper'),
+            
+            'bb_item3_title'   => SiteSetting::get('bb_item3_title', 'Prolific Kannada Author — 15+ Works'),
+            'bb_item3_desc'    => SiteSetting::get('bb_item3_desc', 'From Swayam Krushi to Thanks Appa to State vs Abhiram and the 12-volume Dainandina Jeevanakkagi Kanunu series — his literary output is a gift to Karnataka\'s language and legal awareness.'),
+            'bb_item3_icon'    => SiteSetting::get('bb_item3_icon', 'fas fa-feather-pointed'),
+        ];
+        return view('admin.site-content.beyond-bar.edit', compact('settings'));
+    }
+
+    public function updateBeyondBar(Request $request)
+    {
+        $request->validate([
+            'bb_eyebrow'     => 'nullable|string|max:100',
+            'bb_title'       => 'nullable|string|max:255',
+            'bb_image_top'   => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:8192',
+            'bb_image_left'  => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:8192',
+            'bb_image_right' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:8192',
+            
+            'bb_item1_title' => 'nullable|string|max:255',
+            'bb_item1_desc'  => 'nullable|string',
+            'bb_item1_icon'  => 'nullable|string|max:100',
+            'bb_item2_title' => 'nullable|string|max:255',
+            'bb_item2_desc'  => 'nullable|string',
+            'bb_item2_icon'  => 'nullable|string|max:100',
+            'bb_item3_title' => 'nullable|string|max:255',
+            'bb_item3_desc'  => 'nullable|string',
+            'bb_item3_icon'  => 'nullable|string|max:100',
+        ]);
+
+        SiteSetting::set('bb_eyebrow', $request->bb_eyebrow ?? 'BEYOND THE BAR');
+        SiteSetting::set('bb_title',   $request->bb_title ?? 'Filmmaker, Journalist & Cultural Visionary');
+        
+        SiteSetting::set('bb_item1_title', $request->bb_item1_title);
+        SiteSetting::set('bb_item1_desc',  $request->bb_item1_desc);
+        SiteSetting::set('bb_item1_icon',  $request->bb_item1_icon);
+        SiteSetting::set('bb_item2_title', $request->bb_item2_title);
+        SiteSetting::set('bb_item2_desc',  $request->bb_item2_desc);
+        SiteSetting::set('bb_item2_icon',  $request->bb_item2_icon);
+        SiteSetting::set('bb_item3_title', $request->bb_item3_title);
+        SiteSetting::set('bb_item3_desc',  $request->bb_item3_desc);
+        SiteSetting::set('bb_item3_icon',  $request->bb_item3_icon);
+
+        foreach (['bb_image_top', 'bb_image_left', 'bb_image_right'] as $field) {
+            if ($request->hasFile($field)) {
+                // Delete old image
+                $old = SiteSetting::get($field);
+                if ($old) Storage::disk('public')->delete($old);
+                $path = $request->file($field)->store('beyond-bar', 'public');
+                SiteSetting::set($field, $path, 'image');
+            }
+        }
+
+        return redirect()->route('admin.site-content.beyond-bar')
+            ->with('success', 'Beyond the Bar section updated successfully.');
+    }
 }
+

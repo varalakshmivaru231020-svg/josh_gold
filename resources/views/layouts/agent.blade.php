@@ -209,7 +209,6 @@
                                 <ul class="footer-links">
                                     <li><a href="{{ route('agent.login') }}">Distributor Login</a></li>
                                     <li><a href="{{ route('agent.register') }}">Become Distributor</a></li>
-                                    <li><a href="{{ route('track.order') }}">Track Order</a></li>
                                 </ul>
                                 <div class="footer-badge">
                                     <img src="https://razorpay.com/assets/razorpay-logo-new.svg" alt="Razorpay" style="height: 25px; filter: brightness(0) invert(1);">

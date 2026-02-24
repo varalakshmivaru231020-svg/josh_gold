@@ -11,8 +11,12 @@ use App\Models\OrderFlowStep;
 use App\Models\WhatsappFlowStep;
 use App\Models\PromoBanner;
 use App\Models\Blog;
+use App\Models\Stat;
+use App\Models\Service;
+use App\Models\Office;
 use App\Models\SiteSetting;
 use App\Models\ContactMessage;
+use App\Models\GalleryPhoto;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -27,7 +31,10 @@ class HomeController extends Controller
         $orderFlowSteps = OrderFlowStep::active()->ordered()->get();
         $whatsappFlowSteps = WhatsappFlowStep::active()->ordered()->get();
         $promoBanner = PromoBanner::active()->position('bottom')->first();
-        $blogs = Blog::active()->ordered()->take(3)->get();
+        $services = Service::active()->ordered()->get();
+        $offices = Office::active()->ordered()->get();
+        $stats = Stat::active()->ordered()->get();
+        $galleryPhotos = GalleryPhoto::active()->ordered()->get();
 
         return view('home', compact(
             'sliders',
@@ -37,7 +44,10 @@ class HomeController extends Controller
             'orderFlowSteps',
             'whatsappFlowSteps',
             'promoBanner',
-            'blogs'
+            'services',
+            'offices',
+            'stats',
+            'galleryPhotos'
         ));
     }
 
@@ -45,6 +55,30 @@ class HomeController extends Controller
     {
         $testimonialVideos = TestimonialVideo::active()->ordered()->paginate(12);
         return view('testimonials', compact('testimonialVideos'));
+    }
+
+    public function gallery()
+    {
+        $galleryPhotos = GalleryPhoto::active()->ordered()->get();
+        return view('gallery', compact('galleryPhotos'));
+    }
+
+    public function aboutUs()
+    {
+        $about = AboutSection::active()->first();
+        return view('about-us', compact('about'));
+    }
+
+    public function services()
+    {
+        $services = Service::active()->ordered()->get();
+        return view('services.index', compact('services'));
+    }
+
+    public function offices()
+    {
+        $offices = Office::active()->ordered()->get();
+        return view('offices.index', compact('offices'));
     }
 
     public function blogIndex()

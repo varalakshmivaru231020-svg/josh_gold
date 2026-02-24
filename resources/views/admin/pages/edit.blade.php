@@ -73,6 +73,106 @@
             </form>
         </div>
     </div>
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas fa-list me-1"></i>
+                Page Sections (Page Builder)
+            </div>
+            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#addSectionModal">
+                <i class="fas fa-plus"></i> Add Section
+            </button>
+        </div>
+        <div class="card-body">
+            @if($page->sections->count() > 0)
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Order</th>
+                                <th>Type</th>
+                                <th>Heading</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sectionsTable">
+                            @foreach($page->sections as $section)
+                            <tr data-id="{{ $section->id }}">
+                                <td>{{ $section->sort_order }}</td>
+                                <td><span class="badge bg-info text-dark">{{ ucfirst($section->section_type) }}</span></td>
+                                <td>{{ $section->heading }}</td>
+                                <td>
+                                    @if($section->is_active)
+                                        <span class="badge bg-success">Active</span>
+                                    @else
+                                        <span class="badge bg-secondary">Inactive</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="{{ route('admin.pages.sections.edit', $section->id) }}" class="btn btn-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <form action="{{ route('admin.pages.sections.destroy', $section->id) }}" method="POST" onsubmit="return confirm('Delete this section?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <p class="text-center text-muted">No sections added yet. Click "Add Section" to start building your page.</p>
+            @endif
+        </div>
+    </div>
+</div>
+
+<!-- Add Section Modal -->
+<div class="modal fade" id="addSectionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="{{ route('admin.pages.sections.store', $page->id) }}" method="POST">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Section</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Section Type</label>
+                        <select name="section_type" class="form-select" required>
+                            <option value="visionary">Visionary (Standard Section)</option>
+                            <option value="counters">Counters / Stats</option>
+                            <option value="cta">CTA (Call to Action)</option>
+                            <option value="team">Teams / Profiles</option>
+                            <option value="vision_mission">Vision & Mission</option>
+                            <option value="professional_profiles">Professional Profiles (Author/Filmmaker)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Heading</label>
+                        <input type="text" name="heading" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Subheading</label>
+                        <input type="text" name="subheading" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Section</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 @push('scripts')

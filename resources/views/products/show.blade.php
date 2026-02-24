@@ -1,35 +1,40 @@
 @extends('layouts.lawfirm')
 
-@section('title', $product->name . ' - Bengaluru Law House')
+@section('title', $product->name . ' | Bengaluru Law House')
 
 @section('content')
-    <!-- Page Hero -->
-    <section class="page-hero-mini">
-        <div class="container">
-            <nav aria-label="breadcrumb" class="breadcrumb-wrapper fade-up">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Publications</a></li>
-                    <li class="breadcrumb-item active">{{ Str::limit($product->name, 30) }}</li>
-                </ol>
-            </nav>
-        </div>
-    </section>
+<section class="product-detail-page">
 
-    <!-- Product Detail Section -->
-    <section class="section section-light product-detail-section">
-        <div class="container">
-            <div class="row g-5">
-                <!-- Product Images -->
+    {{-- Hero Banner --}}
+    <div class="product-hero-header">
+        <div class="product-hero-deco" aria-hidden="true"><i class="fas fa-book-open"></i></div>
+        <div class="container" data-aos="fade-up">
+            <nav class="product-breadcrumb mb-3">
+                <a href="{{ route('home') }}">Home</a>
+                <span class="sep">/</span>
+                <a href="{{ route('products.index') }}">Publications</a>
+                <span class="sep">/</span>
+                <span class="curr">{{ Str::limit($product->name, 40) }}</span>
+            </nav>
+            <div class="label-gold mb-2">Legal Publication</div>
+            <h1 class="heading-premium text-white">{{ $product->name }}</h1>
+            <div class="accent-line-gold"></div>
+        </div>
+    </div>
+
+    <div class="container product-content-container">
+        <div class="product-main-card" data-aos="fade-up">
+            <div class="row g-0">
+                <!-- Product Gallery -->
                 <div class="col-lg-6">
-                    <div class="product-gallery fade-up">
+                    <div class="product-gallery-premium p-5 border-end">
                         @if($product->images && count($product->images) > 0)
                             <div class="glide product-main-slider">
                                 <div class="glide__track" data-glide-el="track">
                                     <ul class="glide__slides">
                                         @foreach($product->images as $image)
                                             <li class="glide__slide">
-                                                <div class="main-image-wrapper">
+                                                <div class="main-image-wrap">
                                                     <img src="{{ asset('storage/' . $image) }}" alt="{{ $product->name }}">
                                                 </div>
                                             </li>
@@ -38,30 +43,25 @@
                                 </div>
                                 @if(count($product->images) > 1)
                                     <div class="glide__arrows" data-glide-el="controls">
-                                        <button class="glide__arrow glide__arrow--left" data-glide-dir="<">
-                                            <i class="fas fa-chevron-left"></i>
-                                        </button>
-                                        <button class="glide__arrow glide__arrow--right" data-glide-dir=">">
-                                            <i class="fas fa-chevron-right"></i>
-                                        </button>
+                                        <button class="glide-nav prev" data-glide-dir="<"><i class="fas fa-chevron-left"></i></button>
+                                        <button class="glide-nav next" data-glide-dir=">"><i class="fas fa-chevron-right"></i></button>
                                     </div>
                                 @endif
                             </div>
 
-                            <!-- Thumbnail Navigation -->
                             @if(count($product->images) > 1)
-                                <div class="thumbnail-wrapper">
+                                <div class="thumb-nav-flex mt-4">
                                     @foreach($product->images as $index => $image)
-                                        <div class="thumbnail-item {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}">
+                                        <div class="thumb-nav-item {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}">
                                             <img src="{{ asset('storage/' . $image) }}" alt="{{ $product->name }}">
                                         </div>
                                     @endforeach
                                 </div>
                             @endif
                         @else
-                            <div class="no-image-placeholder">
-                                <i class="fas fa-book"></i>
-                                <span>No Image Available</span>
+                            <div class="product-no-image">
+                                <i class="fas fa-book-open fa-5x opacity-25"></i>
+                                <span class="d-block mt-3 opacity-50">Visual Archive Pending</span>
                             </div>
                         @endif
                     </div>
@@ -69,866 +69,336 @@
 
                 <!-- Product Details -->
                 <div class="col-lg-6">
-                    <div class="product-info slide-right">
-                        <!-- Product Header -->
-                        <div class="product-header">
-                            <span class="product-category-label">Legal Publication</span>
-                            <h1 class="product-title">{{ $product->name }}</h1>
+                    <div class="product-details-premium p-5">
+                        <div class="label-gold mb-3">Legal Publication @if($product->edition)| {{ $product->edition }} @endif</div>
+                        <h2 class="font-display text-navy mb-4 h1 fw-bold">{{ $product->name }}</h2>
+                        
+                        <div class="price-box-premium mb-4">
+                            <span class="currency">₹</span>
+                            <span class="amount" id="totalAmountDisplay">{{ number_format($product->price, 2) }}</span>
+                            <span class="tax-tag">Inclusive of all taxes</span>
                         </div>
 
-                        <!-- Price -->
-                        <div class="product-price-section">
-                            <div class="current-price">{{ number_format($product->price, 2) }}</div>
-                            <span class="price-note">Inclusive of all taxes</span>
+                        <div class="product-meta-pills mb-4">
+                            @if($product->author) <span class="meta-pill"><i class="fas fa-user-pen"></i> {{ $product->author }}</span> @endif
+                            <span class="meta-pill"><i class="fas fa-certificate"></i> Premium Edition</span>
                         </div>
 
-                        <!-- Description -->
-                        <div class="product-description-section">
-                            <h5>Description</h5>
-                            <div class="description-content">
+                        <div class="description-premium mb-5">
+                            <h5 class="text-navy font-display fw-bold mb-3 border-bottom pb-2">Description</h5>
+                            <div class="abstract-content text-muted line-height-18">
                                 {!! $product->description !!}
                             </div>
                         </div>
 
-                        <!-- Purchase Form -->
                         @if($product->stock > 0)
-                            <div class="purchase-form-section">
+                            <div class="purchase-box-premium bg-cream rounded-4 p-4 shadow-sm border border-gold-light">
                                 <form id="purchaseForm" action="{{ route('checkout', $product) }}" method="GET">
-                                    <!-- Quantity -->
-                                    <div class="form-group quantity-group">
-                                        <label>Quantity</label>
-                                        <div class="quantity-selector">
-                                            <button type="button" class="qty-btn" id="decrementQty">
-                                                <i class="fas fa-minus"></i>
-                                            </button>
-                                            <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ $product->stock }}" readonly>
-                                            <button type="button" class="qty-btn" id="incrementQty">
-                                                <i class="fas fa-plus"></i>
-                                            </button>
+                                    <div class="row align-items-center mb-4">
+                                        <div class="col-sm-6">
+                                            <label class="label-gold-sm mb-2 d-block">Quantity</label>
+                                            <div class="qty-selector-lux">
+                                                <button type="button" class="qty-btn-lux" id="decrementQty"><i class="fas fa-minus"></i></button>
+                                                <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ $product->stock }}" readonly>
+                                                <button type="button" class="qty-btn-lux" id="incrementQty"><i class="fas fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 mt-3 mt-sm-0">
+                                            <label class="label-gold-sm mb-2 d-block">Referral Code (Optional)</label>
+                                            <div class="referral-flex">
+                                                <input type="text" class="form-luxury-sm" id="referral_code" name="referral_code" value="{{ request('ref') }}" placeholder="Enter referral code for discount">
+                                                <button class="btn-apply-lux" type="button" id="applyReferral">Apply</button>
+                                            </div>
+                                            <small id="referralMessage" class="referral-msg"></small>
                                         </div>
                                     </div>
 
-                                    <!-- Referral Code -->
-                                    <div class="form-group referral-group">
-                                        <label>Referral Code (Optional)</label>
-                                        <div class="referral-input-wrapper">
-                                            <input type="text" class="form-control" id="referral_code" name="referral_code" value="{{ request('ref') }}" placeholder="Enter referral code for discount">
-                                            <button class="btn-apply" type="button" id="applyReferral">Apply</button>
-                                        </div>
-                                        <small id="referralMessage" class="referral-message"></small>
-                                    </div>
-
-                                    <!-- Price Summary -->
-                                    <div class="price-summary">
-                                        <div class="summary-row">
+                                    <div class="summary-box-lux mb-4">
+                                        <div class="summary-line">
                                             <span>Unit Price</span>
-                                            <span><span id="unitPrice">{{ number_format($product->price, 2) }}</span></span>
+                                            <span id="unitPriceDisplay">₹{{ number_format($product->price, 2) }}</span>
                                         </div>
-                                        <div class="summary-row">
-                                            <span>Quantity</span>
-                                            <span><span id="selectedQty">1</span> unit(s)</span>
+                                        <div class="summary-line discount d-none" id="discountRow">
+                                            <span>Referral Discount</span>
+                                            <span>-₹<span id="discountAmount">0.00</span></span>
                                         </div>
-                                        <div class="summary-row discount-row d-none" id="discountRow">
-                                            <span class="text-success">Discount</span>
-                                            <span class="text-success">-<span id="discountAmount">0.00</span></span>
-                                        </div>
-                                        <div class="summary-row total-row">
+                                        <div class="summary-line total pt-2 border-top">
                                             <span>Total Amount</span>
-                                            <span class="total-amount"><span id="totalAmount">{{ number_format($product->price, 2) }}</span></span>
+                                            <span class="text-navy fw-bold h4 mb-0">₹<span id="totalAmountFinal">{{ number_format($product->price, 2) }}</span></span>
                                         </div>
                                     </div>
 
-                                    <!-- CTA Button -->
-                                    <button type="submit" class="btn-checkout">
-                                        <i class="fas fa-shopping-cart"></i>
-                                        Proceed to Checkout
+                                    <button type="submit" class="btn-primary-gold w-100 py-3 shadow-lg border-0">
+                                        <i class="fas fa-shopping-cart me-2"></i> Proceed to Checkout
                                     </button>
                                 </form>
                             </div>
                         @else
-                            <div class="out-of-stock-notice">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                <div>
-                                    <strong>Currently Out of Stock</strong>
-                                    <p>This publication is currently unavailable. Please check back later or contact us for updates.</p>
-                                </div>
+                            <div class="out-of-stock-premium">
+                                <i class="fas fa-archive fa-2x mb-3 text-gold"></i>
+                                <h4>Edition Currently Unavailable</h4>
+                                <p class="mb-0 opacity-75">This prestigious publication is temporarily out of vault. Please contact our chambers for replenishment updates.</p>
                             </div>
                         @endif
 
-                        <!-- Trust Badges -->
-                        <div class="trust-badges">
-                            <div class="trust-badge">
-                                <i class="fas fa-shield-alt"></i>
-                                <span>Secure Payment</span>
-                            </div>
-                            <div class="trust-badge">
-                                <i class="fas fa-truck"></i>
-                                <span>Fast Delivery</span>
-                            </div>
-                            <div class="trust-badge">
-                                <i class="fas fa-certificate"></i>
-                                <span>Authentic</span>
-                            </div>
+                        <div class="trust-flex-premium mt-5">
+                            <div class="trust-item"><i class="fas fa-shield-halved"></i> Secure Payment</div>
+                            <div class="trust-item"><i class="fas fa-truck-fast"></i> Fast Delivery</div>
+                            <div class="trust-item"><i class="fas fa-medal"></i> Authentic</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Related Products -->
-    @if($relatedProducts->count() > 0)
-        <section class="section section-cream">
-            <div class="container">
-                <div class="section-header">
-                    <p class="section-label fade-up">You May Also Like</p>
-                    <h2 class="section-title fade-up delay-1">Related Publications</h2>
-                    <div class="section-divider fade-up delay-2"></div>
+        @if($relatedProducts->count() > 0)
+            <div class="related-section-lux mt-5 pt-5">
+                <div class="section-header mb-4" data-aos="fade-up">
+                    <span class="label-gold">Curated Collection</span>
+                    <h2 class="title-premium text-navy">Related Treatises</h2>
                 </div>
-
                 <div class="row g-4">
                     @foreach($relatedProducts as $relatedProduct)
-                        <div class="col-xl-3 col-lg-4 col-md-6">
-                            <div class="publication-card fade-up">
-                                <div class="publication-image">
+                        <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up">
+                            <div class="treatise-premium-card h-100">
+                                <div class="treatise-img-box small-card">
                                     @if($relatedProduct->images && count($relatedProduct->images) > 0)
                                         <img src="{{ asset('storage/' . $relatedProduct->images[0]) }}" alt="{{ $relatedProduct->name }}">
                                     @else
-                                        <div class="publication-placeholder">
+                                        <div class="treatise-placeholder">
                                             <i class="fas fa-book"></i>
                                         </div>
                                     @endif
                                 </div>
-                                <div class="publication-content">
-                                    <span class="publication-category">Legal Publication</span>
-                                    <h5 class="publication-title">{{ $relatedProduct->name }}</h5>
-                                    <div class="publication-price">
-                                        {{ number_format($relatedProduct->price, 2) }}
-                                    </div>
-                                    <a href="{{ route('products.show', $relatedProduct) }}" class="btn-view-details">
-                                        <i class="fas fa-eye"></i> View Details
-                                    </a>
+                                <div class="treatise-body">
+                                    <h5 class="treatise-name font-display">{{ Str::limit($relatedProduct->name, 50) }}</h5>
+                                    <div class="h5 text-gold fw-bold mb-3">₹{{ number_format($relatedProduct->price, 0) }}</div>
+                                    <a href="{{ route('products.show', $relatedProduct) }}" class="btn-royal-sm w-100">View Detail</a>
                                 </div>
                             </div>
                         </div>
                     @endforeach
                 </div>
             </div>
-        </section>
-    @endif
-
+        @endif
+    </div>
+</section>
 @endsection
 
 @push('styles')
 <style>
-    /* Mini Page Hero */
-    .page-hero-mini {
-        background: var(--navy-deep);
-        padding: 120px 0 30px;
-    }
+    /* ── PRODUCT DETAIL PAGE ── */
+    .product-detail-page { background: var(--cream, #f8f5ef); min-height: 80vh; padding-bottom: 120px; }
 
-    .breadcrumb-wrapper {
-        margin: 0;
-    }
-
-    .breadcrumb {
-        background: transparent;
-        padding: 0;
-        margin: 0;
-    }
-
-    .breadcrumb-item a {
-        color: var(--gold-primary);
-        text-decoration: none;
-    }
-
-    .breadcrumb-item a:hover {
-        color: var(--gold-light);
-    }
-
-    .breadcrumb-item.active {
-        color: rgba(250, 248, 243, 0.7);
-    }
-
-    .breadcrumb-item + .breadcrumb-item::before {
-        color: rgba(250, 248, 243, 0.5);
-    }
-
-    /* Product Detail Section */
-    .product-detail-section {
-        padding-top: 4rem;
-    }
-
-    /* Product Gallery */
-    .product-gallery {
-        position: sticky;
-        top: 120px;
-    }
-
-    .main-image-wrapper {
-        background: var(--white);
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: var(--shadow-soft);
-        padding: 2rem;
-    }
-
-    .main-image-wrapper img {
-        width: 100%;
-        height: 400px;
-        object-fit: contain;
-    }
-
-    .product-main-slider {
+    /* Hero Banner — no overlap, full display */
+    .product-hero-header {
+        background: 
+            linear-gradient(rgba(8,14,28,0.82) 0%, rgba(10,18,36,0.85) 100%),
+            url('/images/publications-banner.jpg') center center / cover no-repeat;
+        padding: 140px 0 80px;
         position: relative;
-    }
-
-    .product-main-slider .glide__arrow {
-        background: var(--navy-primary);
-        color: var(--white);
-        width: 45px;
-        height: 45px;
-        border: none;
-        border-radius: 50%;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
-        transition: var(--transition-fast);
-        box-shadow: var(--shadow-medium);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .product-main-slider .glide__arrow:hover {
-        background: var(--gold-primary);
-        color: var(--navy-deep);
-    }
-
-    .product-main-slider .glide__arrow--left { left: 15px; }
-    .product-main-slider .glide__arrow--right { right: 15px; }
-
-    /* Thumbnails */
-    .thumbnail-wrapper {
-        display: flex;
-        gap: 1rem;
-        margin-top: 1.5rem;
-        justify-content: center;
-    }
-
-    .thumbnail-item {
-        width: 80px;
-        height: 80px;
-        border-radius: 8px;
         overflow: hidden;
-        cursor: pointer;
-        border: 2px solid transparent;
-        transition: var(--transition-fast);
-        background: var(--white);
-        padding: 0.5rem;
+        z-index: 0;
     }
-
-    .thumbnail-item:hover,
-    .thumbnail-item.active {
-        border-color: var(--gold-primary);
+    /* Grid texture */
+    .product-hero-header::before {
+        content: ''; position: absolute; inset: 0; z-index: 0;
+        background-image:
+            linear-gradient(rgba(201, 168, 76, 0.055) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(201, 168, 76, 0.055) 1px, transparent 1px);
+        background-size: 55px 55px;
     }
-
-    .thumbnail-item img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
+    /* Spotlights */
+    .product-hero-header::after {
+        content:''; position: absolute; inset:0; z-index: 0;
+        background:
+            radial-gradient(ellipse at 10% 50%, rgba(201,168,76,0.12) 0%, transparent 50%),
+            radial-gradient(ellipse at 90% 50%, rgba(201,168,76,0.08) 0%, transparent 50%),
+            radial-gradient(ellipse at 50% 110%, rgba(201,168,76,0.18) 0%, transparent 45%),
+            linear-gradient(120deg, rgba(20,35,70,0.85) 0%, rgba(8,14,28,0.6) 50%, rgba(15,28,55,0.9) 100%);
     }
-
-    .no-image-placeholder {
-        background: var(--cream-dark);
-        border-radius: 8px;
-        height: 400px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        color: var(--navy-muted);
+    /* Decorative large book icon */
+    .product-hero-deco {
+        position: absolute; right: 7%; top: 50%; transform: translateY(-50%);
+        font-size: 14rem; color: rgba(201,168,76,0.06);
+        pointer-events: none; z-index: 0; line-height: 1;
     }
+    .product-hero-header .container { position: relative; z-index: 1; }
+    .product-hero-header .label-gold { display: block; }
+    .product-hero-header .heading-premium { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; }
+    .accent-line-gold { width: 80px; height: 3px; background: var(--gold, #c9a84c); margin-top: 25px; border-radius: 2px; position: relative; z-index: 2; }
 
-    .no-image-placeholder i {
-        font-size: 5rem;
-        margin-bottom: 1rem;
-        opacity: 0.3;
-    }
+    .product-breadcrumb { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; position: relative; z-index: 2; }
+    .product-breadcrumb a { color: var(--gold, #c9a84c); text-decoration:none; transition: 0.3s; }
+    .product-breadcrumb a:hover { color: white; }
+    .product-breadcrumb .sep { color: rgba(255,255,255,0.3); }
+    .product-breadcrumb .curr { color: white; opacity: 0.7; }
 
-    /* Product Info */
-    .product-info {
-        padding-left: 2rem;
-    }
+    /* Content sits cleanly below banner — NO negative margin */
+    .product-content-container { padding-top: 60px; padding-bottom: 60px; }
 
-    .product-category-label {
-        display: inline-block;
-        font-size: 0.85rem;
-        color: var(--gold-dark);
-        text-transform: uppercase;
-        letter-spacing: 0.15em;
-        margin-bottom: 0.75rem;
-        font-weight: 500;
-    }
+    .product-main-card { background: white; border-radius: 40px; overflow: hidden; box-shadow: 0 40px 100px rgba(0,0,0,0.08); border: 1px solid rgba(201,168,76,0.12); }
 
-    .product-title {
-        font-size: 2.25rem;
-        color: var(--navy-deep);
-        margin-bottom: 1rem;
-        line-height: 1.3;
-    }
+    .main-image-wrap { height: 500px; display: flex; align-items: center; justify-content: center; padding: 40px; }
+    .main-image-wrap img { max-height: 100%; max-width: 100%; object-fit: contain; filter: drop-shadow(15px 15px 30px rgba(0,0,0,0.2)); transition: 0.5s; }
+    .main-image-wrap img:hover { transform: scale(1.03); }
 
-    /* Price Section */
-    .product-price-section {
-        background: var(--cream-dark);
-        padding: 1.5rem;
-        border-radius: 8px;
-        margin-bottom: 2rem;
-    }
+    .glide-nav { position:absolute; top:50%; transform:translateY(-50%); width:45px; height:45px; background:white; border:1px solid var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--navy); cursor:pointer; transition:0.3s; z-index:2; }
+    .glide-nav:hover { background:var(--gold); color:white; }
+    .glide-nav.prev { left: 15px; }
+    .glide-nav.next { right: 15px; }
 
-    .current-price {
-        font-family: var(--font-heading);
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: var(--navy-deep);
-        line-height: 1;
-    }
+    .thumb-nav-flex { display: flex; gap: 15px; justify-content: center; }
+    .thumb-nav-item { width: 80px; height: 80px; border-radius: 12px; border: 2px solid transparent; cursor: pointer; padding: 8px; background: var(--cream); transition: 0.3s; }
+    .thumb-nav-item.active, .thumb-nav-item:hover { border-color: var(--gold); background: white; }
+    .thumb-nav-item img { width: 100%; height: 100%; object-fit: contain; }
 
-    .current-price::before {
-        content: '\20B9';
-    }
+    .price-box-premium { display: flex; align-items: baseline; gap: 10px; }
+    .price-box-premium .currency { font-size: 1.5rem; color: var(--gold-dark, #8b6914); font-weight: 700; }
+    .price-box-premium .amount { font-size: 3rem; color: var(--navy, #0c1428); font-weight: 800; font-family: var(--font-display); }
+    .price-box-premium .tax-tag { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
-    .price-note {
-        font-size: 0.9rem;
-        color: var(--text-muted);
-        display: block;
-        margin-top: 0.5rem;
-    }
+    .meta-pill { display: inline-flex; align-items: center; gap: 8px; background: var(--cream); color: var(--navy); padding: 6px 16px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(201,168,76,0.15); margin-right: 10px; }
+    .meta-pill i { color: var(--gold); }
 
-    /* Description */
-    .product-description-section {
-        margin-bottom: 2rem;
-        padding-bottom: 2rem;
-        border-bottom: 1px solid rgba(201, 162, 39, 0.15);
-    }
+    .qty-selector-lux { display: flex; align-items: center; background: white; border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; overflow: hidden; max-width: 140px; }
+    .qty-btn-lux { border: none; background: transparent; padding: 10px 15px; color: var(--navy); transition: 0.3s; }
+    .qty-btn-lux:hover { background: var(--gold); color: white; }
+    .qty-selector-lux input { width: 40px; text-align: center; border: none; font-weight: 700; color: var(--navy); background: transparent; }
 
-    .product-description-section h5 {
-        font-size: 1.1rem;
-        color: var(--navy-deep);
-        margin-bottom: 1rem;
-    }
+    .referral-flex { display: flex; gap: 10px; }
+    .form-luxury-sm { border: 1px solid rgba(201,168,76,0.3); background: white; padding: 10px 15px; border-radius: 12px; width: 100%; font-size: 0.9rem; color: var(--navy); }
+    .btn-apply-lux { background: var(--navy); color: white; border: none; padding: 0 20px; border-radius: 12px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; transition: 0.3s; white-space: nowrap; }
+    .btn-apply-lux:hover { background: var(--gold); color: var(--navy); }
 
-    .description-content {
-        color: var(--text-muted);
-        line-height: 1.8;
-    }
+    .summary-box-lux .summary-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; color: var(--text-muted); font-weight: 600; }
+    .summary-box-lux .summary-line.discount { color: #25d366; }
 
-    .description-content img {
-        max-width: 100%;
-        height: auto;
-    }
+    .trust-flex-premium { display: flex; flex-wrap: wrap; gap: 25px; align-items: center; justify-content: center; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 20px; margin-top: 20px; }
+    .trust-item { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+    .trust-item i { color: var(--gold); font-size: 1.1rem; }
 
-    /* Purchase Form */
-    .purchase-form-section {
-        background: var(--white);
-        border: 1px solid rgba(201, 162, 39, 0.15);
-        border-radius: 8px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-    }
+    .out-of-stock-premium { background: rgba(201,168,76,0.05); padding: 40px; border-radius: 24px; border: 2px dashed var(--gold); text-align: center; color: var(--navy); }
+    .product-no-image { height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--cream); }
 
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-
-    .form-group label {
-        display: block;
-        font-weight: 600;
-        color: var(--navy-deep);
-        margin-bottom: 0.75rem;
-        font-size: 0.95rem;
-    }
-
-    /* Quantity Selector */
-    .quantity-selector {
-        display: inline-flex;
-        align-items: center;
-        border: 1px solid rgba(201, 162, 39, 0.3);
-        border-radius: 8px;
-        overflow: hidden;
-    }
-
-    .qty-btn {
-        background: var(--cream-dark);
-        border: none;
-        padding: 0.75rem 1rem;
-        cursor: pointer;
-        transition: var(--transition-fast);
-        color: var(--navy-primary);
-    }
-
-    .qty-btn:hover {
-        background: var(--gold-primary);
-        color: var(--navy-deep);
-    }
-
-    .quantity-selector input {
-        width: 60px;
-        text-align: center;
-        border: none;
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: var(--navy-deep);
-        background: var(--white);
-    }
-
-    /* Referral Input */
-    .referral-input-wrapper {
-        display: flex;
-        gap: 0.5rem;
-    }
-
-    .referral-input-wrapper .form-control {
-        flex: 1;
-        border: 1px solid rgba(201, 162, 39, 0.3);
-        border-radius: 8px;
-        padding: 0.75rem 1rem;
-        font-size: 0.95rem;
-    }
-
-    .referral-input-wrapper .form-control:focus {
-        border-color: var(--gold-primary);
-        outline: none;
-        box-shadow: 0 0 0 3px var(--gold-glow);
-    }
-
-    .btn-apply {
-        background: var(--navy-primary);
-        color: var(--white);
-        border: none;
-        padding: 0.75rem 1.5rem;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: var(--transition-fast);
-    }
-
-    .btn-apply:hover {
-        background: var(--gold-primary);
-        color: var(--navy-deep);
-    }
-
-    .btn-apply.applied {
-        background: #28a745;
-    }
-
-    .referral-message {
-        display: block;
-        margin-top: 0.5rem;
-        font-size: 0.85rem;
-    }
-
-    .referral-message.success {
-        color: #28a745;
-    }
-
-    .referral-message.error {
-        color: #dc3545;
-    }
-
-    /* Price Summary */
-    .price-summary {
-        background: var(--cream-primary);
-        border-radius: 8px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .summary-row {
-        display: flex;
-        justify-content: space-between;
-        padding: 0.5rem 0;
-        font-size: 0.95rem;
-        color: var(--text-muted);
-    }
-
-    .summary-row.total-row {
-        border-top: 2px solid var(--gold-primary);
-        margin-top: 0.75rem;
-        padding-top: 1rem;
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: var(--navy-deep);
-    }
-
-    .total-amount::before {
-        content: '\20B9';
-    }
-
-    .discount-row span::before {
-        content: '\20B9';
-    }
-
-    .summary-row:not(.total-row):not(.discount-row) span:last-child::before {
-        content: '\20B9';
-    }
-
-    .summary-row.discount-row span:last-child::before {
-        content: '';
-    }
-
-    /* Checkout Button */
-    .btn-checkout {
-        width: 100%;
-        background: var(--gold-primary);
-        color: var(--navy-deep);
-        border: none;
-        padding: 1rem 2rem;
-        border-radius: 8px;
-        font-size: 1.1rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        cursor: pointer;
-        transition: var(--transition-medium);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.75rem;
-    }
-
-    .btn-checkout:hover {
-        background: var(--navy-primary);
-        color: var(--white);
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-medium);
-    }
-
-    /* Out of Stock Notice */
-    .out-of-stock-notice {
-        display: flex;
-        align-items: flex-start;
-        gap: 1rem;
-        background: rgba(220, 53, 69, 0.1);
-        border: 1px solid rgba(220, 53, 69, 0.2);
-        border-radius: 8px;
-        padding: 1.5rem;
-        margin-bottom: 2rem;
-    }
-
-    .out-of-stock-notice i {
-        color: #dc3545;
-        font-size: 1.5rem;
-        margin-top: 0.25rem;
-    }
-
-    .out-of-stock-notice strong {
-        display: block;
-        color: #dc3545;
-        margin-bottom: 0.5rem;
-    }
-
-    .out-of-stock-notice p {
-        margin: 0;
-        color: var(--text-muted);
-        font-size: 0.95rem;
-    }
-
-    /* Trust Badges */
-    .trust-badges {
-        display: flex;
-        gap: 1.5rem;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .trust-badge {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--text-muted);
-        font-size: 0.9rem;
-    }
-
-    .trust-badge i {
-        color: var(--gold-primary);
-        font-size: 1.1rem;
-    }
-
-    /* Related Products (reusing existing styles) */
-    .publication-card {
-        background: var(--white);
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: var(--shadow-soft);
-        transition: var(--transition-medium);
-        height: 100%;
-    }
-
-    .publication-card:hover {
-        transform: translateY(-8px);
-        box-shadow: var(--shadow-medium);
-    }
-
-    .publication-image {
-        position: relative;
-        height: 200px;
-        overflow: hidden;
-        background: var(--cream-dark);
-    }
-
-    .publication-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: var(--transition-slow);
-    }
-
-    .publication-card:hover .publication-image img {
-        transform: scale(1.05);
-    }
-
-    .publication-placeholder {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .publication-placeholder i {
-        font-size: 3rem;
-        color: var(--navy-muted);
-        opacity: 0.3;
-    }
-
-    .publication-content {
-        padding: 1.5rem;
-    }
-
-    .publication-category {
-        font-size: 0.8rem;
-        color: var(--gold-dark);
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        margin-bottom: 0.5rem;
-        display: block;
-    }
-
-    .publication-title {
-        font-size: 1.1rem;
-        color: var(--navy-deep);
-        margin-bottom: 0.75rem;
-        line-height: 1.4;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .publication-price {
-        font-family: var(--font-heading);
-        font-size: 1.5rem;
-        color: var(--navy-primary);
-        font-weight: 700;
-        margin-bottom: 1rem;
-    }
-
-    .publication-price::before {
-        content: '\20B9';
-    }
-
-    .btn-view-details {
-        width: 100%;
-        background: var(--navy-primary);
-        color: var(--white);
-        padding: 0.75rem;
-        border: none;
-        border-radius: 4px;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.85rem;
-        transition: var(--transition-medium);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        text-decoration: none;
-    }
-
-    .btn-view-details:hover {
-        background: var(--gold-primary);
-        color: var(--navy-deep);
-    }
-
-    /* Responsive */
     @media (max-width: 991px) {
-        .product-gallery {
-            position: relative;
-            top: 0;
-            margin-bottom: 2rem;
-        }
-
-        .product-info {
-            padding-left: 0;
-        }
-
-        .product-title {
-            font-size: 1.75rem;
-        }
+        .product-gallery-premium { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .product-main-card { border-radius: 24px; }
+        .main-image-wrap { height: 350px; }
     }
-
-    @media (max-width: 767px) {
-        .page-hero-mini {
-            padding: 100px 0 20px;
-        }
-
-        .main-image-wrapper img {
-            height: 300px;
-        }
-
-        .thumbnail-item {
-            width: 60px;
-            height: 60px;
-        }
-
-        .trust-badges {
-            flex-direction: column;
-            align-items: center;
-        }
+    @media (max-width: 576px) {
+        .product-content-container { padding-top: 40px; }
+        .product-details-premium { padding: 28px !important; }
+        .product-gallery-premium { padding: 28px !important; }
     }
 </style>
 @endpush
 
 @push('scripts')
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Main Slider
+    // Gallery Slider
     if (document.querySelector('.product-main-slider')) {
-        const mainSlider = new Glide('.product-main-slider', {
+        const glide = new Glide('.product-main-slider', {
             type: 'carousel',
             perView: 1,
+            gap: 0,
             autoplay: false
         }).mount();
 
-        // Thumbnail click handler
-        document.querySelectorAll('.thumbnail-item').forEach(function(thumb, index) {
-            thumb.addEventListener('click', function() {
-                mainSlider.go('=' + index);
-                document.querySelectorAll('.thumbnail-item').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
+        document.querySelectorAll('.thumb-nav-item').forEach((item, i) => {
+            item.addEventListener('click', () => {
+                glide.go('=' + i);
+                document.querySelectorAll('.thumb-nav-item').forEach(el => el.classList.remove('active'));
+                item.classList.add('active');
             });
         });
 
-        // Update active thumbnail on slide change
-        mainSlider.on('run', function() {
-            const index = mainSlider.index;
-            document.querySelectorAll('.thumbnail-item').forEach((t, i) => {
-                t.classList.toggle('active', i === index);
+        glide.on('run', () => {
+            document.querySelectorAll('.thumb-nav-item').forEach((el, i) => {
+                el.classList.toggle('active', i === glide.index);
             });
         });
     }
-});
 
-$(document).ready(function () {
-    const quantityInput = $('#quantity');
+    // Pricing Logic
+    const qtyInput = document.getElementById('quantity');
     const unitPrice = parseFloat({{ $product->price }});
-
     let referralApplied = false;
-    let discountPerUnit = 25;
+    let discountPerUnit = 25; // Default discount as per existing logic
 
-    function updatePrice() {
-        const quantity = parseInt(quantityInput.val()) || 1;
-        const subtotal = unitPrice * quantity;
+    const updateUIPrice = () => {
+        const qty = parseInt(qtyInput.value) || 1;
+        const subtotal = unitPrice * qty;
+        let discount = referralApplied ? (discountPerUnit * qty) : 0;
+        let total = subtotal - discount;
 
-        let discount = 0;
-        let total = subtotal;
-
+        document.getElementById('unitPriceDisplay').innerText = '₹' + subtotal.toLocaleString('en-IN', {minimumFractionDigits: 2});
         if (referralApplied) {
-            discount = discountPerUnit * quantity;
-            total = subtotal - discount;
-            $('#discountRow').removeClass('d-none');
-            $('#discountAmount').text(discount.toFixed(2));
+            document.getElementById('discountRow').classList.remove('d-none');
+            document.getElementById('discountAmount').innerText = discount.toLocaleString('en-IN', {minimumFractionDigits: 2});
         } else {
-            $('#discountRow').addClass('d-none');
-            $('#discountAmount').text('0.00');
+            document.getElementById('discountRow').classList.add('d-none');
         }
+        document.getElementById('totalAmountFinal').innerText = total.toLocaleString('en-IN', {minimumFractionDigits: 2});
+        document.getElementById('totalAmountDisplay').innerText = total.toLocaleString('en-IN', {minimumFractionDigits: 2});
+    };
 
-        $('#selectedQty').text(quantity);
-        $('#totalAmount').text(total.toFixed(2));
-    }
-
-    $('#incrementQty').click(function () {
-        let v = parseInt(quantityInput.val());
-        const max = parseInt(quantityInput.attr('max'));
-        if (v < max) {
-            quantityInput.val(v + 1);
-            updatePrice();
+    document.getElementById('incrementQty').addEventListener('click', () => {
+        const val = parseInt(qtyInput.value);
+        if (val < {{ $product->stock }}) {
+            qtyInput.value = val + 1;
+            updateUIPrice();
         }
     });
 
-    $('#decrementQty').click(function () {
-        let v = parseInt(quantityInput.val());
-        if (v > 1) {
-            quantityInput.val(v - 1);
-            updatePrice();
+    document.getElementById('decrementQty').addEventListener('click', () => {
+        const val = parseInt(qtyInput.value);
+        if (val > 1) {
+            qtyInput.value = val - 1;
+            updateUIPrice();
         }
     });
 
-    quantityInput.on('input', updatePrice);
+    document.getElementById('applyReferral').addEventListener('click', function() {
+        const code = document.getElementById('referral_code').value.trim();
+        const msg = document.getElementById('referralMessage');
+        const btn = this;
 
-    $('#applyReferral').click(function () {
-        const referralCode = $('#referral_code').val().trim();
-        const messageBox = $('#referralMessage');
-
-        if (referralCode === '') {
-            messageBox.removeClass().addClass('referral-message error').text('Please enter a referral code.');
+        if (!code) {
+            msg.innerText = 'Enter code';
+            msg.className = 'referral-msg text-danger mt-1';
             return;
         }
 
-        $('#applyReferral').prop('disabled', true).text('Checking...');
+        btn.disabled = true;
+        btn.innerText = '...';
 
-        $.ajax({
-            url: "{{ route('checkReferral') }}",
-            type: "POST",
-            data: {
-                referral_code: referralCode,
-                _token: "{{ csrf_token() }}"
-            },
-            success: function (response) {
-                if (response.success) {
-                    referralApplied = true;
-                    messageBox.removeClass().addClass('referral-message success').text(response.message);
-                    $('#applyReferral').text('Applied').addClass('applied');
-                    updatePrice();
-                } else {
-                    referralApplied = false;
-                    messageBox.removeClass().addClass('referral-message error').text(response.message);
-                    $('#applyReferral').prop('disabled', false).text('Apply');
-                    updatePrice();
-                }
-            },
-            error: function () {
+        fetch("{{ route('checkReferral') }}", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "X-CSRF-TOKEN": "{{ csrf_token() }}" },
+            body: JSON.stringify({ referral_code: code })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                referralApplied = true;
+                msg.innerText = data.message;
+                msg.className = 'referral-msg text-success mt-1 d-block';
+                btn.innerText = 'Applied';
+                updateUIPrice();
+            } else {
                 referralApplied = false;
-                messageBox.removeClass().addClass('referral-message error').text('Something went wrong. Please try again.');
-                $('#applyReferral').prop('disabled', false).text('Apply');
-                updatePrice();
+                msg.innerText = data.message;
+                msg.className = 'referral-msg text-danger mt-1 d-block';
+                btn.innerText = 'Apply';
+                btn.disabled = false;
+                updateUIPrice();
             }
         });
     });
 
-    $('#referral_code').on('input', function () {
-        referralApplied = false;
-        $('#discountRow').addClass('d-none');
-        $('#discountAmount').text('0.00');
-        $('#applyReferral').prop('disabled', false).removeClass('applied').text('Apply');
-        $('#referralMessage').text('');
-        updatePrice();
-    });
-
-    updatePrice();
+    updateUIPrice();
 });
 </script>
 @endpush

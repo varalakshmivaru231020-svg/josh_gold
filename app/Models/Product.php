@@ -11,6 +11,10 @@ class Product extends Model
 
     protected $fillable = [
         'name',
+        'year',
+        'category',
+        'book_icon',
+        'cover_image',
         'description',
         'price',
         'stock',
@@ -33,5 +37,10 @@ class Product extends Model
     {
         $images = $this->images;
         return $images ? $images[0] : null;
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
     }
 }

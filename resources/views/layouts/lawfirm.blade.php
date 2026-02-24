@@ -13,251 +13,448 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
-    <!-- Glide.js -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css">
-    <!-- Favicon -->
-    <link rel="icon" type="image/jpg" href="{{ $logoUrl }}">
-    <!-- Law Firm Premium Theme CSS -->
-    <link href="{{ asset('css/lawfirm-theme.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <!-- AOS Animate on Scroll -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #c9a84c;
+            --gold-light: #e8c878;
+            --gold-dark: #8b6914;
+            --navy: #0c1428;
+            --navy-mid: #152040;
+            --navy-light: #1e2f58;
+            --cream: #f8f5ef;
+            --cream-dark: #ede8de;
+            --text: #2a2a2a;
+            --text-muted: #666;
+            --white: #ffffff;
+            --font-display: "Cormorant Garamond", Georgia, serif;
+            --font-body: "Outfit", Arial, sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; scroll-behavior:smooth; }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--cream);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar { width:5px; }
+        ::-webkit-scrollbar-track { background:var(--navy); }
+        ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:10px; }
+
+        /* ── NAVIGATION ── */
+        .nav-premium {
+            position: fixed; top:0; left:0; right:0; z-index:1000;
+            background: rgba(12,20,40,0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(201,168,76,0.2);
+            padding: 0 60px;
+            display: flex; align-items:center; justify-content:space-between;
+            height: 85px;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .nav-premium.scrolled { height: 75px; background: rgba(10,15,30,0.98); box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        
+        .nav-brand { display:flex; align-items:center; gap:15px; text-decoration:none; }
+        .nav-brand-seal {
+            width:45px; height:45px;
+            background: linear-gradient(135deg, #c9a84c, #8b6914);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; color: #0c1428; 
+            box-shadow: 0 0 15px rgba(201,168,76,0.3);
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+        .nav-brand-text { 
+            font-family: var(--font-display); color: #c9a84c; 
+            font-size: 1.25rem; font-weight: 800; line-height: 1.1; 
+            text-transform: uppercase; letter-spacing: 1.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .nav-brand-sub { font-size: 0.68rem; color: rgba(255,255,255,0.6); letter-spacing: 2px; text-transform: uppercase; font-weight: 700; margin-top: 2px; }
+
+        .nav-links { display:flex; gap:10px; align-items:center; list-style: none; margin: 0; padding: 0; }
+        .nav-link-custom {
+            color: rgba(255,255,255,0.7); font-size: 0.72rem; letter-spacing: 2px;
+            text-transform: uppercase; text-decoration: none; padding: 12px 18px; border-radius: 8px;
+            transition: all 0.3s; font-weight: 700;
+        }
+        .nav-link-custom:hover { color: var(--gold); background: rgba(201,168,76,0.1); }
+        .nav-link-custom.active { color: var(--gold); }
+        
+        .nav-cta {
+            background: linear-gradient(135deg, var(--gold), #b39441);
+            color: #0c1428 !important; font-weight: 800 !important;
+            border-radius: 50px; padding: 12px 28px !important; margin-left: 15px;
+            box-shadow: 0 10px 20px rgba(201,168,76,0.2);
+            border: none;
+        }
+        .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(201,168,76,0.3); filter: brightness(1.1); }
+
+        .nav-toggle { display:none; background:none; border:none; cursor:pointer; }
+        .nav-toggle span { display:block; width:22px; height:2px; background:var(--gold); margin:5px 0; transition:all 0.3s; border-radius:2px; }
+
+
+        /* ── NEW PREMIUM FOOTER ── */
+        .footer-lux {
+            background: #0a1122;
+            padding: 100px 0 60px;
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+        }
+        .footer-lux::before {
+            content: ''; position: absolute; inset: 0;
+            background-image: 
+                linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+        
+        .footer-lux-title {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 30px;
+            display: block;
+            text-align: center;
+        }
+        
+        .footer-lux-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-bottom: 40px;
+            list-style: none;
+            padding: 0;
+        }
+        .footer-lux-nav a {
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .footer-lux-nav a:hover {
+            color: var(--gold);
+            transform: translateY(-2px);
+        }
+        
+        .footer-lux-copyright {
+            text-align: center;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+        .footer-lux-location {
+            text-align: center;
+            color: rgba(255,255,255,0.3);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        /* ── CONNECT CARDS IN FOOTER ── */
+        .footer-connect-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 80px;
+        }
+        .f-connect-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(201,168,76,0.15);
+            border-radius: 12px;
+            padding: 35px 25px;
+            text-align: center;
+            transition: all 0.4s;
+        }
+        .f-connect-card:hover {
+            background: rgba(201,168,76,0.08);
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+        .f-connect-icon {
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: block;
+        }
+        .f-connect-label {
+            color: var(--gold);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: block;
+            opacity: 0.8;
+        }
+        .f-connect-text {
+            color: rgba(255,255,255,0.85);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0;
+            white-space: pre-line;
+        }
+
+        @media (max-width: 991px) {
+            .footer-connect-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 576px) {
+            .footer-connect-grid { grid-template-columns: 1fr; }
+            .footer-lux-nav { gap: 15px; }
+            .footer-lux { padding: 60px 0 40px; }
+        }
+
+        /* ── FOLLOW ONLINE GLOBAL SECTION ── */
+        .follow-online-global {
+            background: #ffffff;
+            padding: 80px 0;
+            position: relative;
+        }
+        .follow-card-grid-lux {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .follow-card-lux {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 30px;
+            border-radius: 16px;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            color: #ffffff;
+        }
+        .follow-card-lux:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            color: #ffffff;
+        }
+        .f-card-icon-lux {
+            font-size: 2.2rem;
+            flex-shrink: 0;
+        }
+        .f-card-info-lux {
+            display: flex;
+            flex-direction: column;
+        }
+        .f-card-platform-lux {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 800;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+        .f-card-handle-lux {
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: var(--font-display);
+        }
+
+        /* Specific Gradients from Screenshot */
+        .fc-facebook { background: linear-gradient(135deg, #1877f2, #0a5bbf); }
+        .fc-instagram { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .fc-website { background: linear-gradient(135deg, #1a2e5e, #0c1428); border: 1px solid rgba(255,255,255,0.1); }
+
+        @media (max-width: 991px) {
+            .follow-card-grid-lux { grid-template-columns: repeat(2, 1fr); padding: 0 20px; }
+        }
+        @media (max-width: 768px) {
+            .follow-card-grid-lux { grid-template-columns: 1fr; }
+        }
+    </style>
     @stack('styles')
 </head>
 <body>
-    <!-- Preloader -->
-    <div class="preloader" id="preloader">
-        <div class="preloader-icon">
-            <img src="{{ $logoUrl }}" alt="Bengaluru Law House" class="preloader-logo" style="height: 120px; width: auto; animation: pulse 2s infinite;">
-        </div>
-    </div>
 
-    <!-- Header -->
-    <header class="law-header" id="mainHeader">
-        <nav class="navbar navbar-expand-lg">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{ $logoUrl }}" alt="Bengaluru Law House" class="logo-img">
-                    <span class="brand-text d-none d-md-inline">Bengaluru Law House</span>
-                </a>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto align-items-center">
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ url('/') }}">
-                                <i class="fas fa-home nav-icon"></i> Home
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('blog.*') ? 'active' : '' }}" href="{{ route('blog.index') }}">
-                                <i class="fas fa-newspaper nav-icon"></i> News
-                            </a>
-                        </li>
-                        {{-- <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('testimonials') ? 'active' : '' }}" href="{{ route('testimonials') }}">
-                                <i class="fas fa-video nav-icon"></i> Videos
-                            </a>
-                        </li> --}}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/about-us') }}">
-                                <i class="fas fa-info-circle nav-icon"></i> About Us
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/contact-us') }}">
-                                <i class="fas fa-envelope nav-icon"></i> Contact Us
-                            </a>
-                        </li>
-
-                        <!-- More Dropdown -->
-                        <li class="nav-item dropdown more-dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-ellipsis-h nav-icon"></i> More
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-animated dropdown-menu-end">
-                                @auth('agent')
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('agent.dashboard') }}">
-                                            <i class="fas fa-tachometer-alt me-2"></i> Distributor Dashboard
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <form method="POST" action="{{ route('agent.logout') }}">
-                                            @csrf
-                                            <button type="submit" class="dropdown-item">
-                                                <i class="fas fa-sign-out-alt me-2"></i> Logout
-                                            </button>
-                                        </form>
-                                    </li>
-                                @else
-                                    <li>
-                                        <a class="dropdown-item" href="{{ route('agent.login') }}">
-                                            <i class="fas fa-sign-in-alt me-2"></i> Distributor Login
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item highlight-item" href="{{ route('agent.register') }}">
-                                            <i class="fas fa-user-plus me-2"></i> Become Distributor
-                                        </a>
-                                    </li>
-                                @endauth
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+    <nav class="nav-premium" id="mainHeader">
+        <a class="nav-brand" href="{{ url('/') }}">
+            <div class="nav-brand-seal">⚖</div>
+            <div>
+                <div class="nav-brand-text">Bengaluru Law House</div>
+                <div class="nav-brand-sub">Adv. Veerendrababu Nanjegowda</div>
             </div>
-        </nav>
-        <div class="header-accent"></div>
-    </header>
+        </a>
+        <div class="nav-links">
+            <a href="{{ url('/about-us') }}" class="nav-link-custom {{ request()->is('about-us') ? 'active' : '' }}">About</a>
+            <a href="{{ url('/') }}#practice" class="nav-link-custom {{ request()->routeIs('services.*') ? 'active' : '' }}">Practice</a>
+            <a href="{{ route('products.index') }}" class="nav-link-custom {{ request()->routeIs('products.*') ? 'active' : '' }}">Publications</a>
+            <a href="{{ route('offices.index') }}" class="nav-link-custom {{ request()->routeIs('offices.*') ? 'active' : '' }}">Offices</a>
+            <a href="{{ route('gallery') }}" class="nav-link-custom {{ request()->routeIs('gallery') ? 'active' : '' }}">Gallery</a>
+            <a href="{{ url('/contact-us') }}" class="nav-link-custom {{ request()->is('contact-us') ? 'active' : '' }}">Contact Us</a>
 
-    <!-- Main Content -->
-    <main>
+            <div class="dropdown d-inline-block">
+                <a class="nav-link-custom dropdown-toggle" href="#" data-bs-toggle="dropdown">More</a>
+                <ul class="dropdown-menu dropdown-menu-dark shadow-lg border-0 mt-3" style="background: var(--navy-mid);">
+                    @auth('agent')
+                        <li><a class="dropdown-item py-2" href="{{ route('agent.dashboard') }}">Dashboard</a></li>
+                        <li><hr class="dropdown-divider opacity-10"></li>
+                        <li>
+                            <form method="POST" action="{{ route('agent.logout') }}">
+                                @csrf
+                                <button type="submit" class="dropdown-item py-2 text-danger">Logout</button>
+                            </form>
+                        </li>
+                    @else
+                        <li><a class="dropdown-item py-2" href="{{ route('agent.login') }}">Distributor Login</a></li>
+                        <li><a class="dropdown-item py-2" href="{{ route('agent.register') }}">Become Distributor</a></li>
+                    @endauth
+                </ul>
+            </div>
+        </div>
+        <button class="nav-toggle" id="navToggle">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <main class="main-content" style="min-height: 80vh;">
         @yield('content')
     </main>
 
-    <!-- Premium Footer -->
-    <footer class="premium-footer">
-        <!-- Footer Top Wave -->
-        <div class="footer-wave">
-            <svg viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0,50 C360,100 720,0 1080,50 C1260,75 1380,62.5 1440,50 L1440,100 L0,100 Z" fill="#0a1628"/>
-            </svg>
-        </div>
+    <!-- ── FOLLOW ONLINE (Light Background) ── -->
+    <section class="follow-online-global">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="label-gold" style="font-size: 0.7rem; letter-spacing: 4px;">FOLLOW ONLINE</span>
+                <h2 class="font-display text-navy mb-4" style="font-size: 2.8rem;">Stay Connected with Advocate Veerendrababu</h2>
+                <div class="pas-separator mx-auto" style="background: var(--gold); opacity: 0.5;"></div>
+                <p class="text-muted mx-auto" style="max-width: 600px; font-size: 1.05rem;">Follow for legal insights, cultural updates, literary news and the latest from the practice.</p>
+            </div>
 
-        <div class="footer-main-content">
-            <div class="container">
-                <!-- Footer Top Section -->
-                <div class="footer-top">
-                    <div class="row g-4 align-items-center">
-                        <div class="col-lg-6">
-                            <div class="footer-brand-section">
-                                <img src="{{ $logoUrl }}" alt="Bengaluru Law House" class="footer-logo">
-                                <div class="footer-brand-info">
-                                    <h3>Bengaluru Law House</h3>
-                                    <p>Publications</p>
-                                </div>
-                            </div>
-                        </div>
+            <div class="follow-card-grid-lux" data-aos="fade-up">
+                <!-- Facebook -->
+                <a href="https://facebook.com" target="_blank" class="follow-card-lux fc-facebook">
+                    <div class="f-card-icon-lux"><i class="fab fa-facebook"></i></div>
+                    <div class="f-card-info-lux">
+                        <span class="f-card-platform-lux">FACEBOOK</span>
+                        <span class="f-card-handle-lux">ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ</span>
                     </div>
-                </div>
-
-                <!-- Footer Main Links -->
-                <div class="footer-links-section">
-                    <div class="row g-4">
-                        <div class="col-lg-4 col-md-6">
-                            <div class="footer-widget">
-                                <h5 class="widget-title">About Us</h5>
-                                <p class="footer-about-text">
-                                    Bengaluru Law House Publications is one of India's leading providers of authoritative legal books and academic resources for students, advocates, law firms, and judicial institutions.
-                                </p>
-                                <div class="footer-contact-quick">
-                                    <a href="tel:+918217215195" class="quick-contact">
-                                        <i class="fas fa-phone-alt"></i>
-                                        <span>+91 8217215195</span>
-                                    </a>
-                                    <a href="mailto:bengalurulawhouse@gmail.com" class="quick-contact">
-                                        <i class="fas fa-envelope"></i>
-                                        <span>bengalurulawhouse@gmail.com</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-2 col-md-6 col-6">
-                            <div class="footer-widget">
-                                <h5 class="widget-title">Quick Links</h5>
-                                <ul class="footer-links">
-                                    <li><a href="{{ url('/') }}">Home</a></li>
-                                    <li><a href="{{ route('products.index') }}">Publications</a></li>
-                                    {{-- <li><a href="{{ route('testimonials') }}">Videos</a></li> --}}
-                                    <li><a href="{{ url('/about-us') }}">About Us</a></li>
-                                    <li><a href="{{ url('/contact-us') }}">Contact Us</a></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-6">
-                            <div class="footer-widget">
-                                <h5 class="widget-title">Legal</h5>
-                                <ul class="footer-links">
-                                    <li><a href="{{ url('/privacy-policy') }}">Privacy Policy</a></li>
-                                    <li><a href="{{ url('/terms-conditions') }}">Terms & Conditions</a></li>
-                                    <li><a href="{{ url('/shipping-policy') }}">Shipping Policy</a></li>
-                                    <li><a href="{{ url('/refund-return-policy') }}">Refund Policy</a></li>
-                                    <li><a href="{{ url('/disclamer') }}">Disclaimer</a></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6">
-                            <div class="footer-widget">
-                                <h5 class="widget-title">Distributor</h5>
-                                <ul class="footer-links">
-                                    <li><a href="{{ route('agent.login') }}">Distributor Login</a></li>
-                                    <li><a href="{{ route('agent.register') }}">Become Distributor</a></li>
-                                    <li><a href="{{ route('track.order') }}">Track Order</a></li>
-                                </ul>
-                                {{-- <div class="footer-badge">
-                                    {{-- <svg style="width:100%;height:100%;" viewBox="0 0 140 30" preserveAspectRatio="none" width="100%" height="100%"><use href="#svg-1619784944_5908"></use></svg> --}}
-                                    <span>Secure Payments</span>
-                                </div> --}}
-                            </div>
-                        </div>
+                </a>
+                <!-- Instagram -->
+                <a href="https://instagram.com/veerendrababunanjegowda" target="_blank" class="follow-card-lux fc-instagram">
+                    <div class="f-card-icon-lux"><i class="fab fa-instagram"></i></div>
+                    <div class="f-card-info-lux">
+                        <span class="f-card-platform-lux">INSTAGRAM</span>
+                        <span class="f-card-handle-lux">@veerendrababunanjegowda</span>
                     </div>
-                </div>
+                </a>
+                <!-- Website -->
+                <a href="https://www.blrlawhouse.com" target="_blank" class="follow-card-lux fc-website">
+                    <div class="f-card-icon-lux"><i class="fas fa-globe"></i></div>
+                    <div class="f-card-info-lux">
+                        <span class="f-card-platform-lux">OFFICIAL WEBSITE</span>
+                        <span class="f-card-handle-lux">www.blrlawhouse.com</span>
+                    </div>
+                </a>
             </div>
         </div>
+    </section>
 
-        <!-- Footer Bottom -->
-        <div class="footer-bottom">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <p class="copyright-text">
-                            &copy; {{ date('Y') }} Bengaluru Law House Publications. All Rights Reserved.
-                        </p>
-                    </div>
-                    <div class="col-md-6 text-md-end">
-                        <p class="developed-by">
-                            Developed by <a href="#">Supremeone Software</a>
-                        </p>
-                    </div>
+    <footer class="footer-lux">
+        <div class="container" data-aos="fade-up">
+            <!-- Connect Cards -->
+            <div class="text-center mb-5">
+                <span class="label-gold" style="font-size: 0.7rem; letter-spacing: 4px;">GET IN TOUCH</span>
+                <h2 class="font-display mb-4" style="font-size: 2.5rem;">Connect with Advocate Veerendrababu Nanjegowda</h2>
+                <div class="pas-separator mx-auto"></div>
+                <p class="text-white opacity-60 mx-auto" style="max-width: 700px; font-size: 1rem;">For legal consultations, case inquiries, or professional engagements, reach out through any of the following channels.</p>
+            </div>
+
+            <div class="footer-connect-grid">
+                <!-- Bengaluru Office -->
+                <div class="f-connect-card">
+                    <i class="fas fa-university f-connect-icon"></i>
+                    <span class="f-connect-label">Bengaluru Office</span>
+                    <p class="f-connect-text">#1652/6, 20th Cross, 8th Main, CQAL Layout, C-Block, Sahakaranagar, Bengaluru - 560092</p>
+                </div>
+                <!-- New Delhi Office -->
+                <div class="f-connect-card">
+                    <i class="fas fa-landmark f-connect-icon"></i>
+                    <span class="f-connect-label">New Delhi Office</span>
+                    <p class="f-connect-text">Lawyer's Chambers, Supreme Court of India, New Delhi - 110001</p>
+                </div>
+                <!-- Phone -->
+                <div class="f-connect-card">
+                    <i class="fas fa-phone-alt f-connect-icon"></i>
+                    <span class="f-connect-label">Phone</span>
+                    <p class="f-connect-text">+91 80 4150 2373<br>+91 96325 27961</p>
+                </div>
+                <!-- Email -->
+                <div class="f-connect-card">
+                    <i class="fas fa-envelope f-connect-icon"></i>
+                    <span class="f-connect-label">Email</span>
+                    <p class="f-connect-text">bengalurulawhouse@gmail.com</p>
+                </div>
+                <!-- Website -->
+                <div class="f-connect-card">
+                    <i class="fas fa-globe f-connect-icon"></i>
+                    <span class="f-connect-label">Website</span>
+                    <p class="f-connect-text">www.blrlawhouse.com</p>
+                </div>
+                <!-- Practice Courts -->
+                <div class="f-connect-card">
+                    <i class="fas fa-balance-scale f-connect-icon"></i>
+                    <span class="f-connect-label">Practice Courts</span>
+                    <p class="f-connect-text">Supreme Court of India • High Courts<br>NGT • All Courts, Karnataka</p>
                 </div>
             </div>
-        </div>
 
-        <!-- Floating Elements -->
-        <div class="footer-decoration">
-            <div class="decoration-circle circle-1"></div>
-            <div class="decoration-circle circle-2"></div>
+            <!-- Minimal Footer -->
+            <div class="pt-5 border-top border-white border-opacity-10">
+                <span class="footer-lux-title">Bengaluru Law House</span>
+                
+                <ul class="footer-lux-nav">
+                    <li><a href="{{ url('/') }}">About</a></li>
+                    <li><a href="{{ url('/') }}#practice">Practice</a></li>
+                    <li><a href="{{ route('products.index') }}">Publications</a></li>
+                    <li><a href="{{ route('offices.index') }}">Offices</a></li>
+                    <li><a href="{{ route('gallery') }}">Gallery</a></li>
+                    <li><a href="{{ url('/contact-us') }}">Contact</a></li>
+                    <li><a href="https://instagram.com" target="_blank">Instagram</a></li>
+                    <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
+                </ul>
+
+                <div class="footer-lux-copyright">
+                    © 2026 Adv. Veerendrababu Nanjegowda • MBA, LLB, PhD (Pursuing) • www.blrlawhouse.com
+                </div>
+                <div class="footer-lux-location">
+                    Bengaluru, Karnataka • New Delhi
+                </div>
+            </div>
         </div>
     </footer>
-
-    <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/918217215195" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
-        <div class="whatsapp-pulse"></div>
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <!-- Back to Top Button -->
-    <button class="back-to-top" id="backToTop" aria-label="Back to top">
-        <i class="fas fa-chevron-up"></i>
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
     </button>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <!-- Theme JS -->
     <script>
@@ -277,24 +474,13 @@
                 }
             });
 
-            // Scroll animations
-            const animatedElements = document.querySelectorAll('.fade-up, .fade-in, .slide-left, .slide-right, .scale-in');
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1
-            };
-
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-
-            animatedElements.forEach(el => observer.observe(el));
+            // AOS Initialization
+            AOS.init({
+                duration: 800,
+                easing: 'ease-out-back',
+                once: true,
+                offset: 120
+            });
 
             // Counter animation
             const counters = document.querySelectorAll('.stat-number[data-count]');

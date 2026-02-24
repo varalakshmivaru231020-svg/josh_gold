@@ -1,64 +1,48 @@
 @extends('layouts.lawfirm')
 
-@section('title', 'Blog - Bengaluru Law House')
+@section('title', 'Legal Intelligence & News | Bengaluru Law House')
 
 @section('content')
-<section class="blog-page-section">
-    <div class="container py-5">
-        <!-- Page Header -->
-        <div class="page-header text-center mb-5">
-            <p class="section-label fade-up">Latest News</p>
-            <h1 class="page-title fade-up delay-1">Our Blog</h1>
-            <div class="section-divider mx-auto fade-up delay-2"></div>
-            <p class="page-description fade-up delay-3">
-                Stay updated with the latest news, legal insights, and publications from Bengaluru Law House
-            </p>
+<section class="blog-luxury-page">
+    <div class="blog-hero-header">
+        <div class="container text-center" data-aos="fade-up">
+            <div class="label-gold">KNOWLEDGE HUB</div>
+            <h1 class="heading-premium text-white">Legal Intelligence Archives</h1>
+            <div class="accent-line-gold mx-auto"></div>
+            <p class="hero-subheader text-white opacity-75">Categorical insights into the evolving landscape of Indian Law & Jurisprudence</p>
         </div>
+    </div>
 
-        <!-- Blog Grid -->
-        <div class="row">
+    <div class="container py-5 mt-n5">
+        <div class="row g-4">
             @forelse($blogs as $blog)
-            <div class="col-lg-4 col-md-6 mb-4 fade-up">
-                <div class="blog-card">
-                    <div class="blog-image">
-                        @if($blog->image)
-                        <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}">
-                        @else
-                        <div class="blog-image-placeholder">
-                            <i class="fas fa-newspaper"></i>
-                        </div>
-                        @endif
+            <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up">
+                <a href="{{ route('blog.show', $blog->slug) }}" class="news-luxury-card h-100">
+                    <div class="news-img-wrap">
+                        <img src="{{ $blog->image ? asset('storage/' . $blog->image) : asset('blr.jpg') }}" alt="{{ $blog->title }}">
+                        <div class="news-metadata">{{ $blog->created_at->format('M d, Y') }}</div>
                     </div>
-                    <div class="blog-content">
-                        <div class="blog-date">
-                            <i class="far fa-calendar-alt me-2"></i>
-                            {{ $blog->created_at->format('d M Y') }}
-                        </div>
-                        <h4 class="blog-title">{{ $blog->title }}</h4>
-                        <p class="blog-excerpt">{{ $blog->excerpt }}</p>
-                        <a href="{{ route('blog.show', $blog->slug) }}" class="blog-link">
-                            View More <i class="fas fa-arrow-right ms-2"></i>
-                        </a>
+                    <div class="news-body">
+                        <h3>{{ $blog->title }}</h3>
+                        <p>{{ \Illuminate\Support\Str::limit($blog->excerpt, 120) }}</p>
+                        <span class="read-analysis">Full Commentary <i class="fas fa-arrow-right"></i></span>
                     </div>
-                </div>
+                </a>
             </div>
             @empty
-            <div class="col-12">
-                <div class="empty-state text-center py-5">
-                    <i class="fas fa-newspaper fa-4x text-muted mb-4"></i>
-                    <h4>No Blog Posts Yet</h4>
-                    <p class="text-muted">Check back soon for updates and news from Bengaluru Law House.</p>
-                    <a href="{{ route('home') }}" class="btn-primary-law mt-3">
-                        <i class="fas fa-home me-2"></i>Back to Home
-                    </a>
+            <div class="col-12" data-aos="fade-up">
+                <div class="empty-intelligence text-center">
+                    <i class="fas fa-scroll fa-4x text-gold mb-4"></i>
+                    <h3 class="text-navy">No Commentaries Found</h3>
+                    <p class="text-muted">Archives are currently being organized. Please return shortly.</p>
+                    <a href="{{ route('home') }}" class="btn-gold-action mt-4">Return Home</a>
                 </div>
             </div>
             @endforelse
         </div>
 
-        <!-- Pagination -->
         @if($blogs->hasPages())
-        <div class="d-flex justify-content-center mt-5">
+        <div class="pagination-premium mt-5" data-aos="fade-up">
             {{ $blogs->links() }}
         </div>
         @endif
@@ -68,165 +52,50 @@
 
 @push('styles')
 <style>
-.blog-page-section {
-    margin-top: 80px;
-    min-height: calc(100vh - 80px);
-    background: var(--cream-primary);
-    padding: 60px 0;
-}
-
-.page-header {
-    margin-bottom: 3rem;
-}
-
-.page-title {
-    font-family: var(--font-heading);
-    font-size: 2.5rem;
-    color: var(--navy-deep);
-    margin-bottom: 1rem;
-}
-
-.page-description {
-    max-width: 600px;
-    margin: 1rem auto 0;
-    color: var(--text-muted);
-}
-
-.blog-card {
-    background: var(--white);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: var(--shadow-soft);
-    transition: var(--transition-medium);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.blog-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-strong);
-}
-
-.blog-image {
-    height: 220px;
-    overflow: hidden;
-}
-
-.blog-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: var(--transition-medium);
-}
-
-.blog-card:hover .blog-image img {
-    transform: scale(1.05);
-}
-
-.blog-image-placeholder {
-    width: 100%;
-    height: 100%;
-    background: var(--cream-primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.blog-image-placeholder i {
-    font-size: 3rem;
-    color: var(--navy-muted);
-}
-
-.blog-content {
-    padding: 1.5rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.blog-date {
-    font-size: 0.85rem;
-    color: var(--gold-dark);
-    margin-bottom: 0.75rem;
-}
-
-.blog-title {
-    font-family: var(--font-heading);
-    font-size: 1.2rem;
-    color: var(--navy-deep);
-    margin-bottom: 0.75rem;
-    line-height: 1.4;
-}
-
-.blog-excerpt {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 1rem;
-    flex: 1;
-}
-
-.blog-link {
-    color: var(--gold-primary);
-    font-weight: 600;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    transition: var(--transition-fast);
-}
-
-.blog-link:hover {
-    color: var(--navy-deep);
-}
-
-.blog-link i {
-    transition: var(--transition-fast);
-}
-
-.blog-link:hover i {
-    transform: translateX(5px);
-}
-
-.empty-state {
-    background: var(--white);
-    border-radius: 12px;
-    padding: 3rem;
-}
-
-/* Pagination Styling */
-.pagination {
-    gap: 0.5rem;
-}
-
-.page-link {
-    border: none;
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    color: var(--navy-deep);
-    background: var(--white);
-    box-shadow: var(--shadow-soft);
-}
-
-.page-link:hover {
-    background: var(--gold-primary);
-    color: var(--navy-deep);
-}
-
-.page-item.active .page-link {
-    background: var(--navy-deep);
-    color: var(--white);
-}
-
-@media (max-width: 767px) {
-    .blog-page-section {
-        margin-top: 70px;
-        padding: 40px 0;
+    .blog-luxury-page { background: var(--cream); min-height: 80vh; padding-bottom: 120px; }
+    
+    .blog-hero-header { 
+        background: var(--navy); 
+        padding: 160px 0 120px; 
+        position:relative; 
+        overflow:hidden; 
     }
-
-    .page-title {
-        font-size: 2rem;
+    .blog-hero-header::before {
+        content: ''; position: absolute; inset: 0;
+        background-image: 
+            linear-gradient(rgba(201, 168, 76, 0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(201, 168, 76, 0.04) 1px, transparent 1px);
+        background-size: 50px 50px;
     }
-}
+    .blog-hero-header::after { 
+        content:''; position:absolute; inset:0; 
+        background: radial-gradient(circle at 50% 120%, rgba(201,168,76,0.15) 0%, transparent 60%); 
+    }
+    
+    .hero-subheader { max-width: 700px; margin: 0 auto; font-family: var(--font-display); font-size: 1.4rem; font-style: italic; position: relative; z-index: 2; }
+    
+    .news-luxury-card { display:block; text-decoration:none; background:white; border-radius:24px; overflow:hidden; border: 1px solid rgba(0,0,0,0.05); transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); border-bottom: 4px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+    .news-luxury-card:hover { transform: translateY(-12px); box-shadow: 0 30px 60px rgba(0,0,0,0.12); }
+    
+    .news-img-wrap { position:relative; height:260px; overflow:hidden; }
+    .news-img-wrap img { width:100%; height:100%; object-fit:cover; transition: all 0.5s ease; }
+    .news-luxury-card:hover .news-img-wrap img { transform: scale(1.1); }
+    
+    .news-metadata { position:absolute; bottom:15px; right:15px; background:white; color:var(--navy); padding:6px 20px; border-radius:50px; font-size:0.8rem; font-weight:700; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    
+    .news-body { padding: 35px; }
+    .news-body h3 { font-family: var(--font-display); font-size: 1.7rem; color: var(--navy); margin-bottom: 15px; font-weight: 700; line-height: 1.3; }
+    .news-body p { color: var(--text-muted); font-size: 1rem; line-height: 1.7; margin-bottom: 25px; height: 5.1em; overflow: hidden; }
+    
+    .read-analysis { color: var(--gold-dark); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; display: inline-flex; align-items: center; gap: 10px; transition: all 0.3s; }
+    .news-luxury-card:hover .read-analysis { color: var(--navy); transform: translateX(5px); }
+
+    .empty-intelligence { background: white; padding: 100px; border-radius: 40px; border: 2px dashed rgba(201,168,76,0.3); }
+    
+    .pagination-premium .pagination { justify-content: center; gap: 12px; }
+    .pagination-premium .page-link { background: var(--white); border: 1px solid rgba(201,168,76,0.2); color: var(--navy); border-radius: 10px; padding: 12px 22px; font-weight: 600; }
+    .pagination-premium .page-item.active .page-link { background: var(--gold); border-color: var(--gold); color: var(--navy); box-shadow: 0 5px 15px rgba(201,168,76,0.3); }
+    
+    .mt-n5 { margin-top: -80px !important; }
 </style>
 @endpush

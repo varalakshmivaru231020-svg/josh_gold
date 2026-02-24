@@ -1,20 +1,20 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Edit Product')
+@section('title', 'Edit Publication / Product')
 
 @section('content')
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Edit Product</h1>
+    <h1 class="mt-4">Edit Publication / Product</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
         <li class="breadcrumb-item"><a href="{{ route('admin.products.index') }}">Products</a></li>
-        <li class="breadcrumb-item active">Edit Product</li>
+        <li class="breadcrumb-item active">Edit: {{ $product->name }}</li>
     </ol>
     
     <div class="card mb-4">
         <div class="card-header">
             <i class="fas fa-edit me-1"></i>
-            Edit Product: {{ $product->name }}
+            Edit Publication: {{ $product->name }}
         </div>
         <div class="card-body">
             <form action="{{ route('admin.products.update', $product) }}" method="POST" enctype="multipart/form-data">
@@ -24,12 +24,45 @@
                 <div class="row">
                     <div class="col-md-8">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Product Name *</label>
+                            <label for="name" class="form-label">Book / Product Name *</label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror" 
                                    id="name" name="name" value="{{ old('name', $product->name) }}" required>
                             @error('name')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
+                        </div>
+
+                        {{-- Publication Metadata Row --}}
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="year" class="form-label">Year / Label</label>
+                                <input type="text" class="form-control @error('year') is-invalid @enderror" 
+                                       id="year" name="year" value="{{ old('year', $product->year) }}"
+                                       placeholder="e.g. 2008, 2026, Legal, 12 Volumes">
+                                @error('year')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <small class="text-muted">Shown as a badge on home page book card</small>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="category" class="form-label">Category / Genre</label>
+                                <input type="text" class="form-control @error('category') is-invalid @enderror" 
+                                       id="category" name="category" value="{{ old('category', $product->category) }}"
+                                       placeholder="e.g. Kannada Literature, Legal Publication">
+                                @error('category')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-4">
+                                <label for="book_icon" class="form-label">Book Icon / Emoji</label>
+                                <input type="text" class="form-control @error('book_icon') is-invalid @enderror" 
+                                       id="book_icon" name="book_icon" value="{{ old('book_icon', $product->book_icon) }}"
+                                       placeholder="e.g. 🌾 💛 ⚖️ 📚">
+                                @error('book_icon')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <small class="text-muted">Emoji displayed on book card</small>
+                            </div>
                         </div>
                         
                         <div class="mb-3">
@@ -62,10 +95,39 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        
-                        <!-- Current Images -->
+
+                        {{-- Cover Image --}}
                         <div class="mb-3">
-                            <label class="form-label">Current Images</label>
+                            <label class="form-label fw-bold">📸 Cover Image <span class="text-muted fw-normal">(shown on home page)</span></label>
+                            @if($product->cover_image)
+                                <div class="mb-2">
+                                    <img src="{{ asset('storage/' . $product->cover_image) }}" 
+                                         alt="Cover" class="img-thumbnail" 
+                                         style="width: 120px; height: 160px; object-fit: cover; border: 2px solid #c9a84c;">
+                                    <div class="mt-1">
+                                        <a href="{{ route('admin.products.remove-cover', $product) }}"
+                                           class="btn btn-sm btn-outline-danger"
+                                           onclick="return confirm('Remove cover image?')">
+                                            <i class="fas fa-times me-1"></i>Remove Cover
+                                        </a>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="alert alert-light py-2 px-3 mb-2">
+                                    <small class="text-muted">No cover image uploaded yet</small>
+                                </div>
+                            @endif
+                            <input type="file" class="form-control @error('cover_image') is-invalid @enderror" 
+                                   id="cover_image" name="cover_image" accept="image/*">
+                            @error('cover_image')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <div id="coverPreview" class="mt-2"></div>
+                        </div>
+                        
+                        <!-- Current Gallery Images -->
+                        <div class="mb-3">
+                            <label class="form-label">Current Gallery Images</label>
                             <div class="d-flex flex-wrap gap-2 mb-2">
                                 @if($product->images && count($product->images) > 0)
                                     @foreach($product->images as $index => $image)
@@ -82,14 +144,14 @@
                                     </div>
                                     @endforeach
                                 @else
-                                    <p class="text-muted">No images uploaded</p>
+                                    <p class="text-muted">No gallery images uploaded</p>
                                 @endif
                             </div>
                         </div>
                         
-                        <!-- New Images -->
+                        <!-- New Gallery Images -->
                         <div class="mb-3">
-                            <label for="images" class="form-label">Add More Images</label>
+                            <label for="images" class="form-label">Add More Gallery Images</label>
                             <input type="file" class="form-control @error('images') is-invalid @enderror" 
                                    id="images" name="images[]" multiple accept="image/*">
                             @error('images')
@@ -103,7 +165,7 @@
                             <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" 
                                    {{ old('is_active', $product->is_active) ? 'checked' : '' }}>
                             <label class="form-check-label" for="is_active">
-                                Active Product
+                                Active / Published
                             </label>
                         </div>
                     </div>
@@ -111,12 +173,37 @@
                 
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <a href="{{ route('admin.products.index') }}" class="btn btn-secondary me-md-2">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Update Product</button>
+                    <button type="submit" class="btn btn-primary">Update Publication</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+@push('styles')
+<style>
+#imagePreview, #coverPreview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.preview-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 2px solid #dee2e6;
+}
+.preview-cover {
+    width: 140px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 2px solid #c9a84c;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+</style>
+@endpush
 
 @push('scripts')
 <script>
@@ -135,12 +222,25 @@ $(document).ready(function() {
             ['view', ['fullscreen', 'codeview', 'help']]
         ]
     });
-    
-    // Image preview for new images
+
+    // Cover image preview
+    $('#cover_image').on('change', function() {
+        $('#coverPreview').empty();
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = $('<img>').attr('src', e.target.result).addClass('preview-cover');
+                $('#coverPreview').append(img);
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Additional image preview for new images
     $('#images').on('change', function() {
         $('#imagePreview').empty();
         const files = this.files;
-        
         for (let i = 0; i < files.length; i++) {
             const reader = new FileReader();
             reader.onload = function(e) {
