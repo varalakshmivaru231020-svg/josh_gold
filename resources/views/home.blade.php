@@ -112,9 +112,12 @@
                             <div class="id-seal-wrapper">
                                 @php
                                     $siteLogo = \App\Models\SiteSetting::get('site_logo');
-                                    $logoUrl = $siteLogo ? asset('storage/' . $siteLogo) : asset('blr.jpg');
                                 @endphp
-                                <img src="{{ $logoUrl }}" alt="Seal">
+                                @if($siteLogo)
+                                    <img src="{{ asset('storage/' . $siteLogo) }}" alt="Seal">
+                                @else
+                                    <div class="id-seal-fallback">⚖</div>
+                                @endif
                             </div>
                             <div class="id-brand-titles">
                                 <h1 class="main-id-name">Veerendrababu Nanjegowda</h1>
@@ -1604,7 +1607,7 @@
         margin-bottom: 20px;
     }
     .id-seal-wrapper {
-        width: 80px; /* Slightly smaller seal */
+        width: 80px;
         height: 80px;
         background: white;
         border-radius: 50%;
@@ -1616,6 +1619,17 @@
         box-shadow: 0 0 25px rgba(201, 168, 76, 0.3);
     }
     .id-seal-wrapper img { width: 90%; height: 90%; object-fit: contain; }
+    .id-seal-fallback {
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #c9a84c, #8b6914);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.2rem;
+        color: #0c1428;
+    }
     
     .id-brand-titles .main-id-name {
         color: white;

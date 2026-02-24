@@ -364,7 +364,9 @@
             <a href="{{ route('contact') }}" class="nav-link-custom {{ request()->routeIs('contact') ? 'active' : '' }}">Contact Us</a>
 
             <div class="dropdown d-inline-block">
-                <a class="nav-link-custom dropdown-toggle" href="#" data-bs-toggle="dropdown">More</a>
+                <a class="nav-link-custom dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                    <i class="fas fa-bars me-1 opacity-75"></i> More
+                </a>
                 <ul class="dropdown-menu dropdown-menu-dark shadow-lg border-0 mt-3" style="background: var(--navy-mid);">
                     @auth('agent')
                         <li><a class="dropdown-item py-2" href="{{ route('agent.dashboard') }}">Dashboard</a></li>

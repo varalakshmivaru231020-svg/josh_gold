@@ -33,17 +33,16 @@
             <div class="col-lg-7" data-aos="fade-left">
                 <div class="about-page-content">
                     <span class="label-brand">BIOGRAPHY</span>
-                    <h2 class="title-premium text-navy mb-4">{{ $about?->title ?? 'Bridging the Gap Between Law & Literature' }}</h2>
+                    <h2 class="title-premium text-navy mb-4">{{ $about?->title == 'About Us' ? 'Our Commitment to Justice' : ($about?->title ?? 'Bridging the Gap Between Law & Literature') }}</h2>
                     <div class="gold-separator"></div>
                     <div class="about-text-wrap text-muted">
-                        {!! $about?->content ?? 'Adv. Veerendrababu Nanjegowda is a distinguished legal luminary with multifaceted expertise spanning Law, Business, Journalism, and Cinema. With a career dedicated to the pursuit of justice and the empowerment of the voiceless, he has established himself as a prominent voice in India\'s legal and cultural landscape.' !!}
+                        {!! $about?->content ?? 'Adv. Veerendrababu Nanjegowda is a distinguished legal luminary with multifaceted expertise spanning Law, Business, Journalism, and Cinema.' !!}
                     </div>
                     
-                    @if($about?->subtitle)
-                        <div class="quote-box-lux mt-5">
-                            <p class="h4 italic mb-0">"{{ $about->subtitle }}"</p>
-                        </div>
-                    @endif
+                    <div class="about-quote-block mt-5">
+                        <span class="about-quote-mark">&ldquo;</span>
+                        <p class="about-quote-text">Justice is not a privilege for the few — it is the birthright of every citizen. My practice is a promise to make it accessible, fair, and meaningful.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -77,10 +76,39 @@
     
     .about-text-wrap { font-size: 1.1rem; line-height: 1.8; }
     
-    .quote-box-lux {
-        padding: 40px; background: white; border-left: 5px solid var(--gold);
-        border-radius: 0 30px 30px 0; box-shadow: 0 15px 40px rgba(0,0,0,0.05);
-        font-family: var(--font-display); color: var(--navy);
+    /* ── ABOUT QUOTE BLOCK ── */
+    .about-quote-block {
+        position: relative;
+        background: var(--navy, #0c1428);
+        border-radius: 12px;
+        padding: 32px 36px 32px 44px;
+        margin-top: 28px;
+        border-left: 4px solid var(--gold, #c9a84c);
+        box-shadow: 0 12px 40px rgba(12,20,40,0.18);
+        overflow: hidden;
+    }
+    .about-quote-block::before {
+        content: '';
+        position: absolute; inset: 0;
+        background: radial-gradient(circle at 80% 50%, rgba(201,168,76,0.06) 0%, transparent 70%);
+        pointer-events: none;
+    }
+    .about-quote-mark {
+        font-family: var(--font-display, Georgia, serif);
+        font-size: 5rem;
+        line-height: 0.6;
+        color: var(--gold, #c9a84c);
+        opacity: 0.6;
+        display: block;
+        margin-bottom: 8px;
+    }
+    .about-quote-text {
+        font-family: var(--font-display, Georgia, serif);
+        font-size: 1.15rem;
+        font-style: italic;
+        line-height: 1.75;
+        color: rgba(255,255,255,0.95);
+        margin: 0;
     }
 
     .breadcrumb-luxury { display:flex; align-items:center; gap:12px; font-size:0.85rem; letter-spacing:2px; text-transform:uppercase; font-weight: 700; }
