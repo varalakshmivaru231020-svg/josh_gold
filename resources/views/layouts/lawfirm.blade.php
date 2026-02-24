@@ -103,8 +103,65 @@
         }
         .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(201,168,76,0.3); filter: brightness(1.1); }
 
-        .nav-toggle { display:none; background:none; border:none; cursor:pointer; }
-        .nav-toggle span { display:block; width:22px; height:2px; background:var(--gold); margin:5px 0; transition:all 0.3s; border-radius:2px; }
+        .nav-toggle { display:none; background:none; border:none; cursor:pointer; padding: 10px; z-index: 1001; }
+        .nav-toggle span { display:block; width:25px; height:2px; background:var(--gold); margin:6px 0; transition:all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); border-radius:2px; }
+        
+        .nav-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .nav-toggle.active span:nth-child(2) { opacity: 0; }
+        .nav-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        @media (max-width: 991px) {
+            .nav-premium { padding: 0 20px; }
+            .nav-toggle { display: block; }
+            .nav-brand-text { font-size: 1.1rem; }
+            .nav-brand-sub { font-size: 0.6rem; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 300px; height: 100vh;
+                background: #0a1122; flex-direction: column; align-items: flex-start;
+                padding: 120px 0 80px; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+                box-shadow: -15px 0 50px rgba(0,0,0,0.8); z-index: 1000;
+                visibility: hidden; border-left: 1px solid rgba(201,168,76,0.1);
+                opacity: 0; pointer-events: none;
+                overflow-y: auto;
+                max-height: 100vh;
+            }
+            .nav-links.active { right: 0; visibility: visible; opacity: 1; pointer-events: auto; display: flex; }
+            .nav-link-custom { 
+                width: 100%; font-size: 0.9rem; padding: 20px 40px; 
+                border-bottom: 1px solid rgba(255,255,255,0.03); 
+                border-radius: 0; display: block;
+                opacity: 0; transform: translateX(20px); transition: all 0.3s ease;
+            }
+            .nav-links.active .nav-link-custom { opacity: 1; transform: translateX(0); }
+            /* Staggered animation */
+            .nav-links.active .nav-link-custom:nth-child(1) { transition-delay: 0.05s; }
+            .nav-links.active .nav-link-custom:nth-child(2) { transition-delay: 0.1s; }
+            .nav-links.active .nav-link-custom:nth-child(3) { transition-delay: 0.15s; }
+            .nav-links.active .nav-link-custom:nth-child(4) { transition-delay: 0.2s; }
+            .nav-links.active .nav-link-custom:nth-child(5) { transition-delay: 0.25s; }
+            .nav-links.active .nav-link-custom:nth-child(6) { transition-delay: 0.3s; }
+            .nav-links.active .dropdown { transition-delay: 0.35s; }
+
+            .nav-link-custom:hover { background: rgba(201,168,76,0.08); color: var(--gold); padding-left: 45px; }
+            .nav-cta { margin: 30px 40px 0; width: calc(100% - 80px); text-align: center; border-radius: 50px; padding: 15px !important; }
+            .dropdown { width: 100%; }
+            .dropdown-toggle::after { float: right; margin-top: 10px; margin-right: 40px; }
+            .dropdown-menu { position: static !important; width: 100% !important; background: rgba(255,255,255,0.02) !important; transform: none !important; box-shadow: none !important; padding: 0 !important; border: none !important; margin-top: 0 !important; }
+            .dropdown-item { padding: 15px 60px !important; font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+            .dropdown-item:hover { background: rgba(255,255,255,0.05); color: var(--gold); }
+            
+            .nav-overlay {
+                position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+                backdrop-filter: blur(4px); z-index: 999;
+                opacity: 0; visibility: hidden; transition: all 0.4s;
+            }
+            .nav-overlay.active { opacity: 1; visibility: visible; }
+        }
+
+        @media (max-width: 400px) {
+            .nav-brand-text { font-size: 0.95rem; letter-spacing: 1px; }
+            .nav-brand-sub { font-size: 0.55rem; letter-spacing: 1px; }
+        }
 
 
         /* ── NEW PREMIUM FOOTER ── */
@@ -299,12 +356,12 @@
             </div>
         </a>
         <div class="nav-links">
-            <a href="{{ url('/about-us') }}" class="nav-link-custom {{ request()->is('about-us') ? 'active' : '' }}">About</a>
-            <a href="{{ url('/') }}#practice" class="nav-link-custom {{ request()->routeIs('services.*') ? 'active' : '' }}">Practice</a>
-            <a href="{{ route('products.index') }}" class="nav-link-custom {{ request()->routeIs('products.*') ? 'active' : '' }}">Publications</a>
-            <a href="{{ route('offices.index') }}" class="nav-link-custom {{ request()->routeIs('offices.*') ? 'active' : '' }}">Offices</a>
+            <a href="{{ route('about-us') }}" class="nav-link-custom {{ request()->routeIs('about-us') ? 'active' : '' }}">About</a>
+            <a href="{{ route('services.index') }}" class="nav-link-custom {{ request()->routeIs('services.index') ? 'active' : '' }}">Practice</a>
+            <a href="{{ route('products.index') }}" class="nav-link-custom {{ request()->routeIs('products.index') ? 'active' : '' }}">Publications</a>
+            <a href="{{ route('offices.index') }}" class="nav-link-custom {{ request()->routeIs('offices.index') ? 'active' : '' }}">Offices</a>
             <a href="{{ route('gallery') }}" class="nav-link-custom {{ request()->routeIs('gallery') ? 'active' : '' }}">Gallery</a>
-            <a href="{{ url('/contact-us') }}" class="nav-link-custom {{ request()->is('contact-us') ? 'active' : '' }}">Contact Us</a>
+            <a href="{{ route('contact') }}" class="nav-link-custom {{ request()->routeIs('contact') ? 'active' : '' }}">Contact Us</a>
 
             <div class="dropdown d-inline-block">
                 <a class="nav-link-custom dropdown-toggle" href="#" data-bs-toggle="dropdown">More</a>
@@ -329,6 +386,7 @@
             <span></span><span></span><span></span>
         </button>
     </nav>
+    <div class="nav-overlay" id="navOverlay"></div>
 
     <main class="main-content" style="min-height: 80vh;">
         @yield('content')
@@ -525,6 +583,25 @@
             backToTop.addEventListener('click', function() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
+
+            // Mobile nav toggle
+            const navToggle = document.getElementById('navToggle');
+            const navLinks = document.querySelector('.nav-links');
+            const navOverlay = document.getElementById('navOverlay');
+
+            function toggleMenu() {
+                navToggle.classList.toggle('active');
+                navLinks.classList.toggle('active');
+                navOverlay.classList.toggle('active');
+                document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+            }
+
+            if (navToggle) {
+                navToggle.addEventListener('click', toggleMenu);
+            }
+            if (navOverlay) {
+                navOverlay.addEventListener('click', toggleMenu);
+            }
 
             // Smooth scroll for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {

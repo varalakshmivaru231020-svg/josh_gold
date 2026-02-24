@@ -229,6 +229,7 @@
         color: inherit;
         text-decoration: none;
         transition: 0.3s;
+        word-break: break-all;
     }
     .ocl-link:hover {
         color: var(--gold-dark);

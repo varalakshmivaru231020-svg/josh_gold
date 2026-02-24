@@ -15,6 +15,19 @@
 
             <div class="row">
                 <div class="col-md-8">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Main Heading <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title', $about->title ?? 'Bridging the Gap Between Law & Literature') }}" required>
+                        @error('title')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="subtitle" class="form-label">Subheading (Optional)</label>
+                        <input type="text" class="form-control" id="subtitle" name="subtitle" value="{{ old('subtitle', $about->subtitle ?? '') }}">
+                    </div>
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">

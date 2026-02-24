@@ -110,7 +110,11 @@
                     <div class="id-content-header">
                         <div class="id-brand-meta">
                             <div class="id-seal-wrapper">
-                                <img src="{{ asset('images/logo.png') }}" alt="Seal" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3662/3662817.png'">
+                                @php
+                                    $siteLogo = \App\Models\SiteSetting::get('site_logo');
+                                    $logoUrl = $siteLogo ? asset('storage/' . $siteLogo) : asset('blr.jpg');
+                                @endphp
+                                <img src="{{ $logoUrl }}" alt="Seal">
                             </div>
                             <div class="id-brand-titles">
                                 <h1 class="main-id-name">Veerendrababu Nanjegowda</h1>
@@ -336,6 +340,8 @@
                     {!! $featuredBook->description !!}
                 </div>
 
+                {{-- Purchase button hidden as per request --}}
+                {{-- 
                 <div class="fb-price-box mb-5">
                     <span class="fb-price-label">Price: </span>
                     <span class="fb-price-gold">₹{{ number_format($featuredBook->price, 2) }}</span>
@@ -344,6 +350,7 @@
                 <a href="{{ $featuredBook->product_id ? route('products.show', $featuredBook->product_id) : ($featuredBook->button_link ?? route('products.index')) }}" class="btn-purchase-lux">
                     <i class="fas fa-shopping-cart me-2"></i> {{ $featuredBook->button_text ?? 'PURCHASE' }}
                 </a>
+                --}}
             </div>
         </div>
     </div>
@@ -389,29 +396,55 @@
             @empty
             {{-- Fallback cards as per request --}}
             <div class="pub-card" data-aos="fade-up" data-aos-delay="0">
-                <div class="pub-badge">FEATURED</div>
+                <div class="pub-badge">2018</div>
                 <div class="pub-cover">
-                    <div class="pub-icon-bg"><span class="pub-emoji">📚</span></div>
+                    <div class="pub-icon-bg"><span class="pub-emoji">🌾</span></div>
+                    <div class="pub-book-meta-top">
+                        <h3 class="pub-book-title">Swayam Krushi</h3>
+                    </div>
+                </div>
+                <div class="pub-category-tag">KANNADA LITERATURE</div>
+                <div class="pub-card-body">
+                    <p class="pub-desc">A landmark Kannada work on self-sustaining agriculture, championing the dignity, wisdom, and resilience of farmers. Beloved across rural Karnataka, this impactful book was later adapted into a celebrated documentary.</p>
+                </div>
+            </div>
+            <div class="pub-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="pub-badge">2026</div>
+                <div class="pub-cover">
+                    <div class="pub-icon-bg"><span class="pub-emoji">💛</span></div>
                     <div class="pub-book-meta-top">
                         <h3 class="pub-book-title">Thanks Appa</h3>
                     </div>
                 </div>
                 <div class="pub-category-tag">KANNADA NOVEL</div>
                 <div class="pub-card-body">
-                    <p class="pub-desc">A heart-touching story that shows how a father’s love and support quietly shape our dreams, our strength, and our life.</p>
+                    <p class="pub-desc">A deeply emotional Kannada novel — a son’s tribute to a father’s wisdom, discipline, and unconditional love. Blending business insights with heartfelt storytelling, this work is a must-read for the new generation.</p>
                 </div>
             </div>
-            <div class="pub-card" data-aos="fade-up" data-aos-delay="100">
-                <div class="pub-badge">LATEST</div>
+            <div class="pub-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="pub-badge">Legal</div>
+                <div class="pub-cover">
+                    <div class="pub-icon-bg"><span class="pub-emoji">⚖️</span></div>
+                    <div class="pub-book-meta-top">
+                        <h3 class="pub-book-title">State v/s Abhiram</h3>
+                    </div>
+                </div>
+                <div class="pub-category-tag">LEGAL PUBLICATION</div>
+                <div class="pub-card-body">
+                    <p class="pub-desc">A significant legal publication examining criminal justice through the lens of a landmark case. Written with the precision of an experienced advocate and the clarity of a storyteller.</p>
+                </div>
+            </div>
+            <div class="pub-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="pub-badge">12-Volume</div>
                 <div class="pub-cover">
                     <div class="pub-icon-bg"><span class="pub-emoji">📚</span></div>
                     <div class="pub-book-meta-top">
-                        <h3 class="pub-book-title">test</h3>
+                        <h3 class="pub-book-title">Dainandina Jeevanakkagi Kanunu</h3>
                     </div>
                 </div>
-                <div class="pub-category-tag">TEST CATEGORY</div>
+                <div class="pub-category-tag">12-VOLUME LEGAL</div>
                 <div class="pub-card-body">
-                    <p class="pub-desc">test</p>
+                    <p class="pub-desc">A monumental 12-volume legal guide series in Kannada — making the law accessible to every citizen in their own language. An invaluable resource for homes, professionals, and students.</p>
                 </div>
             </div>
             @endforelse
@@ -1163,9 +1196,9 @@
 
     .hero-name {
       font-family:var(--font-display);
-      font-size:clamp(3.5rem, 6vw, 5rem);
+      font-size:clamp(2.5rem, 8vw, 5rem);
       font-weight:700; color:var(--white);
-      line-height:1; margin-bottom:15px;
+      line-height:1.1; margin-bottom:15px;
     }
     .hero-name .accent { color:var(--gold); }
     .hero-name-kn {
@@ -1174,8 +1207,8 @@
       display:block; margin-top: 10px; letter-spacing:1px;
     }
     .hero-quals {
-      font-size:0.85rem; color:rgba(255,255,255,0.5);
-      letter-spacing:5px; text-transform:uppercase; margin-bottom:35px;
+      font-size:0.8rem; color:rgba(255,255,255,0.5);
+      letter-spacing:4px; text-transform:uppercase; margin-bottom:30px;
     }
     .hero-tagline {
       font-family:var(--font-display); font-style:italic;
@@ -1216,6 +1249,84 @@
       border:2px solid rgba(201,168,76,0.4);
     }
     .hero-portrait img { width:100%; height:100%; object-fit:cover; filter: grayscale(20%); }
+
+    /* ── MOBILE RESPONSIVENESS: HERO ── */
+    @media (max-width: 991px) {
+        .hero-inner {
+            grid-template-columns: 1fr;
+            text-align: center;
+            padding: 40px 20px 60px;
+            gap: 40px;
+        }
+        .hero-text {
+            order: 1;
+        }
+        .hero-visual {
+            order: 2;
+            justify-content: center;
+        }
+        .hero-name {
+            font-size: 2.8rem;
+            line-height: 1.2;
+        }
+        .hero-name-kn {
+            font-size: 1.2rem;
+            margin-top: 5px;
+        }
+        .hero-quals {
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+        }
+        .hero-tagline {
+            margin: 0 auto 30px;
+            border-left: none;
+            border-top: 3px solid var(--gold);
+            padding-left: 0;
+            padding-top: 15px;
+            font-size: 1.25rem;
+        }
+        .hero-pills {
+            justify-content: center;
+            gap: 8px;
+        }
+        .hero-actions {
+            justify-content: center;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .btn-view-practice { margin-left: 0; }
+        .hero-portrait-wrap {
+            width: 300px;
+            height: 380px;
+        }
+        .hero-stats-grid-lux {
+            width: 100%;
+            max-width: 400px;
+            margin: 25px auto 0;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .hero-name {
+            font-size: 2.2rem;
+        }
+        .hero-badge {
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            padding: 6px 15px;
+        }
+        .hero-portrait-frame {
+            padding: 15px;
+        }
+        .hero-portrait-lux {
+            height: 380px;
+        }
+        .portrait-name { font-size: 1.2rem; }
+        .portrait-creds { font-size: 0.7rem; }
+        .h-card-num {
+            font-size: 1.4rem;
+        }
+    }
 
     /* ── HERO ACTIONS BUTTONS ── */
     .btn-consult-now {
@@ -1633,12 +1744,29 @@
     }
 
     @media (max-width: 991px) {
-        .identity-card-section { padding: 50px 20px; }
-        .id-content-col { padding: 35px 25px; }
-        .id-photo-col { min-height: 420px; border-right: none; border-bottom: 1px solid rgba(201, 168, 76, 0.3); }
-        .contact-info-panel { padding-right: 0; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 30px; }
-        .office-info-panel { padding-left: 0; padding-top: 30px; }
+        .identity-card-section { padding: 40px 15px; }
+        .id-content-col { padding: 30px 20px; }
+        .id-photo-col { min-height: 400px; border-right: none; border-bottom: 1px solid rgba(201, 168, 76, 0.3); }
+        .id-photo-overlay-text { bottom: 25px; left: 25px; right: 25px; }
+        .photo-name { font-size: 1.8rem; line-height: 1.2; }
+        .photo-designation { font-size: 0.85rem; }
+        .id-brand-meta { gap: 15px; flex-direction: column; text-align: center; }
+        .id-brand-titles .main-id-name { font-size: 1.8rem; text-align: center; }
+        .main-id-quals { text-align: center; font-size: 1rem; }
+        .id-courts-jurisdiction { text-align: center; font-size: 0.75rem; margin-bottom: 25px; }
+        .contact-info-panel { padding-right: 0; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 25px; }
+        .office-info-panel { padding-left: 0; padding-top: 25px; }
         .divider-dot-vertical { display: none; }
+    }
+    
+    @media (max-width: 576px) {
+        .id-photo-col { min-height: 340px; }
+        .photo-name { font-size: 1.5rem; }
+        .id-brand-titles .main-id-name { font-size: 1.5rem; }
+        .id-data-row a { font-size: 1rem; }
+        .id-seal-wrapper { width: 75px; height: 75px; }
+        .id-label { letter-spacing: 2px; margin-bottom: 10px; }
+        .id-address { font-size: 0.9rem; }
     }
     .hero-grid-overlay {
         position: absolute; inset: 0;
@@ -1655,23 +1783,20 @@
     }
 
     /* ── SECTIONS ── */
-    .section-premium { padding: 120px 40px; position: relative; }
-    .section-cream { background: var(--cream); }
-    .section-navy { background: var(--navy); color: var(--white); }
-    .section-white { background: var(--white); }
-    
-    .section-header { margin-bottom:70px; }
-    .section-header.center { text-align:center; }
-    .label-gold {
-      font-size:0.8rem; letter-spacing:6px; text-transform:uppercase;
-      color:var(--gold); font-weight:700; margin-bottom:15px; display:block;
+    .section-premium { padding: 100px 40px; position: relative; }
+    @media (max-width: 991px) {
+        .about-visual { margin-bottom: 40px; text-align: center; }
+        .about-content { text-align: center; }
+        .gold-separator { margin: 25px auto; }
+        .about-quote-block { padding: 30px; margin-top: 30px; }
+        .about-quote-text { font-size: 1.1rem; }
     }
-    .title-premium {
-      font-family:var(--font-display); font-size:clamp(2.5rem, 4vw, 3.5rem);
-      font-weight:700; line-height:1.2;
+    @media (max-width: 768px) {
+        .section-premium { padding: 60px 20px; }
+        .title-premium { font-size: 2rem; }
+        .gold-separator { margin: 20px 0; }
+        .gold-separator.center { margin: 20px auto; }
     }
-    .gold-separator { width:60px; height:4px; background:var(--gold); margin:25px 0; border-radius:2px; }
-    .gold-separator.center { margin:25px auto; }
 
     /* ── ABOUT QUOTE BLOCK ── */
     .about-quote-block {
@@ -2178,14 +2303,5 @@
             else header.classList.remove('scrolled');
         }
     });
-
-    const navToggle = document.getElementById('navToggle');
-    const navLinks = document.querySelector('.nav-links');
-    if (navToggle) {
-        navToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            navToggle.classList.toggle('active');
-        });
-    }
 </script>
 @endpush
