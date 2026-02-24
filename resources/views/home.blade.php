@@ -383,62 +383,35 @@
                 @endif
                 <div class="pub-card-body">
                     <p class="pub-desc">{{ Str::limit(strip_tags($product->description), 180) }}</p>
-                    <a href="{{ route('products.show', $product) }}" class="pub-read-more">
-                        View Details <i class="fas fa-arrow-right ms-1"></i>
-                    </a>
+                    {{-- View Details hidden as per request --}}
                 </div>
             </div>
             @empty
+            {{-- Fallback cards as per request --}}
             <div class="pub-card" data-aos="fade-up" data-aos-delay="0">
-                <div class="pub-badge">2008</div>
+                <div class="pub-badge">FEATURED</div>
                 <div class="pub-cover">
-                    <div class="pub-icon-bg"><span class="pub-emoji">🌾</span></div>
-                    <div class="pub-book-meta-top">
-                        <h3 class="pub-book-title">Swayam Krushi</h3>
-                    </div>
-                </div>
-                <div class="pub-category-tag">KANNADA LITERATURE</div>
-                <div class="pub-card-body">
-                    <p class="pub-desc">A landmark Kannada work on self-sustaining agriculture, championing the dignity and wisdom of farmers. Beloved across rural Karnataka — and adapted into a Kannada film produced, directed &amp; acted by the author himself.</p>
-                </div>
-            </div>
-            <div class="pub-card" data-aos="fade-up" data-aos-delay="100">
-                <div class="pub-badge">2026</div>
-                <div class="pub-cover">
-                    <div class="pub-icon-bg"><span class="pub-emoji">💛</span></div>
+                    <div class="pub-icon-bg"><span class="pub-emoji">📚</span></div>
                     <div class="pub-book-meta-top">
                         <h3 class="pub-book-title">Thanks Appa</h3>
                     </div>
                 </div>
                 <div class="pub-category-tag">KANNADA NOVEL</div>
                 <div class="pub-card-body">
-                    <p class="pub-desc">A deeply moving Kannada novel — a son's tribute to a father's wisdom, business lessons, and fatherly love. Shares invaluable life guidance wrapped in the warmth of an Appa's voice. Widely praised across Karnataka.</p>
+                    <p class="pub-desc">A heart-touching story that shows how a father’s love and support quietly shape our dreams, our strength, and our life.</p>
                 </div>
             </div>
-            <div class="pub-card" data-aos="fade-up" data-aos-delay="200">
-                <div class="pub-badge">Legal</div>
-                <div class="pub-cover">
-                    <div class="pub-icon-bg"><span class="pub-emoji">⚖️</span></div>
-                    <div class="pub-book-meta-top">
-                        <h3 class="pub-book-title">State v/s Abhiram</h3>
-                    </div>
-                </div>
-                <div class="pub-category-tag">LEGAL PUBLICATION</div>
-                <div class="pub-card-body">
-                    <p class="pub-desc">A significant legal publication examining criminal justice through the lens of a landmark case — written with the precision of an experienced advocate and the clarity of a skilled storyteller for legal professionals &amp; students.</p>
-                </div>
-            </div>
-            <div class="pub-card" data-aos="fade-up" data-aos-delay="300">
-                <div class="pub-badge">12 Volumes</div>
+            <div class="pub-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="pub-badge">LATEST</div>
                 <div class="pub-cover">
                     <div class="pub-icon-bg"><span class="pub-emoji">📚</span></div>
                     <div class="pub-book-meta-top">
-                        <h3 class="pub-book-title">Dainandina Jeevanakkagi Kanunu</h3>
+                        <h3 class="pub-book-title">test</h3>
                     </div>
                 </div>
-                <div class="pub-category-tag">12-VOLUME SERIES</div>
+                <div class="pub-category-tag">TEST CATEGORY</div>
                 <div class="pub-card-body">
-                    <p class="pub-desc">A monumental 12-volume legal guide series in Kannada — making the law accessible to every ordinary citizen in their own language. An invaluable resource for homes, professionals, students &amp; institutions across Karnataka.</p>
+                    <p class="pub-desc">test</p>
                 </div>
             </div>
             @endforelse
