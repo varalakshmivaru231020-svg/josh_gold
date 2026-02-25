@@ -24,22 +24,26 @@ class OrderController extends Controller
     // STEP 1: Checkout without shipping info
     public function checkout(Request $request, Product $product)
     {
+        $quantity = $request->input('quantity', 1);
+        
         $validator = Validator::make($request->all(), [
-            'quantity' => 'required|integer|min:1|max:' . $product->stock,
-            'referral_code' => 'nullable|exists:agents,referral_code'
+            'quantity' => 'nullable|integer|min:1|max:' . ($product->stock ?: 1),
+            'referral_code' => 'nullable|string'
         ]);
 
         if ($validator->fails()) {
-            return back()->withErrors($validator)->withInput();
+            return back()->withErrors($validator)->withInput()->with('error', 'Invalid input provided.');
         }
 
-        $quantity = $request->quantity;
         $unitPrice = $product->price;
         $subtotal = $quantity * $unitPrice;
         $discount = 0;
 
         if ($request->referral_code) {
-            $discount = 25*$request->quantity;// 10% discount
+            $agent = \App\Models\Agent::where('referral_code', $request->referral_code)->first();
+            if ($agent) {
+                $discount = 25 * $quantity;
+            }
         }
 
         $total = $subtotal - $discount;

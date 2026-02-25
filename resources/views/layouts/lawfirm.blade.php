@@ -43,11 +43,16 @@
 
         *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; scroll-behavior:smooth; }
 
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+            position: relative;
+        }
+
         body {
             font-family: var(--font-body);
             background: var(--cream);
             color: var(--text);
-            overflow-x: hidden;
         }
 
         /* ── SCROLLBAR ── */
@@ -65,10 +70,11 @@
             height: 85px;
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             will-change: transform, height;
+            width: 100%;
         }
         .nav-premium.scrolled { height: 75px; background: #0a0f1e; box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
         
-        .nav-brand { display:flex; align-items:center; gap:15px; text-decoration:none; }
+        .nav-brand { display:flex; align-items:center; gap:15px; text-decoration:none; min-width:0; flex:1; overflow:hidden; }
         .nav-brand-seal {
             width:45px; height:45px;
             background: linear-gradient(135deg, #c9a84c, #8b6914);
@@ -76,14 +82,17 @@
             font-size: 1.3rem; color: #0c1428; 
             box-shadow: 0 0 15px rgba(201,168,76,0.3);
             border: 2px solid rgba(255,255,255,0.1);
+            flex-shrink: 0;
         }
+        .nav-brand-info { min-width: 0; overflow: hidden; }
         .nav-brand-text { 
             font-family: var(--font-display); color: #c9a84c; 
             font-size: 1.25rem; font-weight: 800; line-height: 1.1; 
             text-transform: uppercase; letter-spacing: 1.5px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;
         }
-        .nav-brand-sub { font-size: 0.68rem; color: rgba(255,255,255,0.6); letter-spacing: 2px; text-transform: uppercase; font-weight: 700; margin-top: 2px; }
+        .nav-brand-sub { font-size: 0.68rem; color: rgba(255,255,255,0.6); letter-spacing: 2px; text-transform: uppercase; font-weight: 700; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
 
         .nav-links { display:flex; gap:10px; align-items:center; list-style: none; margin: 0; padding: 0; }
         .nav-link-custom {
@@ -110,24 +119,28 @@
         .nav-toggle.active span:nth-child(2) { opacity: 0; }
         .nav-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
+        /* Ensure no horizontal scroll on all levels */
+        html, body, .main-content, section { overflow-x: hidden; width: 100%; }
+
         @media (max-width: 1100px) {
             .nav-premium { 
-                padding: 0 15px; height: 70px; 
+                padding: 0 15px; height: 70px;
                 transition: height 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
                 transform: translateZ(0);
             }
-            .nav-brand { flex-shrink: 1; min-width: 0; gap: 8px; }
-            .nav-brand-seal { width: 30px; height: 30px; font-size: 0.9rem; flex-shrink: 0; }
-            .nav-toggle { display: block; flex-shrink: 0; width: 40px; height: 40px; }
-            .nav-brand-text { font-size: 0.9rem; letter-spacing: 0.2px; white-space: nowrap; }
-            .nav-brand-sub { font-size: 0.52rem; letter-spacing: 0.2px; white-space: nowrap; }
+            .nav-brand { flex: 1; min-width: 0; gap: 10px; overflow: hidden; }
+            .nav-brand-seal { width: 36px; height: 36px; font-size: 1rem; flex-shrink: 0; }
+            .nav-brand-info { min-width: 0; overflow: hidden; }
+            .nav-toggle { display: block; flex-shrink: 0; width: 44px; height: 44px; margin-left: 8px; }
+            .nav-brand-text { font-size: 0.92rem; letter-spacing: 0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            .nav-brand-sub { font-size: 0.54rem; letter-spacing: 0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
             .nav-links {
                 position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;
                 background: #080d1a; flex-direction: column; align-items: flex-start;
                 padding: 100px 0 60px; transition: right 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-                box-shadow: -10px 0 40px rgba(0,0,0,0.6); z-index: 1000;
+                box-shadow: -10px 0 40px rgba(0,0,0,0.6); z-index: 1050;
                 visibility: hidden; opacity: 0; pointer-events: none;
-                overflow-y: auto;
+                overflow-y: auto; overflow-x: hidden;
             }
             .nav-links.active { right: 0; visibility: visible; opacity: 1; pointer-events: auto; display: flex; }
             .nav-link-custom { 
@@ -144,6 +157,9 @@
             .nav-links.active .nav-link-custom:nth-child(4) { transition-delay: 0.2s; }
             .nav-links.active .nav-link-custom:nth-child(5) { transition-delay: 0.25s; }
             .nav-links.active .nav-link-custom:nth-child(6) { transition-delay: 0.3s; }
+            .nav-links.active .nav-link-custom:nth-child(7) { transition-delay: 0.35s; }
+            .nav-links.active .dropdown:nth-child(8) { transition-delay: 0.4s; }
+            .nav-links.active .dropdown:nth-child(8) .nav-link-custom { transition-delay: 0.4s; }
             
             .nav-link-custom:hover { background: rgba(201,168,76,0.08); color: var(--gold); padding-left: 35px; }
             .nav-cta { margin: 25px 30px 0; width: calc(100% - 60px); text-align: center; border-radius: 50px; padding: 14px !important; font-size: 0.85rem; }
@@ -156,19 +172,30 @@
             .nav-overlay.active { opacity: 1; visibility: visible; }
         }
 
+        /* Narrow header fixes */
         @media (max-width: 480px) {
-            .nav-premium { height: 65px; padding: 0 12px; }
-            .nav-brand-text { font-size: 0.85rem; }
-            .nav-brand-sub { font-size: 0.5rem; }
-            .nav-brand-seal { width: 28px; height: 28px; font-size: 0.8rem; }
-            .nav-toggle { width: 38px; height: 38px; }
-            .nav-toggle span { width: 20px; margin: 4px 0; }
+            .nav-brand-seal { width: 30px !important; height: 30px !important; }
+            .nav-brand-text { font-size: 0.78rem !important; }
+            .nav-brand-sub { font-size: 0.45rem !important; }
+        }
+
+        @media (max-width: 480px) {
+            .nav-premium { height: 68px; padding: 0 12px; }
+            .nav-brand { gap: 10px; flex: 1; min-width: 0; width: calc(100% - 50px); }
+            .nav-brand-seal { width: 32px; height: 32px; font-size: 0.85rem; }
+            .nav-brand-text { font-size: 0.8rem; letter-spacing: 0.2px; white-space: nowrap; }
+            .nav-brand-sub { font-size: 0.5rem; letter-spacing: 0; white-space: nowrap; max-width: 150px; }
+            .nav-toggle { width: 44px; height: 44px; margin-left: 2px; }
+            .nav-toggle span { width: 22px; margin: 5px 0; }
         }
 
         @media (max-width: 360px) {
-            .nav-brand-text { font-size: 0.78rem; }
-            .nav-brand-sub { font-size: 0.48rem; letter-spacing: 0; }
+            .nav-brand-text { font-size: 0.75rem; }
+            .nav-brand-sub { font-size: 0.45rem; max-width: 120px; }
+            .nav-brand-seal { width: 28px; height: 28px; }
         }
+
+
 
 
         /* ── NEW PREMIUM FOOTER ── */
@@ -356,13 +383,18 @@
 
     <nav class="nav-premium" id="mainHeader">
         <a class="nav-brand" href="{{ url('/') }}">
-            <div class="nav-brand-seal">⚖</div>
-            <div>
+            @if($siteLogo)
+                <img src="{{ $logoUrl }}" alt="Bengaluru Law House" class="nav-brand-seal" style="object-fit:cover; padding:0;" loading="eager">
+            @else
+                <div class="nav-brand-seal">⚖</div>
+            @endif
+            <div class="nav-brand-info">
                 <div class="nav-brand-text">Bengaluru Law House</div>
                 <div class="nav-brand-sub">Adv. Veerendrababu Nanjegowda</div>
             </div>
         </a>
         <div class="nav-links">
+            <a href="{{ route('home') }}" class="nav-link-custom {{ request()->routeIs('home') ? 'active' : '' }}">Home</a>
             <a href="{{ route('about-us') }}" class="nav-link-custom {{ request()->routeIs('about-us') ? 'active' : '' }}">About</a>
             <a href="{{ route('services.index') }}" class="nav-link-custom {{ request()->routeIs('services.index') ? 'active' : '' }}">Practice</a>
             <a href="{{ route('products.index') }}" class="nav-link-custom {{ request()->routeIs('products.index') ? 'active' : '' }}">Publications</a>
@@ -494,7 +526,7 @@
                 <span class="footer-lux-title">Bengaluru Law House</span>
                 
                 <ul class="footer-lux-nav">
-                    <li><a href="{{ url('/') }}">About</a></li>
+                    <li><a href="{{ route('home') }}">Home</a></li>
                     <li><a href="{{ url('/') }}#practice">Practice</a></li>
                     <li><a href="{{ route('products.index') }}">Publications</a></li>
                     <li><a href="{{ route('offices.index') }}">Offices</a></li>
@@ -625,6 +657,8 @@
                 });
             }
 
+
+
             // Smooth scroll for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function(e) {
@@ -637,9 +671,6 @@
             });
         });
     </script>
-
-    {{-- Redundant style block removed --}}
-    </style>
 
     @stack('scripts')
 </body>

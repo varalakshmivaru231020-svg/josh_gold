@@ -128,8 +128,24 @@
                                         </div>
                                     </div>
 
-                                    <button type="submit" class="btn-primary-gold w-100 py-3 shadow-lg border-0">
-                                        <i class="fas fa-shopping-cart me-2"></i> Proceed to Checkout
+                                    @if($errors->any())
+                                        <div class="alert alert-danger mb-4 py-2 small">
+                                            <ul class="mb-0">
+                                                @foreach($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+
+                                    @if(session('error'))
+                                        <div class="alert alert-danger mb-4 py-2 small">
+                                            {{ session('error') }}
+                                        </div>
+                                    @endif
+
+                                    <button type="submit" class="btn-primary-gold w-100 py-3 shadow-lg border-0 d-flex align-items-center justify-content-center gap-2">
+                                        <i class="fas fa-shopping-cart"></i> Proceed to Checkout
                                     </button>
                                 </form>
                             </div>
@@ -279,6 +295,11 @@
     .trust-item i { color: var(--gold); font-size: 1.1rem; }
 
     .out-of-stock-premium { background: rgba(201,168,76,0.05); padding: 40px; border-radius: 24px; border: 2px dashed var(--gold); text-align: center; color: var(--navy); }
+    .btn-outline-gold { background: transparent; color: var(--gold); border: 2px solid var(--gold); border-radius: 12px; font-weight: 700; transition: 0.3s; }
+    .btn-outline-gold:hover { background: var(--gold); color: white; }
+    .btn-primary-gold { background: var(--gold); color: white; border-radius: 12px; font-weight: 700; transition: 0.3s; border: none; }
+    .btn-primary-gold:hover { background: var(--gold-dark); transform: translateY(-2px); shadow: 0 10px 20px rgba(0,0,0,0.1); }
+    
     .product-no-image { height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--cream); }
 
     @media (max-width: 991px) {
@@ -397,6 +418,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+
 
     updateUIPrice();
 });

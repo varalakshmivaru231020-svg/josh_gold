@@ -154,56 +154,70 @@
 @push('styles')
 <style>
 .auth-section {
-    margin-top: 80px;
-    min-height: calc(100vh - 80px);
-    background: var(--cream-primary);
-    padding: 40px 0;
+    margin-top: 85px;
+    min-height: calc(100vh - 85px);
+    background: var(--cream);
+    padding: 60px 0;
+    display: flex;
+    align-items: center;
 }
 
 .auth-card {
     background: var(--white);
-    border-radius: 12px;
-    box-shadow: var(--shadow-medium);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
     overflow: hidden;
+    border: 1px solid rgba(201, 168, 76, 0.1);
 }
 
 .auth-header {
-    background: var(--navy-deep);
-    color: var(--cream-primary);
-    padding: 1.5rem 2rem;
-    border-bottom: 3px solid var(--gold-primary);
+    background: var(--navy);
+    color: var(--gold);
+    padding: 2.5rem 2rem;
+    border-bottom: 2px solid var(--gold);
 }
 
 .auth-header h4 {
-    color: var(--cream-primary);
-    font-family: var(--font-heading);
+    color: var(--gold);
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
 .auth-body {
-    padding: 2rem;
+    padding: 3rem;
 }
 
 .auth-body .form-label {
-    color: var(--navy-deep);
-    font-weight: 500;
+    color: var(--navy);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .auth-body .form-control {
-    border: 2px solid rgba(201, 162, 39, 0.2);
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
+    border: 1.5px solid rgba(12, 20, 40, 0.1);
+    border-radius: 10px;
+    padding: 0.9rem 1.2rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    background: var(--cream);
+    transition: all 0.3s;
 }
 
 .auth-body .form-control:focus {
-    border-color: var(--gold-primary);
-    box-shadow: 0 0 0 0.2rem rgba(201, 162, 39, 0.15);
+    border-color: var(--gold);
+    box-shadow: 0 0 0 4px rgba(201, 168, 76, 0.1);
+    background: var(--white);
 }
 
 .auth-body .input-group-text {
-    background: var(--cream-primary);
-    border: 2px solid rgba(201, 162, 39, 0.2);
+    background: var(--cream-dark);
+    border: 1.5px solid rgba(12, 20, 40, 0.1);
     border-right: none;
-    color: var(--navy-deep);
+    color: var(--navy);
+    font-weight: 600;
 }
 
 .auth-body .input-group .form-control {
@@ -211,10 +225,14 @@
 }
 
 .auth-body .input-group .btn-outline-primary {
-    background: var(--gold-primary);
-    border-color: var(--gold-primary);
-    color: var(--navy-deep);
-    font-weight: 600;
+    background: var(--gold);
+    border: 1.5px solid var(--gold);
+    color: var(--navy);
+    font-weight: 700;
+    padding: 0 20px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
 }
 
 .auth-body .input-group .btn-outline-primary:hover {
@@ -223,49 +241,67 @@
 }
 
 .auth-body .btn-primary {
-    background: var(--gold-primary);
-    border-color: var(--gold-primary);
-    color: var(--navy-deep);
-    font-weight: 600;
-    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    border: none;
+    color: var(--navy);
+    font-weight: 700;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 10px 20px rgba(201, 168, 76, 0.2);
+    transition: all 0.3s;
 }
 
 .auth-body .btn-primary:hover {
-    background: var(--gold-dark);
-    border-color: var(--gold-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(201, 168, 76, 0.3);
+    filter: brightness(1.1);
 }
 
 .auth-body .btn-outline-primary {
-    border-color: var(--gold-primary);
-    color: var(--navy-deep);
+    border: 2px solid var(--gold);
+    color: var(--navy);
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 0.8rem;
+    transition: all 0.3s;
 }
 
 .auth-body .btn-outline-primary:hover {
-    background: var(--gold-primary);
-    color: var(--navy-deep);
+    background: var(--gold);
+    color: var(--navy);
+    transform: translateY(-2px);
 }
 
 .auth-body a {
     color: var(--gold-dark);
+    font-weight: 600;
+    text-decoration: none;
 }
 
 .auth-body a:hover {
-    color: var(--gold-primary);
+    color: var(--gold);
+    text-decoration: underline;
 }
 
 .auth-body .form-check-input:checked {
-    background-color: var(--gold-primary);
-    border-color: var(--gold-primary);
+    background-color: var(--gold);
+    border-color: var(--gold);
 }
 
 @media (max-width: 767px) {
     .auth-section {
         margin-top: 70px;
-        padding: 20px 0;
+        padding: 40px 15px;
     }
 
     .auth-body {
-        padding: 1.5rem;
+        padding: 2.5rem 1.5rem;
+    }
+
+    .auth-header {
+        padding: 2rem 1.5rem;
     }
 }
 </style>

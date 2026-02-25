@@ -9,70 +9,80 @@
     <div class="hero-bg"></div>
     <div class="hero-grid-overlay"></div>
     <div class="hero-inner">
+        <!-- Hero Text Content -->
         <div class="hero-text" data-aos="fade-right">
-            <div class="hero-badge">{{ $about->designation ?? 'Advocate • Author • Filmmaker • Journalist' }}</div>
-            <h1 class="hero-name">
-                Adv. <span class="accent">Veerendrababu</span><br>Nanjegowda
-                <span class="hero-name-kn">{{ $about->name_kn ?? 'ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ' }}</span>
-            </h1>
-            <p class="hero-quals">{{ $about->qualifications ?? 'MBA • LLB • PhD (Pursuing)' }}</p>
-            <p class="hero-tagline">{{ $about->tagline ?? '"A relentless guardian of justice, a storyteller of truth, and a voice that echoes across courtrooms and culture alike."' }}</p>
+            <div class="hero-badge-lux">
+                <span class="dot"></span>
+                ADVOCATE &bull; AUTHOR &bull; FILMMAKER &bull; JOURNALIST
+            </div>
             
-            <div class="hero-pills">
-                <span class="pill">Supreme Court of India</span>
-                <span class="pill">High Courts</span>
-                <span class="pill">NGT</span>
-                <span class="pill">ADR Specialist</span>
-                <span class="pill">15+ Publications</span>
+            <h1 class="hero-name-alt">
+                <span class="name-prefix">Adv.</span> 
+                <span class="name-main">Veerendrababu Nanjegowda</span>
+                <span class="kannada-subtitle">ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ</span>
+            </h1>
+
+            <p class="hero-quals-alt">MBA &bull; LLB &bull; PHD (PURSUING)</p>
+
+            <div class="hero-quote-block">
+                <p>"A relentless guardian of justice, a storyteller of truth, and a voice that echoes across courtrooms and culture alike."</p>
+            </div>
+            
+            <div class="hero-pills-alt">
+                <span class="pill-tag">SUPREME COURT OF INDIA</span>
+                <span class="pill-tag">HIGH COURTS</span>
+                <span class="pill-tag">NGT</span>
+                <span class="pill-tag">ADR SPECIALIST</span>
+                <span class="pill-tag">15+ PUBLICATIONS</span>
             </div>
 
-            <div class="hero-actions">
-                <a href="{{ url('/contact-us') }}" class="btn-consult-now">
-                    ⚖ Consult Now
+            <div class="hero-cta-group">
+                <a href="{{ url('/contact-us') }}" class="btn-hero-solid">
+                    <i class="fas fa-balance-scale icon-left"></i> Consult Now
                 </a>
-                <a href="{{ route('services.index') }}" class="btn-view-practice">
-                    View Practice Areas →
+                <a href="{{ route('services.index') }}" class="btn-hero-outline">
+                    View Practice Areas &rarr;
                 </a>
             </div>
         </div>
+
+        <!-- Hero Visual Content -->
         <div class="hero-visual" data-aos="fade-left" data-aos-delay="200">
             <div class="hero-visual-combo">
-                <div class="hero-portrait-frame">
-                    <div class="portrait-bracket bracket-tl"></div>
-                    <div class="portrait-bracket bracket-tr"></div>
-                    <div class="portrait-bracket bracket-bl"></div>
-                    <div class="portrait-bracket bracket-br"></div>
+                <div class="hero-portrait-frame-lux">
+                    <div class="bracket-tl"></div>
+                    <div class="bracket-tr"></div>
+                    <div class="bracket-bl"></div>
+                    <div class="bracket-br"></div>
                     
-                    <div class="hero-portrait-lux">
+                    <div class="portrait-display">
                         @if(isset($about) && $about->hero_image)
                             <img src="{{ asset('storage/' . $about->hero_image) }}" alt="Adv. Veerendrababu Nanjegowda">
-                        @elseif(isset($about) && $about->image)
-                            <img src="{{ asset('storage/' . $about->image) }}" alt="Adv. Veerendrababu Nanjegowda">
                         @else
                             <img src="{{ asset('blr.jpg') }}" alt="Adv. Veerendrababu Nanjegowda">
                         @endif
                         
-                        <div class="portrait-info-overlay">
-                            <h4 class="portrait-name">Veerendrababu Nanjegowda</h4>
-                            <p class="portrait-creds">{{ $about->qualifications ?? 'MBA., LLB., PhD(Pursuing)' }}</p>
-                            <p class="portrait-roles">{{ $about->designation ?? 'Advocate, Senior Journalist, Author, Film Maker' }}</p>
+                        <div class="display-label">
+                            <h4>Veerendrababu Nanjegowda</h4>
+                            <p>MBA &bull; LLB &bull; PhD (Pursuing)</p>
+                            <span class="role-tag">Advocate &bull; Author &bull; Filmmaker &bull; Journalist</span>
                         </div>
                     </div>
                 </div>
                 
-                <!-- ── HERO STATS CARDS ── -->
-                <div class="hero-stats-grid-lux mt-4">
-                    <div class="h-card-lux" data-aos="fade-up" data-aos-delay="300">
-                        <span class="h-card-num">{{ $about->stat_courts ?? '3+' }}</span>
-                        <span class="h-card-label">Court Tiers</span>
+                <!-- Bottom Stats Overlay -->
+                <div class="hero-stats-row">
+                    <div class="stat-card-lux" data-aos="zoom-in" data-aos-delay="400">
+                        <span class="stat-val">3+</span>
+                        <span class="stat-lbl">COURT TIERS</span>
                     </div>
-                    <div class="h-card-lux" data-aos="fade-up" data-aos-delay="400">
-                        <span class="h-card-num">{{ $about->stat_books ?? '15+' }}</span>
-                        <span class="h-card-label">Books</span>
+                    <div class="stat-card-lux" data-aos="zoom-in" data-aos-delay="500">
+                        <span class="stat-val">15+</span>
+                        <span class="stat-lbl">BOOKS</span>
                     </div>
-                    <div class="h-card-lux" data-aos="fade-up" data-aos-delay="500">
-                        <span class="h-card-num">{{ $about->stat_offices ?? '2' }}</span>
-                        <span class="h-card-label">Offices</span>
+                    <div class="stat-card-lux" data-aos="zoom-in" data-aos-delay="600">
+                        <span class="stat-val">2</span>
+                        <span class="stat-lbl">OFFICES</span>
                     </div>
                 </div>
             </div>
@@ -346,19 +356,19 @@
             </div>
             <div class="col-lg-6 ps-lg-5">
                 <span class="label-gold">{{ $featuredBook->title ?? 'Featured Publication' }}</span>
-                <h2 class="fb-title mb-2">{{ $featuredBook->book_name }}</h2>
+                <h2 class="fb-title mb-2">{{ $featuredBook->book_name ?? "Thanks Appa" }}</h2>
                 <div class="fb-divider mb-4"></div>
                 
-                <div class="fb-desc mb-5">
-                    {!! $featuredBook->description !!}
+                <div class="fb-desc mb-4">
+                    {!! $featuredBook->description ?? "A deeply emotional Kannada novel — a son's tribute to a father's wisdom, discipline, and unconditional love. Blending business insights with heartfelt storytelling, this work shares timeless life lessons wrapped in the warmth of Appa's voice." !!}
                 </div>
 
-                <div class="fb-price-box mb-5">
+                <div class="fb-price-box mb-4">
                     <span class="fb-price-label">Price: </span>
-                    <span class="fb-price-gold">₹{{ number_format($featuredBook->price, 2) }}</span>
+                    <span class="fb-price-gold">₹{{ number_format($featuredBook->price ?? 499.00, 2) }}</span>
                 </div>
 
-                <a href="{{ $featuredBook->product_id ? route('products.show', $featuredBook->product_id) : ($featuredBook->button_link ?? route('products.index')) }}" class="btn-purchase-lux">
+                <a href="{{ $featuredBook->product_id ? route('products.show', $featuredBook->product_id) : route('products.index') }}" class="btn-purchase-lux">
                     <i class="fas fa-shopping-cart me-2"></i> {{ $featuredBook->button_text ?? 'PURCHASE NOW' }}
                 </a>
             </div>
@@ -400,11 +410,13 @@
                 @endif
                 <div class="pub-card-body">
                     <p class="pub-desc">{{ Str::limit(strip_tags($product->description), 180) }}</p>
+                    {{-- 
                     <div class="mt-4">
                         <a href="{{ route('products.show', $product) }}" class="btn-royal-sm">
                             View Details <i class="fas fa-arrow-right ms-2"></i>
                         </a>
-                    </div>
+                    </div> 
+                    --}}
                 </div>
             </div>
             @empty
@@ -1172,340 +1184,167 @@
     }
 
     .hero-premium {
-      min-height:100vh;
-      background: var(--navy);
-      display:flex; align-items:center;
-      position:relative; overflow:hidden;
-      padding-top:72px;
+      min-height: 100vh;
+      background: #0c1428;
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      padding-top: 85px;
+      width: 100%;
     }
     .hero-bg {
-      position:absolute; inset:0;
-      background:
-        radial-gradient(ellipse 80% 60% at 70% 30%, rgba(201,168,76,0.1) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 80% at 20% 80%, rgba(30,47,88,0.8) 0%, transparent 50%),
-        linear-gradient(160deg, #0c1428 0%, #152040 40%, #0d1e3a 100%);
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 70% 30%, rgba(201,168,76,0.08) 0%, transparent 60%),
+                  radial-gradient(circle at 20% 70%, rgba(30,47,88,0.5) 0%, transparent 50%),
+                  #0c1428;
     }
     .hero-grid-overlay {
-      position:absolute; inset:0;
-      background-image:
-        linear-gradient(rgba(201, 168, 76, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(201, 168, 76, 0.04) 1px, transparent 1px);
-      background-size:60px 60px;
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(30,47,88,0.3) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(30,47,88,0.3) 1px, transparent 1px);
+      background-size: 50px 50px;
+      opacity: 0.6;
     }
     .hero-inner {
-      position:relative; z-index:2;
-      max-width:1400px; margin:0 auto; padding:80px 40px;
-      display:grid; grid-template-columns:1.2fr 1fr; gap:60px; align-items:center;
+      position: relative; z-index: 5;
+      max-width: 1400px; margin: 0 auto; padding: 60px 40px;
+      display: grid; grid-template-columns: 1.25fr 1fr; gap: 80px; align-items: center;
     }
-    .hero-badge {
-      display:inline-flex; align-items:center; gap:8px;
-      border:1px solid rgba(201,168,76,0.45); color:var(--gold);
-      font-size:0.75rem; letter-spacing:4px; text-transform:uppercase;
-      padding:8px 20px; border-radius:50px; margin-bottom:30px;
-      background:rgba(201,168,76,0.06); backdrop-filter: blur(5px);
+
+    /* Left Column Content */
+    .hero-badge-lux {
+      display: inline-flex; align-items: center; gap: 10px;
+      border: 1px solid rgba(201,168,76,0.5); border-radius: 50px;
+      padding: 8px 25px; margin-bottom: 35px;
+      color: rgba(255,255,255,0.7); font-size: 0.72rem;
+      letter-spacing: 3px; font-weight: 700;
+      background: rgba(201,168,76,0.05);
     }
-    .hero-badge::before { content:''; width:6px; height:6px; background:var(--gold); border-radius:50%; animation: pulse 2s infinite; }
+    .hero-badge-lux .dot { width: 6px; height: 6px; background: #c9a84c; border-radius: 50%; box-shadow: 0 0 10px #c9a84c; }
+
+    .hero-name-alt {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 5vw, 4.8rem);
+      font-weight: 700; line-height: 1.05; margin-bottom: 12px;
+    }
+    .hero-name-alt .name-prefix { color: #f8f8f8; display: block; margin-bottom: 5px; }
+    .hero-name-alt .name-main { color: #c9a84c; display: block; }
+    .hero-name-alt .kannada-subtitle {
+      display: block; font-size: 1.8rem; color: #8b6914; 
+      margin-top: 10px; font-weight: 400; font-style: italic;
+    }
+
+    .hero-quals-alt {
+      font-size: 0.85rem; color: rgba(255,255,255,0.4);
+      letter-spacing: 3px; font-weight: 700; margin-bottom: 40px;
+    }
+
+    .hero-quote-block {
+      border-left: 3px solid #c9a84c;
+      padding: 5px 0 5px 30px; margin-bottom: 45px;
+      max-width: 580px;
+    }
+    .hero-quote-block p {
+      color: rgba(255,255,255,0.85); font-family: var(--font-display);
+      font-size: 1.6rem; line-height: 1.6; font-style: italic; margin: 0;
+    }
+
+    .hero-pills-alt { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 50px; }
+    .pill-tag {
+      font-size: 0.68rem; padding: 8px 18px; border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.03); letter-spacing: 1.5px; font-weight: 700;
+    }
+
+    .hero-cta-group { display: flex; gap: 20px; align-items: center; }
+    .btn-hero-solid {
+      background: #c9a84c; color: #0c1428; border: none;
+      padding: 16px 35px; border-radius: 8px; font-weight: 800;
+      display: inline-flex; align-items: center; gap: 12px;
+      font-size: 0.95rem; text-decoration: none; transition: 0.3s;
+      box-shadow: 0 10px 25px rgba(201,168,76,0.3);
+    }
+    .btn-hero-solid:hover { background: #e8c878; transform: translateY(-3px); }
+    .btn-hero-outline {
+      background: transparent; border: 1px solid rgba(201,168,76,0.5);
+      color: #c9a84c; padding: 16px 35px; border-radius: 8px;
+      font-weight: 700; text-decoration: none; transition: 0.3s;
+      font-size: 0.95rem;
+    }
+    .btn-hero-outline:hover { background: rgba(201,168,76,0.1); color: white; }
+
+    /* Right Column Visuals */
+    .hero-portrait-frame-lux {
+      position: relative; padding: 25px;
+      background: radial-gradient(circle at center, rgba(10,31,20,0.8), #080d1a);
+      border-radius: 20px; border: 1px solid rgba(201,168,76,0.1);
+      box-shadow: 0 50px 100px rgba(0,0,0,0.8), 0 0 40px rgba(10,31,20,0.4);
+    }
+    .hero-portrait-frame-lux [class^="bracket-"] {
+      position: absolute; width: 35px; height: 35px;
+      border: 2px solid #5d6d45; pointer-events: none; opacity: 0.7;
+    }
+    .bracket-tl { top: 15px; left: 15px; border-right: 0; border-bottom: 0; }
+    .bracket-tr { top: 15px; right: 15px; border-left: 0; border-bottom: 0; }
+    .bracket-bl { bottom: 15px; left: 15px; border-right: 0; border-top: 0; }
+    .bracket-br { bottom: 15px; right: 15px; border-left: 0; border-top: 0; }
+
+    .portrait-display {
+      position: relative; border-radius: 12px; overflow: hidden;
+      aspect-ratio: 4/5; border: 1px solid rgba(255,255,255,0.05);
+    }
+    .portrait-display img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.9); transition: 0.6s; }
+    .portrait-display:hover img { transform: scale(1.05); filter: brightness(1.1); }
     
-    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
-
-    .hero-name {
-      font-family:var(--font-display);
-      font-size:clamp(2.5rem, 8vw, 5rem);
-      font-weight:700; color:var(--white);
-      line-height:1.1; margin-bottom:15px;
+    .display-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 40px 25px 25px; text-align: center;
+      background: linear-gradient(transparent, rgba(10,31,20,0.95));
     }
-    .hero-name .accent { color:var(--gold); }
-    .hero-name-kn {
-      font-family:var(--font-display); font-style:italic;
-      font-size:1.4rem; color:rgba(201,168,76,0.7);
-      display:block; margin-top: 10px; letter-spacing:1px;
+    .display-label h4 { 
+      color: white; font-family: var(--font-display); font-size: 1.6rem;
+      font-weight: 700; margin-bottom: 5px; 
     }
-    .hero-quals {
-      font-size:0.8rem; color:rgba(255,255,255,0.5);
-      letter-spacing:4px; text-transform:uppercase; margin-bottom:30px;
-    }
-    .hero-tagline {
-      font-family:var(--font-display); font-style:italic;
-      font-size:1.5rem; color:rgba(255,255,255,0.85);
-      line-height:1.6; margin-bottom:40px;
-      border-left:4px solid var(--gold); padding-left:25px;
-      max-width: 600px;
-    }
-    .hero-pills { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:45px; }
-    .pill {
-      font-size:0.75rem; letter-spacing:2px; text-transform:uppercase;
-      padding:6px 16px; border-radius:50px;
-      border:1px solid rgba(201,168,76,0.25); color:rgba(255,255,255,0.7);
-      background:rgba(255,255,255,0.05);
-    }
-    .hero-actions { display:flex; gap:20px; }
-
-    .hero-visual { position: relative; display: flex; justify-content: flex-end; }
-    .hero-portrait-wrap {
-      position:relative;
-      width:400px; height:500px;
-      z-index: 1;
-    }
-    .hero-portrait-wrap::before {
-      content:''; position:absolute;
-      top:-20px; right:-20px; bottom:20px; left:20px;
-      border:2px solid rgba(201,168,76,0.3); border-radius:30px; z-index:-1;
-    }
-    .hero-portrait-wrap::after {
-      content:''; position:absolute;
-      top:20px; right:20px; bottom:-20px; left:-20px;
-      background:linear-gradient(135deg,rgba(201,168,76,0.15),transparent);
-      border-radius:30px; z-index:-1;
-    }
-    .hero-portrait {
-      width:100%; height:100%; border-radius:30px; overflow:hidden;
-      box-shadow:0 30px 80px rgba(0,0,0,0.6);
-      border:2px solid rgba(201,168,76,0.4);
-    }
-    .hero-portrait img { width:100%; height:100%; object-fit:cover; filter: grayscale(20%); }
-
-    /* ── MOBILE RESPONSIVENESS: HERO ── */
-    @media (max-width: 991px) {
-        .hero-inner {
-            grid-template-columns: 1fr;
-            text-align: center;
-            padding: 40px 20px 60px;
-            gap: 40px;
-        }
-        .hero-text {
-            order: 1;
-        }
-        .hero-visual {
-            order: 2;
-            justify-content: center;
-        }
-        .hero-name {
-            font-size: 2.8rem;
-            line-height: 1.2;
-        }
-        .hero-name-kn {
-            font-size: 1.2rem;
-            margin-top: 5px;
-        }
-        .hero-quals {
-            font-size: 0.75rem;
-            letter-spacing: 3px;
-        }
-        .hero-tagline {
-            margin: 0 auto 30px;
-            border-left: none;
-            border-top: 3px solid var(--gold);
-            padding-left: 0;
-            padding-top: 15px;
-            font-size: 1.25rem;
-        }
-        .hero-pills {
-            justify-content: center;
-            gap: 8px;
-        }
-        .hero-actions {
-            justify-content: center;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .btn-view-practice { margin-left: 0; }
-        .hero-portrait-wrap {
-            width: 300px;
-            height: 380px;
-        }
-        .hero-stats-grid-lux {
-            width: 100%;
-            max-width: 400px;
-            margin: 25px auto 0;
-        }
+    .display-label p { color: rgba(255,255,255,0.6); font-size: 0.75rem; margin-bottom: 12px; font-weight: 700; }
+    .display-label .role-tag { 
+      font-size: 0.62rem; color: #c9a84c; text-transform: uppercase;
+      letter-spacing: 1px; font-weight: 800; opacity: 0.9;
     }
 
+    /* Bottom Stats Row */
+    .hero-stats-row {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 30px;
+    }
+    .stat-card-lux {
+      background: rgba(255,255,255,0.03); backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
+      padding: 20px 10px; text-align: center; transition: 0.4s;
+    }
+    .stat-card-lux:hover { background: rgba(201,168,76,0.1); border-color: #c9a84c; transform: translateY(-5px); }
+    .stat-val { display: block; font-size: 1.8rem; font-weight: 700; color: #c9a84c; font-family: var(--font-display); margin-bottom: 5px; }
+    .stat-lbl { display: block; font-size: 0.6rem; font-weight: 800; color: rgba(255,255,255,0.5); letter-spacing: 2px; }
+
+    @media (max-width: 1100px) {
+      .hero-premium { padding-top: 70px; min-height: auto; }
+      .hero-inner { grid-template-columns: 1fr; text-align: center; gap: 40px; padding: 30px 20px 60px; }
+      .hero-text { order: 1; display: flex; flex-direction: column; align-items: center; }
+      .hero-visual { order: 2; margin-bottom: 0; }
+      .hero-quote-block { border-left: 0; border-top: 2px solid #c9a84c; padding: 20px 0 0; margin-left: auto; margin-right: auto; text-align: center; margin-bottom: 35px; }
+      .hero-pills-alt { justify-content: center; margin-bottom: 40px; }
+      .hero-badge-lux { margin-bottom: 25px; }
+      .hero-cta-group { flex-direction: column; width: 100%; max-width: 320px; gap: 15px; }
+      .btn-hero-solid, .btn-hero-outline { width: 100%; justify-content: center; padding: 14px 25px; }
+      .hero-portrait-frame-lux { max-width: 360px; margin: 0 auto; padding: 20px; }
+    }
     @media (max-width: 576px) {
-        .hero-name {
-            font-size: 2.2rem;
-        }
-        .hero-badge {
-            font-size: 0.65rem;
-            letter-spacing: 2px;
-            padding: 6px 15px;
-        }
-        .hero-portrait-frame {
-            padding: 15px;
-        }
-        .hero-portrait-lux {
-            height: 380px;
-        }
-        .portrait-name { font-size: 1.2rem; }
-        .portrait-creds { font-size: 0.7rem; }
-        .h-card-num {
-            font-size: 1.4rem;
-        }
-    }
-
-    /* ── HERO ACTIONS BUTTONS ── */
-    .btn-consult-now {
-        display: inline-flex;
-        align-items: center;
-        background: var(--gold);
-        color: #111;
-        padding: 12px 30px;
-        border-radius: 6px;
-        font-weight: 700;
-        text-decoration: none;
-        font-size: 1rem;
-        transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 2px solid var(--gold);
-        box-shadow: 0 10px 20px rgba(201,168,76,0.2);
-    }
-    .btn-consult-now:hover {
-        background: #b39441;
-        border-color: #b39441;
-        transform: translateY(-3px);
-        box-shadow: 0 15px 30px rgba(201,168,76,0.3);
-        color: #000;
-    }
-    .btn-view-practice {
-        display: inline-flex;
-        align-items: center;
-        background: transparent;
-        color: var(--gold);
-        padding: 12px 30px;
-        border-radius: 6px;
-        font-weight: 600;
-        text-decoration: none;
-        font-size: 1rem;
-        transition: 0.3s;
-        border: 1px solid rgba(201,168,76,0.5);
-        margin-left: 15px;
-    }
-    .btn-view-practice:hover {
-        background: rgba(201,168,76,0.1);
-        border-color: var(--gold);
-        color: white;
-    }
-
-    /* ── HERO PORTRAIT FRAME (Green & Gold) ── */
-    .hero-portrait-frame {
-        position: relative;
-        padding: 30px;
-        background: #0a1f14; /* Dark Forest Green */
-        border-radius: 12px;
-        box-shadow: 0 40px 80px rgba(0,0,0,0.6);
-        border: 1px solid rgba(201,168,76,0.15);
-    }
-    .portrait-bracket {
-        position: absolute;
-        width: 40px;
-        height: 40px;
-        border-color: var(--gold);
-        border-style: solid;
-        pointer-events: none;
-        opacity: 0.6;
-    }
-    .bracket-tl { top: 15px; left: 15px; border-width: 2px 0 0 2px; }
-    .bracket-tr { top: 15px; right: 15px; border-width: 2px 2px 0 0; }
-    .bracket-bl { bottom: 15px; left: 15px; border-width: 0 0 2px 2px; }
-    .bracket-br { bottom: 15px; right: 15px; border-width: 0 2px 2px 0; }
-
-    .hero-portrait-lux {
-        width: 100%;
-        height: 480px;
-        border-radius: 6px;
-        overflow: hidden;
-        position: relative;
-        background: #111;
-        border: 1px solid rgba(255,255,255,0.05);
-    }
-    .hero-portrait-lux img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        opacity: 0.9;
-        transition: 0.5s;
-    }
-    .hero-portrait-lux:hover img {
-        opacity: 1;
-        transform: scale(1.03);
-    }
-
-    .portrait-info-overlay {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 40px 25px 25px;
-        background: linear-gradient(to top, rgba(10,31,20,0.95) 20%, rgba(10,31,20,0.7) 50%, transparent);
-        text-align: left;
-    }
-    .portrait-name {
-        font-family: var(--font-display);
-        color: white;
-        font-size: 1.4rem;
-        font-weight: 700;
-        margin-bottom: 5px;
-        letter-spacing: 0.5px;
-    }
-    .portrait-creds {
-        color: #fff;
-        background: rgba(0,0,0,0.4);
-        display: inline-block;
-        padding: 4px 12px;
-        border-radius: 4px;
-        font-size: 0.8rem;
-        font-weight: 700;
-        margin-bottom: 8px;
-        border: 1px solid rgba(201,168,76,0.3);
-    }
-    .portrait-roles {
-        color: var(--gold);
-        font-size: 0.75rem;
-        font-weight: 600;
-        margin-bottom: 0;
-        opacity: 0.8;
-        font-style: italic;
-    }
-
-    /* ── HERO STATS CARDS (Premium Glassmorphism) ── */
-    .hero-stats-grid-lux {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 15px;
-        margin-top: 25px;
-    }
-    .h-card-lux {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 12px;
-        padding: 18px 10px;
-        text-align: center;
-        backdrop-filter: blur(10px);
-        transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-    .h-card-lux:hover {
-        background: rgba(201, 168, 76, 0.08);
-        border-color: rgba(201, 168, 76, 0.3);
-        transform: translateY(-8px);
-        box-shadow: 0 20px 40px rgba(201, 168, 76, 0.1);
-    }
-    .h-card-num {
-        display: block;
-        font-size: 1.8rem;
-        font-weight: 800;
-        color: var(--gold);
-        line-height: 1;
-        margin-bottom: 8px;
-        font-family: var(--font-display);
-        text-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-    .h-card-label {
-        display: block;
-        font-size: 0.65rem;
-        color: rgba(255, 255, 255, 0.5);
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        font-weight: 700;
+      .hero-premium { padding-top: 65px; }
+      .hero-inner { padding: 20px 15px 50px; }
+      .hero-name-alt { font-size: 2.2rem; }
+      .hero-name-alt .kannada-subtitle { font-size: 1.2rem; }
+      .hero-quote-block p { font-size: 1.2rem; }
+      .portrait-display { aspect-ratio: 1/1; }
+      .hero-stats-row { gap: 10px; margin-top: 20px; }
+      .stat-card-lux { padding: 15px 5px; }
+      .stat-val { font-size: 1.5rem; }
     }
 
     /* ── HERO STATS BAR ── */
