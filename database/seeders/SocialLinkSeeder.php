@@ -15,7 +15,7 @@ class SocialLinkSeeder extends Seeder
         $links = [
             [
                 'platform' => 'WhatsApp',
-                'url' => 'https://wa.me/918217215195',
+                'url' => 'https://wa.me/919632527961',
                 'icon' => 'fab fa-whatsapp',
                 'sort_order' => 1,
             ],

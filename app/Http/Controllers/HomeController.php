@@ -35,6 +35,7 @@ class HomeController extends Controller
         $offices = Office::active()->ordered()->get();
         $stats = Stat::active()->ordered()->get();
         $galleryPhotos = GalleryPhoto::active()->ordered()->get();
+        $latestBlogs = Blog::active()->ordered()->take(3)->get();
 
         return view('home', compact(
             'sliders',
@@ -47,7 +48,8 @@ class HomeController extends Controller
             'services',
             'offices',
             'stats',
-            'galleryPhotos'
+            'galleryPhotos',
+            'latestBlogs'
         ));
     }
 

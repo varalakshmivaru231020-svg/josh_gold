@@ -100,9 +100,9 @@
     <div class="contact">
 
         <!-- WhatsApp -->
-        <a href="https://wa.me/918217215195" target="_blank">
+        <a href="https://wa.me/919632527961" target="_blank">
             <img src="{{ public_path('whatsa.png') }}" height="17">
-            <span>8217215195</span>
+            <span>9632527961</span>
         </a>
 
         <!-- Website -->

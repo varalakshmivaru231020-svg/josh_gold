@@ -70,16 +70,7 @@
                             </ul>
                         </li>
                     @else
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('agent.login') }}">
-                                Distributor Login
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-light btn-sm ms-2" href="{{ route('agent.register') }}">
-                                Become Distributor
-                            </a>
-                        </li>
+                        {{-- Login/Register options hidden per user request --}}
                     @endauth
 
                 </ul>
@@ -117,17 +108,17 @@
                         <li><a href="/shipping-policy" class="text-white-50">Shipping Policy</a></li>
                         <li><a href="/refund-return-policy" class="text-white-50">Refund & Return Policy</a></li>
                         <li><a href="/disclamer" class="text-white-50">Disclaimer</a></li>
-                        <li>
+                        {{-- <li>
                             <a href="{{ route('agent.login') }}" class="text-white-50">
                                 Distributor Login
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </div>
 
                 <div class="col-md-4">
                     <h5>Contact Us</h5>
-                    <p><i class="fas fa-phone me-2"></i> +91 8217215195</p>
+                    <p><i class="fas fa-phone me-2"></i> +91 96325 27961</p>
                     <p><i class="fas fa-envelope me-2"></i> bengalurulawhouse@gmail.com</p>
                 </div>
 

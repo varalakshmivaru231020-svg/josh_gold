@@ -89,7 +89,7 @@
                         <div class="cib-icon"><i class="fas fa-phone-alt"></i></div>
                         <div class="cib-content">
                             <span class="cib-label">Phone</span>
-                            <a href="tel:+918217215195" class="cib-link">+91 8217215195</a>
+                            <a href="tel:+919632527961" class="cib-link">+91 96325 27961</a>
                         </div>
                     </div>
 
@@ -107,7 +107,7 @@
                         <div class="cib-icon cib-whatsapp"><i class="fab fa-whatsapp"></i></div>
                         <div class="cib-content">
                             <span class="cib-label">WhatsApp</span>
-                            <a href="https://wa.me/918217215195" target="_blank" class="cib-link cib-wa-link">
+                            <a href="https://wa.me/919632527961" target="_blank" class="cib-link cib-wa-link">
                                 Chat with us <i class="fas fa-external-link-alt ms-1" style="font-size: 0.7em;"></i>
                             </a>
                         </div>

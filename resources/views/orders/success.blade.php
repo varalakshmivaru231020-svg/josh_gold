@@ -163,7 +163,7 @@
                             </a>
                         </div> -->
                         <div class="col-md-12">
-                            <a href="https://wa.me/8217215195" target="_blank" class="btn btn-primary w-100">
+                            <a href="https://wa.me/919632527961" target="_blank" class="btn btn-primary w-100">
                                 <i class="fas fa-shopping-bag me-2"></i>Go to Whatsapp
                             </a>
                         </div>

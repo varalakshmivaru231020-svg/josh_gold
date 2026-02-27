@@ -396,13 +396,14 @@
         <div class="nav-links">
             <a href="{{ route('home') }}" class="nav-link-custom {{ request()->routeIs('home') ? 'active' : '' }}">Home</a>
             <a href="{{ route('about-us') }}" class="nav-link-custom {{ request()->routeIs('about-us') ? 'active' : '' }}">About</a>
-            <a href="{{ route('services.index') }}" class="nav-link-custom {{ request()->routeIs('services.index') ? 'active' : '' }}">Practice</a>
-            <a href="{{ route('products.index') }}" class="nav-link-custom {{ request()->routeIs('products.index') ? 'active' : '' }}">Publications</a>
+            <a href="{{ route('blog.index') }}" class="nav-link-custom {{ request()->routeIs('blog.index') ? 'active' : '' }}">Blog</a>
             <a href="{{ route('offices.index') }}" class="nav-link-custom {{ request()->routeIs('offices.index') ? 'active' : '' }}">Offices</a>
             <a href="{{ route('gallery') }}" class="nav-link-custom {{ request()->routeIs('gallery') ? 'active' : '' }}">Gallery</a>
+            <a href="{{ route('services.index') }}" class="nav-link-custom {{ request()->routeIs('services.index') ? 'active' : '' }}">Practice</a>
+            <a href="{{ route('products.index') }}" class="nav-link-custom {{ request()->routeIs('products.index') ? 'active' : '' }}">Publications</a>
             <a href="{{ route('contact') }}" class="nav-link-custom {{ request()->routeIs('contact') ? 'active' : '' }}">Contact Us</a>
 
-            <div class="dropdown d-inline-block">
+            <div class="dropdown d-inline-block d-none">
                 <a class="nav-link-custom dropdown-toggle" href="#" data-bs-toggle="dropdown">
                     More
                 </a>
@@ -417,8 +418,8 @@
                             </form>
                         </li>
                     @else
-                        <li><a class="dropdown-item py-2" href="{{ route('agent.login') }}">Distributor Login</a></li>
-                        <li><a class="dropdown-item py-2" href="{{ route('agent.register') }}">Become Distributor</a></li>
+                        {{-- <li><a class="dropdown-item py-2" href="{{ route('agent.login') }}">Distributor Login</a></li>
+                        <li><a class="dropdown-item py-2" href="{{ route('agent.register') }}">Become Distributor</a></li> --}}
                     @endauth
                 </ul>
             </div>
@@ -499,7 +500,7 @@
                 <div class="f-connect-card">
                     <i class="fas fa-phone-alt f-connect-icon"></i>
                     <span class="f-connect-label">Phone</span>
-                    <p class="f-connect-text">+91 80 4150 2373<br>+91 96325 27961</p>
+                    <p class="f-connect-text">+91 96325 27961</p>
                 </div>
                 <!-- Email -->
                 <div class="f-connect-card">

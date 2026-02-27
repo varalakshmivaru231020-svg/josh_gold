@@ -105,7 +105,7 @@
                                     <i class="fas fa-ellipsis-h nav-icon"></i> More
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-animated dropdown-menu-end">
-                                    <li>
+                                    {{-- <li>
                                         <a class="dropdown-item" href="{{ route('agent.login') }}">
                                             <i class="fas fa-sign-in-alt me-2"></i> Distributor Login
                                         </a>
@@ -114,7 +114,7 @@
                                         <a class="dropdown-item highlight-item" href="{{ route('agent.register') }}">
                                             <i class="fas fa-user-plus me-2"></i> Become Distributor
                                         </a>
-                                    </li>
+                                    </li> --}}
                                 </ul>
                             </li>
                         @endauth
@@ -166,9 +166,9 @@
                                     Bengaluru Law House Publications is one of India's leading providers of authoritative legal books and academic resources for students, advocates, law firms, and judicial institutions.
                                 </p>
                                 <div class="footer-contact-quick">
-                                    <a href="tel:+918217215195" class="quick-contact">
+                                    <a href="tel:+919632527961" class="quick-contact">
                                         <i class="fas fa-phone-alt"></i>
-                                        <span>+91 8217215195</span>
+                                        <span>+91 96325 27961</span>
                                     </a>
                                     <a href="mailto:bengalurulawhouse@gmail.com" class="quick-contact">
                                         <i class="fas fa-envelope"></i>
@@ -205,11 +205,11 @@
 
                         <div class="col-lg-3 col-md-6">
                             <div class="footer-widget">
-                                <h5 class="widget-title">Distributor</h5>
+                                {{-- <h5 class="widget-title">Distributor</h5>
                                 <ul class="footer-links">
                                     <li><a href="{{ route('agent.login') }}">Distributor Login</a></li>
                                     <li><a href="{{ route('agent.register') }}">Become Distributor</a></li>
-                                </ul>
+                                </ul> --}}
                                 <div class="footer-badge">
                                     <img src="https://razorpay.com/assets/razorpay-logo-new.svg" alt="Razorpay" style="height: 25px; filter: brightness(0) invert(1);">
                                     <span>Secure Payments</span>
@@ -247,7 +247,7 @@
     </footer>
 
     <!-- WhatsApp Float Button -->
-    <a href="https://wa.me/918217215195" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+    <a href="https://wa.me/919632527961" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
         <div class="whatsapp-pulse"></div>
         <i class="fab fa-whatsapp"></i>
     </a>

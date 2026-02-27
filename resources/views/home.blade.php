@@ -160,10 +160,6 @@
                                     <label class="id-label">PHONE</label>
                                     <div class="id-data-row">
                                         <i class="fas fa-diamond id-bullet"></i>
-                                        <a href="tel:+918041502373">+91 80 4150 2373</a>
-                                    </div>
-                                    <div class="id-data-row">
-                                        <i class="fas fa-diamond id-bullet"></i>
                                         <a href="tel:+919632527961">+91 96325 27961</a>
                                     </div>
                                 </div>
@@ -500,6 +496,67 @@
 </section>
 
 
+<!-- ── LATEST BLOGS ── -->
+<section class="section-premium" style="background: #ffffff; padding: 100px 0; margin-top: 30px; position: relative; z-index: 1;">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <span class="label-gold" style="font-size: 0.72rem; letter-spacing: 5px; font-weight: 800; text-transform: uppercase;">NEWS & INSIGHTS</span>
+            <h2 class="heading-premium text-navy mt-3 mb-4" style="font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem);">Latest from the Blog</h2>
+            <div class="accent-line-gold mx-auto"></div>
+            <p class="text-muted mt-4 mx-auto" style="max-width: 700px; font-size: 1.05rem; line-height: 1.75;">Stay updated with legal insights, industry news, and thought leadership from Advocate Veerendrababu Nanjegowda.</p>
+        </div>
+
+        <div class="row g-4 mt-2">
+            @forelse($latestBlogs as $index => $blog)
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
+                <div class="blog-card-lux h-100">
+                    <div class="blog-img-wrap">
+                        @if($blog->image)
+                            <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}" loading="lazy">
+                        @else
+                            <img src="https://via.placeholder.com/600x400/0c1428/c9a84c?text=Blog+Image" alt="{{ $blog->title }}" loading="lazy">
+                        @endif
+                    </div>
+                    <div class="p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="badge" style="background-color: #e8c878; color: #0c1428;">{{ $blog->category ?? 'Legal Insights' }}</span>
+                            <span class="text-muted ms-3 small">{{ $blog->created_at->format('M d, Y') }}</span>
+                        </div>
+                        <h3 class="h5 mb-3">
+                            <a href="{{ route('blog.show', $blog->slug) }}" class="text-navy text-decoration-none">
+                                {{ $blog->title }}
+                            </a>
+                        </h3>
+                        <p class="text-muted mb-4" style="line-height: 1.7;">
+                            {{ Str::limit(strip_tags($blog->content), 150) }}
+                        </p>
+                        <a href="{{ route('blog.show', $blog->slug) }}" class="btn btn-outline-dark btn-sm">
+                            Read More <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @empty
+            <div class="col-12 text-center py-5">
+                <div class="text-muted">
+                    <i class="fas fa-blog fa-3x mb-3"></i>
+                    <h4 class="mt-3">No Blog Posts Yet</h4>
+                    <p class="mb-0">Check back soon for the latest updates and insights.</p>
+                </div>
+            </div>
+            @endforelse
+        </div>
+
+        @if($latestBlogs->count() > 0)
+        <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="200">
+            <a href="{{ route('blog.index') }}" class="btn btn-primary-gold">
+                View All Blog Posts <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+        @endif
+    </div>
+</section>
+
 {{-- STATS SECTION HIDDEN --}}
 {{-- @if(isset($stats) && $stats->count() > 0)
 <section class="section-premium section-navy">
@@ -697,10 +754,6 @@
                     </div>
                     <div class="ocl-body">
                         <div class="ocl-row"><i class="fas fa-map-marker-alt ocl-icon ocl-pin"></i><span>#1652/6, 20th Cross, 8th Main, CQAL Layout, C-Block, Sahakaranagar, Bengaluru – 560092</span></div>
-                        <div class="ocl-row">
-                            <i class="fas fa-phone-alt ocl-icon ocl-phone"></i>
-                            <a href="tel:+918041502373" class="ocl-link">+91 80 4150 2373</a>
-                        </div>
                         <div class="ocl-row">
                             <i class="fas fa-mobile-alt ocl-icon ocl-mobile"></i>
                             <a href="tel:+919632527961" class="ocl-link">+91 96325 27961</a>
@@ -1980,7 +2033,7 @@
     .social-card-premium.sc-web-lux { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.3); }
     .social-card-premium:hover { transform:translateY(-8px); filter:brightness(1.15); }
 
-    .blog-card-lux { background:white; border-radius: 20px; overflow:hidden; border: 1px solid rgba(0,0,0,0.05); transition: 0.4s; }
+    .blog-card-lux { background:white; border-radius: 20px; overflow:hidden; border: 1px solid rgba(0,0,0,0.05); transition: 0.4s; position: relative; }
     .blog-card-lux:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.1); border-color: var(--gold); }
     .blog-img-wrap { height: 200px; overflow:hidden; }
     .blog-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }

@@ -48,7 +48,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->timestamps();
 
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('set null');
+
         });
 
         // Testimonial Videos

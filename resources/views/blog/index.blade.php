@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <div class="container py-5 mt-n5">
+    <div class="container py-5 md:-mt-12">
         <div class="row g-4">
             @forelse($blogs as $blog)
             <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up">
@@ -46,19 +46,41 @@
             {{ $blogs->links() }}
         </div>
         @endif
+
+        <!-- Newsletter Subscription Section -->
+        <div class="newsletter-section mt-5 py-5 bg-white rounded-4 shadow-sm border" data-aos="fade-up">
+            <div class="text-center mb-4">
+                <h3 class="font-display text-navy mb-3">Newsletter</h3>
+                <p class="text-muted">Receive weekly judicial summaries and publication releases.</p>
+            </div>
+            <form id="newsletter-form" class="row justify-content-center">
+                <div class="col-md-6 mb-3">
+                    <input type="email" name="email" class="form-control form-control-lg" placeholder="Your Email" required>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <button type="submit" class="btn btn-primary-gold w-100 btn-lg">Subscribe</button>
+                </div>
+            </form>
+            <div id="newsletter-message" class="mt-3"></div>
+        </div>
     </div>
 </section>
 @endsection
 
 @push('styles')
 <style>
-    .blog-luxury-page { background: var(--cream); min-height: 80vh; padding-bottom: 120px; }
+    .blog-luxury-page { background: var(--cream); min-height: 80vh; padding-bottom: 120px; position: relative; overflow: visible; }
     
     .blog-hero-header { 
-        background: var(--navy); 
-        padding: 160px 0 120px; 
+        background: 
+            linear-gradient(rgba(12,20,40,0.85) 0%, rgba(12,20,40,0.9) 100%),
+            url('/images/publications-banner.jpg') center center / cover no-repeat;
+        padding: 160px 0 96px; 
         position:relative; 
         overflow:hidden; 
+    }
+    @media (min-width: 768px) {
+        .blog-hero-header { padding: 160px 0 128px; }
     }
     .blog-hero-header::before {
         content: ''; position: absolute; inset: 0;
@@ -74,7 +96,7 @@
     
     .hero-subheader { max-width: 700px; margin: 0 auto; font-family: var(--font-display); font-size: 1.4rem; font-style: italic; position: relative; z-index: 2; }
     
-    .news-luxury-card { display:block; text-decoration:none; background:white; border-radius:24px; overflow:hidden; border: 1px solid rgba(0,0,0,0.05); transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); border-bottom: 4px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+    .news-luxury-card { display:block; text-decoration:none; background:white; border-radius:24px; overflow:hidden; border: 1px solid rgba(0,0,0,0.05); transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); border-bottom: 4px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; z-index: 10; }
     .news-luxury-card:hover { transform: translateY(-12px); box-shadow: 0 30px 60px rgba(0,0,0,0.12); }
     
     .news-img-wrap { position:relative; height:260px; overflow:hidden; }
@@ -96,6 +118,51 @@
     .pagination-premium .page-link { background: var(--white); border: 1px solid rgba(201,168,76,0.2); color: var(--navy); border-radius: 10px; padding: 12px 22px; font-weight: 600; }
     .pagination-premium .page-item.active .page-link { background: var(--gold); border-color: var(--gold); color: var(--navy); box-shadow: 0 5px 15px rgba(201,168,76,0.3); }
     
-    .mt-n5 { margin-top: -80px !important; }
+    @media (min-width: 768px) {
+        .md\:-mt-12 { margin-top: -48px !important; }
+    }
+    
+    /* Newsletter Section */
+    .newsletter-section {
+        max-width: 800px;
+        margin: 40px auto 0;
+    }
+    
+    .newsletter-section .form-control {
+        border: 2px solid #e9ecef;
+        padding: 15px 20px;
+        font-size: 1.1rem;
+    }
+    
+    .newsletter-section .form-control:focus {
+        border-color: var(--gold);
+        box-shadow: 0 0 0 0.25rem rgba(201, 168, 76, 0.25);
+    }
 </style>
+@endpush
+
+@push('scripts')
+<script>
+document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const email = this.email.value;
+    const messageDiv = document.getElementById('newsletter-message');
+    
+    // Simple client-side validation
+    if (!email || !email.includes('@')) {
+        messageDiv.innerHTML = '<div class="alert alert-danger">Please enter a valid email address.</div>';
+        return;
+    }
+    
+    // Simulate subscription (since we removed the backend functionality)
+    messageDiv.innerHTML = '<div class="alert alert-success">Thank you for subscribing to our newsletter!</div>';
+    this.reset();
+    
+    // Hide message after 5 seconds
+    setTimeout(() => {
+        messageDiv.innerHTML = '';
+    }, 5000);
+});
+</script>
 @endpush
