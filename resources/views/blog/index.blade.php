@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <div class="container py-5 md:-mt-12">
+    <div class="container py-5">
         <div class="row g-4">
             @forelse($blogs as $blog)
             <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up">
@@ -25,7 +25,7 @@
                     <div class="news-body">
                         <h3>{{ $blog->title }}</h3>
                         <p>{{ \Illuminate\Support\Str::limit($blog->excerpt, 120) }}</p>
-                        <span class="read-analysis">Full Commentary <i class="fas fa-arrow-right"></i></span>
+                        <span class="read-analysis">Read More <i class="fas fa-arrow-right"></i></span>
                     </div>
                 </a>
             </div>
@@ -47,8 +47,8 @@
         </div>
         @endif
 
-        <!-- Newsletter Subscription Section -->
-        <div class="newsletter-section mt-5 py-5 bg-white rounded-4 shadow-sm border" data-aos="fade-up">
+        {{-- Newsletter Subscription Section --}}
+        {{-- <div class="newsletter-section mt-5 py-5 bg-white rounded-4 shadow-sm border" data-aos="fade-up">
             <div class="text-center mb-4">
                 <h3 class="font-display text-navy mb-3">Newsletter</h3>
                 <p class="text-muted">Receive weekly judicial summaries and publication releases.</p>
@@ -62,7 +62,7 @@
                 </div>
             </form>
             <div id="newsletter-message" class="mt-3"></div>
-        </div>
+        </div> --}}
     </div>
 </section>
 @endsection
@@ -118,9 +118,7 @@
     .pagination-premium .page-link { background: var(--white); border: 1px solid rgba(201,168,76,0.2); color: var(--navy); border-radius: 10px; padding: 12px 22px; font-weight: 600; }
     .pagination-premium .page-item.active .page-link { background: var(--gold); border-color: var(--gold); color: var(--navy); box-shadow: 0 5px 15px rgba(201,168,76,0.3); }
     
-    @media (min-width: 768px) {
-        .md\:-mt-12 { margin-top: -48px !important; }
-    }
+    /* Removed negative overlap utility for cleaner separation between banner and cards */
     
     /* Newsletter Section */
     .newsletter-section {

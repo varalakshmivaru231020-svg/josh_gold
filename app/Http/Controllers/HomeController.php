@@ -92,8 +92,33 @@ class HomeController extends Controller
     public function blogShow($slug)
     {
         $blog = Blog::where('slug', $slug)->where('is_active', true)->firstOrFail();
-        $relatedBlogs = Blog::active()->where('id', '!=', $blog->id)->ordered()->take(3)->get();
-        return view('blog.show', compact('blog', 'relatedBlogs'));
+
+        // Sidebar: recent posts
+        $recentBlogs = Blog::active()
+            ->where('id', '!=', $blog->id)
+            ->ordered()
+            ->take(5)
+            ->get();
+
+        // End-of-article: related articles
+        $relatedBlogs = Blog::active()
+            ->where('id', '!=', $blog->id)
+            ->inRandomOrder()
+            ->take(3)
+            ->get();
+
+        // Previous / Next navigation
+        $previousBlog = Blog::active()
+            ->where('id', '<', $blog->id)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $nextBlog = Blog::active()
+            ->where('id', '>', $blog->id)
+            ->orderBy('id', 'asc')
+            ->first();
+
+        return view('blog.show', compact('blog', 'recentBlogs', 'relatedBlogs', 'previousBlog', 'nextBlog'));
     }
 
     public function contactPage()
