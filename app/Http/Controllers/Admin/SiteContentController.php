@@ -794,13 +794,19 @@ class SiteContentController extends Controller
             'website'    => 'nullable|string|max:255',
             'icon'       => 'nullable|string|max:100',
             'image'      => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:8192',
+            'remove_image' => 'nullable|boolean',
             'color'      => 'nullable|string|max:20',
             'sort_order' => 'nullable|integer',
         ]);
 
         $office = Office::findOrFail($id);
-        $data = $request->except('image');
+        $data = $request->except('image', 'remove_image');
         $data['is_active'] = $request->has('is_active');
+
+        if ($request->boolean('remove_image') && $office->image) {
+            Storage::disk('public')->delete($office->image);
+            $data['image'] = null;
+        }
 
         if ($request->hasFile('image')) {
             if ($office->image) Storage::disk('public')->delete($office->image);
@@ -1092,4 +1098,3 @@ class SiteContentController extends Controller
             ->with('success', 'Beyond the Bar section updated successfully.');
     }
 }
-

@@ -351,7 +351,7 @@
                 </div>
             </div>
             <div class="col-lg-6 ps-lg-5">
-                <span class="label-gold">{{ $featuredBook->title ?? 'Featured Publication' }}</span>
+                <span class="label-gold" style="color: var(--gold, #c9a84c); display: block;">{{ $featuredBook->title ?? 'Featured Publication' }}</span>
                 <h2 class="fb-title mb-2">{{ $featuredBook->book_name ?? "Thanks Appa" }}</h2>
                 <div class="fb-divider mb-4"></div>
                 
@@ -663,18 +663,22 @@
             <p class="offices-subtext mx-auto">Strategically located in <strong>Bengaluru</strong> and at the <strong style="text-decoration:underline; color:var(--gold-dark);">Supreme Court of India in New Delhi</strong>,<br>enabling seamless legal service at state and national apex level.</p>
         </div>
 
+        @php
+            $officeImages = $offices->filter(function ($office) {
+                return !empty($office->image);
+            })->values();
+        @endphp
+
         {{-- Photo Grid --}}
+        @if($officeImages->count() > 0)
         <div class="offices-img-grid" data-aos="fade-up" data-aos-delay="100">
-            @forelse($offices as $index => $office)
-                @if($office->image)
+            @foreach($officeImages as $index => $office)
                 <div class="offices-img-item {{ $index === 0 ? 'offices-img-tall' : '' }}">
                     <img src="{{ asset('storage/' . $office->image) }}" alt="{{ $office->title }}" loading="lazy">
                 </div>
-                @endif
-            @empty
-                {{-- no images yet --}}
-            @endforelse
+            @endforeach
         </div>
+        @endif
 
         {{-- Info Cards --}}
         <div class="offices-cards-grid" data-aos="fade-up" data-aos-delay="200">

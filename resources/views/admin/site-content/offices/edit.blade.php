@@ -62,7 +62,7 @@
                 <div class="col-md-4">
                     {{-- Current image --}}
                     @if($office->image)
-                    <div class="mb-2">
+                    <div class="mb-2" id="currentOfficeImageWrap">
                         <label class="form-label fw-semibold">Current Photo</label>
                         <img src="{{ asset('storage/' . $office->image) }}" class="img-fluid rounded" style="max-height:160px; object-fit:cover; width:100%;">
                     </div>
@@ -74,8 +74,19 @@
                         <div id="officePreview" class="mt-2 d-none">
                             <img id="officePrevImg" src="#" class="img-fluid rounded" style="max-height:160px; object-fit:cover; width:100%;">
                         </div>
+                        <button type="button" id="clearOfficeImage" class="btn btn-sm btn-outline-danger mt-2 d-none">Remove selected image</button>
                         <small class="text-muted">Shown in photo grid. Max 8MB. Leave blank to keep current.</small>
                     </div>
+
+                    @if($office->image)
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="remove_image" name="remove_image" value="1">
+                            <label class="form-check-label" for="remove_image">Remove current photo</label>
+                        </div>
+                        <small class="text-muted">If selected, this office will be shown without image.</small>
+                    </div>
+                    @endif
 
                     <div class="mb-3">
                         <label for="color" class="form-label fw-semibold">Card Accent Color</label>
@@ -126,13 +137,48 @@ document.getElementById('color').addEventListener('input', function() {
 document.getElementById('officeImageInput').addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (file) {
+        const removeImage = document.getElementById('remove_image');
+        if (removeImage) {
+            removeImage.checked = false;
+        }
         const reader = new FileReader();
         reader.onload = function(ev) {
             document.getElementById('officePrevImg').src = ev.target.result;
             document.getElementById('officePreview').classList.remove('d-none');
+            document.getElementById('clearOfficeImage').classList.remove('d-none');
         };
         reader.readAsDataURL(file);
+    } else {
+        document.getElementById('officePreview').classList.add('d-none');
+        document.getElementById('clearOfficeImage').classList.add('d-none');
     }
 });
+
+document.getElementById('clearOfficeImage').addEventListener('click', function() {
+    const input = document.getElementById('officeImageInput');
+    input.value = '';
+    document.getElementById('officePreview').classList.add('d-none');
+    this.classList.add('d-none');
+});
+
+const removeImageCheckbox = document.getElementById('remove_image');
+if (removeImageCheckbox) {
+    removeImageCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+            const input = document.getElementById('officeImageInput');
+            input.value = '';
+            document.getElementById('officePreview').classList.add('d-none');
+            const currentImageWrap = document.getElementById('currentOfficeImageWrap');
+            if (currentImageWrap) {
+                currentImageWrap.classList.add('opacity-50');
+            }
+        } else {
+            const currentImageWrap = document.getElementById('currentOfficeImageWrap');
+            if (currentImageWrap) {
+                currentImageWrap.classList.remove('opacity-50');
+            }
+        }
+    });
+}
 </script>
 @endpush

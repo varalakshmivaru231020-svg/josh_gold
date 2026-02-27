@@ -65,6 +65,7 @@
                         <div id="officePreview" class="mt-2 d-none">
                             <img id="officePrevImg" src="#" class="img-fluid rounded" style="max-height:160px; object-fit:cover; width:100%;">
                         </div>
+                        <button type="button" id="clearOfficeImage" class="btn btn-sm btn-outline-danger mt-2 d-none">Remove selected image</button>
                         <small class="text-muted">Shown in the photo grid above the cards. Max 8MB.</small>
                     </div>
 
@@ -124,9 +125,19 @@ document.getElementById('officeImageInput').addEventListener('change', function(
         reader.onload = function(ev) {
             document.getElementById('officePrevImg').src = ev.target.result;
             document.getElementById('officePreview').classList.remove('d-none');
+            document.getElementById('clearOfficeImage').classList.remove('d-none');
         };
         reader.readAsDataURL(file);
+    } else {
+        document.getElementById('officePreview').classList.add('d-none');
+        document.getElementById('clearOfficeImage').classList.add('d-none');
     }
+});
+document.getElementById('clearOfficeImage').addEventListener('click', function() {
+    const input = document.getElementById('officeImageInput');
+    input.value = '';
+    document.getElementById('officePreview').classList.add('d-none');
+    this.classList.add('d-none');
 });
 </script>
 @endpush

@@ -1,4 +1,4 @@
-@extends('layouts.lawfirm')
+﻿@extends('layouts.lawfirm')
 
 @section('title', $product->name . ' | Bengaluru Law House')
 
@@ -80,7 +80,7 @@
                         </div>
 
                         <div class="product-meta-pills mb-4">
-                            @if($product->author) <span class="meta-pill"><i class="fas fa-user-pen"></i> {{ $product->author }}</span> @endif
+                            @if($product->author)<span class="meta-pill"><i class="fas fa-user-pen"></i> {{ $product->author }}</span>@endif
                             <span class="meta-pill"><i class="fas fa-certificate"></i> Premium Edition</span>
                         </div>
 
@@ -98,9 +98,9 @@
                                         <div class="col-sm-6">
                                             <label class="label-gold-sm mb-2 d-block">Quantity</label>
                                             <div class="qty-selector-lux">
-                                                <button type="button" class="qty-btn-lux" id="decrementQty"><i class="fas fa-minus"></i></button>
-                                                <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ $product->stock }}" readonly>
-                                                <button type="button" class="qty-btn-lux" id="incrementQty"><i class="fas fa-plus"></i></button>
+                                                <button type="button" class="qty-btn-lux" id="decrementQty" onclick="changeQty(-1)"><i class="fas fa-minus"></i></button>
+                                                <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ (int)($product->stock ?? 9999) }}" readonly>
+                                                <button type="button" class="qty-btn-lux" id="incrementQty" onclick="changeQty(1)"><i class="fas fa-plus"></i></button>
                                             </div>
                                         </div>
                                         <div class="col-sm-6 mt-3 mt-sm-0">
@@ -116,11 +116,11 @@
                                     <div class="summary-box-lux mb-4">
                                         <div class="summary-line">
                                             <span>Unit Price</span>
-                                            <span id="unitPriceDisplay">₹{{ number_format($product->price, 2) }}</span>
+                                            <span>₹<span id="unitPriceDisplay">{{ number_format($product->price, 2) }}</span></span>
                                         </div>
                                         <div class="summary-line discount d-none" id="discountRow">
                                             <span>Referral Discount</span>
-                                            <span>-₹<span id="discountAmount">0.00</span></span>
+                                            <span>-â‚¹<span id="discountAmount">0.00</span></span>
                                         </div>
                                         <div class="summary-line total pt-2 border-top">
                                             <span>Total Amount</span>
@@ -188,7 +188,7 @@
                                 </div>
                                 <div class="treatise-body">
                                     <h5 class="treatise-name font-display">{{ Str::limit($relatedProduct->name, 50) }}</h5>
-                                    <div class="h5 text-gold fw-bold mb-3">₹{{ number_format($relatedProduct->price, 0) }}</div>
+                                    <div class="h5 text-gold fw-bold mb-3">â‚¹{{ number_format($relatedProduct->price, 0) }}</div>
                                     <a href="{{ route('products.show', $relatedProduct) }}" class="btn-royal-sm w-100">View Detail</a>
                                 </div>
                             </div>
@@ -203,10 +203,10 @@
 
 @push('styles')
 <style>
-    /* ── PRODUCT DETAIL PAGE ── */
+    /* â”€â”€ PRODUCT DETAIL PAGE â”€â”€ */
     .product-detail-page { background: var(--cream, #f8f5ef); min-height: 80vh; padding-bottom: 120px; }
 
-    /* Hero Banner — no overlap, full display */
+    /* Hero Banner â€” no overlap, full display */
     .product-hero-header {
         background: 
             linear-gradient(rgba(8,14,28,0.82) 0%, rgba(10,18,36,0.85) 100%),
@@ -250,7 +250,7 @@
     .product-breadcrumb .sep { color: rgba(255,255,255,0.3); }
     .product-breadcrumb .curr { color: white; opacity: 0.7; }
 
-    /* Content sits cleanly below banner — NO negative margin */
+    /* Content sits cleanly below banner â€” NO negative margin */
     .product-content-container { padding-top: 60px; padding-bottom: 60px; }
 
     .product-main-card { background: white; border-radius: 40px; overflow: hidden; box-shadow: 0 40px 100px rgba(0,0,0,0.08); border: 1px solid rgba(201,168,76,0.12); }
@@ -269,10 +269,10 @@
     .thumb-nav-item.active, .thumb-nav-item:hover { border-color: var(--gold); background: white; }
     .thumb-nav-item img { width: 100%; height: 100%; object-fit: contain; }
 
-    .price-box-premium { display: flex; align-items: baseline; gap: 10px; }
-    .price-box-premium .currency { font-size: 1.5rem; color: var(--gold-dark, #8b6914); font-weight: 700; }
-    .price-box-premium .amount { font-size: 3rem; color: var(--navy, #0c1428); font-weight: 800; font-family: var(--font-display); }
-    .price-box-premium .tax-tag { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+    .price-box-premium { display: flex; flex-direction: row; align-items: baseline; gap: 8px; flex-wrap: nowrap; }
+    .price-box-premium .currency { display: inline-block; font-size: 2.2rem; color: var(--navy, #0c1428); font-weight: 800; line-height: 1; }
+    .price-box-premium .amount { display: inline-block; font-size: 3rem; color: var(--navy, #0c1428); font-weight: 800; font-family: var(--font-display); line-height: 1; }
+    .price-box-premium .tax-tag { display: inline-block; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
 
     .meta-pill { display: inline-flex; align-items: center; gap: 8px; background: var(--cream); color: var(--navy); padding: 6px 16px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(201,168,76,0.15); margin-right: 10px; }
     .meta-pill i { color: var(--gold); }
@@ -317,7 +317,7 @@
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+(function() {
     // Gallery Slider
     if (document.querySelector('.product-main-slider')) {
         const glide = new Glide('.product-main-slider', {
@@ -342,44 +342,51 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Pricing Logic
-    const qtyInput = document.getElementById('quantity');
-    const unitPrice = parseFloat({{ $product->price }});
-    let referralApplied = false;
-    let discountPerUnit = 25; // Default discount as per existing logic
+    // Pricing Logic â€” runs immediately (DOM already ready at bottom of body)
+    var qtyInput       = document.getElementById('quantity');
+    var unitPrice      = {{ (float)($product->price ?? 0) }};
+    var maxStock       = {{ (int)($product->stock ?? 9999) }};
+    var referralApplied = false;
+    var discountPerUnit = 25; // â‚¹25 per unit when referral applied
 
-    const updateUIPrice = () => {
-        const qty = parseInt(qtyInput.value) || 1;
-        const subtotal = unitPrice * qty;
-        let discount = referralApplied ? (discountPerUnit * qty) : 0;
-        let total = subtotal - discount;
+    function updateUIPrice() {
+        var qty      = parseInt(qtyInput.value) || 1;
+        var subtotal = unitPrice * qty;
+        var discount = referralApplied ? (discountPerUnit * qty) : 0;
+        var total    = subtotal - discount;
 
-        document.getElementById('unitPriceDisplay').innerText = '₹' + subtotal.toLocaleString('en-IN', {minimumFractionDigits: 2});
+        // Unit Price – always shows fixed per-unit price
+        document.getElementById('unitPriceDisplay').innerText =
+            unitPrice.toLocaleString('en-IN', {minimumFractionDigits: 2});
+
+        // Discount row â€” visible only when referral is applied
         if (referralApplied) {
             document.getElementById('discountRow').classList.remove('d-none');
-            document.getElementById('discountAmount').innerText = discount.toLocaleString('en-IN', {minimumFractionDigits: 2});
+            document.getElementById('discountAmount').innerText =
+                discount.toLocaleString('en-IN', {minimumFractionDigits: 2});
         } else {
             document.getElementById('discountRow').classList.add('d-none');
         }
-        document.getElementById('totalAmountFinal').innerText = total.toLocaleString('en-IN', {minimumFractionDigits: 2});
-        document.getElementById('totalAmountDisplay').innerText = total.toLocaleString('en-IN', {minimumFractionDigits: 2});
+
+        // Total Amount in summary box – changes with quantity
+        document.getElementById('totalAmountFinal').innerText =
+            total.toLocaleString('en-IN', {minimumFractionDigits: 2});
+        
+        // Big hero price stays fixed at unit price (do NOT update totalAmountDisplay)
+    }
+
+    // Expose to inline onclick handlers on the buttons
+    window.changeQty = function(delta) {
+        var val = parseInt(qtyInput.value) || 1;
+        var next = val + delta;
+        if (next >= 1 && next <= maxStock) {
+            qtyInput.value = next;
+            updateUIPrice();
+        }
     };
 
-    document.getElementById('incrementQty').addEventListener('click', () => {
-        const val = parseInt(qtyInput.value);
-        if (val < {{ $product->stock }}) {
-            qtyInput.value = val + 1;
-            updateUIPrice();
-        }
-    });
-
-    document.getElementById('decrementQty').addEventListener('click', () => {
-        const val = parseInt(qtyInput.value);
-        if (val > 1) {
-            qtyInput.value = val - 1;
-            updateUIPrice();
-        }
-    });
+    // Initialize on load
+    updateUIPrice();
 
     document.getElementById('applyReferral').addEventListener('click', function() {
         const code = document.getElementById('referral_code').value.trim();
@@ -418,10 +425,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
-
-
-    updateUIPrice();
-});
+})();
 </script>
 @endpush
