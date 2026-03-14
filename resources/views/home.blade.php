@@ -384,11 +384,14 @@
         </div>
 
         @php
-            $homeProducts = \App\Models\Product::active()->take(4)->get();
+            $homeProducts = \App\Models\Product::active()->take(5)->get();
         @endphp
 
-        <div class="pub-cards-grid">
+        <div class="pub-cards-grid pub-cards-grid-home">
             @forelse($homeProducts as $index => $product)
+            @php
+                $isThanksAppa = Str::squish(Str::lower($product->name)) === 'thanks appa';
+            @endphp
             <div class="pub-card" data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
                 @if($product->year)
                 <div class="pub-badge">{{ $product->year }}</div>
@@ -406,13 +409,13 @@
                 @endif
                 <div class="pub-card-body">
                     <p class="pub-desc">{{ Str::limit(strip_tags($product->description), 180) }}</p>
-                    {{-- 
-                    <div class="mt-4">
-                        <a href="{{ route('products.show', $product) }}" class="btn-royal-sm">
-                            View Details <i class="fas fa-arrow-right ms-2"></i>
+                    @if($isThanksAppa)
+                    <div class="mt-4 text-center">
+                        <a href="{{ route('products.show', $product) }}" class="btn-purchase-lux">
+                            Buy Book
                         </a>
-                    </div> 
-                    --}}
+                    </div>
+                    @endif
                 </div>
             </div>
             @empty
@@ -904,6 +907,11 @@
     }
     .pas-card-text {
         font-size: 0.9rem; color: #666; line-height: 1.7; margin: 0;
+    }
+
+    /* Home Page Publications Grid (5 columns) */
+    .pub-cards-grid-home {
+        grid-template-columns: repeat(5, 1fr) !important;
     }
 
     /* Quote Banner */
@@ -1792,7 +1800,7 @@
     
     .btn-purchase-lux {
         background: #1a2e5e; color: white; border: none; padding: 18px 45px; border-radius: 8px;
-        font-weight: 700; text-decoration: none; display: inline-flex; align-items: center;
+        font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
         letter-spacing: 1px; transition: all 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         border: 1px solid rgba(255,255,255,0.1);
     }
@@ -1846,6 +1854,11 @@
         grid-template-columns: repeat(4, 1fr);
         gap: 24px;
         margin-bottom: 50px;
+    }
+
+    /* Home page should show 5 books in one row */
+    .pub-cards-grid-home {
+        grid-template-columns: repeat(5, 1fr) !important;
     }
     .pub-card {
         background: #fff;
@@ -2211,6 +2224,20 @@
     @media (max-width: 768px) {
         .beyond-bar-section { padding: 80px 20px; }
         .bb-gallery-bottom { grid-template-columns: 1fr; }
+    }
+
+    /* Home Page Publications Grid Responsive */
+    @media (max-width: 1400px) {
+        .pub-cards-grid-home { grid-template-columns: repeat(4, 1fr) !important; }
+    }
+    @media (max-width: 1200px) {
+        .pub-cards-grid-home { grid-template-columns: repeat(3, 1fr) !important; }
+    }
+    @media (max-width: 768px) {
+        .pub-cards-grid-home { grid-template-columns: repeat(2, 1fr) !important; gap: 20px; }
+    }
+    @media (max-width: 576px) {
+        .pub-cards-grid-home { grid-template-columns: 1fr !important; }
     }
 </style>
 @endpush

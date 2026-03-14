@@ -1,4 +1,4 @@
-﻿@extends('layouts.lawfirm')
+@extends('layouts.lawfirm')
 
 @section('title', $product->name . ' | Bengaluru Law House')
 
@@ -120,7 +120,7 @@
                                         </div>
                                         <div class="summary-line discount d-none" id="discountRow">
                                             <span>Referral Discount</span>
-                                            <span>-â‚¹<span id="discountAmount">0.00</span></span>
+                                            <span>-₹<span id="discountAmount">0.00</span></span>
                                         </div>
                                         <div class="summary-line total pt-2 border-top">
                                             <span>Total Amount</span>
@@ -188,7 +188,7 @@
                                 </div>
                                 <div class="treatise-body">
                                     <h5 class="treatise-name font-display">{{ Str::limit($relatedProduct->name, 50) }}</h5>
-                                    <div class="h5 text-gold fw-bold mb-3">â‚¹{{ number_format($relatedProduct->price, 0) }}</div>
+                                    <div class="h5 text-gold fw-bold mb-3">₹{{ number_format($relatedProduct->price, 0) }}</div>
                                     <a href="{{ route('products.show', $relatedProduct) }}" class="btn-royal-sm w-100">View Detail</a>
                                 </div>
                             </div>
@@ -203,10 +203,8 @@
 
 @push('styles')
 <style>
-    /* â”€â”€ PRODUCT DETAIL PAGE â”€â”€ */
     .product-detail-page { background: var(--cream, #f8f5ef); min-height: 80vh; padding-bottom: 120px; }
 
-    /* Hero Banner â€” no overlap, full display */
     .product-hero-header {
         background: 
             linear-gradient(rgba(8,14,28,0.82) 0%, rgba(10,18,36,0.85) 100%),
@@ -216,7 +214,7 @@
         overflow: hidden;
         z-index: 0;
     }
-    /* Grid texture */
+
     .product-hero-header::before {
         content: ''; position: absolute; inset: 0; z-index: 0;
         background-image:
@@ -224,7 +222,7 @@
             linear-gradient(90deg, rgba(201, 168, 76, 0.055) 1px, transparent 1px);
         background-size: 55px 55px;
     }
-    /* Spotlights */
+
     .product-hero-header::after {
         content:''; position: absolute; inset:0; z-index: 0;
         background:
@@ -233,12 +231,13 @@
             radial-gradient(ellipse at 50% 110%, rgba(201,168,76,0.18) 0%, transparent 45%),
             linear-gradient(120deg, rgba(20,35,70,0.85) 0%, rgba(8,14,28,0.6) 50%, rgba(15,28,55,0.9) 100%);
     }
-    /* Decorative large book icon */
+
     .product-hero-deco {
         position: absolute; right: 7%; top: 50%; transform: translateY(-50%);
         font-size: 14rem; color: rgba(201,168,76,0.06);
         pointer-events: none; z-index: 0; line-height: 1;
     }
+
     .product-hero-header .container { position: relative; z-index: 1; }
     .product-hero-header .label-gold { display: block; }
     .product-hero-header .heading-premium { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; }
@@ -250,9 +249,7 @@
     .product-breadcrumb .sep { color: rgba(255,255,255,0.3); }
     .product-breadcrumb .curr { color: white; opacity: 0.7; }
 
-    /* Content sits cleanly below banner â€” NO negative margin */
     .product-content-container { padding-top: 60px; padding-bottom: 60px; }
-
     .product-main-card { background: white; border-radius: 40px; overflow: hidden; box-shadow: 0 40px 100px rgba(0,0,0,0.08); border: 1px solid rgba(201,168,76,0.12); }
 
     .main-image-wrap { height: 500px; display: flex; align-items: center; justify-content: center; padding: 40px; }
@@ -278,13 +275,13 @@
     .meta-pill i { color: var(--gold); }
 
     .qty-selector-lux { display: flex; align-items: center; background: white; border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; overflow: hidden; max-width: 140px; }
-    .qty-btn-lux { border: none; background: transparent; padding: 10px 15px; color: var(--navy); transition: 0.3s; }
+    .qty-btn-lux { border: none; background: transparent; padding: 10px 15px; color: var(--navy); cursor: pointer; transition: 0.3s; }
     .qty-btn-lux:hover { background: var(--gold); color: white; }
     .qty-selector-lux input { width: 40px; text-align: center; border: none; font-weight: 700; color: var(--navy); background: transparent; }
 
     .referral-flex { display: flex; gap: 10px; }
     .form-luxury-sm { border: 1px solid rgba(201,168,76,0.3); background: white; padding: 10px 15px; border-radius: 12px; width: 100%; font-size: 0.9rem; color: var(--navy); }
-    .btn-apply-lux { background: var(--navy); color: white; border: none; padding: 0 20px; border-radius: 12px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; transition: 0.3s; white-space: nowrap; }
+    .btn-apply-lux { background: var(--navy); color: white; border: none; padding: 0 20px; border-radius: 12px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; transition: 0.3s; white-space: nowrap; cursor: pointer; }
     .btn-apply-lux:hover { background: var(--gold); color: var(--navy); }
 
     .summary-box-lux .summary-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; color: var(--text-muted); font-weight: 600; }
@@ -297,8 +294,8 @@
     .out-of-stock-premium { background: rgba(201,168,76,0.05); padding: 40px; border-radius: 24px; border: 2px dashed var(--gold); text-align: center; color: var(--navy); }
     .btn-outline-gold { background: transparent; color: var(--gold); border: 2px solid var(--gold); border-radius: 12px; font-weight: 700; transition: 0.3s; }
     .btn-outline-gold:hover { background: var(--gold); color: white; }
-    .btn-primary-gold { background: var(--gold); color: white; border-radius: 12px; font-weight: 700; transition: 0.3s; border: none; }
-    .btn-primary-gold:hover { background: var(--gold-dark); transform: translateY(-2px); shadow: 0 10px 20px rgba(0,0,0,0.1); }
+    .btn-primary-gold { background: var(--gold); color: white; border-radius: 12px; font-weight: 700; transition: 0.3s; border: none; cursor: pointer; }
+    .btn-primary-gold:hover { background: var(--gold-dark); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
     
     .product-no-image { height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--cream); }
 
@@ -317,8 +314,7 @@
 
 @push('scripts')
 <script>
-(function() {
-    // Gallery Slider
+document.addEventListener('DOMContentLoaded', function() {
     if (document.querySelector('.product-main-slider')) {
         const glide = new Glide('.product-main-slider', {
             type: 'carousel',
@@ -342,40 +338,40 @@
         });
     }
 
-    // Pricing Logic â€” runs immediately (DOM already ready at bottom of body)
-    var qtyInput       = document.getElementById('quantity');
-    var unitPrice      = {{ (float)($product->price ?? 0) }};
-    var maxStock       = {{ (int)($product->stock ?? 9999) }};
+    var qtyInput = document.getElementById('quantity');
+    if (!qtyInput) return;
+
+    var unitPrice = {{ (float)($product->price ?? 0) }};
+    var maxStock = {{ (int)($product->stock ?? 9999) }};
     var referralApplied = false;
-    var discountPerUnit = 25; // â‚¹25 per unit when referral applied
+    var discountPerUnit = 25;
 
     function updateUIPrice() {
-        var qty      = parseInt(qtyInput.value) || 1;
+        var qty = parseInt(qtyInput.value) || 1;
         var subtotal = unitPrice * qty;
         var discount = referralApplied ? (discountPerUnit * qty) : 0;
-        var total    = subtotal - discount;
+        var total = subtotal - discount;
 
-        // Unit Price – always shows fixed per-unit price
-        document.getElementById('unitPriceDisplay').innerText =
-            unitPrice.toLocaleString('en-IN', {minimumFractionDigits: 2});
-
-        // Discount row â€” visible only when referral is applied
-        if (referralApplied) {
-            document.getElementById('discountRow').classList.remove('d-none');
-            document.getElementById('discountAmount').innerText =
-                discount.toLocaleString('en-IN', {minimumFractionDigits: 2});
-        } else {
-            document.getElementById('discountRow').classList.add('d-none');
+        var unitPriceDisplay = document.getElementById('unitPriceDisplay');
+        if (unitPriceDisplay) {
+            unitPriceDisplay.innerText = unitPrice.toLocaleString('en-IN', {minimumFractionDigits: 2});
         }
 
-        // Total Amount in summary box – changes with quantity
-        document.getElementById('totalAmountFinal').innerText =
-            total.toLocaleString('en-IN', {minimumFractionDigits: 2});
-        
-        // Big hero price stays fixed at unit price (do NOT update totalAmountDisplay)
+        var discountRow = document.getElementById('discountRow');
+        var discountAmount = document.getElementById('discountAmount');
+        if (referralApplied && discountRow && discountAmount) {
+            discountRow.classList.remove('d-none');
+            discountAmount.innerText = discount.toLocaleString('en-IN', {minimumFractionDigits: 2});
+        } else if (discountRow) {
+            discountRow.classList.add('d-none');
+        }
+
+        var totalAmountFinal = document.getElementById('totalAmountFinal');
+        if (totalAmountFinal) {
+            totalAmountFinal.innerText = total.toLocaleString('en-IN', {minimumFractionDigits: 2});
+        }
     }
 
-    // Expose to inline onclick handlers on the buttons
     window.changeQty = function(delta) {
         var val = parseInt(qtyInput.value) || 1;
         var next = val + delta;
@@ -385,46 +381,65 @@
         }
     };
 
-    // Initialize on load
     updateUIPrice();
 
-    document.getElementById('applyReferral').addEventListener('click', function() {
-        const code = document.getElementById('referral_code').value.trim();
-        const msg = document.getElementById('referralMessage');
-        const btn = this;
+    var applyReferralBtn = document.getElementById('applyReferral');
+    if (applyReferralBtn) {
+        applyReferralBtn.addEventListener('click', function() {
+            var code = document.getElementById('referral_code').value.trim();
+            var msg = document.getElementById('referralMessage');
+            var btn = this;
 
-        if (!code) {
-            msg.innerText = 'Enter code';
-            msg.className = 'referral-msg text-danger mt-1';
-            return;
-        }
+            if (!code) {
+                if (msg) {
+                    msg.innerText = 'Please enter a referral code';
+                    msg.className = 'referral-msg text-danger mt-1';
+                }
+                return;
+            }
 
-        btn.disabled = true;
-        btn.innerText = '...';
+            btn.disabled = true;
+            btn.innerText = 'Checking...';
 
-        fetch("{{ route('checkReferral') }}", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", "X-CSRF-TOKEN": "{{ csrf_token() }}" },
-            body: JSON.stringify({ referral_code: code })
-        })
-        .then(r => r.json())
-        .then(data => {
-            if (data.success) {
-                referralApplied = true;
-                msg.innerText = data.message;
-                msg.className = 'referral-msg text-success mt-1 d-block';
-                btn.innerText = 'Applied';
-                updateUIPrice();
-            } else {
-                referralApplied = false;
-                msg.innerText = data.message;
-                msg.className = 'referral-msg text-danger mt-1 d-block';
+            fetch("{{ route('checkReferral') }}", {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json", 
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}" 
+                },
+                body: JSON.stringify({ referral_code: code })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    referralApplied = true;
+                    if (msg) {
+                        msg.innerText = data.message || 'Referral applied!';
+                        msg.className = 'referral-msg text-success mt-1 d-block';
+                    }
+                    btn.innerText = 'Applied';
+                    updateUIPrice();
+                } else {
+                    referralApplied = false;
+                    if (msg) {
+                        msg.innerText = data.message || 'Invalid code';
+                        msg.className = 'referral-msg text-danger mt-1 d-block';
+                    }
+                    btn.innerText = 'Apply';
+                    btn.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                if (msg) {
+                    msg.innerText = 'Error checking code';
+                    msg.className = 'referral-msg text-danger mt-1 d-block';
+                }
                 btn.innerText = 'Apply';
                 btn.disabled = false;
-                updateUIPrice();
-            }
+            });
         });
-    });
-})();
+    }
+});
 </script>
 @endpush

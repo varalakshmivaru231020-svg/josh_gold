@@ -1,6 +1,12 @@
 @php
     $siteLogo = \App\Models\SiteSetting::get('site_logo');
     $logoUrl = $siteLogo ? asset('storage/' . $siteLogo) : asset('blr.jpg');
+    $announcementLinks = [
+        ['label' => 'Water Filtration Project', 'url' => route('water-filtration'), 'icon' => 'fa-droplet'],
+        ['label' => 'Water Filtration Kannada', 'url' => route('water-filtration-kannada'), 'icon' => 'fa-droplet'],
+        ['label' => 'Browse Publications', 'url' => route('products.index'), 'icon' => 'fa-book-open'],
+        ['label' => 'Visit Our Offices', 'url' => route('offices.index'), 'icon' => 'fa-building-columns'],
+    ];
 @endphp
 <!DOCTYPE html>
 <html lang="en">
@@ -23,6 +29,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <!-- AOS Animate on Scroll -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Glide.js (carousel) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css">
     
     <style>
         :root {
@@ -39,6 +48,9 @@
             --white: #ffffff;
             --font-display: "Cormorant Garamond", Georgia, serif;
             --font-body: "Outfit", Arial, sans-serif;
+            --nav-height: 85px;
+            --announcement-height: 20px;
+            --announcement-offset: 20px;
         }
 
         *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; scroll-behavior:smooth; }
@@ -67,12 +79,107 @@
             border-bottom: 1px solid rgba(201,168,76,0.2);
             padding: 0 60px;
             display: flex; align-items:center; justify-content:space-between;
-            height: 85px;
+            height: var(--nav-height);
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             will-change: transform, height;
             width: 100%;
         }
         .nav-premium.scrolled { height: 75px; background: #0a0f1e; box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
+
+        .announcement-bar {
+            position: fixed;
+            top: var(--nav-height);
+            left: 0;
+            right: 0;
+            z-index: 990;
+            min-height: var(--announcement-height);
+            background: linear-gradient(90deg, rgba(201,168,76,0.98) 0%, rgba(233,208,142,0.98) 50%, rgba(201,168,76,0.98) 100%);
+            border-bottom: 2px solid #8b6914;
+            box-shadow: 0 6px 14px rgba(12,20,40,0.15), inset 0 1px 0 rgba(255,255,255,0.2);
+            overflow: hidden;
+        }
+        .announcement-bar-inner {
+            min-height: var(--announcement-height);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 12px;
+        }
+        .announcement-kicker {
+            flex: 0 0 auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #4f3d10;
+            font-size: 0.42rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            padding-right: 8px;
+            border-right: 2px solid rgba(79, 61, 16, 0.3);
+        }
+        .announcement-marquee {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+            position: relative;
+            mask-image: linear-gradient(90deg, transparent 0%, black 5%, black 95%, transparent 100%);
+        }
+        .announcement-track {
+            --announcement-loop-distance: 0px;
+            --announcement-duration: 30s;
+            display: flex;
+            align-items: center;
+            width: max-content;
+            animation: announcement-scroll var(--announcement-duration) linear infinite;
+            gap: 0;
+            will-change: transform;
+        }
+        .announcement-track:hover {
+            animation-play-state: paused;
+        }
+        .announcement-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+            padding-right: 0;
+        }
+        .announcement-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--navy);
+            text-decoration: none;
+            font-size: 0.65rem;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        .announcement-link:hover {
+            color: #6a5010;
+            background: rgba(12, 20, 40, 0.08);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(12, 20, 40, 0.12);
+        }
+        .announcement-divider {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: rgba(12,20,40,0.4);
+            flex-shrink: 0;
+        }
+        .main-content {
+            padding-top: var(--announcement-offset);
+        }
+
+        @keyframes announcement-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-1 * var(--announcement-loop-distance))); }
+        }
         
         .nav-brand { display:flex; align-items:center; gap:15px; text-decoration:none; min-width:0; flex:1; overflow:hidden; }
         .nav-brand-seal {
@@ -123,6 +230,11 @@
         html, body, .main-content, section { overflow-x: hidden; width: 100%; }
 
         @media (max-width: 1100px) {
+            :root {
+                --nav-height: 70px;
+                --announcement-height: 18px;
+                --announcement-offset: 18px;
+            }
             .nav-premium { 
                 padding: 0 15px; height: 70px;
                 transition: height 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
@@ -170,6 +282,18 @@
                 opacity: 0; visibility: hidden; transition: opacity 0.4s;
             }
             .nav-overlay.active { opacity: 1; visibility: visible; }
+
+            .announcement-bar-inner {
+                gap: 6px;
+                padding: 0 6px;
+            }
+            .announcement-kicker {
+                font-size: 0.36rem;
+                letter-spacing: 0.1em;
+            }
+            .announcement-link {
+                font-size: 0.56rem;
+            }
         }
 
         /* Narrow header fixes */
@@ -187,12 +311,21 @@
             .nav-brand-sub { font-size: 0.5rem; letter-spacing: 0; white-space: nowrap; max-width: 150px; }
             .nav-toggle { width: 44px; height: 44px; margin-left: 2px; }
             .nav-toggle span { width: 22px; margin: 5px 0; }
+            .announcement-kicker { display: none; }
+            .announcement-bar-inner { padding: 0 5px; }
+            .announcement-link { font-size: 0.52rem; }
         }
 
         @media (max-width: 360px) {
             .nav-brand-text { font-size: 0.75rem; }
             .nav-brand-sub { font-size: 0.45rem; max-width: 120px; }
             .nav-brand-seal { width: 28px; height: 28px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .announcement-track {
+                animation: none;
+            }
         }
 
 
@@ -376,6 +509,92 @@
         @media (max-width: 768px) {
             .follow-card-grid-lux { grid-template-columns: 1fr; }
         }
+
+        /* ── FLOATING CONTACT BUTTONS ── */
+        .floating-contact-btn {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #ffffff;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 980;
+            border: none;
+            cursor: pointer;
+        }
+
+        .floating-contact-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .whatsapp-btn {
+            bottom: 25px;
+            right: 25px;
+            background: linear-gradient(135deg, #25D366, #20BA5A);
+        }
+
+        .whatsapp-btn:hover {
+            background: linear-gradient(135deg, #20BA5A, #1DA851);
+        }
+
+        .phone-btn {
+            bottom: 100px;
+            right: 25px;
+            background: linear-gradient(135deg, var(--gold), #8b6914);
+        }
+
+        .phone-btn:hover {
+            background: linear-gradient(135deg, #8b6914, #6a5010);
+        }
+
+        .contact-btn-label {
+            position: absolute;
+            right: 75px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            font-weight: 600;
+        }
+
+        .floating-contact-btn:hover .contact-btn-label {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .floating-contact-btn {
+                width: 55px;
+                height: 55px;
+                font-size: 1.5rem;
+            }
+
+            .whatsapp-btn {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .phone-btn {
+                bottom: 90px;
+                right: 20px;
+            }
+
+            .contact-btn-label {
+                right: 65px;
+                font-size: 0.75rem;
+            }
+        }
     </style>
     @stack('styles')
 </head>
@@ -428,6 +647,27 @@
             <span></span><span></span><span></span>
         </button>
     </nav>
+    <div class="announcement-bar" id="announcementBar" role="region" aria-label="Important links">
+        <div class="announcement-bar-inner">
+            <span class="announcement-kicker">
+                <i class="fas fa-bullhorn"></i>
+                Important Links
+            </span>
+            <div class="announcement-marquee">
+                <div class="announcement-track" id="announcementTrack">
+                    <div class="announcement-group" data-announcement-source="true">
+                        @foreach($announcementLinks as $announcementLink)
+                            <a href="{{ $announcementLink['url'] }}" class="announcement-link">
+                                <i class="fas {{ $announcementLink['icon'] }}"></i>
+                                <span>{{ $announcementLink['label'] }}</span>
+                            </a>
+                            <span class="announcement-divider"></span>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="nav-overlay" id="navOverlay"></div>
 
     <main class="main-content" style="min-height: 80vh;">
@@ -530,6 +770,8 @@
                     <li><a href="{{ route('home') }}">Home</a></li>
                     <li><a href="{{ url('/') }}#practice">Practice</a></li>
                     <li><a href="{{ route('products.index') }}">Publications</a></li>
+                    <li><a href="{{ route('water-filtration') }}">Water Filtration</a></li>
+                    <li><a href="{{ route('water-filtration-kannada') }}">Water Filtration Kannada</a></li>
                     <li><a href="{{ route('offices.index') }}">Offices</a></li>
                     <li><a href="{{ route('gallery') }}">Gallery</a></li>
                     <li><a href="{{ url('/contact-us') }}">Contact</a></li>
@@ -551,10 +793,23 @@
         <i class="fas fa-arrow-up"></i>
     </button>
 
+    <!-- Floating Contact Buttons -->
+    <a href="https://wa.me/919632527961" target="_blank" class="floating-contact-btn whatsapp-btn" title="WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <span class="contact-btn-label">WhatsApp</span>
+    </a>
+    <a href="tel:+919632527961" class="floating-contact-btn phone-btn" title="Call">
+        <i class="fas fa-phone"></i>
+        <span class="contact-btn-label">Phone</span>
+    </a>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Glide.js (carousel) -->
+    <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
 
     <!-- Theme JS -->
     <script>
@@ -569,13 +824,85 @@
 
             // Header scroll effect
             const header = document.getElementById('mainHeader');
+            const announcementBar = document.getElementById('announcementBar');
+            const announcementTrack = document.getElementById('announcementTrack');
+            const syncAnnouncementBar = () => {
+                if (!header || !announcementBar) {
+                    return;
+                }
+
+                announcementBar.style.top = `${header.offsetHeight}px`;
+                document.documentElement.style.setProperty('--announcement-offset', `${announcementBar.offsetHeight}px`);
+            };
+
+            const syncAnnouncementMarquee = () => {
+                if (!announcementTrack) {
+                    return;
+                }
+
+                const announcementMarquee = announcementTrack.parentElement;
+                const sourceGroup = announcementTrack.querySelector('[data-announcement-source="true"]');
+
+                if (!announcementMarquee || !sourceGroup) {
+                    return;
+                }
+
+                announcementTrack.querySelectorAll('[data-announcement-clone="true"]').forEach((clone) => clone.remove());
+
+                const sourceWidth = Math.ceil(sourceGroup.getBoundingClientRect().width);
+                const marqueeWidth = Math.ceil(announcementMarquee.getBoundingClientRect().width);
+
+                if (!sourceWidth || !marqueeWidth) {
+                    return;
+                }
+
+                let totalWidth = sourceWidth;
+                let cloneCount = 0;
+                const minimumTrackWidth = marqueeWidth + sourceWidth;
+
+                while (totalWidth < minimumTrackWidth && cloneCount < 10) {
+                    const clone = sourceGroup.cloneNode(true);
+                    clone.dataset.announcementClone = 'true';
+                    clone.setAttribute('aria-hidden', 'true');
+                    announcementTrack.appendChild(clone);
+                    totalWidth += sourceWidth;
+                    cloneCount += 1;
+                }
+
+                if (cloneCount === 0) {
+                    const clone = sourceGroup.cloneNode(true);
+                    clone.dataset.announcementClone = 'true';
+                    clone.setAttribute('aria-hidden', 'true');
+                    announcementTrack.appendChild(clone);
+                }
+
+                const pixelsPerSecond = window.innerWidth <= 480 ? 40 : 55;
+                const duration = Math.max(16, Math.round(sourceWidth / pixelsPerSecond));
+
+                announcementTrack.style.setProperty('--announcement-loop-distance', `${sourceWidth}px`);
+                announcementTrack.style.setProperty('--announcement-duration', `${duration}s`);
+            };
+
             window.addEventListener('scroll', function() {
                 if (window.scrollY > 50) {
                     header.classList.add('scrolled');
                 } else {
                     header.classList.remove('scrolled');
                 }
+
+                syncAnnouncementBar();
             });
+
+            window.addEventListener('resize', function() {
+                syncAnnouncementBar();
+                syncAnnouncementMarquee();
+            });
+            syncAnnouncementBar();
+            syncAnnouncementMarquee();
+
+            if (document.fonts && document.fonts.ready) {
+                document.fonts.ready.then(syncAnnouncementMarquee);
+            }
 
             // Mobile nav toggle
             const navToggle = document.getElementById('navToggle');

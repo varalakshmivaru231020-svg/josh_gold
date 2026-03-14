@@ -111,7 +111,13 @@
                                 <strong>{{ $order->customer_name }}</strong><br>
                                 <small>{{ $order->customer_mobile }}</small>
                             </td>
-                            <td>{{ Str::limit($order->product->name, 30) }}</td>
+                            <td>
+                                @if($order->product)
+                                    {{ Str::limit($order->product->name, 30) }}
+                                @else
+                                    <span class="text-muted">—</span>
+                                @endif
+                            </td>
                             <td>{{ $order->quantity }}</td>
                             <td>
                                 ₹{{ number_format($order->total, 2) }}

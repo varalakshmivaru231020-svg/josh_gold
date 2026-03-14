@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three-Layer Filtration System – HN Valley & KC Valley Water Project</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Georgia:ital,wght@0,400;0,700;1,400&family=Times+New+Roman&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Times New Roman', Times, serif;
+    background: #f0f4f8;
+    color: #1a1a2e;
+  }
+
+  /* ── COVER PAGE ── */
+  .cover {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #0a3d62 0%, #1e5799 40%, #1a7a4a 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 60px 40px; text-align: center; position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .emblem { font-size: 80px; margin-bottom: 20px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
+  .cover h1 { font-size: 2.4em; color: #fff; font-weight: bold; letter-spacing: 1px; line-height: 1.3; margin-bottom: 15px; text-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+  .cover h2 { font-size: 1.6em; color: #a8d8ea; margin-bottom: 25px; font-style: italic; }
+  .cover-divider { width: 80px; height: 4px; background: #ffd700; margin: 20px auto; border-radius: 2px; }
+  .cover-subtitle { font-size: 1.1em; color: #c8e6fa; margin-bottom: 10px; }
+  .cover-districts { font-size: 1.3em; color: #ffd700; font-weight: bold; margin: 10px 0; }
+  .cover-author { margin-top: 40px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; padding: 20px 35px; color: #fff; }
+  .cover-author .name { font-size: 1.3em; font-weight: bold; color: #ffd700; }
+  .cover-author .title { font-size: 0.95em; color: #c8e6fa; margin-top: 5px; }
+  .cover-date { margin-top: 20px; color: #a8d8ea; font-size: 0.95em; }
+
+  /* ── SECTION PAGES ── */
+  .page {
+    max-width: 900px; margin: 40px auto; background: #fff;
+    border-radius: 4px; box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    overflow: hidden;
+  }
+  .page-header {
+    background: linear-gradient(135deg, #0a3d62, #1e5799);
+    padding: 25px 40px; color: #fff;
+  }
+  .page-header h2 { font-size: 1.5em; font-weight: bold; }
+  .page-header .subtitle { font-size: 0.9em; color: #a8d8ea; margin-top: 5px; }
+  .page-body { padding: 40px 50px; line-height: 1.8; }
+
+  h3 { color: #0a3d62; font-size: 1.2em; margin: 25px 0 10px; border-left: 4px solid #1e5799; padding-left: 12px; }
+  h4 { color: #1a7a4a; font-size: 1.05em; margin: 18px 0 8px; }
+  p { margin-bottom: 12px; text-align: justify; }
+
+  .highlight-box {
+    background: #e8f4fd; border-left: 5px solid #1e5799;
+    padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0;
+  }
+  .warning-box {
+    background: #fff8e1; border-left: 5px solid #f59f00;
+    padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0;
+  }
+  .green-box {
+    background: #e8f5e9; border-left: 5px solid #1a7a4a;
+    padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0;
+  }
+
+  /* ── FILTRATION LAYERS ── */
+  .layer-grid { display: flex; gap: 20px; margin: 25px 0; flex-wrap: wrap; }
+  .layer-card {
+    flex: 1; min-width: 220px; border-radius: 10px; overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+  }
+  .layer-card .card-header { padding: 15px; color: #fff; font-weight: bold; font-size: 1.05em; text-align: center; }
+  .layer-card .card-body { padding: 15px; font-size: 0.92em; line-height: 1.7; background: #fafafa; }
+  .layer-1 .card-header { background: #1e5799; }
+  .layer-2 .card-header { background: #7b2d8b; }
+  .layer-3 .card-header { background: #1a7a4a; }
+
+  /* ── TABLE ── */
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.92em; }
+  th { background: #0a3d62; color: #fff; padding: 10px 14px; text-align: left; }
+  td { padding: 9px 14px; border-bottom: 1px solid #e0e0e0; }
+  tr:nth-child(even) td { background: #f5f8fc; }
+
+  /* ── LETTER STYLES ── */
+  .letter { max-width: 900px; margin: 40px auto; background: #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.12); }
+  .letterhead {
+    background: linear-gradient(135deg, #0a3d62 0%, #1e5799 100%);
+    padding: 30px 50px; display: flex; align-items: center; gap: 20px;
+  }
+  .letterhead-icon { font-size: 60px; }
+  .letterhead-text { color: #fff; }
+  .letterhead-text .org { font-size: 1.5em; font-weight: bold; color: #ffd700; }
+  .letterhead-text .advocate { font-size: 1em; color: #a8d8ea; }
+  .letterhead-text .address { font-size: 0.85em; color: #c8e6fa; margin-top: 5px; }
+  .letter-meta { background: #f5f8fc; border-bottom: 2px solid #1e5799; padding: 15px 50px; font-size: 0.9em; color: #555; display: flex; justify-content: space-between; }
+  .letter-body { padding: 35px 50px; line-height: 1.85; font-size: 0.98em; }
+  .letter-to { margin-bottom: 20px; }
+  .letter-to .to-label { color: #888; font-size: 0.85em; text-transform: uppercase; letter-spacing: 1px; }
+  .letter-to .to-name { font-weight: bold; font-size: 1.05em; color: #0a3d62; }
+  .letter-to .to-post { color: #333; }
+  .letter-subject { background: #e8f4fd; padding: 10px 15px; border-left: 4px solid #1e5799; margin: 15px 0 20px; font-weight: bold; color: #0a3d62; }
+  .salutation { margin-bottom: 15px; }
+  .closing { margin-top: 30px; }
+  .signature-block { margin-top: 40px; }
+  .signature-block .sig-name { font-weight: bold; font-size: 1.05em; color: #0a3d62; }
+  .signature-block .sig-title { color: #555; font-size: 0.9em; }
+
+  .letter-divider { border: none; border-top: 3px dashed #1e5799; margin: 50px 0; }
+
+  /* ── NAV ── */
+  .nav { position: sticky; top: 0; z-index: 100; background: #0a3d62; padding: 12px 30px; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+  .nav a { color: #a8d8ea; text-decoration: none; font-size: 0.85em; padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.2s; }
+  .nav a:hover { background: #1e5799; color: #ffd700; }
+
+  .section-label { display: inline-block; background: #1e5799; color: #fff; padding: 3px 12px; border-radius: 12px; font-size: 0.78em; margin-bottom: 8px; letter-spacing: 1px; }
+  .flag { font-size: 1.2em; }
+
+  ul { margin: 10px 0 10px 20px; }
+  ul li { margin-bottom: 7px; }
+  ol { margin: 10px 0 10px 20px; }
+  ol li { margin-bottom: 7px; }
+
+  @media print {
+    .nav { display: none; }
+    .cover { page-break-after: always; min-height: auto; padding: 40px; }
+    .page, .letter { box-shadow: none; page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<div class="nav">
+  <a href="#cover">🏠 Cover</a>
+  <a href="#project">💧 Project Plan</a>
+  <a href="#cm">CM Karnataka</a>
+  <a href="#pm">PM India</a>
+  <a href="#president">President</a>
+  <a href="#central">Central Depts</a>
+  <a href="#state">State Depts</a>
+  <a href="#mlas">MLAs</a>
+  <a href="#mps">MPs</a>
+</div>
+
+<!-- ══════════ COVER PAGE ══════════ -->
+<div class="cover" id="cover">
+  <div class="emblem">🇮🇳💧</div>
+  <h1>Three-Layer Filtration System<br>for HN Valley & KC Valley</h1>
+  <div class="cover-divider"></div>
+  <h2>A Comprehensive Project Proposal & Representation</h2>
+  <div class="cover-subtitle">Protecting Farmers, Environment & Public Health of</div>
+  <div class="cover-districts">Kolar & Chikkaballapur Districts, Karnataka</div>
+  <div class="cover-subtitle" style="margin-top:15px;">Addressed to: Hon'ble President of India · Prime Minister · Chief Minister<br>Central & State Ministries · District MLAs & MPs</div>
+  <div class="cover-author">
+    <div class="name">Adv. Veerendrababu Nanjegowda</div>
+    <div class="title">Senior Advocate – National Green Tribunal, High Courts & Supreme Court of India</div>
+    <div class="title">Bengaluru Law House | Senior Journalist | Legal Adviser, R MAXX Kannada News Channel</div>
+    <div class="title">Sahakaranagar, Bengaluru & Chambers, New Delhi</div>
+  </div>
+  <div class="cover-date">Date: March 2025 &nbsp;|&nbsp; Reference: BLH/ENV/2025/001</div>
+</div>
+
+<!-- ══════════ PROJECT PROPOSAL ══════════ -->
+<div class="page" id="project">
+  <div class="page-header">
+    <div class="section-label">PROJECT PROPOSAL</div>
+    <h2>Three-Layer Filtration System – HN Valley & KC Valley Water</h2>
+    <div class="subtitle">Comprehensive Technical & Environmental Safeguard Plan</div>
+  </div>
+  <div class="page-body">
+
+    <h3>1. Background & Necessity</h3>
+    <p>Kolar and Chikkaballapur districts have endured severe water scarcity for decades — marked by plummeting groundwater levels, recurring droughts, and acute drinking water shortages affecting millions of residents. The HN Valley (Hebbal-Nagawara Valley) and KC Valley (Koramangala-Challaghatta Valley) projects were designed as lifelines, channelling treated wastewater from Bengaluru city to revitalize these drought-prone regions.</p>
+    <p>While these projects have brought measurable relief — irrigating thousands of acres and partially recharging groundwater — grave concerns persist about the adequacy of treatment, heavy metal contamination, microbial presence, and long-term ecological impacts.</p>
+
+    <div class="warning-box">
+      <strong>⚠ Core Problem:</strong> The water flowing through HN Valley and KC Valley originates primarily from Bengaluru's sewage treatment plants. Multiple independent studies and farmer complaints indicate that treated water still contains heavy metals (lead, cadmium, chromium), pharmaceutical residues, pathogens, and industrial effluents — posing direct risks to soil health, crop safety, groundwater quality, and human health.
+    </div>
+
+    <h3>2. Project Objectives</h3>
+    <ul>
+      <li>Mandate a certified Three-Layer Filtration System at all release points of HN Valley and KC Valley canals</li>
+      <li>Ensure water quality meets BIS/WHO/CPCB standards for agricultural and domestic use</li>
+      <li>Protect the soil fertility and agricultural output of Kolar and Chikkaballapur districts</li>
+      <li>Prevent contamination of lakes, water bodies, and groundwater aquifers</li>
+      <li>Safeguard the long-term health of the farming communities and general public</li>
+      <li>Establish a real-time digital water quality monitoring network</li>
+    </ul>
+
+    <h3>3. The Three-Layer Filtration System</h3>
+    <p>The proposed system comprises three mandatory, sequential treatment stages deployed at identified release and distribution points along both valley canal networks:</p>
+
+    <div class="layer-grid">
+      <div class="layer-card layer-1">
+        <div class="card-header">🔵 Layer 1 – Primary Filtration</div>
+        <div class="card-body">
+          <strong>Purpose:</strong> Remove suspended solids, large particles, biological sludge, and floating debris<br><br>
+          <strong>Technologies:</strong><br>
+          • Bar screens and micro-screens<br>
+          • Grit chambers and sedimentation tanks<br>
+          • Coarse sand and gravel filter beds<br>
+          • Coagulation and flocculation units<br><br>
+          <strong>Standards Target:</strong> TSS &lt;30 mg/L; BOD &lt;20 mg/L; COD &lt;100 mg/L
+        </div>
+      </div>
+      <div class="layer-card layer-2">
+        <div class="card-header">🟣 Layer 2 – Advanced Chemical Filtration</div>
+        <div class="card-body">
+          <strong>Purpose:</strong> Eliminate heavy metals, industrial chemicals, pharmaceutical residues, and harmful dissolved substances<br><br>
+          <strong>Technologies:</strong><br>
+          • Activated carbon adsorption units<br>
+          • Ion exchange resin columns<br>
+          • Reverse osmosis (RO) for critical zones<br>
+          • Chemical precipitation for heavy metals<br><br>
+          <strong>Standards Target:</strong> Heavy metals below WHO/CPCB permissible limits; Nitrates &lt;10 mg/L
+        </div>
+      </div>
+      <div class="layer-card layer-3">
+        <div class="card-header">🟢 Layer 3 – Final Purification & Monitoring</div>
+        <div class="card-body">
+          <strong>Purpose:</strong> Destroy remaining pathogens, microorganisms, viruses; enable real-time quality assurance<br><br>
+          <strong>Technologies:</strong><br>
+          • UV disinfection chambers<br>
+          • Chlorination / Ozonation units<br>
+          • IoT-enabled sensor arrays (pH, DO, TDS, E.coli)<br>
+          • Automated alerts and public dashboard<br><br>
+          <strong>Standards Target:</strong> Coliform 0/100mL; pH 6.5–8.5; TDS &lt;500 mg/L
+        </div>
+      </div>
+    </div>
+
+    <h3>4. Key Parameters to Be Monitored</h3>
+    <table>
+      <tr><th>Parameter</th><th>Current Risk</th><th>Target Standard</th><th>Monitoring Frequency</th></tr>
+      <tr><td>BOD (Biochemical Oxygen Demand)</td><td>High – organic pollution</td><td>&lt;20 mg/L (CPCB Class D)</td><td>Daily</td></tr>
+      <tr><td>Heavy Metals (Pb, Cd, Cr, As, Hg)</td><td>Industrial effluent contamination</td><td>WHO permissible limits</td><td>Weekly</td></tr>
+      <tr><td>Total Coliform / E.coli</td><td>Sewage origin</td><td>0 CFU/100mL</td><td>Daily</td></tr>
+      <tr><td>pH</td><td>Variable – corrosive risk</td><td>6.5 – 8.5</td><td>Continuous IoT</td></tr>
+      <tr><td>Nitrates / Phosphates</td><td>Eutrophication risk</td><td>&lt;10 mg/L / &lt;1 mg/L</td><td>Weekly</td></tr>
+      <tr><td>Total Dissolved Solids (TDS)</td><td>Soil salinity risk</td><td>&lt;500 mg/L (agri use)</td><td>Continuous IoT</td></tr>
+      <tr><td>Pesticide / Pharmaceutical Residues</td><td>Urban runoff contamination</td><td>Below detection limit</td><td>Monthly</td></tr>
+    </table>
+
+    <h3>5. Implementation Plan</h3>
+    <table>
+      <tr><th>Phase</th><th>Activity</th><th>Timeline</th><th>Responsibility</th></tr>
+      <tr><td>Phase 1</td><td>Detailed water quality audit of current HN/KC Valley output; baseline contamination mapping</td><td>Months 1–3</td><td>KSPCB + BWSSB + IISc / IIT-B</td></tr>
+      <tr><td>Phase 2</td><td>Design and tender Three-Layer Filtration Units at priority nodes</td><td>Months 4–8</td><td>BWSSB + Minor Irrigation Dept</td></tr>
+      <tr><td>Phase 3</td><td>Construction and installation of filtration systems</td><td>Months 9–18</td><td>PWD + Contracted Agency</td></tr>
+      <tr><td>Phase 4</td><td>IoT sensor network deployment; public water quality dashboard</td><td>Months 12–20</td><td>Dept of IT/BT Karnataka</td></tr>
+      <tr><td>Phase 5</td><td>Commissioning, testing, certification, and public audit</td><td>Months 20–24</td><td>KSPCB + NGT Oversight</td></tr>
+      <tr><td>Ongoing</td><td>Quarterly reports to NGT, CPCB, State Government, and public</td><td>Continuous</td><td>District Collector offices</td></tr>
+    </table>
+
+    <h3>6. Estimated Budget</h3>
+    <table>
+      <tr><th>Component</th><th>Estimated Cost (₹ Crore)</th></tr>
+      <tr><td>Primary Filtration Infrastructure (Layer 1)</td><td>₹ 45 – 60 Cr</td></tr>
+      <tr><td>Advanced Chemical Filtration (Layer 2)</td><td>₹ 80 – 120 Cr</td></tr>
+      <tr><td>UV/Ozonation + IoT Monitoring (Layer 3)</td><td>₹ 40 – 60 Cr</td></tr>
+      <tr><td>Civil Works, Pipeline Modifications</td><td>₹ 30 – 50 Cr</td></tr>
+      <tr><td>Operation & Maintenance (5 years)</td><td>₹ 25 – 35 Cr</td></tr>
+      <tr><td><strong>Total Estimated Investment</strong></td><td><strong>₹ 220 – 325 Crore</strong></td></tr>
+    </table>
+
+    <div class="green-box">
+      <strong>Funding Sources Recommended:</strong> National River Conservation Programme (NRCP) · AMRUT 2.0 · NMCG funds · State Budget – Minor Irrigation & Environment Departments · CSR funding from Bengaluru-based industries · JICA / World Bank green infrastructure loans
+    </div>
+
+    <h3>7. Legal Basis & Constitutional Mandate</h3>
+    <ul>
+      <li><strong>Article 21, Constitution of India</strong> – Right to clean water as part of Right to Life</li>
+      <li><strong>Article 48A</strong> – State's duty to protect and improve the environment</li>
+      <li><strong>Water (Prevention and Control of Pollution) Act, 1974</strong></li>
+      <li><strong>Environment Protection Act, 1986</strong> – Section 3, 5, 7</li>
+      <li><strong>National Green Tribunal Act, 2010</strong> – Precautionary Principle and Polluter Pays Principle</li>
+      <li><strong>BIS Standards IS 11624, IS 2296</strong> – Water quality for irrigation use</li>
+      <li><strong>NGT Principal Bench Directions</strong> on sewage treatment and reuse</li>
+    </ul>
+
+    <h3>8. Impact Assessment</h3>
+    <div class="highlight-box">
+      <strong>Expected Benefits upon Full Implementation:</strong><br>
+      ✅ Protection of 50,000+ acres of agricultural land across Kolar and Chikkaballapur<br>
+      ✅ Safe drinking water recharge for 800+ lakes and water bodies<br>
+      ✅ Prevention of heavy metal accumulation in food crops — safeguarding consumers nationally<br>
+      ✅ Reduction in waterborne disease incidence by an estimated 60–70%<br>
+      ✅ Restored farmer confidence and increased agricultural income<br>
+      ✅ Compliance with NGT and CPCB mandates, reducing litigation burden<br>
+      ✅ Model project replicable across other drought-prone Karnataka districts
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ LETTER 1: CHIEF MINISTER ══════════ -->
+<div class="letter" id="cm">
+  <div class="letterhead">
+    <div class="letterhead-icon">⚖️</div>
+    <div class="letterhead-text">
+      <div class="org">BENGALURU LAW HOUSE</div>
+      <div class="advocate">Adv. Veerendrababu Nanjegowda | Senior Advocate – NGT, High Courts & Supreme Court</div>
+      <div class="address">Sahakaranagar, Bengaluru – 560092 | Chambers: New Delhi | Ph: +91-XXXXXXXXXX</div>
+    </div>
+  </div>
+  <div class="letter-meta">
+    <span><strong>Ref:</strong> BLH/ENV/CM/2025/001</span>
+    <span><strong>Date:</strong> March 2025</span>
+  </div>
+  <div class="letter-body">
+    <div class="letter-to">
+      <div class="to-label">Addressed To</div>
+      <div class="to-name">Hon'ble Shri Siddaramaiah</div>
+      <div class="to-post">Chief Minister, Government of Karnataka</div>
+      <div class="to-post">Vidhana Soudha, Bengaluru – 560 001, Karnataka</div>
+    </div>
+    <div class="letter-subject">Subject: Urgent Representation for Mandatory Three-Layer Filtration System in HN Valley and KC Valley Water Projects to Protect Farmers, Environment, and Public Health of Kolar and Chikkaballapur Districts</div>
+    <div class="salutation">Honourable Chief Minister,</div>
+    <p>I write to you with deep concern and a strong sense of civic responsibility on behalf of the farming communities, residents, and the ecological heritage of Kolar and Chikkaballapur districts — two of Karnataka's most water-stressed regions.</p>
+    <p>The HN Valley and KC Valley projects represent a commendable effort by the State to address chronic water scarcity in these districts by channelling treated wastewater from Bengaluru. However, scientific evidence, ground-level reports from farmers, and independent water quality surveys have raised alarming concerns about the quality of water currently flowing through these canals. The water, originating largely from Bengaluru's sewage network, appears to carry residual heavy metals (cadmium, lead, chromium, arsenic), pharmaceutical compounds, pathogens, and industrial effluents even after the current treatment stages.</p>
+    <p>The consequences of inadequately treated water flowing into agricultural lands and water bodies are severe and long-lasting:</p>
+    <ul>
+      <li>Gradual deterioration of soil structure and fertility, threatening the livelihoods of tens of thousands of farmer families</li>
+      <li>Bioaccumulation of toxic substances in food crops — impacting not just local consumers but the food supply chain across Karnataka</li>
+      <li>Contamination of hundreds of lakes and tanks in these districts, which are critical for groundwater recharge</li>
+      <li>Rising incidence of skin diseases, gastrointestinal disorders, and long-term organ damage among residents</li>
+      <li>Irreversible ecological damage to the region's biodiversity and water table</li>
+    </ul>
+    <p>I therefore respectfully urge Your Excellency to issue urgent directions for the implementation of a mandatory <strong>Three-Layer Filtration System</strong> at all key distribution and release points of both valley canal networks, comprising: (1) Primary Filtration to remove suspended solids and sludge; (2) Advanced Chemical Filtration to eliminate heavy metals, industrial chemicals, and pharmaceutical residues; and (3) Final Purification with UV/Ozonation and a real-time IoT-enabled water quality monitoring system with a public dashboard.</p>
+    <p>A detailed technical project proposal with cost estimates, implementation timelines, and legal framework is enclosed for Your Excellency's kind reference and action.</p>
+    <p>This representation is filed in the spirit of Article 21 of the Constitution — the Right to Life — which encompasses the fundamental right to clean water and a healthy environment. I also invoke the State's constitutional duty under Article 48A to protect and improve the environment.</p>
+    <p>I humbly request Your Excellency to treat this as a matter of urgent priority and convene a high-level technical committee comprising KSPCB, BWSSB, Minor Irrigation Department, and independent environmental experts to conduct a comprehensive water quality audit and prepare an actionable implementation plan within 90 days.</p>
+    <div class="closing">
+      <p>Thanking Your Excellency for your kind attention to this critical issue of public health and environmental justice.</p>
+      <p>Respectfully yours,</p>
+    </div>
+    <div class="signature-block">
+      <div class="sig-name">Adv. Veerendrababu Nanjegowda</div>
+      <div class="sig-title">Senior Advocate – National Green Tribunal, High Courts & Supreme Court of India</div>
+      <div class="sig-title">Bengaluru Law House | Senior Journalist | Legal Adviser, R MAXX Kannada News Channel</div>
+      <div class="sig-title">Sahakaranagar, Bengaluru – 560 092</div>
+    </div>
+  </div>
+</div>
+
+<hr class="letter-divider">
+
+<!-- ══════════ LETTER 2: PRIME MINISTER ══════════ -->
+<div class="letter" id="pm">
+  <div class="letterhead">
+    <div class="letterhead-icon">⚖️</div>
+    <div class="letterhead-text">
+      <div class="org">BENGALURU LAW HOUSE</div>
+      <div class="advocate">Adv. Veerendrababu Nanjegowda | Senior Advocate – NGT, High Courts & Supreme Court</div>
+      <div class="address">Sahakaranagar, Bengaluru – 560092 | Chambers: New Delhi | Ph: +91-XXXXXXXXXX</div>
+    </div>
+  </div>
+  <div class="letter-meta">
+    <span><strong>Ref:</strong> BLH/ENV/PM/2025/002</span>
+    <span><strong>Date:</strong> March 2025</span>
+  </div>
+  <div class="letter-body">
+    <div class="letter-to">
+      <div class="to-label">Addressed To</div>
+      <div class="to-name">Hon'ble Shri Narendra Modi</div>
+      <div class="to-post">Prime Minister of India</div>
+      <div class="to-post">South Block, New Delhi – 110 011</div>
+    </div>
+    <div class="letter-subject">Subject: National Representation for Three-Layer Filtration System in HN Valley & KC Valley Water Projects – Safeguarding Farmers and Public Health of Kolar & Chikkaballapur, Karnataka, under the Jal Jeevan Mission and National Water Policy</div>
+    <div class="salutation">Most Respected Prime Minister,</div>
+    <p>I respectfully place before Your Excellency a matter of urgent national importance concerning the water quality, agricultural safety, and public health of the people of Kolar and Chikkaballapur districts in Karnataka — regions that have endured decades of water scarcity and are now receiving treated wastewater from Bengaluru through the HN Valley and KC Valley canal projects.</p>
+    <p>While these projects partially address the water crisis consistent with your vision under <strong>Jal Jeevan Mission</strong> and <strong>Nal Se Jal</strong>, reliable reports and ground surveys indicate that the water being distributed still carries dangerous levels of heavy metals, pharmaceutical residues, pathogens, and industrial pollutants. The current treatment infrastructure is demonstrably inadequate to fully neutralise the risks inherent to recycled urban wastewater.</p>
+    <p>The farmers of these districts — already among India's most economically vulnerable agricultural communities — are unknowingly irrigating their crops with contaminated water, risking both their harvests and their families' health. The long-term consequences include soil toxicity, reduced crop yields, food safety hazards, and escalating waterborne disease burdens — all of which directly undermine your Government's goals of <strong>doubling farmer income</strong> and <strong>providing safe water to every household</strong>.</p>
+    <p>I humbly urge Your Excellency to direct the Ministry of Jal Shakti, Ministry of Environment, Forest & Climate Change, and Ministry of Agriculture to jointly mandate a <strong>Three-Layer Filtration System</strong> for HN Valley and KC Valley, with central funding support under AMRUT 2.0 and NRCP, and oversight by the Central Pollution Control Board and the National Green Tribunal.</p>
+    <p>This is not merely a regional issue — it is a test case for India's commitment to sustainable water reuse that will set a precedent for all states handling recycled wastewater for agriculture. A detailed project proposal is enclosed for Your Excellency's consideration.</p>
+    <div class="closing"><p>Awaiting Your Excellency's gracious intervention in this matter of life and livelihood.</p><p>With deepest respect,</p></div>
+    <div class="signature-block">
+      <div class="sig-name">Adv. Veerendrababu Nanjegowda</div>
+      <div class="sig-title">Senior Advocate – National Green Tribunal, High Courts & Supreme Court of India</div>
+      <div class="sig-title">Bengaluru Law House, Sahakaranagar, Bengaluru – 560 092</div>
+    </div>
+  </div>
+</div>
+
+<hr class="letter-divider">
+
+<!-- ══════════ LETTER 3: PRESIDENT ══════════ -->
+<div class="letter" id="president">
+  <div class="letterhead">
+    <div class="letterhead-icon">⚖️</div>
+    <div class="letterhead-text">
+      <div class="org">BENGALURU LAW HOUSE</div>
+      <div class="advocate">Adv. Veerendrababu Nanjegowda | Senior Advocate – NGT, High Courts & Supreme Court</div>
+      <div class="address">Sahakaranagar, Bengaluru – 560092 | Chambers: New Delhi | Ph: +91-XXXXXXXXXX</div>
+    </div>
+  </div>
+  <div class="letter-meta">
+    <span><strong>Ref:</strong> BLH/ENV/PRES/2025/003</span>
+    <span><strong>Date:</strong> March 2025</span>
+  </div>
+  <div class="letter-body">
+    <div class="letter-to">
+      <div class="to-label">Addressed To</div>
+      <div class="to-name">Hon'ble Smt. Droupadi Murmu</div>
+      <div class="to-post">President of India</div>
+      <div class="to-post">Rashtrapati Bhavan, New Delhi – 110 004</div>
+    </div>
+    <div class="letter-subject">Subject: Constitutional Petition for Clean and Safe Water – Mandatory Three-Layer Filtration for HN Valley & KC Valley, Kolar & Chikkaballapur – Protection of Fundamental Rights of Farming Communities Under Article 21</div>
+    <div class="salutation">Most Respectful Madam President,</div>
+    <p>I approach Your Excellency with the deepest reverence and a profound sense of urgency on behalf of the suffering farming communities and the general public of Kolar and Chikkaballapur districts in Karnataka, who face a silent yet devastating environmental and health crisis.</p>
+    <p>The HN Valley and KC Valley water projects, while born of noble intent, are currently delivering inadequately treated wastewater from Bengaluru into the agricultural fields, lakes, and drinking water sources of these drought-battered districts. The water contains measurable quantities of heavy metals, industrial effluents, pharmaceutical residues, and pathogens — silently poisoning the soil, the crops, the water bodies, and ultimately the bodies and livelihoods of thousands of farming families.</p>
+    <p>Madam President, the Right to Life guaranteed under <strong>Article 21 of our Constitution</strong> has been interpreted by the Hon'ble Supreme Court to include the right to a clean and healthy environment and access to safe water. The continued supply of contaminated water to these communities is a direct violation of this fundamental right.</p>
+    <p>I place before Your Excellency a humble petition for your constitutional intervention — requesting Your Excellency to direct the Central and State Governments to immediately mandate the implementation of a certified <strong>Three-Layer Filtration System</strong> for both valley projects, establish a high-level monitoring committee, and ensure compliance with CPCB and WHO water quality standards before agricultural distribution.</p>
+    <p>Your Excellency's compassionate and timely intervention will not only protect the health and livelihoods of over one million citizens of these districts but will also uphold the constitutional promise of a clean and dignified life for every Indian farmer.</p>
+    <div class="closing"><p>With the highest respect and hope,</p></div>
+    <div class="signature-block">
+      <div class="sig-name">Adv. Veerendrababu Nanjegowda</div>
+      <div class="sig-title">Senior Advocate – National Green Tribunal, High Courts & Supreme Court of India</div>
+      <div class="sig-title">Bengaluru Law House, Sahakaranagar, Bengaluru – 560 092</div>
+    </div>
+  </div>
+</div>
+
+<hr class="letter-divider">
+
+<!-- ══════════ LETTER 4: CENTRAL DEPARTMENTS ══════════ -->
+<div class="letter" id="central">
+  <div class="letterhead">
+    <div class="letterhead-icon">⚖️</div>
+    <div class="letterhead-text">
+      <div class="org">BENGALURU LAW HOUSE</div>
+      <div class="advocate">Adv. Veerendrababu Nanjegowda | Senior Advocate – NGT, High Courts & Supreme Court</div>
+      <div class="address">Sahakaranagar, Bengaluru – 560092 | Chambers: New Delhi | Ph: +91-XXXXXXXXXX</div>
+    </div>
+  </div>
+  <div class="letter-meta">
+    <span><strong>Ref:</strong> BLH/ENV/CENTRAL/2025/004</span>
+    <span><strong>Date:</strong> March 2025</span>
+  </div>
+  <div class="letter-body">
+    <div class="letter-to">
+      <div class="to-label">Addressed To</div>
+      <div class="to-name">The Secretaries / Directors General</div>
+      <div class="to-post">1. Ministry of Jal Shakti, Government of India, New Delhi</div>
+      <div class="to-post">2. Ministry of Environment, Forest & Climate Change (MoEFCC), New Delhi</div>
+      <div class="to-post">3. Ministry of Agriculture & Farmers Welfare, New Delhi</div>
+      <div class="to-post">4. Central Pollution Control Board (CPCB), New Delhi</div>
+      <div class="to-post">5. National Green Tribunal (NGT), Principal Bench, New Delhi</div>
+    </div>
+    <div class="letter-subject">Subject: Urgent Representation – Implementation of Three-Layer Filtration System for HN Valley & KC Valley Recycled Water Projects, Karnataka – Compliance with Water Pollution Act 1974, EPA 1986, and NGT Directions</div>
+    <div class="salutation">Respected Sir/Madam,</div>
+    <p>I submit this urgent representation on behalf of the farming and residential communities of Kolar and Chikkaballapur districts, Karnataka, regarding a serious and ongoing environmental and public health concern arising from the HN Valley (Hebbal-Nagawara Valley) and KC Valley (Koramangala-Challaghatta Valley) water canal projects.</p>
+    <p>These projects divert treated wastewater from Bengaluru city into agricultural distribution networks serving thousands of farmers in both districts. While the intent is beneficial, independent water quality data and farmer testimonials indicate that the treated water continues to carry contaminants including heavy metals, biological oxygen demand beyond permissible limits, coliform bacteria, and industrial chemical residues — in potential violation of CPCB's effluent standards for irrigation use and the requirements of the Water (Prevention and Control of Pollution) Act, 1974.</p>
+    <p><strong>Key Concerns Requiring Regulatory Action:</strong></p>
+    <ul>
+      <li><strong>CPCB (Central Pollution Control Board):</strong> Kindly conduct an independent water quality audit of HN Valley and KC Valley outflows; issue binding directions for upgraded treatment to Class D standard for agricultural use; and mandate quarterly public reporting on water quality parameters</li>
+      <li><strong>Ministry of Jal Shakti:</strong> Kindly allocate funds under AMRUT 2.0 and NRCP for implementation of Three-Layer Filtration Systems; incorporate water quality certification into the Jal Jeevan Mission framework for recycled water reuse</li>
+      <li><strong>MoEFCC:</strong> Kindly invoke powers under Section 5 of the Environment Protection Act, 1986 to issue directions for mandatory Environmental Impact Assessment of the ongoing water distribution; ensure compliance with the Precautionary Principle and Polluter Pays Principle</li>
+      <li><strong>Ministry of Agriculture:</strong> Kindly commission a soil health and crop safety assessment in the irrigated areas; alert the farming community to potential risks; and link supply of adequate-quality water to PM Kisan and soil health card frameworks</li>
+      <li><strong>NGT:</strong> Kindly take suo motu cognizance of this matter or register a petition; direct all concerned authorities to file compliance reports; appoint a technical monitoring committee under NGT oversight</li>
+    </ul>
+    <p>A comprehensive Three-Layer Filtration System project proposal with technical specifications, cost estimates, and implementation timeline is enclosed for your reference. Immediate regulatory action is respectfully requested to prevent irreversible environmental and health damage to these districts.</p>
+    <div class="closing"><p>Requesting urgent attention and action,</p></div>
+    <div class="signature-block">
+      <div class="sig-name">Adv. Veerendrababu Nanjegowda</div>
+      <div class="sig-title">Senior Advocate – NGT, High Courts & Supreme Court of India | Bengaluru Law House</div>
+    </div>
+  </div>
+</div>
+
+<hr class="letter-divider">
+
+<!-- ══════════ LETTER 5: STATE DEPARTMENTS ══════════ -->
+<div class="letter" id="state">
+  <div class="letterhead">
+    <div class="letterhead-icon">⚖️</div>
+    <div class="letterhead-text">
+      <div class="org">BENGALURU LAW HOUSE</div>
+      <div class="advocate">Adv. Veerendrababu Nanjegowda | Senior Advocate – NGT, High Courts & Supreme Court</div>
+      <div class="address">Sahakaranagar, Bengaluru – 560092 | Chambers: New Delhi | Ph: +91-XXXXXXXXXX</div>
+    </div>
+  </div>
+  <div class="letter-meta">
+    <span><strong>Ref:</strong> BLH/ENV/STATE/2025/005</span>
+    <span><strong>Date:</strong> March 2025</span>
+  </div>
+  <div class="letter-body">
+    <div class="letter-to">
+      <div class="to-label">Addressed To</div>
+      <div class="to-name">The Principal Secretaries / Directors</div>
+      <div class="to-post">1. Dept of Water Resources, Government of Karnataka, Bengaluru</div>
+      <div class="to-post">2. Karnataka State Pollution Control Board (KSPCB), Bengaluru</div>
+      <div class="to-post">3. Bangalore Water Supply & Sewerage Board (BWSSB), Bengaluru</div>
+      <div class="to-post">4. Dept of Agriculture, Government of Karnataka, Bengaluru</div>
+      <div class="to-post">5. Dept of Health & Family Welfare, Government of Karnataka, Bengaluru</div>
+      <div class="to-post">6. Dept of Minor Irrigation, Government of Karnataka, Bengaluru</div>
+      <div class="to-post">7. District Collector, Kolar District</div>
+      <div class="to-post">8. District Collector, Chikkaballapur District</div>
+    </div>
+    <div class="letter-subject">Subject: Representation for Mandatory Three-Layer Filtration System in HN Valley & KC Valley Projects – Urgent Action to Protect Soil, Crops, Environment, and Public Health in Kolar & Chikkaballapur</div>
+    <div class="salutation">Respected Sir/Madam,</div>
+    <p>I submit this representation on a matter of urgent public importance concerning the quality of water being distributed through the HN Valley and KC Valley canal projects to the agricultural and residential areas of Kolar and Chikkaballapur districts.</p>
+    <p>The water flowing through these canals originates from Bengaluru's sewage treatment infrastructure. While treatment is provided, the current level of treatment is inadequate to ensure the water meets the safety standards prescribed by CPCB and BIS for agricultural irrigation (Class D) or safe drinking water recharge. Farmers in these districts are unknowingly using contaminated water, leading to measurable deterioration in soil quality, crop abnormalities, and increasing disease burden in the community.</p>
+    <p><strong>Specific Requests to Each Department:</strong></p>
+    <ul>
+      <li><strong>Dept of Water Resources & Minor Irrigation:</strong> Immediately commission independent water quality testing at all major distribution nodes of HN Valley and KC Valley; halt distribution points that fall below CPCB Class D standards until upgraded; and initiate tender process for Three-Layer Filtration System installation</li>
+      <li><strong>KSPCB:</strong> Conduct emergency environmental audit; issue Directions under Section 33A of the Water Act to BWSSB; monitor effluent quality at treatment plants; establish real-time data sharing with district authorities</li>
+      <li><strong>BWSSB:</strong> Upgrade existing STPs to Advanced Tertiary Treatment level; implement UV/Ozonation as minimum final stage; deploy automated quality sensors at release points</li>
+      <li><strong>Dept of Agriculture:</strong> Issue advisories to farmers in irrigated zones; commission soil health surveys in HN/KC Valley command areas; provide compensation mechanism for crop losses due to water quality</li>
+      <li><strong>Dept of Health:</strong> Conduct epidemiological survey of disease incidence in HN/KC Valley command areas; set up health monitoring camps; prepare contingency health response plan</li>
+      <li><strong>District Collectors (Kolar & Chikkaballapur):</strong> Constitute a District-level Water Quality Task Force; coordinate between all departments; receive and act upon farmer grievances related to water quality; submit monthly compliance reports to the State Government</li>
+    </ul>
+    <p>This matter has constitutional, environmental, agricultural, and public health dimensions requiring coordinated inter-departmental action. A detailed project proposal for the Three-Layer Filtration System is enclosed for reference and action.</p>
+    <div class="closing"><p>Requesting your urgent attention and coordinated action,</p></div>
+    <div class="signature-block">
+      <div class="sig-name">Adv. Veerendrababu Nanjegowda</div>
+      <div class="sig-title">Senior Advocate – NGT, High Courts & Supreme Court of India | Bengaluru Law House</div>
+    </div>
+  </div>
+</div>
+
+<hr class="letter-divider">
+
+<!-- ══════════ LETTER 6: MLAs ══════════ -->
+<div class="letter" id="mlas">
+  <div class="letterhead">
+    <div class="letterhead-icon">⚖️</div>
+    <div class="letterhead-text">
+      <div class="org">BENGALURU LAW HOUSE</div>
+      <div class="advocate">Adv. Veerendrababu Nanjegowda | Senior Advocate – NGT, High Courts & Supreme Court</div>
+      <div class="address">Sahakaranagar, Bengaluru – 560092 | Chambers: New Delhi | Ph: +91-XXXXXXXXXX</div>
+    </div>
+  </div>
+  <div class="letter-meta">
+    <span><strong>Ref:</strong> BLH/ENV/MLA/2025/006</span>
+    <span><strong>Date:</strong> March 2025</span>
+  </div>
+  <div class="letter-body">
+    <div class="letter-to">
+      <div class="to-label">Addressed To</div>
+      <div class="to-name">The Hon'ble Members of Legislative Assembly</div>
+      <div class="to-post"><strong>Kolar District Constituencies:</strong> Kolar, Bangarpet, Robertsonpet, Kolar Gold Fields, Mulbagal, Srinivaspur, Malur</div>
+      <div class="to-post"><strong>Chikkaballapur District Constituencies:</strong> Chikkaballapur, Sidlaghatta, Chintamani, Gouribidanur, Bagepalli, Gudibanda</div>
+    </div>
+    <div class="letter-subject">Subject: Urgent Appeal to Your Excellencies to Champion Three-Layer Filtration System for HN Valley & KC Valley – Protecting the Farmers and Residents of Your Constituencies</div>
+    <div class="salutation">Honourable Members of the Legislative Assembly,</div>
+    <p>I reach out to each of you with urgency and respect, as the elected representatives and guardians of the farming communities and residents of Kolar and Chikkaballapur districts.</p>
+    <p>The constituents you serve — the farmers who toil in the fields, the families who drink from wells and borewells recharged by valley water, the children who will inherit this land — are in need of your voice and your action today.</p>
+    <p>The HN Valley and KC Valley water projects were conceived as solutions to the water crisis your constituencies have faced for generations. But today, these canals are distributing water that scientific testing and farmer testimonials confirm is insufficiently treated — carrying heavy metals, industrial pollutants, and microbial contamination that are slowly poisoning the very land and people they were meant to save.</p>
+    <p><strong>What we ask of you:</strong></p>
+    <ul>
+      <li>Raise this issue urgently on the floor of the Karnataka Vidhana Sabha during the next session</li>
+      <li>Move a Private Member's Resolution or demand a Statement from the relevant Ministers on water quality and treatment standards</li>
+      <li>Write jointly to the Chief Minister, Water Resources Minister, and Environment Minister demanding immediate implementation of the Three-Layer Filtration System</li>
+      <li>Use your MLALAG (MLA Local Area Development) funds to support water quality testing infrastructure in your constituency</li>
+      <li>Facilitate direct interaction between your farming constituents and KSPCB and BWSSB officials for grievance redressal</li>
+      <li>Demand quarterly water quality reports be tabled in the Vidhana Sabha and made available to the public</li>
+    </ul>
+    <p>Your voice in the Assembly carries the weight of democratic mandate. The people of Kolar and Chikkaballapur need champions who will ensure that the water reaching their lands and homes is clean, safe, and life-giving — not a slow poison.</p>
+    <p>The Three-Layer Filtration System project proposal is enclosed. We humbly request you to study it, champion it, and demand its immediate implementation through every platform available to you as elected representatives.</p>
+    <div class="closing"><p>With deep respect and hope in your leadership,</p></div>
+    <div class="signature-block">
+      <div class="sig-name">Adv. Veerendrababu Nanjegowda</div>
+      <div class="sig-title">Senior Advocate – NGT, High Courts & Supreme Court of India | Bengaluru Law House</div>
+      <div class="sig-title">Senior Journalist | Legal Adviser, R MAXX Kannada News Channel</div>
+    </div>
+  </div>
+</div>
+
+<hr class="letter-divider">
+
+<!-- ══════════ LETTER 7: MPs ══════════ -->
+<div class="letter" id="mps">
+  <div class="letterhead">
+    <div class="letterhead-icon">⚖️</div>
+    <div class="letterhead-text">
+      <div class="org">BENGALURU LAW HOUSE</div>
+      <div class="advocate">Adv. Veerendrababu Nanjegowda | Senior Advocate – NGT, High Courts & Supreme Court</div>
+      <div class="address">Sahakaranagar, Bengaluru – 560092 | Chambers: New Delhi | Ph: +91-XXXXXXXXXX</div>
+    </div>
+  </div>
+  <div class="letter-meta">
+    <span><strong>Ref:</strong> BLH/ENV/MP/2025/007</span>
+    <span><strong>Date:</strong> March 2025</span>
+  </div>
+  <div class="letter-body">
+    <div class="letter-to">
+      <div class="to-label">Addressed To</div>
+      <div class="to-name">The Hon'ble Members of Parliament</div>
+      <div class="to-post"><strong>Lok Sabha:</strong> MP – Kolar Constituency (SC) | MP – Chikkaballapur Constituency</div>
+      <div class="to-post"><strong>Rajya Sabha:</strong> Hon'ble Members from Karnataka, Rajya Sabha, Parliament of India, New Delhi</div>
+    </div>
+    <div class="letter-subject">Subject: Parliamentary Representation – Three-Layer Filtration System for HN Valley & KC Valley Water Projects, Karnataka – Raising the Matter in Parliament for National Policy Action on Safe Recycled Water for Agriculture</div>
+    <div class="salutation">Honourable Members of Parliament,</div>
+    <p>I place before Your Excellencies a matter of national significance — the health, safety, and economic security of the farming communities of Kolar and Chikkaballapur, two constituencies that are part of one of India's most water-stressed regions.</p>
+    <p>The HN Valley and KC Valley water projects, which redirect treated sewage water from Bengaluru to these districts, have provided partial relief from water scarcity. However, scientific data and ground-level evidence firmly establish that the water currently being supplied contains dangerous contaminants including heavy metals, pharmaceutical residues, pathogens, and industrial effluents — at levels that pose serious risks to soil health, food safety, water bodies, and public health.</p>
+    <p>This issue transcends Karnataka. As India scales up wastewater recycling and reuse under the National Water Policy, the treatment standards and monitoring frameworks applied to such projects become a national policy matter. The failure to ensure safe treatment of recycled agricultural water sets a dangerous precedent for the entire country's food security and environmental health.</p>
+    <p><strong>We respectfully request Your Excellencies to:</strong></p>
+    <ul>
+      <li>Raise a starred/unstarred question in Lok Sabha / Rajya Sabha regarding water quality standards for recycled wastewater used in agriculture, with specific reference to HN Valley and KC Valley, Karnataka</li>
+      <li>Move a calling attention motion or an adjournment motion if necessary to draw national attention</li>
+      <li>Write to the Ministers of Jal Shakti, Environment, and Agriculture demanding a national audit of all recycled water agricultural projects</li>
+      <li>Advocate for mandatory Three-Layer Filtration System standards to be incorporated into the National Water Policy and Jal Jeevan Mission guidelines</li>
+      <li>Use MPLADS funds to support water quality monitoring infrastructure in Kolar and Chikkaballapur constituencies</li>
+      <li>Urge the Standing Committee on Water Resources to examine the gaps in recycled water treatment standards across India</li>
+    </ul>
+    <p>A comprehensive project proposal for the Three-Layer Filtration System — with technical details, cost estimates, legal framework, and expected impact — is enclosed herewith for Your Excellencies' reference.</p>
+    <p>The farmers of Kolar and Chikkaballapur have waited long enough. They deserve water that nourishes — not poisons. Your voice in Parliament can make that difference.</p>
+    <div class="closing"><p>With deep respect and confidence in your commitment to the people,</p></div>
+    <div class="signature-block">
+      <div class="sig-name">Adv. Veerendrababu Nanjegowda</div>
+      <div class="sig-title">Senior Advocate – National Green Tribunal, High Courts & Supreme Court of India</div>
+      <div class="sig-title">Bengaluru Law House | Senior Journalist | Legal Adviser, R MAXX Kannada News Channel</div>
+      <div class="sig-title">Sahakaranagar, Bengaluru – 560 092 | Chambers: New Delhi</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="background:#0a3d62; color:#a8d8ea; text-align:center; padding:25px; margin-top:30px; font-size:0.85em;">
+  <div style="font-size:1.1em; color:#ffd700; font-weight:bold; margin-bottom:8px;">💧 We do not need just water… we need clean and safe water. 💧</div>
+  <div>Bengaluru Law House | Adv. Veerendrababu Nanjegowda | Ref: BLH/ENV/2025/001–007</div>
+  <div style="margin-top:5px;">Protecting the Farmers, Environment & Public Health of Kolar & Chikkaballapur Districts, Karnataka, India 🇮🇳</div>
+</div>
+
+</body>
+</html>

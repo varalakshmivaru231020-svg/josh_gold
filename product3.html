@@ -1,0 +1,1108 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="nvMKerslHfjKrH8HOKX5QWWqMIStxyRLTv9TlDPr">
+    <title>Thanks Appa | Bengaluru Law House</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <!-- AOS Animate on Scroll -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #c9a84c;
+            --gold-light: #e8c878;
+            --gold-dark: #8b6914;
+            --navy: #0c1428;
+            --navy-mid: #152040;
+            --navy-light: #1e2f58;
+            --cream: #f8f5ef;
+            --cream-dark: #ede8de;
+            --text: #2a2a2a;
+            --text-muted: #666;
+            --white: #ffffff;
+            --font-display: "Cormorant Garamond", Georgia, serif;
+            --font-body: "Outfit", Arial, sans-serif;
+        }
+
+        *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; scroll-behavior:smooth; }
+
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--cream);
+            color: var(--text);
+        }
+
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar { width:5px; }
+        ::-webkit-scrollbar-track { background:var(--navy); }
+        ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:10px; }
+
+        /* ── NAVIGATION ── */
+        .nav-premium {
+            position: fixed; top:0; left:0; right:0; z-index:1000;
+            background: rgba(12,20,40,0.98);
+            border-bottom: 1px solid rgba(201,168,76,0.2);
+            padding: 0 60px;
+            display: flex; align-items:center; justify-content:space-between;
+            height: 85px;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            will-change: transform, height;
+            width: 100%;
+        }
+        .nav-premium.scrolled { height: 75px; background: #0a0f1e; box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
+        
+        .nav-brand { display:flex; align-items:center; gap:15px; text-decoration:none; min-width:0; flex:1; overflow:hidden; }
+        .nav-brand-seal {
+            width:45px; height:45px;
+            background: linear-gradient(135deg, #c9a84c, #8b6914);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; color: #0c1428; 
+            box-shadow: 0 0 15px rgba(201,168,76,0.3);
+            border: 2px solid rgba(255,255,255,0.1);
+            flex-shrink: 0;
+        }
+        .nav-brand-info { min-width: 0; overflow: hidden; }
+        .nav-brand-text { 
+            font-family: var(--font-display); color: #c9a84c; 
+            font-size: 1.25rem; font-weight: 800; line-height: 1.1; 
+            text-transform: uppercase; letter-spacing: 1.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;
+        }
+        .nav-brand-sub { font-size: 0.68rem; color: rgba(255,255,255,0.6); letter-spacing: 2px; text-transform: uppercase; font-weight: 700; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+
+        .nav-links { display:flex; gap:10px; align-items:center; list-style: none; margin: 0; padding: 0; }
+        .nav-link-custom {
+            color: rgba(255,255,255,0.7); font-size: 0.72rem; letter-spacing: 2px;
+            text-transform: uppercase; text-decoration: none; padding: 12px 18px; border-radius: 8px;
+            transition: all 0.3s; font-weight: 700;
+        }
+        .nav-link-custom:hover { color: var(--gold); background: rgba(201,168,76,0.1); }
+        .nav-link-custom.active { color: var(--gold); }
+        
+        .nav-cta {
+            background: linear-gradient(135deg, var(--gold), #b39441);
+            color: #0c1428 !important; font-weight: 800 !important;
+            border-radius: 50px; padding: 12px 28px !important; margin-left: 15px;
+            box-shadow: 0 10px 20px rgba(201,168,76,0.2);
+            border: none;
+        }
+        .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(201,168,76,0.3); filter: brightness(1.1); }
+
+        .nav-toggle { display:none; background:none; border:none; cursor:pointer; padding: 10px; z-index: 1001; width: 45px; height: 45px; }
+        .nav-toggle span { display:block; width:25px; height:2px; background:#c9a84c !important; margin:6px 0; transition:all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1); border-radius:2px; }
+        
+        .nav-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .nav-toggle.active span:nth-child(2) { opacity: 0; }
+        .nav-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* Ensure no horizontal scroll on all levels */
+        html, body, .main-content, section { overflow-x: hidden; width: 100%; }
+
+        @media (max-width: 1100px) {
+            .nav-premium { 
+                padding: 0 15px; height: 70px;
+                transition: height 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+                transform: translateZ(0);
+            }
+            .nav-brand { flex: 1; min-width: 0; gap: 10px; overflow: hidden; }
+            .nav-brand-seal { width: 36px; height: 36px; font-size: 1rem; flex-shrink: 0; }
+            .nav-brand-info { min-width: 0; overflow: hidden; }
+            .nav-toggle { display: block; flex-shrink: 0; width: 44px; height: 44px; margin-left: 8px; }
+            .nav-brand-text { font-size: 0.92rem; letter-spacing: 0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            .nav-brand-sub { font-size: 0.54rem; letter-spacing: 0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;
+                background: #080d1a; flex-direction: column; align-items: flex-start;
+                padding: 100px 0 60px; transition: right 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+                box-shadow: -10px 0 40px rgba(0,0,0,0.6); z-index: 1050;
+                visibility: hidden; opacity: 0; pointer-events: none;
+                overflow-y: auto; overflow-x: hidden;
+            }
+            .nav-links.active { right: 0; visibility: visible; opacity: 1; pointer-events: auto; display: flex; }
+            .nav-link-custom { 
+                width: 100%; font-size: 0.85rem; padding: 18px 30px; 
+                border-bottom: 1px solid rgba(255,255,255,0.03); 
+                border-radius: 0; display: block;
+                opacity: 0; transform: translateX(20px); transition: all 0.3s ease;
+            }
+            .nav-links.active .nav-link-custom { opacity: 1; transform: translateX(0); }
+            /* Staggered animation */
+            .nav-links.active .nav-link-custom:nth-child(1) { transition-delay: 0.05s; }
+            .nav-links.active .nav-link-custom:nth-child(2) { transition-delay: 0.1s; }
+            .nav-links.active .nav-link-custom:nth-child(3) { transition-delay: 0.15s; }
+            .nav-links.active .nav-link-custom:nth-child(4) { transition-delay: 0.2s; }
+            .nav-links.active .nav-link-custom:nth-child(5) { transition-delay: 0.25s; }
+            .nav-links.active .nav-link-custom:nth-child(6) { transition-delay: 0.3s; }
+            .nav-links.active .nav-link-custom:nth-child(7) { transition-delay: 0.35s; }
+            .nav-links.active .dropdown:nth-child(8) { transition-delay: 0.4s; }
+            .nav-links.active .dropdown:nth-child(8) .nav-link-custom { transition-delay: 0.4s; }
+            
+            .nav-link-custom:hover { background: rgba(201,168,76,0.08); color: var(--gold); padding-left: 35px; }
+            .nav-cta { margin: 25px 30px 0; width: calc(100% - 60px); text-align: center; border-radius: 50px; padding: 14px !important; font-size: 0.85rem; }
+            
+            .nav-overlay {
+                position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+                backdrop-filter: blur(5px); z-index: 999;
+                opacity: 0; visibility: hidden; transition: opacity 0.4s;
+            }
+            .nav-overlay.active { opacity: 1; visibility: visible; }
+        }
+
+        /* Narrow header fixes */
+        @media (max-width: 480px) {
+            .nav-brand-seal { width: 30px !important; height: 30px !important; }
+            .nav-brand-text { font-size: 0.78rem !important; }
+            .nav-brand-sub { font-size: 0.45rem !important; }
+        }
+
+        @media (max-width: 480px) {
+            .nav-premium { height: 68px; padding: 0 12px; }
+            .nav-brand { gap: 10px; flex: 1; min-width: 0; width: calc(100% - 50px); }
+            .nav-brand-seal { width: 32px; height: 32px; font-size: 0.85rem; }
+            .nav-brand-text { font-size: 0.8rem; letter-spacing: 0.2px; white-space: nowrap; }
+            .nav-brand-sub { font-size: 0.5rem; letter-spacing: 0; white-space: nowrap; max-width: 150px; }
+            .nav-toggle { width: 44px; height: 44px; margin-left: 2px; }
+            .nav-toggle span { width: 22px; margin: 5px 0; }
+        }
+
+        @media (max-width: 360px) {
+            .nav-brand-text { font-size: 0.75rem; }
+            .nav-brand-sub { font-size: 0.45rem; max-width: 120px; }
+            .nav-brand-seal { width: 28px; height: 28px; }
+        }
+
+
+
+
+        /* ── NEW PREMIUM FOOTER ── */
+        .footer-lux {
+            background: #0a1122;
+            padding: 100px 0 60px;
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+        }
+        .footer-lux::before {
+            content: ''; position: absolute; inset: 0;
+            background-image: 
+                linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+        
+        .footer-lux-title {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 30px;
+            display: block;
+            text-align: center;
+        }
+        
+        .footer-lux-nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-bottom: 40px;
+            list-style: none;
+            padding: 0;
+        }
+        .footer-lux-nav a {
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .footer-lux-nav a:hover {
+            color: var(--gold);
+            transform: translateY(-2px);
+        }
+        
+        .footer-lux-copyright {
+            text-align: center;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+        .footer-lux-location {
+            text-align: center;
+            color: rgba(255,255,255,0.3);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        /* ── CONNECT CARDS IN FOOTER ── */
+        .footer-connect-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 80px;
+        }
+        .f-connect-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(201,168,76,0.15);
+            border-radius: 12px;
+            padding: 35px 25px;
+            text-align: center;
+            transition: all 0.4s;
+        }
+        .f-connect-card:hover {
+            background: rgba(201,168,76,0.08);
+            border-color: var(--gold);
+            transform: translateY(-5px);
+        }
+        .f-connect-icon {
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: block;
+        }
+        .f-connect-label {
+            color: var(--gold);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: block;
+            opacity: 0.8;
+        }
+        .f-connect-text {
+            color: rgba(255,255,255,0.85);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0;
+            white-space: pre-line;
+        }
+
+        @media (max-width: 991px) {
+            .footer-connect-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 576px) {
+            .footer-connect-grid { grid-template-columns: 1fr; }
+            .footer-lux-nav { gap: 15px; }
+            .footer-lux { padding: 60px 0 40px; }
+        }
+
+        /* ── FOLLOW ONLINE GLOBAL SECTION ── */
+        .follow-online-global {
+            background: #ffffff;
+            padding: 80px 0;
+            position: relative;
+        }
+        .follow-card-grid-lux {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .follow-card-lux {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 30px;
+            border-radius: 16px;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            color: #ffffff;
+        }
+        .follow-card-lux:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            color: #ffffff;
+        }
+        .f-card-icon-lux {
+            font-size: 2.2rem;
+            flex-shrink: 0;
+        }
+        .f-card-info-lux {
+            display: flex;
+            flex-direction: column;
+        }
+        .f-card-platform-lux {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 800;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+        .f-card-handle-lux {
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: var(--font-display);
+        }
+
+        /* Specific Gradients from Screenshot */
+        .fc-facebook { background: linear-gradient(135deg, #1877f2, #0a5bbf); }
+        .fc-instagram { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .fc-website { background: linear-gradient(135deg, #1a2e5e, #0c1428); border: 1px solid rgba(255,255,255,0.1); }
+
+        @media (max-width: 991px) {
+            .follow-card-grid-lux { grid-template-columns: repeat(2, 1fr); padding: 0 20px; }
+        }
+        @media (max-width: 768px) {
+            .follow-card-grid-lux { grid-template-columns: 1fr; }
+        }
+
+        /* ── FLOATING CONTACT BUTTONS ── */
+        .floating-contact-btn {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #ffffff;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 980;
+            border: none;
+            cursor: pointer;
+        }
+
+        .floating-contact-btn:hover {
+            transform: scale(1.15);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .whatsapp-btn {
+            bottom: 25px;
+            right: 25px;
+            background: linear-gradient(135deg, #25D366, #20BA5A);
+        }
+
+        .whatsapp-btn:hover {
+            background: linear-gradient(135deg, #20BA5A, #1DA851);
+        }
+
+        .phone-btn {
+            bottom: 100px;
+            right: 25px;
+            background: linear-gradient(135deg, var(--gold), #8b6914);
+        }
+
+        .phone-btn:hover {
+            background: linear-gradient(135deg, #8b6914, #6a5010);
+        }
+
+        .contact-btn-label {
+            position: absolute;
+            right: 75px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            font-weight: 600;
+        }
+
+        .floating-contact-btn:hover .contact-btn-label {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .floating-contact-btn {
+                width: 55px;
+                height: 55px;
+                font-size: 1.5rem;
+            }
+
+            .whatsapp-btn {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .phone-btn {
+                bottom: 90px;
+                right: 20px;
+            }
+
+            .contact-btn-label {
+                right: 65px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+    <style>
+    .product-detail-page { background: var(--cream, #f8f5ef); min-height: 80vh; padding-bottom: 120px; }
+
+    .product-hero-header {
+        background: 
+            linear-gradient(rgba(8,14,28,0.82) 0%, rgba(10,18,36,0.85) 100%),
+            url('/images/publications-banner.jpg') center center / cover no-repeat;
+        padding: 140px 0 80px;
+        position: relative;
+        overflow: hidden;
+        z-index: 0;
+    }
+
+    .product-hero-header::before {
+        content: ''; position: absolute; inset: 0; z-index: 0;
+        background-image:
+            linear-gradient(rgba(201, 168, 76, 0.055) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(201, 168, 76, 0.055) 1px, transparent 1px);
+        background-size: 55px 55px;
+    }
+
+    .product-hero-header::after {
+        content:''; position: absolute; inset:0; z-index: 0;
+        background:
+            radial-gradient(ellipse at 10% 50%, rgba(201,168,76,0.12) 0%, transparent 50%),
+            radial-gradient(ellipse at 90% 50%, rgba(201,168,76,0.08) 0%, transparent 50%),
+            radial-gradient(ellipse at 50% 110%, rgba(201,168,76,0.18) 0%, transparent 45%),
+            linear-gradient(120deg, rgba(20,35,70,0.85) 0%, rgba(8,14,28,0.6) 50%, rgba(15,28,55,0.9) 100%);
+    }
+
+    .product-hero-deco {
+        position: absolute; right: 7%; top: 50%; transform: translateY(-50%);
+        font-size: 14rem; color: rgba(201,168,76,0.06);
+        pointer-events: none; z-index: 0; line-height: 1;
+    }
+
+    .product-hero-header .container { position: relative; z-index: 1; }
+    .product-hero-header .label-gold { display: block; }
+    .product-hero-header .heading-premium { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; }
+    .accent-line-gold { width: 80px; height: 3px; background: var(--gold, #c9a84c); margin-top: 25px; border-radius: 2px; position: relative; z-index: 2; }
+
+    .product-breadcrumb { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; position: relative; z-index: 2; }
+    .product-breadcrumb a { color: var(--gold, #c9a84c); text-decoration:none; transition: 0.3s; }
+    .product-breadcrumb a:hover { color: white; }
+    .product-breadcrumb .sep { color: rgba(255,255,255,0.3); }
+    .product-breadcrumb .curr { color: white; opacity: 0.7; }
+
+    .product-content-container { padding-top: 60px; padding-bottom: 60px; }
+    .product-main-card { background: white; border-radius: 40px; overflow: hidden; box-shadow: 0 40px 100px rgba(0,0,0,0.08); border: 1px solid rgba(201,168,76,0.12); }
+
+    .main-image-wrap { height: 500px; display: flex; align-items: center; justify-content: center; padding: 40px; }
+    .main-image-wrap img { max-height: 100%; max-width: 100%; object-fit: contain; filter: drop-shadow(15px 15px 30px rgba(0,0,0,0.2)); transition: 0.5s; }
+    .main-image-wrap img:hover { transform: scale(1.03); }
+
+    .glide-nav { position:absolute; top:50%; transform:translateY(-50%); width:45px; height:45px; background:white; border:1px solid var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--navy); cursor:pointer; transition:0.3s; z-index:2; }
+    .glide-nav:hover { background:var(--gold); color:white; }
+    .glide-nav.prev { left: 15px; }
+    .glide-nav.next { right: 15px; }
+
+    .thumb-nav-flex { display: flex; gap: 15px; justify-content: center; }
+    .thumb-nav-item { width: 80px; height: 80px; border-radius: 12px; border: 2px solid transparent; cursor: pointer; padding: 8px; background: var(--cream); transition: 0.3s; }
+    .thumb-nav-item.active, .thumb-nav-item:hover { border-color: var(--gold); background: white; }
+    .thumb-nav-item img { width: 100%; height: 100%; object-fit: contain; }
+
+    .price-box-premium { display: flex; flex-direction: row; align-items: baseline; gap: 8px; flex-wrap: nowrap; }
+    .price-box-premium .currency { display: inline-block; font-size: 2.2rem; color: var(--navy, #0c1428); font-weight: 800; line-height: 1; }
+    .price-box-premium .amount { display: inline-block; font-size: 3rem; color: var(--navy, #0c1428); font-weight: 800; font-family: var(--font-display); line-height: 1; }
+    .price-box-premium .tax-tag { display: inline-block; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
+
+    .meta-pill { display: inline-flex; align-items: center; gap: 8px; background: var(--cream); color: var(--navy); padding: 6px 16px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(201,168,76,0.15); margin-right: 10px; }
+    .meta-pill i { color: var(--gold); }
+
+    .qty-selector-lux { display: flex; align-items: center; background: white; border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; overflow: hidden; max-width: 140px; }
+    .qty-btn-lux { border: none; background: transparent; padding: 10px 15px; color: var(--navy); cursor: pointer; transition: 0.3s; }
+    .qty-btn-lux:hover { background: var(--gold); color: white; }
+    .qty-selector-lux input { width: 40px; text-align: center; border: none; font-weight: 700; color: var(--navy); background: transparent; }
+
+    .referral-flex { display: flex; gap: 10px; }
+    .form-luxury-sm { border: 1px solid rgba(201,168,76,0.3); background: white; padding: 10px 15px; border-radius: 12px; width: 100%; font-size: 0.9rem; color: var(--navy); }
+    .btn-apply-lux { background: var(--navy); color: white; border: none; padding: 0 20px; border-radius: 12px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; transition: 0.3s; white-space: nowrap; cursor: pointer; }
+    .btn-apply-lux:hover { background: var(--gold); color: var(--navy); }
+
+    .summary-box-lux .summary-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; color: var(--text-muted); font-weight: 600; }
+    .summary-box-lux .summary-line.discount { color: #25d366; }
+
+    .trust-flex-premium { display: flex; flex-wrap: wrap; gap: 25px; align-items: center; justify-content: center; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 20px; margin-top: 20px; }
+    .trust-item { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+    .trust-item i { color: var(--gold); font-size: 1.1rem; }
+
+    .out-of-stock-premium { background: rgba(201,168,76,0.05); padding: 40px; border-radius: 24px; border: 2px dashed var(--gold); text-align: center; color: var(--navy); }
+    .btn-outline-gold { background: transparent; color: var(--gold); border: 2px solid var(--gold); border-radius: 12px; font-weight: 700; transition: 0.3s; }
+    .btn-outline-gold:hover { background: var(--gold); color: white; }
+    .btn-primary-gold { background: var(--gold); color: white; border-radius: 12px; font-weight: 700; transition: 0.3s; border: none; cursor: pointer; }
+    .btn-primary-gold:hover { background: var(--gold-dark); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+    
+    .product-no-image { height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--cream); }
+
+    @media (max-width: 991px) {
+        .product-gallery-premium { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .product-main-card { border-radius: 24px; }
+        .main-image-wrap { height: 350px; }
+    }
+    @media (max-width: 576px) {
+        .product-content-container { padding-top: 40px; }
+        .product-details-premium { padding: 28px !important; }
+        .product-gallery-premium { padding: 28px !important; }
+    }
+</style>
+</head>
+<body>
+
+    <nav class="nav-premium" id="mainHeader">
+        <a class="nav-brand" href="http://127.0.0.1:8000">
+                            <img src="http://127.0.0.1:8000/storage/settings/JVwjKyCjKPXUdojtwyJHePbZaR94rLvz9cSpu6sN.jpg" alt="Bengaluru Law House" class="nav-brand-seal" style="object-fit:cover; padding:0;" loading="eager">
+                        <div class="nav-brand-info">
+                <div class="nav-brand-text">Bengaluru Law House</div>
+                <div class="nav-brand-sub">Adv. Veerendrababu Nanjegowda</div>
+            </div>
+        </a>
+        <div class="nav-links">
+            <a href="http://127.0.0.1:8000" class="nav-link-custom ">Home</a>
+            <a href="http://127.0.0.1:8000/about-us" class="nav-link-custom ">About</a>
+            <a href="http://127.0.0.1:8000/blog" class="nav-link-custom ">Blog</a>
+            <a href="http://127.0.0.1:8000/offices" class="nav-link-custom ">Offices</a>
+            <a href="http://127.0.0.1:8000/gallery" class="nav-link-custom ">Gallery</a>
+            <a href="http://127.0.0.1:8000/practice-areas" class="nav-link-custom ">Practice</a>
+            <a href="http://127.0.0.1:8000/products" class="nav-link-custom ">Publications</a>
+            <a href="http://127.0.0.1:8000/contact-us" class="nav-link-custom ">Contact Us</a>
+
+            <div class="dropdown d-inline-block d-none">
+                <a class="nav-link-custom dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                    More
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark shadow-lg border-0 mt-3" style="background: var(--navy-mid);">
+                                            
+                                    </ul>
+            </div>
+        </div>
+        <button class="nav-toggle" id="navToggle">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+    <div class="nav-overlay" id="navOverlay"></div>
+
+    <main class="main-content" style="min-height: 80vh;">
+        <section class="product-detail-page">
+
+    
+    <div class="product-hero-header">
+        <div class="product-hero-deco" aria-hidden="true"><i class="fas fa-book-open"></i></div>
+        <div class="container" data-aos="fade-up">
+            <nav class="product-breadcrumb mb-3">
+                <a href="http://127.0.0.1:8000">Home</a>
+                <span class="sep">/</span>
+                <a href="http://127.0.0.1:8000/products">Publications</a>
+                <span class="sep">/</span>
+                <span class="curr">Thanks Appa</span>
+            </nav>
+            <div class="label-gold mb-2">Legal Publication</div>
+            <h1 class="heading-premium text-white">Thanks Appa</h1>
+            <div class="accent-line-gold"></div>
+        </div>
+    </div>
+
+    <div class="container product-content-container">
+        <div class="product-main-card" data-aos="fade-up">
+            <div class="row g-0">
+                <!-- Product Gallery -->
+                <div class="col-lg-6">
+                    <div class="product-gallery-premium p-5 border-end">
+                                                    <div class="glide product-main-slider">
+                                <div class="glide__track" data-glide-el="track">
+                                    <ul class="glide__slides">
+                                                                                    <li class="glide__slide">
+                                                <div class="main-image-wrap">
+                                                    <img src="http://127.0.0.1:8000/storage/products/gcuX60Qh2A0z90o4SvRDDY0nXW6U0I6ps5t55Svp.png" alt="Thanks Appa">
+                                                </div>
+                                            </li>
+                                                                            </ul>
+                                </div>
+                                                            </div>
+
+                                                                        </div>
+                </div>
+
+                <!-- Product Details -->
+                <div class="col-lg-6">
+                    <div class="product-details-premium p-5">
+                        <div class="label-gold mb-3">Legal Publication </div>
+                        <h2 class="font-display text-navy mb-4 h1 fw-bold">Thanks Appa</h2>
+                        
+                        <div class="price-box-premium mb-4">
+                            <span class="currency">₹</span>
+                            <span class="amount" id="totalAmountDisplay">499.00</span>
+                            <span class="tax-tag">Inclusive of all taxes</span>
+                        </div>
+
+                        <div class="product-meta-pills mb-4">
+                                                        <span class="meta-pill"><i class="fas fa-certificate"></i> Premium Edition</span>
+                        </div>
+
+                        <div class="description-premium mb-5">
+                            <h5 class="text-navy font-display fw-bold mb-3 border-bottom pb-2">Description</h5>
+                            <div class="abstract-content text-muted line-height-18">
+                                <p data-start="698" data-end="724">A deeply emotional Kannada novel — a son’s tribute to a father’s wisdom, discipline, and unconditional love. Blending business insights with heartfelt storytelling, this work shares timeless life lessons wrapped in the warmth of Appa’s voice.</p>
+                            </div>
+                        </div>
+
+                                                    <div class="purchase-box-premium bg-cream rounded-4 p-4 shadow-sm border border-gold-light">
+                                <form id="purchaseForm" action="http://127.0.0.1:8000/checkout/3" method="GET">
+                                    <div class="row align-items-center mb-4">
+                                        <div class="col-sm-6">
+                                            <label class="label-gold-sm mb-2 d-block">Quantity</label>
+                                            <div class="qty-selector-lux">
+                                                <button type="button" class="qty-btn-lux" id="decrementQty" onclick="changeQty(-1)"><i class="fas fa-minus"></i></button>
+                                                <input type="number" id="quantity" name="quantity" value="1" min="1" max="10" readonly>
+                                                <button type="button" class="qty-btn-lux" id="incrementQty" onclick="changeQty(1)"><i class="fas fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 mt-3 mt-sm-0">
+                                            <label class="label-gold-sm mb-2 d-block">Referral Code (Optional)</label>
+                                            <div class="referral-flex">
+                                                <input type="text" class="form-luxury-sm" id="referral_code" name="referral_code" value="" placeholder="Enter referral code for discount">
+                                                <button class="btn-apply-lux" type="button" id="applyReferral">Apply</button>
+                                            </div>
+                                            <small id="referralMessage" class="referral-msg"></small>
+                                        </div>
+                                    </div>
+
+                                    <div class="summary-box-lux mb-4">
+                                        <div class="summary-line">
+                                            <span>Unit Price</span>
+                                            <span>₹<span id="unitPriceDisplay">499.00</span></span>
+                                        </div>
+                                        <div class="summary-line discount d-none" id="discountRow">
+                                            <span>Referral Discount</span>
+                                            <span>-₹<span id="discountAmount">0.00</span></span>
+                                        </div>
+                                        <div class="summary-line total pt-2 border-top">
+                                            <span>Total Amount</span>
+                                            <span class="text-navy fw-bold h4 mb-0">₹<span id="totalAmountFinal">499.00</span></span>
+                                        </div>
+                                    </div>
+
+                                    
+                                    
+                                    <button type="submit" class="btn-primary-gold w-100 py-3 shadow-lg border-0 d-flex align-items-center justify-content-center gap-2">
+                                        <i class="fas fa-shopping-cart"></i> Proceed to Checkout
+                                    </button>
+                                </form>
+                            </div>
+                        
+                        <div class="trust-flex-premium mt-5">
+                            <div class="trust-item"><i class="fas fa-shield-halved"></i> Secure Payment</div>
+                            <div class="trust-item"><i class="fas fa-truck-fast"></i> Fast Delivery</div>
+                            <div class="trust-item"><i class="fas fa-medal"></i> Authentic</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+            </div>
+</section>
+    </main>
+
+    <!-- ── FOLLOW ONLINE (Light Background) ── -->
+    <section class="follow-online-global">
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <span class="label-gold" style="font-size: 0.7rem; letter-spacing: 4px;">FOLLOW ONLINE</span>
+                <h2 class="font-display text-navy mb-4" style="font-size: 2.8rem;">Stay Connected with Advocate Veerendrababu</h2>
+                <div class="pas-separator mx-auto" style="background: var(--gold); opacity: 0.5;"></div>
+                <p class="text-muted mx-auto" style="max-width: 600px; font-size: 1.05rem;">Follow for legal insights, cultural updates, literary news and the latest from the practice.</p>
+            </div>
+
+            <div class="follow-card-grid-lux" data-aos="fade-up">
+                <!-- Facebook -->
+                <a href="https://facebook.com" target="_blank" class="follow-card-lux fc-facebook">
+                    <div class="f-card-icon-lux"><i class="fab fa-facebook"></i></div>
+                    <div class="f-card-info-lux">
+                        <span class="f-card-platform-lux">FACEBOOK</span>
+                        <span class="f-card-handle-lux">ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ</span>
+                    </div>
+                </a>
+                <!-- Instagram -->
+                <a href="https://instagram.com/veerendrababunanjegowda" target="_blank" class="follow-card-lux fc-instagram">
+                    <div class="f-card-icon-lux"><i class="fab fa-instagram"></i></div>
+                    <div class="f-card-info-lux">
+                        <span class="f-card-platform-lux">INSTAGRAM</span>
+                        <span class="f-card-handle-lux">@veerendrababunanjegowda</span>
+                    </div>
+                </a>
+                <!-- Website -->
+                <a href="https://www.blrlawhouse.com" target="_blank" class="follow-card-lux fc-website">
+                    <div class="f-card-icon-lux"><i class="fas fa-globe"></i></div>
+                    <div class="f-card-info-lux">
+                        <span class="f-card-platform-lux">OFFICIAL WEBSITE</span>
+                        <span class="f-card-handle-lux">www.blrlawhouse.com</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer-lux">
+        <div class="container" data-aos="fade-up">
+            <!-- Connect Cards -->
+            <div class="text-center mb-5">
+                <span class="label-gold" style="font-size: 0.7rem; letter-spacing: 4px;">GET IN TOUCH</span>
+                <h2 class="font-display mb-4" style="font-size: 2.5rem;">Connect with Advocate Veerendrababu Nanjegowda</h2>
+                <div class="pas-separator mx-auto"></div>
+                <p class="text-white opacity-60 mx-auto" style="max-width: 700px; font-size: 1rem;">For legal consultations, case inquiries, or professional engagements, reach out through any of the following channels.</p>
+            </div>
+
+            <div class="footer-connect-grid">
+                <!-- Bengaluru Office -->
+                <div class="f-connect-card">
+                    <i class="fas fa-university f-connect-icon"></i>
+                    <span class="f-connect-label">Bengaluru Office</span>
+                    <p class="f-connect-text">#1652/6, 20th Cross, 8th Main, CQAL Layout, C-Block, Sahakaranagar, Bengaluru - 560092</p>
+                </div>
+                <!-- New Delhi Office -->
+                <div class="f-connect-card">
+                    <i class="fas fa-landmark f-connect-icon"></i>
+                    <span class="f-connect-label">New Delhi Office</span>
+                    <p class="f-connect-text">Lawyer's Chambers, Supreme Court of India, New Delhi - 110001</p>
+                </div>
+                <!-- Phone -->
+                <div class="f-connect-card">
+                    <i class="fas fa-phone-alt f-connect-icon"></i>
+                    <span class="f-connect-label">Phone</span>
+                    <p class="f-connect-text">+91 96325 27961</p>
+                </div>
+                <!-- Email -->
+                <div class="f-connect-card">
+                    <i class="fas fa-envelope f-connect-icon"></i>
+                    <span class="f-connect-label">Email</span>
+                    <p class="f-connect-text">bengalurulawhouse@gmail.com</p>
+                </div>
+                <!-- Website -->
+                <div class="f-connect-card">
+                    <i class="fas fa-globe f-connect-icon"></i>
+                    <span class="f-connect-label">Website</span>
+                    <p class="f-connect-text">www.blrlawhouse.com</p>
+                </div>
+                <!-- Practice Courts -->
+                <div class="f-connect-card">
+                    <i class="fas fa-balance-scale f-connect-icon"></i>
+                    <span class="f-connect-label">Practice Courts</span>
+                    <p class="f-connect-text">Supreme Court of India • High Courts<br>NGT • All Courts, Karnataka</p>
+                </div>
+            </div>
+
+            <!-- Minimal Footer -->
+            <div class="pt-5 border-top border-white border-opacity-10">
+                <span class="footer-lux-title">Bengaluru Law House</span>
+                
+                <ul class="footer-lux-nav">
+                    <li><a href="http://127.0.0.1:8000">Home</a></li>
+                    <li><a href="http://127.0.0.1:8000#practice">Practice</a></li>
+                    <li><a href="http://127.0.0.1:8000/products">Publications</a></li>
+                    <li><a href="http://127.0.0.1:8000/offices">Offices</a></li>
+                    <li><a href="http://127.0.0.1:8000/gallery">Gallery</a></li>
+                    <li><a href="http://127.0.0.1:8000/contact-us">Contact</a></li>
+                    <li><a href="https://instagram.com" target="_blank">Instagram</a></li>
+                    <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
+                </ul>
+
+                <div class="footer-lux-copyright">
+                    © 2026 Adv. Veerendrababu Nanjegowda • MBA, LLB, PhD (Pursuing) • www.blrlawhouse.com
+                </div>
+                <div class="footer-lux-location">
+                    Bengaluru, Karnataka • New Delhi
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Floating Contact Buttons -->
+    <a href="https://wa.me/919632527961" target="_blank" class="floating-contact-btn whatsapp-btn" title="WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+        <span class="contact-btn-label">WhatsApp</span>
+    </a>
+    <a href="tel:+919632527961" class="floating-contact-btn phone-btn" title="Call">
+        <i class="fas fa-phone"></i>
+        <span class="contact-btn-label">Phone</span>
+    </a>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- Theme JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide preloader if it exists
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                setTimeout(function() {
+                    preloader.classList.add('hidden');
+                }, 800);
+            }
+
+            // Header scroll effect
+            const header = document.getElementById('mainHeader');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Mobile nav toggle
+            const navToggle = document.getElementById('navToggle');
+            const navLinks = document.querySelector('.nav-links');
+            const navOverlay = document.getElementById('navOverlay');
+
+            if (navToggle && navLinks) {
+                function toggleMenu() {
+                    navToggle.classList.toggle('active');
+                    navLinks.classList.toggle('active');
+                    navOverlay.classList.toggle('active');
+                    document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+                }
+
+                navToggle.addEventListener('click', toggleMenu);
+                if (navOverlay) {
+                    navOverlay.addEventListener('click', toggleMenu);
+                }
+            }
+
+            // AOS Initialization
+            try {
+                if (typeof AOS !== 'undefined') {
+                    AOS.init({
+                        duration: 800,
+                        easing: 'ease-out-back',
+                        once: true,
+                        offset: 120
+                    });
+                }
+            } catch (e) {
+                console.warn('AOS failed to initialize:', e);
+            }
+
+            // Counter animation
+            const counters = document.querySelectorAll('.stat-number[data-count]');
+            const counterObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counter = entry.target;
+                        const target = parseInt(counter.getAttribute('data-count'));
+                        const suffix = counter.getAttribute('data-suffix') || '';
+                        const duration = 2000;
+                        const step = target / (duration / 16);
+                        let current = 0;
+
+                        const updateCounter = () => {
+                            current += step;
+                            if (current < target) {
+                                counter.textContent = Math.floor(current) + suffix;
+                                requestAnimationFrame(updateCounter);
+                            } else {
+                                counter.textContent = target + suffix;
+                            }
+                        };
+
+                        updateCounter();
+                        counterObserver.unobserve(counter);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            if (counters.length > 0) {
+                counters.forEach(counter => counterObserver.observe(counter));
+            }
+
+            // Back to top button
+            const backToTop = document.getElementById('backToTop');
+            if (backToTop) {
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 300) {
+                        backToTop.classList.add('visible');
+                    } else {
+                        backToTop.classList.remove('visible');
+                    }
+                });
+
+                backToTop.addEventListener('click', function() {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.querySelector('.product-main-slider')) {
+        const glide = new Glide('.product-main-slider', {
+            type: 'carousel',
+            perView: 1,
+            gap: 0,
+            autoplay: false
+        }).mount();
+
+        document.querySelectorAll('.thumb-nav-item').forEach((item, i) => {
+            item.addEventListener('click', () => {
+                glide.go('=' + i);
+                document.querySelectorAll('.thumb-nav-item').forEach(el => el.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        glide.on('run', () => {
+            document.querySelectorAll('.thumb-nav-item').forEach((el, i) => {
+                el.classList.toggle('active', i === glide.index);
+            });
+        });
+    }
+
+    var qtyInput = document.getElementById('quantity');
+    if (!qtyInput) return;
+
+    var unitPrice = 499;
+    var maxStock = 10;
+    var referralApplied = false;
+    var discountPerUnit = 25;
+
+    function updateUIPrice() {
+        var qty = parseInt(qtyInput.value) || 1;
+        var subtotal = unitPrice * qty;
+        var discount = referralApplied ? (discountPerUnit * qty) : 0;
+        var total = subtotal - discount;
+
+        var unitPriceDisplay = document.getElementById('unitPriceDisplay');
+        if (unitPriceDisplay) {
+            unitPriceDisplay.innerText = unitPrice.toLocaleString('en-IN', {minimumFractionDigits: 2});
+        }
+
+        var discountRow = document.getElementById('discountRow');
+        var discountAmount = document.getElementById('discountAmount');
+        if (referralApplied && discountRow && discountAmount) {
+            discountRow.classList.remove('d-none');
+            discountAmount.innerText = discount.toLocaleString('en-IN', {minimumFractionDigits: 2});
+        } else if (discountRow) {
+            discountRow.classList.add('d-none');
+        }
+
+        var totalAmountFinal = document.getElementById('totalAmountFinal');
+        if (totalAmountFinal) {
+            totalAmountFinal.innerText = total.toLocaleString('en-IN', {minimumFractionDigits: 2});
+        }
+    }
+
+    window.changeQty = function(delta) {
+        var val = parseInt(qtyInput.value) || 1;
+        var next = val + delta;
+        if (next >= 1 && next <= maxStock) {
+            qtyInput.value = next;
+            updateUIPrice();
+        }
+    };
+
+    updateUIPrice();
+
+    var applyReferralBtn = document.getElementById('applyReferral');
+    if (applyReferralBtn) {
+        applyReferralBtn.addEventListener('click', function() {
+            var code = document.getElementById('referral_code').value.trim();
+            var msg = document.getElementById('referralMessage');
+            var btn = this;
+
+            if (!code) {
+                if (msg) {
+                    msg.innerText = 'Please enter a referral code';
+                    msg.className = 'referral-msg text-danger mt-1';
+                }
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = 'Checking...';
+
+            fetch("http://127.0.0.1:8000/checkReferral", {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json", 
+                    "X-CSRF-TOKEN": "nvMKerslHfjKrH8HOKX5QWWqMIStxyRLTv9TlDPr" 
+                },
+                body: JSON.stringify({ referral_code: code })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    referralApplied = true;
+                    if (msg) {
+                        msg.innerText = data.message || 'Referral applied!';
+                        msg.className = 'referral-msg text-success mt-1 d-block';
+                    }
+                    btn.innerText = 'Applied';
+                    updateUIPrice();
+                } else {
+                    referralApplied = false;
+                    if (msg) {
+                        msg.innerText = data.message || 'Invalid code';
+                        msg.className = 'referral-msg text-danger mt-1 d-block';
+                    }
+                    btn.innerText = 'Apply';
+                    btn.disabled = false;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                if (msg) {
+                    msg.innerText = 'Error checking code';
+                    msg.className = 'referral-msg text-danger mt-1 d-block';
+                }
+                btn.innerText = 'Apply';
+                btn.disabled = false;
+            });
+        });
+    }
+});
+</script>
+</body>
+</html>
+

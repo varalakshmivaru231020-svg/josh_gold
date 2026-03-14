@@ -42,7 +42,11 @@
                 </div>
                 <div class="pub-category-tag">KANNADA NOVEL</div>
                 <div class="pub-card-body">
-                    <p class="pub-desc">A deeply emotional Kannada novel — a son’s tribute to a father’s wisdom, discipline, and unconditional love. Blending business insights with heartfelt storytelling, this work is a must-read for the new generation.</p>
+                    <p class="pub-desc">A deeply emotional Kannada novel — a son's tribute to a father's wisdom, discipline, and unconditional love. Blending business insights with heartfelt storytelling, this work is a must-read for the new generation.</p>
+                    @php
+                        $thanksAppaProduct = \App\Models\Product::where('name', 'like', '%Thanks Appa%')->first();
+                    @endphp
+                    <a href="{{ $thanksAppaProduct ? route('products.show', $thanksAppaProduct) : route('products.index') }}" class="pub-buy-btn mt-auto">Buy Book</a>
                 </div>
             </div>
 
@@ -71,6 +75,20 @@
                 <div class="pub-category-tag">12-VOLUME LEGAL</div>
                 <div class="pub-card-body">
                     <p class="pub-desc">A monumental 12-volume legal guide series in Kannada — making the law accessible to every citizen in their own language. An invaluable resource for homes, professionals, and students.</p>
+                </div>
+            </div>
+
+            <div class="pub-card" data-aos="fade-up" data-aos-delay="400">
+                <div class="pub-badge">2026</div>
+                <div class="pub-cover">
+                    <div class="pub-icon-bg"><span class="pub-emoji">📖</span></div>
+                    <div class="pub-book-meta-top">
+                        <h3 class="pub-book-title">AIBE–2026: Complete Guide</h3>
+                    </div>
+                </div>
+                <div class="pub-category-tag">EXAM GUIDE</div>
+                <div class="pub-card-body">
+                    <p class="pub-desc">A comprehensive and practical reference book for law graduates preparing for the All India Bar Examination. Covers all 19 core law subjects, landmark judgments, latest BNS, BNSS, BSA 2023 updates, practice MCQs, and exam strategies.</p>
                 </div>
             </div>
         </div>
@@ -103,9 +121,11 @@
     .pub-products-container { padding-top: 80px; }
     .pub-cards-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 24px;
         margin-bottom: 50px;
+        overflow-x: auto;
+        padding: 10px 0;
     }
 
     .pub-card {
@@ -166,13 +186,47 @@
     .pub-card-body { padding: 30px; flex: 1; display: flex; flex-direction: column; }
     .pub-desc { font-size: 0.95rem; color: #555; line-height: 1.75; margin: 0; }
 
+    /* Buy Button */
+    .pub-buy-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        align-self: center;
+        background: linear-gradient(135deg, var(--gold), #b39441);
+        color: var(--navy) !important;
+        padding: 12px 28px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 20px rgba(201,168,76,0.25);
+        border: none;
+        cursor: pointer;
+        text-align: center;
+    }
+    .pub-buy-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(201,168,76,0.35);
+        filter: brightness(1.1);
+        color: var(--navy) !important;
+    }
+
+    @media (max-width: 1400px) {
+        .pub-cards-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
     @media (max-width: 1200px) {
-        .pub-cards-grid { grid-template-columns: repeat(2, 1fr); }
+        .pub-cards-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
     @media (max-width: 768px) {
         .pub-hero-header { padding: 120px 0 80px; }
-        .pub-cards-grid { grid-template-columns: 1fr; gap: 30px; }
-        .pub-card-body { padding: 25px; }
+        .pub-cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+        .pub-card-body { padding: 20px; }
+    }
+    @media (max-width: 576px) {
+        .pub-cards-grid { grid-template-columns: 1fr; }
     }
 </style>
 @endpush

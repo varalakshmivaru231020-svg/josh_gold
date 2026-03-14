@@ -107,12 +107,30 @@
                                 <br><small class="text-muted">{{ $commission->agent->referral_code }}</small>
                             </td>
                             <td>
-                                <a href="{{ route('admin.orders.show', $commission->order) }}">
-                                    {{ $commission->order->order_number }}
-                                </a>
-                                <br><small>₹{{ number_format($commission->order->total, 2) }}</small>
+                                @php
+                                    $order = $commission->order;
+                                @endphp
+
+                                @if($order)
+                                    <a href="{{ route('admin.orders.show', $order) }}">
+                                        {{ $order->order_number }}
+                                    </a>
+                                    <br><small>₹{{ number_format($order->total, 2) }}</small>
+                                @else
+                                    <span class="text-muted">—</span>
+                                @endif
                             </td>
-                            <td>{{ Str::limit($commission->order->product->name, 25) }}</td>
+                            <td>
+                                @php
+                                    $productName = isset($order) && $order && $order->product ? $order->product->name : null;
+                                @endphp
+
+                                @if($productName)
+                                    {{ Str::limit($productName, 25) }}
+                                @else
+                                    <span class="text-muted">—</span>
+                                @endif
+                            </td>
                             <td>
                                 <strong>₹{{ number_format($commission->amount, 2) }}</strong>
                             </td>

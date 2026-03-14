@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         \Illuminate\Support\Facades\View::composer(['layouts.lawfirm', 'layouts.app'], function ($view) {
-            $view->with('socialLinks', \App\Models\SocialLink::active()->ordered()->get());
+            $view->with('socialLinks', \App\Models\SocialLink::getActiveOrderedCached());
         });
     }
 }

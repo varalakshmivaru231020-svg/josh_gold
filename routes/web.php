@@ -21,6 +21,11 @@ Route::get('admin/orders/{order}/invoice', [App\Http\Controllers\Admin\OrderCont
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
+// Purchase Route
+Route::get('/purchase', function() {
+    return view('purchase');
+})->name('purchase');
+
 // Order Tracking
 Route::get('/track-order', [ProductController::class, 'trackOrder'])->name('track.order');
 
@@ -284,6 +289,10 @@ Route::get('/blog/{slug}', [HomeController::class, 'blogShow'])->name('blog.show
 // Contact Page
 Route::get('/contact-us', [HomeController::class, 'contactPage'])->name('contact');
 Route::post('/contact-us', [HomeController::class, 'submitContact'])->name('contact.submit');
+
+// Water Filtration Project
+Route::view('/water-filtration', 'water-filtration')->name('water-filtration');
+Route::view('/water-filtration-kannada', 'water-filtration-kannada')->name('water-filtration-kannada');
 
 // ------------------------
 // CMS Pages catch-all (LAST ROUTE)

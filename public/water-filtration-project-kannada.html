@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ತ್ರಿಸ್ತರ ಶೋಧನಾ ವ್ಯವಸ್ಥೆ – HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆ ನೀರಿನ ಯೋಜನೆ</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Kannada:wght@400;600;700&family=Noto+Serif+Kannada:wght@400;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans Kannada', 'Noto Serif Kannada', sans-serif;
+    background: #f0f4f8;
+    color: #1a1a2e;
+    line-height: 1.9;
+  }
+
+  /* ── COVER PAGE ── */
+  .cover {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #0a3d62 0%, #1e5799 40%, #1a7a4a 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 60px 40px; text-align: center; position: relative; overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .emblem { font-size: 80px; margin-bottom: 20px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
+  .cover h1 { font-size: 2.2em; color: #fff; font-weight: 700; letter-spacing: 1px; line-height: 1.4; margin-bottom: 15px; text-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+  .cover h2 { font-size: 1.4em; color: #a8d8ea; margin-bottom: 25px; font-style: italic; }
+  .cover-divider { width: 80px; height: 4px; background: #ffd700; margin: 20px auto; border-radius: 2px; }
+  .cover-subtitle { font-size: 1.05em; color: #c8e6fa; margin-bottom: 10px; }
+  .cover-districts { font-size: 1.25em; color: #ffd700; font-weight: 700; margin: 10px 0; }
+  .cover-author { margin-top: 40px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; padding: 20px 35px; color: #fff; }
+  .cover-author .name { font-size: 1.25em; font-weight: 700; color: #ffd700; }
+  .cover-author .title { font-size: 0.92em; color: #c8e6fa; margin-top: 5px; }
+  .cover-date { margin-top: 20px; color: #a8d8ea; font-size: 0.92em; }
+
+  /* ── SECTION PAGES ── */
+  .page {
+    max-width: 900px; margin: 40px auto; background: #fff;
+    border-radius: 4px; box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    overflow: hidden;
+  }
+  .page-header {
+    background: linear-gradient(135deg, #0a3d62, #1e5799);
+    padding: 25px 40px; color: #fff;
+  }
+  .page-header h2 { font-size: 1.4em; font-weight: 700; }
+  .page-header .subtitle { font-size: 0.88em; color: #a8d8ea; margin-top: 5px; }
+  .page-body { padding: 40px 50px; line-height: 1.95; }
+
+  h3 { color: #0a3d62; font-size: 1.15em; margin: 25px 0 10px; border-left: 4px solid #1e5799; padding-left: 12px; font-weight: 700; }
+  h4 { color: #1a7a4a; font-size: 1.02em; margin: 18px 0 8px; font-weight: 600; }
+  p { margin-bottom: 12px; text-align: justify; }
+
+  .highlight-box {
+    background: #e8f4fd; border-left: 5px solid #1e5799;
+    padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0;
+  }
+  .warning-box {
+    background: #fff8e1; border-left: 5px solid #f59f00;
+    padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0;
+  }
+  .green-box {
+    background: #e8f5e9; border-left: 5px solid #1a7a4a;
+    padding: 15px 20px; margin: 20px 0; border-radius: 0 8px 8px 0;
+  }
+
+  /* ── FILTRATION LAYERS ── */
+  .layer-grid { display: flex; gap: 20px; margin: 25px 0; flex-wrap: wrap; }
+  .layer-card {
+    flex: 1; min-width: 220px; border-radius: 10px; overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+  }
+  .layer-card .card-header { padding: 15px; color: #fff; font-weight: 700; font-size: 1.02em; text-align: center; line-height: 1.5; }
+  .layer-card .card-body { padding: 15px; font-size: 0.90em; line-height: 1.85; background: #fafafa; }
+  .layer-1 .card-header { background: #1e5799; }
+  .layer-2 .card-header { background: #7b2d8b; }
+  .layer-3 .card-header { background: #1a7a4a; }
+
+  /* ── TABLE ── */
+  table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.90em; }
+  th { background: #0a3d62; color: #fff; padding: 10px 14px; text-align: left; font-weight: 600; }
+  td { padding: 9px 14px; border-bottom: 1px solid #e0e0e0; }
+  tr:nth-child(even) td { background: #f5f8fc; }
+
+  /* ── LETTER STYLES ── */
+  .letter { max-width: 900px; margin: 40px auto; background: #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.12); }
+  .letterhead {
+    background: linear-gradient(135deg, #0a3d62 0%, #1e5799 100%);
+    padding: 30px 50px; display: flex; align-items: center; gap: 20px;
+  }
+  .letterhead-icon { font-size: 60px; }
+  .letterhead-text { color: #fff; }
+  .letterhead-text .org { font-size: 1.45em; font-weight: 700; color: #ffd700; }
+  .letterhead-text .advocate { font-size: 0.97em; color: #a8d8ea; }
+  .letterhead-text .address { font-size: 0.83em; color: #c8e6fa; margin-top: 5px; }
+  .letter-meta { background: #f5f8fc; border-bottom: 2px solid #1e5799; padding: 15px 50px; font-size: 0.88em; color: #555; display: flex; justify-content: space-between; }
+  .letter-body { padding: 35px 50px; line-height: 1.95; font-size: 0.97em; }
+  .letter-to { margin-bottom: 20px; }
+  .letter-to .to-label { color: #888; font-size: 0.83em; text-transform: uppercase; letter-spacing: 1px; }
+  .letter-to .to-name { font-weight: 700; font-size: 1.03em; color: #0a3d62; }
+  .letter-to .to-post { color: #333; }
+  .letter-subject { background: #e8f4fd; padding: 10px 15px; border-left: 4px solid #1e5799; margin: 15px 0 20px; font-weight: 700; color: #0a3d62; }
+  .salutation { margin-bottom: 15px; font-weight: 600; }
+  .closing { margin-top: 30px; }
+  .signature-block { margin-top: 40px; }
+  .signature-block .sig-name { font-weight: 700; font-size: 1.03em; color: #0a3d62; }
+  .signature-block .sig-title { color: #555; font-size: 0.88em; }
+
+  .letter-divider { border: none; border-top: 3px dashed #1e5799; margin: 50px 0; }
+
+  /* ── NAV ── */
+  .nav { position: sticky; top: 0; z-index: 100; background: #0a3d62; padding: 12px 30px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .nav a { color: #a8d8ea; text-decoration: none; font-size: 0.82em; padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.2s; }
+  .nav a:hover { background: #1e5799; color: #ffd700; }
+
+  .section-label { display: inline-block; background: #1e5799; color: #fff; padding: 3px 12px; border-radius: 12px; font-size: 0.76em; margin-bottom: 8px; letter-spacing: 1px; }
+
+  ul { margin: 10px 0 10px 20px; }
+  ul li { margin-bottom: 8px; }
+  ol { margin: 10px 0 10px 20px; }
+  ol li { margin-bottom: 8px; }
+
+  @media print {
+    .nav { display: none; }
+    .cover { page-break-after: always; min-height: auto; padding: 40px; }
+    .page, .letter { box-shadow: none; page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ನ್ಯಾವಿಗೇಷನ್ -->
+<div class="nav">
+  <a href="#cover">🏠 ಮುಖಪುಟ</a>
+  <a href="#project">💧 ಯೋಜನಾ ವರದಿ</a>
+  <a href="#cm">ಮುಖ್ಯಮಂತ್ರಿ</a>
+  <a href="#pm">ಪ್ರಧಾನಮಂತ್ರಿ</a>
+  <a href="#president">ರಾಷ್ಟ್ರಪತಿ</a>
+  <a href="#central">ಕೇಂದ್ರ ಇಲಾಖೆಗಳು</a>
+  <a href="#state">ರಾಜ್ಯ ಇಲಾಖೆಗಳು</a>
+  <a href="#mlas">ಶಾಸಕರು</a>
+  <a href="#mps">ಸಂಸದರು</a>
+</div>
+
+<!-- ══════════ ಮುಖಪುಟ ══════════ -->
+<div class="cover" id="cover">
+  <div class="emblem">🇮🇳💧</div>
+  <h1>ತ್ರಿಸ್ತರ ಶೋಧನಾ ವ್ಯವಸ್ಥೆ<br>HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆ ನೀರಿಗಾಗಿ</h1>
+  <div class="cover-divider"></div>
+  <h2>ಸಮಗ್ರ ಯೋಜನಾ ಪ್ರಸ್ತಾವನೆ ಮತ್ತು ಮನವಿ</h2>
+  <div class="cover-subtitle">ರೈತರು, ಪರಿಸರ ಮತ್ತು ಸಾರ್ವಜನಿಕ ಆರೋಗ್ಯ ರಕ್ಷಣೆಗಾಗಿ</div>
+  <div class="cover-districts">ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರ ಜಿಲ್ಲೆಗಳು, ಕರ್ನಾಟಕ</div>
+  <div class="cover-subtitle" style="margin-top:15px;">ಸಲ್ಲಿಕೆ: ಗೌರವಾನ್ವಿತ ಭಾರತ ರಾಷ್ಟ್ರಪತಿ · ಪ್ರಧಾನಮಂತ್ರಿ · ಮುಖ್ಯಮಂತ್ರಿ<br>ಕೇಂದ್ರ ಮತ್ತು ರಾಜ್ಯ ಸಚಿವಾಲಯಗಳು · ಜಿಲ್ಲಾ ಶಾಸಕರು ಮತ್ತು ಸಂಸದರು</div>
+  <div class="cover-author">
+    <div class="name">ಅಡ್ವ. ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ</div>
+    <div class="title">ಹಿರಿಯ ವಕೀಲರು – ರಾಷ್ಟ್ರೀಯ ಹಸಿರು ನ್ಯಾಯಮಂಡಳಿ, ಉಚ್ಚ ನ್ಯಾಯಾಲಯಗಳು ಮತ್ತು ಸರ್ವೋಚ್ಚ ನ್ಯಾಯಾಲಯ</div>
+    <div class="title">ಬೆಂಗಳೂರು ಲಾ ಹೌಸ್ | ಹಿರಿಯ ಪತ್ರಕರ್ತರು | ಕಾನೂನು ಸಲಹೆಗಾರರು, R MAXX ಕನ್ನಡ ನ್ಯೂಸ್ ಚಾನೆಲ್</div>
+    <div class="title">ಸಹಕಾರನಗರ, ಬೆಂಗಳೂರು ಮತ್ತು ಚೇಂಬರ್ಸ್, ನವದೆಹಲಿ</div>
+  </div>
+  <div class="cover-date">ದಿನಾಂಕ: ಮಾರ್ಚ್ 2025 &nbsp;|&nbsp; ಉಲ್ಲೇಖ: BLH/ENV/2025/001</div>
+</div>
+
+<!-- ══════════ ಯೋಜನಾ ಪ್ರಸ್ತಾವನೆ ══════════ -->
+<div class="page" id="project">
+  <div class="page-header">
+    <div class="section-label">ಯೋಜನಾ ಪ್ರಸ್ತಾವನೆ</div>
+    <h2>ತ್ರಿಸ್ತರ ಶೋಧನಾ ವ್ಯವಸ್ಥೆ – HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆ ನೀರು</h2>
+    <div class="subtitle">ಸಮಗ್ರ ತಾಂತ್ರಿಕ ಮತ್ತು ಪರಿಸರ ಸುರಕ್ಷತಾ ಯೋಜನೆ</div>
+  </div>
+  <div class="page-body">
+
+    <h3>೧. ಹಿನ್ನೆಲೆ ಮತ್ತು ಅಗತ್ಯತೆ</h3>
+    <p>ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರ ಜಿಲ್ಲೆಗಳು ದಶಕಗಳಿಂದ ತೀವ್ರ ನೀರಿನ ಕೊರತೆಯನ್ನು ಅನುಭವಿಸುತ್ತಿವೆ — ಅಂತರ್ಜಲ ಮಟ್ಟ ಕುಸಿತ, ಮರುಕಳಿಸುವ ಬರಗಾಲ, ಮತ್ತು ಲಕ್ಷಾಂತರ ನಿವಾಸಿಗಳಿಗೆ ತೀವ್ರ ಕುಡಿಯುವ ನೀರಿನ ಕೊರತೆ ಎದುರಾಗಿದೆ. HN ಕಣಿವೆ (ಹೆಬ್ಬಾಳ-ನಾಗವಾರ ಕಣಿವೆ) ಮತ್ತು KC ಕಣಿವೆ (ಕೋರಮಂಗಲ-ಚಲ್ಲಘಟ್ಟ ಕಣಿವೆ) ಯೋಜನೆಗಳು ಬೆಂಗಳೂರು ನಗರದ ಸಂಸ್ಕರಿತ ನೀರನ್ನು ಬರ-ಪೀಡಿತ ಪ್ರದೇಶಗಳಿಗೆ ಒದಗಿಸಲು ರೂಪಿಸಲಾಗಿದೆ.</p>
+    <p>ಈ ಯೋಜನೆಗಳು ಸಾವಿರಾರು ಎಕರೆ ಕೃಷಿ ಭೂಮಿಗೆ ನೀರು ಒದಗಿಸಿ ಅಂತರ್ಜಲ ಮಟ್ಟವನ್ನು ಭಾಗಶಃ ಹೆಚ್ಚಿಸಿದ್ದರೂ, ಸಂಸ್ಕರಣೆಯ ಸಮರ್ಪಕತೆ, ಭಾರೀ ಲೋಹದ ಮಾಲಿನ್ಯ, ಸೂಕ್ಷ್ಮಾಣು ಜೀವಿಗಳ ಉಪಸ್ಥಿತಿ ಮತ್ತು ದೀರ್ಘಕಾಲೀನ ಪರಿಸರ ಪರಿಣಾಮಗಳ ಬಗ್ಗೆ ಗಂಭೀರ ಕಳವಳಗಳು ಉಳಿದಿವೆ.</p>
+
+    <div class="warning-box">
+      <strong>⚠ ಮೂಲ ಸಮಸ್ಯೆ:</strong> HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆ ಮೂಲಕ ಹರಿಯುವ ನೀರು ಮುಖ್ಯವಾಗಿ ಬೆಂಗಳೂರಿನ ಒಳಚರಂಡಿ ಸಂಸ್ಕರಣಾ ಘಟಕಗಳಿಂದ ಬರುತ್ತದೆ. ಬಹಳಷ್ಟು ಸ್ವತಂತ್ರ ಅಧ್ಯಯನಗಳು ಮತ್ತು ರೈತರ ದೂರುಗಳು ಸಂಸ್ಕರಿತ ನೀರಿನಲ್ಲಿ ಇನ್ನೂ ಭಾರೀ ಲೋಹಗಳು (ಸೀಸ, ಕ್ಯಾಡ್ಮಿಯಮ್, ಕ್ರೋಮಿಯಂ), ಔಷಧ ಅವಶೇಷಗಳು, ರೋಗಾಣುಗಳು ಮತ್ತು ಕೈಗಾರಿಕಾ ತ್ಯಾಜ್ಯ ಇರುವುದನ್ನು ತೋರಿಸುತ್ತವೆ — ಮಣ್ಣಿನ ಆರೋಗ್ಯ, ಬೆಳೆ ಸುರಕ್ಷತೆ, ಅಂತರ್ಜಲ ಗುಣಮಟ್ಟ ಮತ್ತು ಮಾನವ ಆರೋಗ್ಯಕ್ಕೆ ನೇರ ಅಪಾಯ ಒಡ್ಡುತ್ತಿವೆ.
+    </div>
+
+    <h3>೨. ಯೋಜನಾ ಉದ್ದೇಶಗಳು</h3>
+    <ul>
+      <li>HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆ ಕಾಲುವೆಗಳ ಎಲ್ಲಾ ಬಿಡುಗಡೆ ಬಿಂದುಗಳಲ್ಲಿ ಪ್ರಮಾಣಿತ ತ್ರಿಸ್ತರ ಶೋಧನಾ ವ್ಯವಸ್ಥೆಯನ್ನು ಕಡ್ಡಾಯಗೊಳಿಸುವುದು</li>
+      <li>ನೀರಿನ ಗುಣಮಟ್ಟ BIS/WHO/CPCB ಕೃಷಿ ಮತ್ತು ಗೃಹ ಬಳಕೆ ಮಾನದಂಡಗಳನ್ನು ಪೂರೈಸುವಂತೆ ಖಾತ್ರಿಪಡಿಸುವುದು</li>
+      <li>ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರ ಜಿಲ್ಲೆಗಳ ಮಣ್ಣಿನ ಫಲವತ್ತತೆ ಮತ್ತು ಕೃಷಿ ಉತ್ಪಾದನೆ ರಕ್ಷಿಸುವುದು</li>
+      <li>ಕೆರೆಗಳು, ಜಲ ಮೂಲಗಳು ಮತ್ತು ಅಂತರ್ಜಲ ಮಾಲಿನ್ಯ ತಡೆಯುವುದು</li>
+      <li>ರೈತ ಸಮುದಾಯ ಮತ್ತು ಸಾರ್ವಜನಿಕರ ದೀರ್ಘಕಾಲೀನ ಆರೋಗ್ಯ ಸಂರಕ್ಷಿಸುವುದು</li>
+      <li>ತ್ವರಿತ ಡಿಜಿಟಲ್ ನೀರಿನ ಗುಣಮಟ್ಟ ಮೇಲ್ವಿಚಾರಣಾ ಜಾಲ ಸ್ಥಾಪಿಸುವುದು</li>
+    </ul>
+
+    <h3>೩. ತ್ರಿಸ್ತರ ಶೋಧನಾ ವ್ಯವಸ್ಥೆ</h3>
+    <p>ಪ್ರಸ್ತಾವಿತ ವ್ಯವಸ್ಥೆಯು ಎರಡೂ ಕಣಿವೆ ಕಾಲುವೆ ಜಾಲಗಳ ಉದ್ದಕ್ಕೂ ಗುರುತಿಸಲಾದ ಬಿಡುಗಡೆ ಮತ್ತು ವಿತರಣಾ ಬಿಂದುಗಳಲ್ಲಿ ಮೂರು ಕಡ್ಡಾಯ, ಅನುಕ್ರಮ ಸಂಸ್ಕರಣಾ ಹಂತಗಳನ್ನು ಒಳಗೊಂಡಿದೆ:</p>
+
+    <div class="layer-grid">
+      <div class="layer-card layer-1">
+        <div class="card-header">🔵 ಸ್ತರ ೧ – ಪ್ರಾಥಮಿಕ ಶೋಧನೆ</div>
+        <div class="card-body">
+          <strong>ಉದ್ದೇಶ:</strong> ತೇಲುವ ತ್ಯಾಜ್ಯ, ದೊಡ್ಡ ಕಣಗಳು, ಜೈವಿಕ ಮಣ್ಣು ಮತ್ತು ದೊಡ್ಡ ಕಸ ತೆಗೆಯುವುದು<br><br>
+          <strong>ತಂತ್ರಜ್ಞಾನಗಳು:</strong><br>
+          • ಬಾರ್ ಸ್ಕ್ರೀನ್ ಮತ್ತು ಮೈಕ್ರೋ-ಸ್ಕ್ರೀನ್<br>
+          • ಮಣ್ಣು ಕೋಣೆ ಮತ್ತು ಅವಕ್ಷೇಪಣ ತೊಟ್ಟಿ<br>
+          • ಒರಟು ಮರಳು ಮತ್ತು ಜಲ್ಲಿ ಫಿಲ್ಟರ್ ಹಾಸಿಗೆ<br>
+          • ಹೆಪ್ಪುಗಟ್ಟಿಸುವ ಮತ್ತು ಒಟ್ಟುಗೂಡಿಸುವ ಘಟಕ<br><br>
+          <strong>ಗುರಿ:</strong> TSS &lt;30 mg/L; BOD &lt;20 mg/L; COD &lt;100 mg/L
+        </div>
+      </div>
+      <div class="layer-card layer-2">
+        <div class="card-header">🟣 ಸ್ತರ ೨ – ಮುಂದುವರಿದ ರಾಸಾಯನಿಕ ಶೋಧನೆ</div>
+        <div class="card-body">
+          <strong>ಉದ್ದೇಶ:</strong> ಭಾರೀ ಲೋಹಗಳು, ಕೈಗಾರಿಕಾ ರಾಸಾಯನಿಕಗಳು, ಔಷಧ ಅವಶೇಷಗಳು ತೆಗೆಯುವುದು<br><br>
+          <strong>ತಂತ್ರಜ್ಞಾನಗಳು:</strong><br>
+          • ಸಕ್ರಿಯ ಇದ್ದಿಲು ಹೀರಿಕೊಳ್ಳುವ ಘಟಕ<br>
+          • ಅಯಾನ್ ವಿನಿಮಯ ರಾಳ ಕಾಲಮ್<br>
+          • ನಿರ್ಣಾಯಕ ವಲಯಗಳಿಗೆ ರಿವರ್ಸ್ ಆಸ್ಮೋಸಿಸ್ (RO)<br>
+          • ಭಾರೀ ಲೋಹಗಳಿಗೆ ರಾಸಾಯನಿಕ ಅವಕ್ಷೇಪಣ<br><br>
+          <strong>ಗುರಿ:</strong> ಭಾರೀ ಲೋಹಗಳು WHO/CPCB ಮಿತಿಗಿಂತ ಕಡಿಮೆ; ನೈಟ್ರೇಟ್ &lt;10 mg/L
+        </div>
+      </div>
+      <div class="layer-card layer-3">
+        <div class="card-header">🟢 ಸ್ತರ ೩ – ಅಂತಿಮ ಶುದ್ಧೀಕರಣ ಮತ್ತು ಮೇಲ್ವಿಚಾರಣೆ</div>
+        <div class="card-body">
+          <strong>ಉದ್ದೇಶ:</strong> ಉಳಿದ ರೋಗಾಣುಗಳು, ಸೂಕ್ಷ್ಮಾಣು ಜೀವಿಗಳು, ವೈರಸ್‌ಗಳನ್ನು ನಾಶಪಡಿಸಿ ತ್ವರಿತ ಗುಣಮಟ್ಟ ಖಾತ್ರಿ ನೀಡುವುದು<br><br>
+          <strong>ತಂತ್ರಜ್ಞಾನಗಳು:</strong><br>
+          • UV ಸೋಂಕು ನಿವಾರಣಾ ಕೋಣೆ<br>
+          • ಕ್ಲೋರಿನೇಷನ್ / ಓಝೋನೇಷನ್ ಘಟಕ<br>
+          • IoT ಸೆನ್ಸರ್ ಸರಣಿ (pH, DO, TDS, E.coli)<br>
+          • ಸ್ವಯಂಚಾಲಿತ ಎಚ್ಚರಿಕೆ ಮತ್ತು ಸಾರ್ವಜನಿಕ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್<br><br>
+          <strong>ಗುರಿ:</strong> ಕೊಲಿಫಾರ್ಮ್ 0/100mL; pH 6.5–8.5; TDS &lt;500 mg/L
+        </div>
+      </div>
+    </div>
+
+    <h3>೪. ಮೇಲ್ವಿಚಾರಣೆ ಮಾಡಬೇಕಾದ ಪ್ರಮುಖ ಮಾನದಂಡಗಳು</h3>
+    <table>
+      <tr><th>ಮಾನದಂಡ</th><th>ಪ್ರಸ್ತುತ ಅಪಾಯ</th><th>ಗುರಿ ಮಾನದಂಡ</th><th>ಮೇಲ್ವಿಚಾರಣಾ ಆವರ್ತನ</th></tr>
+      <tr><td>BOD (ಜೈವಿಕ ಆಮ್ಲಜನಕ ಬೇಡಿಕೆ)</td><td>ಹೆಚ್ಚು – ಸಾವಯವ ಮಾಲಿನ್ಯ</td><td>&lt;20 mg/L (CPCB ವರ್ಗ D)</td><td>ದಿನವೂ</td></tr>
+      <tr><td>ಭಾರೀ ಲೋಹಗಳು (Pb, Cd, Cr, As, Hg)</td><td>ಕೈಗಾರಿಕಾ ತ್ಯಾಜ್ಯ ಮಾಲಿನ್ಯ</td><td>WHO ಅನುಮತಿ ಮಿತಿ</td><td>ಪ್ರತಿ ವಾರ</td></tr>
+      <tr><td>ಒಟ್ಟು ಕೊಲಿಫಾರ್ಮ್ / E.coli</td><td>ಒಳಚರಂಡಿ ಮೂಲ</td><td>0 CFU/100mL</td><td>ದಿನವೂ</td></tr>
+      <tr><td>pH</td><td>ಅಸ್ಥಿರ – ತುಕ್ಕು ಅಪಾಯ</td><td>6.5 – 8.5</td><td>ನಿರಂತರ IoT</td></tr>
+      <tr><td>ನೈಟ್ರೇಟ್ / ಫಾಸ್ಫೇಟ್</td><td>ಯೂಟ್ರೋಫಿಕೇಶನ್ ಅಪಾಯ</td><td>&lt;10 mg/L / &lt;1 mg/L</td><td>ಪ್ರತಿ ವಾರ</td></tr>
+      <tr><td>ಒಟ್ಟು ಕರಗಿದ ಘನ (TDS)</td><td>ಮಣ್ಣಿನ ಲವಣೀಯತೆ ಅಪಾಯ</td><td>&lt;500 mg/L (ಕೃಷಿ ಬಳಕೆ)</td><td>ನಿರಂತರ IoT</td></tr>
+      <tr><td>ಕೀಟನಾಶಕ / ಔಷಧ ಅವಶೇಷ</td><td>ನಗರ ಹರಿವು ಮಾಲಿನ್ಯ</td><td>ಗ್ರಹಣ ಮಿತಿಗಿಂತ ಕಡಿಮೆ</td><td>ಮಾಸಿಕ</td></tr>
+    </table>
+
+    <h3>೫. ಅನುಷ್ಠಾನ ಯೋಜನೆ</h3>
+    <table>
+      <tr><th>ಹಂತ</th><th>ಚಟುವಟಿಕೆ</th><th>ಅವಧಿ</th><th>ಜವಾಬ್ದಾರಿ</th></tr>
+      <tr><td>ಹಂತ ೧</td><td>ಪ್ರಸ್ತುತ HN/KC ಕಣಿವೆ ಉತ್ಪಾದನೆಯ ಸ್ವತಂತ್ರ ನೀರಿನ ಗುಣಮಟ್ಟ ಲೆಕ್ಕಪರಿಶೋಧನೆ</td><td>೧–೩ ತಿಂಗಳು</td><td>KSPCB + BWSSB + IISc</td></tr>
+      <tr><td>ಹಂತ ೨</td><td>ಆದ್ಯತಾ ಕೇಂದ್ರಗಳಲ್ಲಿ ತ್ರಿಸ್ತರ ಶೋಧನಾ ಘಟಕಗಳ ವಿನ್ಯಾಸ ಮತ್ತು ಟೆಂಡರ್</td><td>೪–೮ ತಿಂಗಳು</td><td>BWSSB + ಸಣ್ಣ ನೀರಾವರಿ ಇಲಾಖೆ</td></tr>
+      <tr><td>ಹಂತ ೩</td><td>ಶೋಧನಾ ವ್ಯವಸ್ಥೆಗಳ ನಿರ್ಮಾಣ ಮತ್ತು ಅಳವಡಿಕೆ</td><td>೯–೧೮ ತಿಂಗಳು</td><td>PWD + ಗುತ್ತಿಗೆ ಏಜೆನ್ಸಿ</td></tr>
+      <tr><td>ಹಂತ ೪</td><td>IoT ಸೆನ್ಸರ್ ಜಾಲ; ಸಾರ್ವಜನಿಕ ನೀರಿನ ಗುಣಮಟ್ಟ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್</td><td>೧೨–೨೦ ತಿಂಗಳು</td><td>IT/BT ಇಲಾಖೆ ಕರ್ನಾಟಕ</td></tr>
+      <tr><td>ಹಂತ ೫</td><td>ಚಾಲನೆ, ಪರೀಕ್ಷೆ, ಪ್ರಮಾಣೀಕರಣ ಮತ್ತು ಸಾರ್ವಜನಿಕ ಲೆಕ್ಕಪರಿಶೋಧನೆ</td><td>೨೦–೨೪ ತಿಂಗಳು</td><td>KSPCB + NGT ಮೇಲ್ವಿಚಾರಣೆ</td></tr>
+      <tr><td>ನಡೆಯುತ್ತಿರುವ</td><td>NGT, CPCB, ರಾಜ್ಯ ಸರ್ಕಾರ ಮತ್ತು ಸಾರ್ವಜನಿಕರಿಗೆ ತ್ರೈಮಾಸಿಕ ವರದಿ</td><td>ನಿರಂತರ</td><td>ಜಿಲ್ಲಾ ಆಯುಕ್ತ ಕಚೇರಿಗಳು</td></tr>
+    </table>
+
+    <h3>೬. ಅಂದಾಜು ಬಜೆಟ್</h3>
+    <table>
+      <tr><th>ಘಟಕ</th><th>ಅಂದಾಜು ವೆಚ್ಚ (₹ ಕೋಟಿ)</th></tr>
+      <tr><td>ಪ್ರಾಥಮಿಕ ಶೋಧನಾ ಮೂಲಸೌಕರ್ಯ (ಸ್ತರ ೧)</td><td>₹ ೪೫ – ೬೦ ಕೋಟಿ</td></tr>
+      <tr><td>ಮುಂದುವರಿದ ರಾಸಾಯನಿಕ ಶೋಧನೆ (ಸ್ತರ ೨)</td><td>₹ ೮೦ – ೧೨೦ ಕೋಟಿ</td></tr>
+      <tr><td>UV/ಓಝೋನೇಷನ್ + IoT ಮೇಲ್ವಿಚಾರಣೆ (ಸ್ತರ ೩)</td><td>₹ ೪೦ – ೬೦ ಕೋಟಿ</td></tr>
+      <tr><td>ನಾಗರಿಕ ಕಾಮಗಾರಿ, ಪೈಪ್‌ಲೈನ್ ಬದಲಾವಣೆ</td><td>₹ ೩೦ – ೫೦ ಕೋಟಿ</td></tr>
+      <tr><td>ನಿರ್ವಹಣೆ ಮತ್ತು ರಕ್ಷಣೆ (೫ ವರ್ಷ)</td><td>₹ ೨೫ – ೩೫ ಕೋಟಿ</td></tr>
+      <tr><td><strong>ಒಟ್ಟು ಅಂದಾಜು ಹೂಡಿಕೆ</strong></td><td><strong>₹ ೨೨೦ – ೩೨೫ ಕೋಟಿ</strong></td></tr>
+    </table>
+
+    <div class="green-box">
+      <strong>ಶಿಫಾರಸು ಮಾಡಲಾದ ನಿಧಿ ಮೂಲಗಳು:</strong> ರಾಷ್ಟ್ರೀಯ ನದಿ ಸಂರಕ್ಷಣಾ ಕಾರ್ಯಕ್ರಮ (NRCP) · AMRUT 2.0 · NMCG ನಿಧಿ · ರಾಜ್ಯ ಬಜೆಟ್ – ಸಣ್ಣ ನೀರಾವರಿ ಮತ್ತು ಪರಿಸರ ಇಲಾಖೆಗಳು · ಬೆಂಗಳೂರು ಕೈಗಾರಿಕೆಗಳ CSR ನಿಧಿ · JICA / ವಿಶ್ವ ಬ್ಯಾಂಕ್ ಹಸಿರು ಮೂಲಸೌಕರ್ಯ ಸಾಲ
+    </div>
+
+    <h3>೭. ಕಾನೂನು ಆಧಾರ ಮತ್ತು ಸಾಂವಿಧಾನಿಕ ಆದೇಶ</h3>
+    <ul>
+      <li><strong>ಭಾರತ ಸಂವಿಧಾನದ ಅನುಚ್ಛೇದ ೨೧</strong> – ಜೀವಿಸುವ ಹಕ್ಕಿನ ಭಾಗವಾಗಿ ಸ್ವಚ್ಛ ನೀರಿನ ಹಕ್ಕು</li>
+      <li><strong>ಅನುಚ್ಛೇದ ೪೮A</strong> – ಪರಿಸರವನ್ನು ರಕ್ಷಿಸಿ ಸುಧಾರಿಸಲು ರಾಜ್ಯದ ಕರ್ತವ್ಯ</li>
+      <li><strong>ನೀರು (ಮಾಲಿನ್ಯ ತಡೆ ಮತ್ತು ನಿಯಂತ್ರಣ) ಕಾಯ್ದೆ, ೧೯೭೪</strong></li>
+      <li><strong>ಪರಿಸರ ಸಂರಕ್ಷಣಾ ಕಾಯ್ದೆ, ೧೯೮೬</strong> – ಸೆಕ್ಷನ್ ೩, ೫, ೭</li>
+      <li><strong>ರಾಷ್ಟ್ರೀಯ ಹಸಿರು ನ್ಯಾಯಮಂಡಳಿ ಕಾಯ್ದೆ, ೨೦೧೦</strong> – ಮುನ್ನೆಚ್ಚರಿಕೆ ತತ್ವ ಮತ್ತು ಮಾಲಿನ್ಯಕಾರ ಪಾವತಿ ತತ್ವ</li>
+      <li><strong>BIS ಮಾನದಂಡಗಳು IS 11624, IS 2296</strong> – ನೀರಾವರಿ ಬಳಕೆಗೆ ನೀರಿನ ಗುಣಮಟ್ಟ</li>
+    </ul>
+
+    <h3>೮. ಪರಿಣಾಮ ಮೌಲ್ಯಮಾಪನ</h3>
+    <div class="highlight-box">
+      <strong>ಸಂಪೂರ್ಣ ಅನುಷ್ಠಾನದ ನಂತರ ನಿರೀಕ್ಷಿತ ಪ್ರಯೋಜನಗಳು:</strong><br>
+      ✅ ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರದ ೫೦,೦೦೦+ ಎಕರೆ ಕೃಷಿ ಭೂಮಿ ರಕ್ಷಣೆ<br>
+      ✅ ೮೦೦+ ಕೆರೆ ಮತ್ತು ಜಲ ಮೂಲಗಳಿಗೆ ಸುರಕ್ಷಿತ ಕುಡಿಯುವ ನೀರಿನ ಮರುಪೂರಣ<br>
+      ✅ ಆಹಾರ ಬೆಳೆಗಳಲ್ಲಿ ಭಾರೀ ಲೋಹ ಸಂಗ್ರಹ ತಡೆ — ರಾಷ್ಟ್ರೀಯ ಮಟ್ಟದ ಗ್ರಾಹಕರ ರಕ್ಷಣೆ<br>
+      ✅ ನೀರಿನಿಂದ ಹರಡುವ ರೋಗಗಳ ಪ್ರಮಾಣ ಅಂದಾಜು ೬೦–೭೦% ಕಡಿಮೆ<br>
+      ✅ ರೈತರ ವಿಶ್ವಾಸ ಮರಳಿ ಗಳಿಸಿ ಕೃಷಿ ಆದಾಯ ಹೆಚ್ಚಳ<br>
+      ✅ NGT ಮತ್ತು CPCB ಆದೇಶಗಳ ಅನುಸರಣೆ, ನ್ಯಾಯಾಂಗ ಹೊರೆ ಕಡಿತ<br>
+      ✅ ಇತರ ಬರ-ಪೀಡಿತ ಜಿಲ್ಲೆಗಳಿಗೆ ಮಾದರಿ ಯೋಜನೆ
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ ಪತ್ರ ೧: ಮುಖ್ಯಮಂತ್ರಿ ══════════ -->
+<div class="letter" id="cm">
+  <div class="letterhead">
+    <div class="letterhead-icon">⚖️</div>
+    <div class="letterhead-text">
+      <div class="org">ಬೆಂಗಳೂರು ಲಾ ಹೌಸ್</div>
+      <div class="advocate">ಅಡ್ವ. ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ | ಹಿರಿಯ ವಕೀಲರು – NGT, ಉಚ್ಚ ನ್ಯಾಯಾಲಯ ಮತ್ತು ಸರ್ವೋಚ್ಚ ನ್ಯಾಯಾಲಯ</div>
+      <div class="address">ಸಹಕಾರನಗರ, ಬೆಂಗಳೂರು – 560092 | ಚೇಂಬರ್ಸ್: ನವದೆಹಲಿ | ದೂ: +91-XXXXXXXXXX</div>
+    </div>
+  </div>
+  <div class="letter-meta">
+    <span><strong>ಉಲ್ಲೇಖ:</strong> BLH/ENV/CM/2025/001</span>
+    <span><strong>ದಿನಾಂಕ:</strong> ಮಾರ್ಚ್ ೨೦೨೫</span>
+  </div>
+  <div class="letter-body">
+    <div class="letter-to">
+      <div class="to-label">ಸಲ್ಲಿಸಲಾಗಿದೆ</div>
+      <div class="to-name">ಗೌರವಾನ್ವಿತ ಶ್ರೀ ಸಿದ್ದರಾಮಯ್ಯ</div>
+      <div class="to-post">ಮುಖ್ಯಮಂತ್ರಿ, ಕರ್ನಾಟಕ ಸರ್ಕಾರ</div>
+      <div class="to-post">ವಿಧಾನಸೌಧ, ಬೆಂಗಳೂರು – 560 001, ಕರ್ನಾಟಕ</div>
+    </div>
+    <div class="letter-subject">ವಿಷಯ: ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರ ಜಿಲ್ಲೆಗಳ ರೈತರು, ಪರಿಸರ ಮತ್ತು ಸಾರ್ವಜನಿಕ ಆರೋಗ್ಯ ರಕ್ಷಣೆಗಾಗಿ HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆ ನೀರಿನ ಯೋಜನೆಗಳಲ್ಲಿ ತ್ರಿಸ್ತರ ಶೋಧನಾ ವ್ಯವಸ್ಥೆ ಕಡ್ಡಾಯಗೊಳಿಸಲು ತುರ್ತು ಮನವಿ</div>
+    <div class="salutation">ಗೌರವಾನ್ವಿತ ಮುಖ್ಯಮಂತ್ರಿಗಳೇ,</div>
+    <p>ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರ ಜಿಲ್ಲೆಗಳ ರೈತ ಸಮುದಾಯ, ನಿವಾಸಿಗಳು ಮತ್ತು ಪರಿಸರ ಸಂಪತ್ತಿನ ಪರವಾಗಿ ತೀವ್ರ ಕಳವಳ ಮತ್ತು ಪ್ರಜಾಸತ್ತಾತ್ಮಕ ಜವಾಬ್ದಾರಿ ಪ್ರಜ್ಞೆಯಿಂದ ತಮ್ಮ ಮುಂದೆ ಈ ಮನವಿ ಸಲ್ಲಿಸುತ್ತಿದ್ದೇನೆ.</p>
+    <p>HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆ ಯೋಜನೆಗಳು ರಾಜ್ಯ ಸರ್ಕಾರ ಈ ಜಿಲ್ಲೆಗಳ ದೀರ್ಘಕಾಲಿನ ನೀರಿನ ಕೊರತೆ ಪರಿಹರಿಸಲು ಬೆಂಗಳೂರಿನಿಂದ ಸಂಸ್ಕರಿತ ತ್ಯಾಜ್ಯ ನೀರನ್ನು ಹರಿಸುವ ಪ್ರಶಂಸನೀಯ ಪ್ರಯತ್ನ. ಆದರೆ ವೈಜ್ಞಾನಿಕ ಸಾಕ್ಷ್ಯ, ರೈತರ ಮೂಲಮಟ್ಟದ ದೂರುಗಳು ಮತ್ತು ಸ್ವತಂತ್ರ ನೀರಿನ ಗುಣಮಟ್ಟ ಸಮೀಕ್ಷೆಗಳು ಗಂಭೀರ ಕಳವಳಗಳನ್ನು ಎತ್ತಿ ತೋರಿಸಿವೆ — ಪ್ರಸ್ತುತ ಸಂಸ್ಕರಣ ಹಂತಗಳ ನಂತರವೂ ನೀರಿನಲ್ಲಿ ಭಾರೀ ಲೋಹಗಳು (ಕ್ಯಾಡ್ಮಿಯಮ್, ಸೀಸ, ಕ್ರೋಮಿಯಂ, ಆರ್ಸೆನಿಕ್), ಔಷಧ ಸಂಯುಕ್ತಗಳು, ರೋಗಾಣುಗಳು ಮತ್ತು ಕೈಗಾರಿಕಾ ತ್ಯಾಜ್ಯ ಇರುವುದು ಕಂಡುಬಂದಿದೆ.</p>
+    <p>ಸಮರ್ಪಕವಾಗಿ ಸಂಸ್ಕರಿಸದ ನೀರಿನ ಪರಿಣಾಮಗಳು ತೀವ್ರ ಮತ್ತು ದೀರ್ಘಕಾಲಿನ:</p>
+    <ul>
+      <li>ಮಣ್ಣಿನ ರಚನೆ ಮತ್ತು ಫಲವತ್ತತೆಯ ಕ್ರಮೇಣ ಅವನತಿ — ಸಾವಿರಾರು ರೈತ ಕುಟುಂಬಗಳ ಜೀವನೋಪಾಯಕ್ಕೆ ಬೆದರಿಕೆ</li>
+      <li>ಆಹಾರ ಬೆಳೆಗಳಲ್ಲಿ ವಿಷಕಾರಿ ವಸ್ತುಗಳ ಜೀವಸಂಗ್ರಹ — ಕರ್ನಾಟಕದ ಆಹಾರ ಪೂರೈಕೆ ಸರಪಳಿಯ ಮೇಲೆ ಪರಿಣಾಮ</li>
+      <li>ಅಂತರ್ಜಲ ಮರುಪೂರಣಕ್ಕೆ ನಿರ್ಣಾಯಕವಾದ ನೂರಾರು ಕೆರೆಗಳ ಮಾಲಿನ್ಯ</li>
+      <li>ನಿವಾಸಿಗಳಲ್ಲಿ ಚರ್ಮ ರೋಗ, ಜಠರ ರೋಗ ಮತ್ತು ದೀರ್ಘಕಾಲಿನ ಅಂಗ ಹಾನಿ ಹೆಚ್ಚಳ</li>
+      <li>ಪ್ರದೇಶದ ಜೀವವೈವಿಧ್ಯ ಮತ್ತು ಜಲಸ್ತರಕ್ಕೆ ಬದಲಾಯಿಸಲಾಗದ ಪರಿಸರ ಹಾನಿ</li>
+    </ul>
+    <p>ಆದ್ದರಿಂದ ಎರಡೂ ಕಣಿವೆ ಕಾಲುವೆ ಜಾಲಗಳ ಪ್ರಮುಖ ವಿತರಣಾ ಮತ್ತು ಬಿಡುಗಡೆ ಬಿಂದುಗಳಲ್ಲಿ ಕಡ್ಡಾಯ <strong>ತ್ರಿಸ್ತರ ಶೋಧನಾ ವ್ಯವಸ್ಥೆ</strong> ಅನುಷ್ಠಾನಕ್ಕೆ ತಮ್ಮ ಸರ್ಕಾರ ತುರ್ತು ನಿರ್ದೇಶನ ನೀಡಬೇಕೆಂದು ಕೋರುತ್ತೇನೆ. ಇದರಲ್ಲಿ ಸಾವಯವ ಮಾಲಿನ್ಯ ತೆಗೆಯಲು ಪ್ರಾಥಮಿಕ ಶೋಧನೆ, ಭಾರೀ ಲೋಹ ಮತ್ತು ರಾಸಾಯನಿಕ ಶೋಧನೆ, ಮತ್ತು UV/ಓಝೋನ್ ಅಂತಿಮ ಶುದ್ಧೀಕರಣ ಮತ್ತು IoT ಮೇಲ್ವಿಚಾರಣಾ ವ್ಯವಸ್ಥೆ ಒಳಗೊಂಡಿದೆ.</p>
+    <p>ಈ ಮನವಿಯನ್ನು ಸ್ವಚ್ಛ ನೀರು ಮತ್ತು ಆರೋಗ್ಯಕರ ಪರಿಸರದ ಮೂಲಭೂತ ಹಕ್ಕನ್ನು ಒಳಗೊಂಡ <strong>ಸಂವಿಧಾನದ ಅನುಚ್ಛೇದ ೨೧</strong> ಮತ್ತು ಪರಿಸರ ಸಂರಕ್ಷಣಾ ಕರ್ತವ್ಯ ನಿರ್ದೇಶಿಸುವ <strong>ಅನುಚ್ಛೇದ ೪೮A</strong> ಅಡಿ ಸಲ್ಲಿಸಲಾಗಿದೆ.</p>
+    <p>KSPCB, BWSSB, ಸಣ್ಣ ನೀರಾವರಿ ಇಲಾಖೆ ಮತ್ತು ಸ್ವತಂತ್ರ ಪರಿಸರ ತಜ್ಞರನ್ನೊಳಗೊಂಡ ಉನ್ನತ ತಾಂತ್ರಿಕ ಸಮಿತಿ ರಚಿಸಿ <strong>೯೦ ದಿನಗಳೊಳಗೆ</strong> ಸಮಗ್ರ ನೀರಿನ ಗುಣಮಟ್ಟ ಲೆಕ್ಕಪರಿಶೋಧನೆ ಮತ್ತು ಕ್ರಿಯಾ ಯೋಜನೆ ಸಿದ್ಧಪಡಿಸಲು ವಿನಮ್ರವಾಗಿ ಕೋರುತ್ತೇನೆ.</p>
+    <div class="closing"><p>ಸಾರ್ವಜನಿಕ ಆರೋಗ್ಯ ಮತ್ತು ಪರಿಸರ ನ್ಯಾಯದ ಈ ನಿರ್ಣಾಯಕ ವಿಷಯಕ್ಕೆ ತಮ್ಮ ಗಮನ ನೀಡಿದ್ದಕ್ಕಾಗಿ ಕೃತಜ್ಞತೆ ಸಲ್ಲಿಸುತ್ತೇನೆ.</p></div>
+    <div class="signature-block">
+      <div class="sig-name">ಅಡ್ವ. ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ</div>
+      <div class="sig-title">ಹಿರಿಯ ವಕೀಲರು – ರಾಷ್ಟ್ರೀಯ ಹಸಿರು ನ್ಯಾಯಮಂಡಳಿ, ಉಚ್ಚ ನ್ಯಾಯಾಲಯ ಮತ್ತು ಸರ್ವೋಚ್ಚ ನ್ಯಾಯಾಲಯ</div>
+      <div class="sig-title">ಬೆಂಗಳೂರು ಲಾ ಹೌಸ್ | ಹಿರಿಯ ಪತ್ರಕರ್ತರು | ಕಾನೂನು ಸಲಹೆಗಾರರು, R MAXX ಕನ್ನಡ ನ್ಯೂಸ್ ಚಾನೆಲ್</div>
+      <div class="sig-title">ಸಹಕಾರನಗರ, ಬೆಂಗಳೂರು – 560 092</div>
+    </div>
+  </div>
+</div>
+
+<hr class="letter-divider">
+
+<!-- ══════════ ಪತ್ರ ೨: ಪ್ರಧಾನಮಂತ್ರಿ ══════════ -->
+<div class="letter" id="pm">
+  <div class="letterhead">
+    <div class="letterhead-icon">⚖️</div>
+    <div class="letterhead-text">
+      <div class="org">ಬೆಂಗಳೂರು ಲಾ ಹೌಸ್</div>
+      <div class="advocate">ಅಡ್ವ. ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ | ಹಿರಿಯ ವಕೀಲರು – NGT, ಉಚ್ಚ ನ್ಯಾಯಾಲಯ ಮತ್ತು ಸರ್ವೋಚ್ಚ ನ್ಯಾಯಾಲಯ</div>
+      <div class="address">ಸಹಕಾರನಗರ, ಬೆಂಗಳೂರು – 560092 | ಚೇಂಬರ್ಸ್: ನವದೆಹಲಿ | ದೂ: +91-XXXXXXXXXX</div>
+    </div>
+  </div>
+  <div class="letter-meta">
+    <span><strong>ಉಲ್ಲೇಖ:</strong> BLH/ENV/PM/2025/002</span>
+    <span><strong>ದಿನಾಂಕ:</strong> ಮಾರ್ಚ್ ೨೦೨೫</span>
+  </div>
+  <div class="letter-body">
+    <div class="letter-to">
+      <div class="to-label">ಸಲ್ಲಿಸಲಾಗಿದೆ</div>
+      <div class="to-name">ಗೌರವಾನ್ವಿತ ಶ್ರೀ ನರೇಂದ್ರ ಮೋದಿ</div>
+      <div class="to-post">ಪ್ರಧಾನಮಂತ್ರಿ, ಭಾರತ ಸರ್ಕಾರ</div>
+      <div class="to-post">ಸೌತ್ ಬ್ಲಾಕ್, ನವದೆಹಲಿ – 110 011</div>
+    </div>
+    <div class="letter-subject">ವಿಷಯ: HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆ ನೀರಿನ ಯೋಜನೆಗಳಲ್ಲಿ ತ್ರಿಸ್ತರ ಶೋಧನಾ ವ್ಯವಸ್ಥೆಗಾಗಿ ರಾಷ್ಟ್ರೀಯ ಮನವಿ – ಜಲ ಜೀವನ್ ಮಿಷನ್ ಮತ್ತು ರಾಷ್ಟ್ರೀಯ ಜಲ ನೀತಿ ಅಡಿ ರೈತರು ಮತ್ತು ಸಾರ್ವಜನಿಕ ಆರೋಗ್ಯ ರಕ್ಷಣೆ</div>
+    <div class="salutation">ಅತ್ಯಂತ ಗೌರವಾನ್ವಿತ ಪ್ರಧಾನಮಂತ್ರಿಗಳೇ,</div>
+    <p>ಕರ್ನಾಟಕದ ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರ ಜಿಲ್ಲೆಗಳ ಜನರ ನೀರಿನ ಗುಣಮಟ್ಟ, ಕೃಷಿ ಸುರಕ್ಷತೆ ಮತ್ತು ಸಾರ್ವಜನಿಕ ಆರೋಗ್ಯಕ್ಕೆ ಸಂಬಂಧಿಸಿದ ರಾಷ್ಟ್ರೀಯ ಮಹತ್ವದ ತುರ್ತು ವಿಷಯವನ್ನು ತಮ್ಮ ಮುಂದೆ ಗೌರವಪೂರ್ವಕವಾಗಿ ಇಡುತ್ತೇನೆ.</p>
+    <p><strong>ಜಲ ಜೀವನ್ ಮಿಷನ್</strong> ಮತ್ತು <strong>ನಲ್ ಸೆ ಜಲ್</strong> ಯೋಜನೆಗಳ ಅಡಿ ನೀರಿನ ಬಿಕ್ಕಟ್ಟು ಭಾಗಶಃ ಪರಿಹರಿಸಲಾಗಿದ್ದರೂ, ನಂಬಲರ್ಹ ವೈಜ್ಞಾನಿಕ ವರದಿಗಳು ಮತ್ತು ಮೂಲಮಟ್ಟದ ಸಮೀಕ್ಷೆಗಳು ವಿತರಿಸಲಾಗುತ್ತಿರುವ ನೀರಿನಲ್ಲಿ ಭಾರೀ ಲೋಹಗಳು, ಔಷಧ ಅವಶೇಷಗಳು, ರೋಗಾಣುಗಳು ಮತ್ತು ಕೈಗಾರಿಕಾ ಮಾಲಿನ್ಯಕಾರಕಗಳ ಅಪಾಯಕಾರಿ ಮಟ್ಟಗಳಿರುವುದನ್ನು ಸ್ಥಾಪಿಸುತ್ತವೆ.</p>
+    <p>ಭಾರತದ ಅತ್ಯಂತ ಆರ್ಥಿಕವಾಗಿ ದುರ್ಬಲ ಕೃಷಿ ಸಮುದಾಯಗಳಲ್ಲಿ ಒಂದಾದ ಇಲ್ಲಿನ ರೈತರು ಮಾಲಿನ್ಯ ನೀರಿನಿಂದ ಬೆಳೆ ನೀರಾವರಿ ಮಾಡುತ್ತಿದ್ದಾರೆ — ಇದು <strong>ರೈತರ ಆದಾಯ ದ್ವಿಗುಣ</strong> ಮತ್ತು <strong>ಪ್ರತಿ ಕುಟುಂಬಕ್ಕೆ ಸುರಕ್ಷಿತ ನೀರು</strong> ಒದಗಿಸುವ ತಮ್ಮ ಸರ್ಕಾರದ ಗುರಿಗಳನ್ನು ನೇರವಾಗಿ ದುರ್ಬಲಗೊಳಿಸುತ್ತದೆ.</p>
+    <p>HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆಗಳಿಗೆ AMRUT 2.0 ಮತ್ತು NRCP ಅಡಿ ಕೇಂದ್ರ ನಿಧಿ ಸಹಾಯ ಮತ್ತು CPCB ಮತ್ತು NGT ಮೇಲ್ವಿಚಾರಣೆಯೊಂದಿಗೆ <strong>ತ್ರಿಸ್ತರ ಶೋಧನಾ ವ್ಯವಸ್ಥೆ</strong> ಕಡ್ಡಾಯಗೊಳಿಸಲು ಜಲ ಶಕ್ತಿ ಸಚಿವಾಲಯ, MoEFCC ಮತ್ತು ಕೃಷಿ ಸಚಿವಾಲಯಕ್ಕೆ ನಿರ್ದೇಶಿಸಲು ವಿನಮ್ರವಾಗಿ ಕೋರುತ್ತೇನೆ.</p>
+    <div class="closing"><p>ಜೀವನ ಮತ್ತು ಜೀವನೋಪಾಯದ ಈ ವಿಷಯದಲ್ಲಿ ತಮ್ಮ ದಯಾಮಯ ಮಧ್ಯಸ್ಥಿಕೆಯನ್ನು ನಿರೀಕ್ಷಿಸುತ್ತಾ, ಅತ್ಯಂತ ಗೌರವದಿಂದ,</p></div>
+    <div class="signature-block">
+      <div class="sig-name">ಅಡ್ವ. ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ</div>
+      <div class="sig-title">ಹಿರಿಯ ವಕೀಲರು – NGT, ಉಚ್ಚ ನ್ಯಾಯಾಲಯ ಮತ್ತು ಸರ್ವೋಚ್ಚ ನ್ಯಾಯಾಲಯ | ಬೆಂಗಳೂರು ಲಾ ಹೌಸ್</div>
+    </div>
+  </div>
+</div>
+
+<hr class="letter-divider">
+
+<!-- ══════════ ಪತ್ರ ೩: ರಾಷ್ಟ್ರಪತಿ ══════════ -->
+<div class="letter" id="president">
+  <div class="letterhead">
+    <div class="letterhead-icon">⚖️</div>
+    <div class="letterhead-text">
+      <div class="org">ಬೆಂಗಳೂರು ಲಾ ಹೌಸ್</div>
+      <div class="advocate">ಅಡ್ವ. ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ | ಹಿರಿಯ ವಕೀಲರು – NGT, ಉಚ್ಚ ನ್ಯಾಯಾಲಯ ಮತ್ತು ಸರ್ವೋಚ್ಚ ನ್ಯಾಯಾಲಯ</div>
+      <div class="address">ಸಹಕಾರನಗರ, ಬೆಂಗಳೂರು – 560092 | ಚೇಂಬರ್ಸ್: ನವದೆಹಲಿ | ದೂ: +91-XXXXXXXXXX</div>
+    </div>
+  </div>
+  <div class="letter-meta">
+    <span><strong>ಉಲ್ಲೇಖ:</strong> BLH/ENV/PRES/2025/003</span>
+    <span><strong>ದಿನಾಂಕ:</strong> ಮಾರ್ಚ್ ೨೦೨೫</span>
+  </div>
+  <div class="letter-body">
+    <div class="letter-to">
+      <div class="to-label">ಸಲ್ಲಿಸಲಾಗಿದೆ</div>
+      <div class="to-name">ಗೌರವಾನ್ವಿತ ಶ್ರೀಮತಿ ದ್ರೌಪದಿ ಮುರ್ಮು</div>
+      <div class="to-post">ಭಾರತದ ರಾಷ್ಟ್ರಪತಿ</div>
+      <div class="to-post">ರಾಷ್ಟ್ರಪತಿ ಭವನ, ನವದೆಹಲಿ – 110 004</div>
+    </div>
+    <div class="letter-subject">ವಿಷಯ: ಸ್ವಚ್ಛ ಮತ್ತು ಸುರಕ್ಷಿತ ನೀರಿಗಾಗಿ ಸಾಂವಿಧಾನಿಕ ಅರ್ಜಿ – HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆಗಳಿಗೆ ಕಡ್ಡಾಯ ತ್ರಿಸ್ತರ ಶೋಧನಾ ವ್ಯವಸ್ಥೆ – ಭಾರತ ಸಂವಿಧಾನದ ಅನುಚ್ಛೇದ ೨೧ ಅಡಿ ರೈತ ಸಮುದಾಯಗಳ ಮೂಲಭೂತ ಹಕ್ಕುಗಳ ರಕ್ಷಣೆ</div>
+    <div class="salutation">ಅತ್ಯಂತ ಗೌರವಾನ್ವಿತ ಮಹಾಮಹಿಮ ರಾಷ್ಟ್ರಪತಿ ಮಹೋದಯರೇ,</div>
+    <p>ಕರ್ನಾಟಕದ ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರ ಜಿಲ್ಲೆಗಳ ನೀಡಲ್ಪಟ್ಟ ರೈತ ಸಮುದಾಯ ಮತ್ತು ಸಾಮಾನ್ಯ ಜನರ ಪರವಾಗಿ ತೀವ್ರ ಗೌರವ ಮತ್ತು ಅನುಭವಿಸುತ್ತಿರುವ ಗಂಭೀರ ತುರ್ತು ಪರಿಸ್ಥಿತಿಯೊಂದಿಗೆ ತಮ್ಮ ಅಗಸ್ಟ್ ಕಚೇರಿಯನ್ನು ಸಂಪರ್ಕಿಸುತ್ತಿದ್ದೇನೆ — ಅಲ್ಲಿ ಮೌನ ಆದರೂ ವಿನಾಶಕಾರಿ ಪರಿಸರ ಮತ್ತು ಸಾರ್ವಜನಿಕ ಆರೋಗ್ಯ ಬಿಕ್ಕಟ್ಟು ತಲೆದೋರಿದೆ.</p>
+    <p>ಉದಾತ್ತ ಉದ್ದೇಶದಿಂದ ಜನಿಸಿದ HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆ ನೀರಿನ ಯೋಜನೆಗಳು ಪ್ರಸ್ತುತ ಬೆಂಗಳೂರಿನ ನಗರ ಒಳಚರಂಡಿ ಜಾಲದಿಂದ ಸಮರ್ಪಕವಾಗಿ ಸಂಸ್ಕರಿಸದ ತ್ಯಾಜ್ಯ ನೀರನ್ನು ಕೃಷಿ ಗದ್ದೆಗಳು, ಕೆರೆಗಳು ಮತ್ತು ಕುಡಿಯುವ ನೀರಿನ ಮೂಲಗಳಿಗೆ ತಲುಪಿಸುತ್ತಿವೆ. ಈ ನೀರಿನಲ್ಲಿ ಭಾರೀ ಲೋಹಗಳು, ಕೈಗಾರಿಕಾ ತ್ಯಾಜ್ಯ, ಔಷಧ ಅವಶೇಷಗಳು ಮತ್ತು ರೋಗಾಣುಗಳ ಅಳೆಯಬಹುದಾದ ಪ್ರಮಾಣ ಮಣ್ಣು, ಬೆಳೆ, ಜಲಮೂಲ ಮತ್ತು ರೈತ ಕುಟುಂಬಗಳ ಶರೀರಗಳನ್ನು ನಿಧಾನವಾಗಿ ವಿಷಪೂರಿತಗೊಳಿಸುತ್ತಿವೆ.</p>
+    <p>ಮಹಾಮಹಿಮರೇ, <strong>ಸಂವಿಧಾನದ ಅನುಚ್ಛೇದ ೨೧</strong> ಅಡಿ ಜೀವಿಸುವ ಹಕ್ಕಿನಲ್ಲಿ ಸ್ವಚ್ಛ ಮತ್ತು ಆರೋಗ್ಯಕರ ಪರಿಸರ ಮತ್ತು ಸುರಕ್ಷಿತ ಕುಡಿಯುವ ನೀರಿನ ಹಕ್ಕು ಒಳಗೊಂಡಿದೆ ಎಂದು ಮಾನ್ಯ ಸರ್ವೋಚ್ಚ ನ್ಯಾಯಾಲಯ ತೀರ್ಮಾನಿಸಿದೆ. ಈ ಸಮುದಾಯಗಳಿಗೆ ಮಾಲಿನ್ಯ ನೀರನ್ನು ಮುಂದುವರಿಸಿ ಸರಬರಾಜು ಮಾಡುವುದು ಈ ಮೂಲಭೂತ ಹಕ್ಕಿನ ನೇರ ಉಲ್ಲಂಘನೆ.</p>
+    <p>ಎರಡೂ ಕಣಿವೆ ಯೋಜನೆಗಳಿಗೆ ಪ್ರಮಾಣಿತ <strong>ತ್ರಿಸ್ತರ ಶೋಧನಾ ವ್ಯವಸ್ಥೆ</strong> ತಕ್ಷಣ ಕಡ್ಡಾಯಗೊಳಿಸಲು, ಉನ್ನತ ಮಟ್ಟದ ಮೇಲ್ವಿಚಾರಣಾ ಸಮಿತಿ ಸ್ಥಾಪಿಸಲು ಮತ್ತು CPCB ಹಾಗೂ WHO ನೀರಿನ ಗುಣಮಟ್ಟ ಮಾನದಂಡಗಳ ಅನುಸರಣೆ ಖಾತ್ರಿಪಡಿಸಲು ಕೇಂದ್ರ ಮತ್ತು ರಾಜ್ಯ ಸರ್ಕಾರಗಳಿಗೆ ನಿರ್ದೇಶಿಸಬೇಕೆಂದು ತಮ್ಮ ಸಾಂವಿಧಾನಿಕ ಮಧ್ಯಸ್ಥಿಕೆಯನ್ನು ವಿನಮ್ರವಾಗಿ ಕೋರುತ್ತೇನೆ.</p>
+    <div class="closing"><p>ಅತ್ಯಂತ ಗೌರವ ಮತ್ತು ನಿರೀಕ್ಷೆಯೊಂದಿಗೆ,</p></div>
+    <div class="signature-block">
+      <div class="sig-name">ಅಡ್ವ. ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ</div>
+      <div class="sig-title">ಹಿರಿಯ ವಕೀಲರು – NGT, ಉಚ್ಚ ನ್ಯಾಯಾಲಯ ಮತ್ತು ಸರ್ವೋಚ್ಚ ನ್ಯಾಯಾಲಯ | ಬೆಂಗಳೂರು ಲಾ ಹೌಸ್</div>
+    </div>
+  </div>
+</div>
+
+<hr class="letter-divider">
+
+<!-- ══════════ ಪತ್ರ ೪: ಕೇಂದ್ರ ಇಲಾಖೆಗಳು ══════════ -->
+<div class="letter" id="central">
+  <div class="letterhead">
+    <div class="letterhead-icon">⚖️</div>
+    <div class="letterhead-text">
+      <div class="org">ಬೆಂಗಳೂರು ಲಾ ಹೌಸ್</div>
+      <div class="advocate">ಅಡ್ವ. ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ | ಹಿರಿಯ ವಕೀಲರು – NGT, ಉಚ್ಚ ನ್ಯಾಯಾಲಯ ಮತ್ತು ಸರ್ವೋಚ್ಚ ನ್ಯಾಯಾಲಯ</div>
+      <div class="address">ಸಹಕಾರನಗರ, ಬೆಂಗಳೂರು – 560092 | ಚೇಂಬರ್ಸ್: ನವದೆಹಲಿ | ದೂ: +91-XXXXXXXXXX</div>
+    </div>
+  </div>
+  <div class="letter-meta">
+    <span><strong>ಉಲ್ಲೇಖ:</strong> BLH/ENV/CENTRAL/2025/004</span>
+    <span><strong>ದಿನಾಂಕ:</strong> ಮಾರ್ಚ್ ೨೦೨೫</span>
+  </div>
+  <div class="letter-body">
+    <div class="letter-to">
+      <div class="to-label">ಸಲ್ಲಿಸಲಾಗಿದೆ</div>
+      <div class="to-name">ಕಾರ್ಯದರ್ಶಿ / ಮಹಾನಿರ್ದೇಶಕರಿಗೆ</div>
+      <div class="to-post">೧. ಜಲ ಶಕ್ತಿ ಸಚಿವಾಲಯ, ಭಾರತ ಸರ್ಕಾರ, ನವದೆಹಲಿ</div>
+      <div class="to-post">೨. ಪರಿಸರ, ಅರಣ್ಯ ಮತ್ತು ಹವಾಮಾನ ಬದಲಾವಣೆ ಸಚಿವಾಲಯ (MoEFCC), ನವದೆಹಲಿ</div>
+      <div class="to-post">೩. ಕೃಷಿ ಮತ್ತು ರೈತ ಕಲ್ಯಾಣ ಸಚಿವಾಲಯ, ನವದೆಹಲಿ</div>
+      <div class="to-post">೪. ಕೇಂದ್ರ ಮಾಲಿನ್ಯ ನಿಯಂತ್ರಣ ಮಂಡಳಿ (CPCB), ನವದೆಹಲಿ</div>
+      <div class="to-post">೫. ರಾಷ್ಟ್ರೀಯ ಹಸಿರು ನ್ಯಾಯಮಂಡಳಿ (NGT), ಪ್ರಧಾನ ಪೀಠ, ನವದೆಹಲಿ</div>
+    </div>
+    <div class="letter-subject">ವಿಷಯ: ಕರ್ನಾಟಕದ HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆ ಮರು-ಬಳಕೆ ನೀರಿನ ಯೋಜನೆಗಳಲ್ಲಿ ತ್ರಿಸ್ತರ ಶೋಧನಾ ವ್ಯವಸ್ಥೆ ಅನುಷ್ಠಾನಕ್ಕೆ ತುರ್ತು ಮನವಿ – ನೀರು ಕಾಯ್ದೆ ೧೯೭೪, EPA ೧೯೮೬ ಮತ್ತು NGT ನಿರ್ದೇಶನಗಳ ಅನುಸರಣೆ</div>
+    <div class="salutation">ಗೌರವಾನ್ವಿತ ಮಹೋದಯರೇ/ಮಹೋದಯೆ,</div>
+    <p>ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರ ಜಿಲ್ಲೆಗಳ ರೈತ ಸಮುದಾಯ ಮತ್ತು ನಿವಾಸಿಗಳ ಪರವಾಗಿ HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆ ನೀರಿನ ಕಾಲುವೆ ಯೋಜನೆಗಳಿಂದ ಉಂಟಾಗುವ ಗಂಭೀರ ಮತ್ತು ನಡೆಯುತ್ತಿರುವ ಪರಿಸರ ಮತ್ತು ಸಾರ್ವಜನಿಕ ಆರೋಗ್ಯ ಸಮಸ್ಯೆ ಕುರಿತು ಈ ತುರ್ತು ಮನವಿ ಸಲ್ಲಿಸುತ್ತೇನೆ.</p>
+    <p>ಸಂಸ್ಕರಿತ ನೀರಿನಲ್ಲಿ ಭಾರೀ ಲೋಹಗಳು, ಅನುಮತಿ ಮಿತಿ ಮೀರಿದ ಜೈವಿಕ ಆಮ್ಲಜನಕ ಬೇಡಿಕೆ, ಕೊಲಿಫಾರ್ಮ್ ಬ್ಯಾಕ್ಟೀರಿಯಾ ಮತ್ತು ಕೈಗಾರಿಕಾ ರಾಸಾಯನಿಕ ಅವಶೇಷಗಳು ಕಂಡುಬಂದಿದ್ದು — ಇದು ನೀರಾವರಿ ಬಳಕೆಗೆ CPCB ನಿಗದಿಪಡಿಸಿದ ತ್ಯಾಜ್ಯ ಮಾನದಂಡಗಳ (ವರ್ಗ D) ಸಂಭಾವ್ಯ ಉಲ್ಲಂಘನೆ.</p>
+    <p><strong>ಪ್ರತಿ ಅಧಿಕಾರಿಗಳಿಗೆ ನಿರ್ದಿಷ್ಟ ಮನವಿ:</strong></p>
+    <ul>
+      <li><strong>CPCB:</strong> HN/KC ಕಣಿವೆ ಹೊರಹರಿವುಗಳ ಸ್ವತಂತ್ರ ನೀರಿನ ಗುಣಮಟ್ಟ ಲೆಕ್ಕಪರಿಶೋಧನೆ; BWSSB ಗೆ ನೀರು ಕಾಯ್ದೆ ಸೆಕ್ಷನ್ ೧೮ ಅಡಿ ಬದ್ಧ ನಿರ್ದೇಶನ; ತ್ರೈಮಾಸಿಕ ಸಾರ್ವಜನಿಕ ವರದಿ ಕಡ್ಡಾಯ</li>
+      <li><strong>ಜಲ ಶಕ್ತಿ ಸಚಿವಾಲಯ:</strong> AMRUT 2.0 ಮತ್ತು NRCP ಅಡಿ ತ್ರಿಸ್ತರ ಶೋಧನಾ ವ್ಯವಸ್ಥೆ ಅನುಷ್ಠಾನಕ್ಕೆ ಮೀಸಲು ನಿಧಿ; ಜಲ ಜೀವನ್ ಮಿಷನ್ ಚೌಕಟ್ಟಿನಲ್ಲಿ ನೀರಿನ ಗುಣಮಟ್ಟ ಪ್ರಮಾಣೀಕರಣ ಕಡ್ಡಾಯ</li>
+      <li><strong>MoEFCC:</strong> EPA ೧೯೮೬ ಸೆಕ್ಷನ್ ೫ ಅಡಿ ಕಡ್ಡಾಯ ಪರಿಸರ ಪರಿಣಾಮ ಮೌಲ್ಯಮಾಪನ ನಿರ್ದೇಶನ; ಮುನ್ನೆಚ್ಚರಿಕೆ ತತ್ವ ಮತ್ತು ಮಾಲಿನ್ಯಕಾರ ಪಾವತಿ ತತ್ವ ಕಟ್ಟುನಿಟ್ಟಾಗಿ ಅನ್ವಯಿಸುವುದು</li>
+      <li><strong>ಕೃಷಿ ಸಚಿವಾಲಯ:</strong> ನೀರಾವರಿ ಪ್ರದೇಶದ ಮಣ್ಣಿನ ಆರೋಗ್ಯ ಮತ್ತು ಬೆಳೆ ಸುರಕ್ಷತೆ ತನಿಖೆ; PM ಕಿಸಾನ್ ಮತ್ತು ಮಣ್ಣು ಆರೋಗ್ಯ ಕಾರ್ಡ್ ಚೌಕಟ್ಟಿಗೆ ಸಂಪರ್ಕ</li>
+      <li><strong>NGT:</strong> ಈ ಮನವಿಯನ್ನು ಸ್ವಯಂ ಪ್ರೇರಿತ ಪ್ರಕರಣವಾಗಿ ದಾಖಲಿಸುವುದು; ತಾಂತ್ರಿಕ ಮೇಲ್ವಿಚಾರಣಾ ಸಮಿತಿ ನೇಮಕ; ಮಾನದಂಡಕ್ಕಿಂತ ಕಡಿಮೆ ಗುಣಮಟ್ಟದ ನೀರಿನ ವಿತರಣೆಗೆ ಮಧ್ಯಂತರ ನಿರ್ದೇಶನ</li>
+    </ul>
+    <div class="closing"><p>ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರ ಜಿಲ್ಲೆಗಳ ಜನರು ಮತ್ತು ಪರಿಸರ ರಕ್ಷಿಸಲು ತುರ್ತು ನಿಯಂತ್ರಣ ಕ್ರಮ ಮತ್ತು ಸಂಘಟಿತ ಅಂತರ-ಸಂಸ್ಥಾ ಕ್ರಿಯೆಗಾಗಿ ಕೋರುತ್ತೇನೆ,</p></div>
+    <div class="signature-block">
+      <div class="sig-name">ಅಡ್ವ. ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ</div>
+      <div class="sig-title">ಹಿರಿಯ ವಕೀಲರು – NGT, ಉಚ್ಚ ನ್ಯಾಯಾಲಯ ಮತ್ತು ಸರ್ವೋಚ್ಚ ನ್ಯಾಯಾಲಯ | ಬೆಂಗಳೂರು ಲಾ ಹೌಸ್</div>
+    </div>
+  </div>
+</div>
+
+<hr class="letter-divider">
+
+<!-- ══════════ ಪತ್ರ ೫: ರಾಜ್ಯ ಇಲಾಖೆಗಳು ══════════ -->
+<div class="letter" id="state">
+  <div class="letterhead">
+    <div class="letterhead-icon">⚖️</div>
+    <div class="letterhead-text">
+      <div class="org">ಬೆಂಗಳೂರು ಲಾ ಹೌಸ್</div>
+      <div class="advocate">ಅಡ್ವ. ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ | ಹಿರಿಯ ವಕೀಲರು – NGT, ಉಚ್ಚ ನ್ಯಾಯಾಲಯ ಮತ್ತು ಸರ್ವೋಚ್ಚ ನ್ಯಾಯಾಲಯ</div>
+      <div class="address">ಸಹಕಾರನಗರ, ಬೆಂಗಳೂರು – 560092 | ಚೇಂಬರ್ಸ್: ನವದೆಹಲಿ | ದೂ: +91-XXXXXXXXXX</div>
+    </div>
+  </div>
+  <div class="letter-meta">
+    <span><strong>ಉಲ್ಲೇಖ:</strong> BLH/ENV/STATE/2025/005</span>
+    <span><strong>ದಿನಾಂಕ:</strong> ಮಾರ್ಚ್ ೨೦೨೫</span>
+  </div>
+  <div class="letter-body">
+    <div class="letter-to">
+      <div class="to-label">ಸಲ್ಲಿಸಲಾಗಿದೆ</div>
+      <div class="to-name">ಪ್ರಧಾನ ಕಾರ್ಯದರ್ಶಿ / ನಿರ್ದೇಶಕರಿಗೆ</div>
+      <div class="to-post">೧. ನೀರು ಸಂಪನ್ಮೂಲ ಇಲಾಖೆ, ಕರ್ನಾಟಕ ಸರ್ಕಾರ, ಬೆಂಗಳೂರು</div>
+      <div class="to-post">೨. ಕರ್ನಾಟಕ ರಾಜ್ಯ ಮಾಲಿನ್ಯ ನಿಯಂತ್ರಣ ಮಂಡಳಿ (KSPCB), ಬೆಂಗಳೂರು</div>
+      <div class="to-post">೩. ಬೆಂಗಳೂರು ಜಲ ಸರಬರಾಜು ಮತ್ತು ಒಳಚರಂಡಿ ಮಂಡಳಿ (BWSSB), ಬೆಂಗಳೂರು</div>
+      <div class="to-post">೪. ಕೃಷಿ ಇಲಾಖೆ, ಕರ್ನಾಟಕ ಸರ್ಕಾರ, ಬೆಂಗಳೂರು</div>
+      <div class="to-post">೫. ಆರೋಗ್ಯ ಮತ್ತು ಕುಟುಂಬ ಕಲ್ಯಾಣ ಇಲಾಖೆ, ಕರ್ನಾಟಕ ಸರ್ಕಾರ, ಬೆಂಗಳೂರು</div>
+      <div class="to-post">೬. ಸಣ್ಣ ನೀರಾವರಿ ಇಲಾಖೆ, ಕರ್ನಾಟಕ ಸರ್ಕಾರ, ಬೆಂಗಳೂರು</div>
+      <div class="to-post">೭. ಜಿಲ್ಲಾಧಿಕಾರಿ, ಕೋಲಾರ ಜಿಲ್ಲೆ</div>
+      <div class="to-post">೮. ಜಿಲ್ಲಾಧಿಕಾರಿ, ಚಿಕ್ಕಬಳ್ಳಾಪುರ ಜಿಲ್ಲೆ</div>
+    </div>
+    <div class="letter-subject">ವಿಷಯ: HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆ ಯೋಜನೆಗಳಲ್ಲಿ ತ್ರಿಸ್ತರ ಶೋಧನಾ ವ್ಯವಸ್ಥೆ ಕಡ್ಡಾಯ – ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರದ ಮಣ್ಣು, ಬೆಳೆ, ಪರಿಸರ ಮತ್ತು ಸಾರ್ವಜನಿಕ ಆರೋಗ್ಯ ರಕ್ಷಣೆಗೆ ತುರ್ತು ಅಂತರ-ಇಲಾಖಾ ಕ್ರಮ</div>
+    <div class="salutation">ಗೌರವಾನ್ವಿತ ಮಹೋದಯರೇ/ಮಹೋದಯೆ,</div>
+    <p>HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆ ಕಾಲುವೆ ಯೋಜನೆಗಳ ಮೂಲಕ ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರ ಜಿಲ್ಲೆಗಳ ಕೃಷಿ ಮತ್ತು ವಸತಿ ಪ್ರದೇಶಗಳಿಗೆ ವಿತರಿಸಲಾಗುತ್ತಿರುವ ನೀರಿನ ಗುಣಮಟ್ಟಕ್ಕೆ ಸಂಬಂಧಿಸಿದ ತುರ್ತು ಸಾರ್ವಜನಿಕ ಮಹತ್ವದ ವಿಷಯದ ಕುರಿತು ಈ ಮನವಿ ಸಲ್ಲಿಸುತ್ತೇನೆ.</p>
+    <p><strong>ಪ್ರತಿ ಇಲಾಖೆಗೆ ನಿರ್ದಿಷ್ಟ ಮನವಿ:</strong></p>
+    <ul>
+      <li><strong>ನೀರು ಸಂಪನ್ಮೂಲ ಮತ್ತು ಸಣ್ಣ ನೀರಾವರಿ ಇಲಾಖೆ:</strong> ಎಲ್ಲಾ ಪ್ರಮುಖ ವಿತರಣಾ ಕೇಂದ್ರಗಳಲ್ಲಿ ತಕ್ಷಣ ಸ್ವತಂತ್ರ ನೀರಿನ ಗುಣಮಟ್ಟ ಪರೀಕ್ಷೆ; CPCB ವರ್ಗ D ಮಾನದಂಡಕ್ಕಿಂತ ಕಡಿಮೆ ಬಿಂದುಗಳಲ್ಲಿ ವಿತರಣೆ ನಿಲ್ಲಿಸುವುದು; ತ್ರಿಸ್ತರ ಶೋಧನಾ ವ್ಯವಸ್ಥೆ ಅಳವಡಿಕೆಗೆ ಟೆಂಡರ್ ಪ್ರಾರಂಭಿಸುವುದು</li>
+      <li><strong>KSPCB:</strong> ತುರ್ತು ಪರಿಸರ ಲೆಕ್ಕಪರಿಶೋಧನೆ; ನೀರು ಕಾಯ್ದೆ ಸೆಕ್ಷನ್ ೩೩A ಅಡಿ BWSSB ಗೆ ನಿರ್ದೇಶನ; ತ್ವರಿತ ಡೇಟಾ ಹಂಚಿಕೆ ವ್ಯವಸ್ಥೆ</li>
+      <li><strong>BWSSB:</strong> ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ STPs ಅನ್ನು ಮುಂದುವರಿದ ತೃತೀಯ ಸಂಸ್ಕರಣಾ ಮಟ್ಟಕ್ಕೆ ಉನ್ನತೀಕರಿಸುವುದು; ಕನಿಷ್ಟ UV/ಓಝೋನ್ ಅಂತಿಮ ಹಂತ ಕಡ್ಡಾಯ; ಸ್ವಯಂಚಾಲಿತ ಗುಣಮಟ್ಟ ಸಂವೇದಕ ಅಳವಡಿಕೆ</li>
+      <li><strong>ಕೃಷಿ ಇಲಾಖೆ:</strong> ನೀರಾವರಿ ಪ್ರದೇಶದ ರೈತರಿಗೆ ತಕ್ಷಣ ಸಲಹೆ; ಸಮಗ್ರ ಮಣ್ಣಿನ ಆರೋಗ್ಯ ಸಮೀಕ್ಷೆ; ನೀರಿನ ಗುಣಮಟ್ಟ ಸಮಸ್ಯೆಯಿಂದ ಬೆಳೆ ನಷ್ಟಕ್ಕೆ ಪರಿಹಾರ ಕಾರ್ಯವಿಧಾನ</li>
+      <li><strong>ಆರೋಗ್ಯ ಇಲಾಖೆ:</strong> HN/KC ಕಣಿವೆ ಪ್ರದೇಶದಲ್ಲಿ ರೋಗ ಪ್ರಮಾಣದ ಸಾಂಕ್ರಾಮಿಕ ಸಮೀಕ್ಷೆ; ನಿಯಮಿತ ಆರೋಗ್ಯ ಮೇಲ್ವಿಚಾರಣಾ ಶಿಬಿರ; ತುರ್ತು ಆರೋಗ್ಯ ಪ್ರತಿಕ್ರಿಯಾ ಯೋಜನೆ ತಯಾರಿ</li>
+      <li><strong>ಜಿಲ್ಲಾಧಿಕಾರಿಗಳು (ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರ):</strong> ಜಿಲ್ಲಾ ಮಟ್ಟದ ನೀರಿನ ಗುಣಮಟ್ಟ ಕಾರ್ಯಪಡೆ ರಚಿಸುವುದು; ರೈತ ದೂರ ಕಾರ್ಯವಿಧಾನ; ಮಾಸಿಕ ಅನುಸರಣಾ ವರದಿ ರಾಜ್ಯ ಸರ್ಕಾರಕ್ಕೆ ಸಲ್ಲಿಕೆ</li>
+    </ul>
+    <div class="closing"><p>ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರದ ರೈತರು, ಪರಿಸರ ಮತ್ತು ಸಾರ್ವಜನಿಕ ಆರೋಗ್ಯ ರಕ್ಷಿಸಲು ತಮ್ಮ ತುರ್ತು ಗಮನ ಮತ್ತು ಸಂಘಟಿತ ಅಂತರ-ಇಲಾಖಾ ಕ್ರಮಕ್ಕೆ ಕೋರುತ್ತೇನೆ,</p></div>
+    <div class="signature-block">
+      <div class="sig-name">ಅಡ್ವ. ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ</div>
+      <div class="sig-title">ಹಿರಿಯ ವಕೀಲರು – NGT, ಉಚ್ಚ ನ್ಯಾಯಾಲಯ ಮತ್ತು ಸರ್ವೋಚ್ಚ ನ್ಯಾಯಾಲಯ | ಬೆಂಗಳೂರು ಲಾ ಹೌಸ್</div>
+    </div>
+  </div>
+</div>
+
+<hr class="letter-divider">
+
+<!-- ══════════ ಪತ್ರ ೬: ಶಾಸಕರು ══════════ -->
+<div class="letter" id="mlas">
+  <div class="letterhead">
+    <div class="letterhead-icon">⚖️</div>
+    <div class="letterhead-text">
+      <div class="org">ಬೆಂಗಳೂರು ಲಾ ಹೌಸ್</div>
+      <div class="advocate">ಅಡ್ವ. ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ | ಹಿರಿಯ ವಕೀಲರು – NGT, ಉಚ್ಚ ನ್ಯಾಯಾಲಯ ಮತ್ತು ಸರ್ವೋಚ್ಚ ನ್ಯಾಯಾಲಯ</div>
+      <div class="address">ಸಹಕಾರನಗರ, ಬೆಂಗಳೂರು – 560092 | ಚೇಂಬರ್ಸ್: ನವದೆಹಲಿ | ದೂ: +91-XXXXXXXXXX</div>
+    </div>
+  </div>
+  <div class="letter-meta">
+    <span><strong>ಉಲ್ಲೇಖ:</strong> BLH/ENV/MLA/2025/006</span>
+    <span><strong>ದಿನಾಂಕ:</strong> ಮಾರ್ಚ್ ೨೦೨೫</span>
+  </div>
+  <div class="letter-body">
+    <div class="letter-to">
+      <div class="to-label">ಸಲ್ಲಿಸಲಾಗಿದೆ</div>
+      <div class="to-name">ಗೌರವಾನ್ವಿತ ವಿಧಾನಸಭೆ ಸದಸ್ಯರಿಗೆ</div>
+      <div class="to-post"><strong>ಕೋಲಾರ ಜಿಲ್ಲೆ:</strong> ಕೋಲಾರ, ಬಂಗಾರಪೇಟೆ, ರಾಬರ್ಟ್‌ಸನ್‌ಪೇಟೆ, ಕೋಲಾರ ಚಿನ್ನದ ಗಣಿ, ಮುಳಬಾಗಲು, ಶ್ರೀನಿವಾಸಪುರ, ಮಾಲೂರು</div>
+      <div class="to-post"><strong>ಚಿಕ್ಕಬಳ್ಳಾಪುರ ಜಿಲ್ಲೆ:</strong> ಚಿಕ್ಕಬಳ್ಳಾಪುರ, ಸಿದ್ಲಘಟ್ಟ, ಚಿಂತಾಮಣಿ, ಗೌರಿಬಿದನೂರು, ಬಾಗೇಪಲ್ಲಿ, ಗುಡಿಬಂಡೆ</div>
+    </div>
+    <div class="letter-subject">ವಿಷಯ: HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆ ತ್ರಿಸ್ತರ ಶೋಧನಾ ವ್ಯವಸ್ಥೆಗೆ ತಮ್ಮ ಬೆಂಬಲಕ್ಕೆ ತುರ್ತು ಮನವಿ – ತಮ್ಮ ಕ್ಷೇತ್ರದ ರೈತರು ಮತ್ತು ನಿವಾಸಿಗಳ ರಕ್ಷಣೆ</div>
+    <div class="salutation">ಗೌರವಾನ್ವಿತ ವಿಧಾನಸಭೆ ಸದಸ್ಯರೇ,</div>
+    <p>ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರ ಜಿಲ್ಲೆಗಳ ರೈತ ಸಮುದಾಯ ಮತ್ತು ನಿವಾಸಿಗಳ ಚುನಾಯಿತ ಪ್ರತಿನಿಧಿಗಳಾದ ತಮ್ಮ ಮುಂದೆ ತುರ್ತು ಮತ್ತು ಗಾಢ ಗೌರವದೊಂದಿಗೆ ಮನವಿ ಸಲ್ಲಿಸುತ್ತಿದ್ದೇನೆ.</p>
+    <p>ತಾವು ಸೇವೆ ಸಲ್ಲಿಸುವ ಮತದಾರರು — ಹೊಲಗಳಲ್ಲಿ ಶ್ರಮಿಸುವ ರೈತರು, ಕಣಿವೆ ನೀರಿನಿಂದ ತುಂಬಿದ ಬಾವಿ ಮತ್ತು ಕೊಳವೆ ಬಾವಿಗಳ ನೀರು ಕುಡಿಯುವ ಕುಟುಂಬಗಳು, ಈ ಭೂಮಿಯನ್ನು ಬಳುವಳಿಯಾಗಿ ಪಡೆಯಲಿರುವ ಮಕ್ಕಳು — ಇಂದು ತಮ್ಮ ದನಿ ಮತ್ತು ಕ್ರಿಯೆಯ ಅಗತ್ಯ ಹೊಂದಿದ್ದಾರೆ.</p>
+    <p>HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆ ನೀರಿನ ಯೋಜನೆಗಳು ತಮ್ಮ ಕ್ಷೇತ್ರಗಳು ತಲೆಮಾರುಗಳಿಂದ ಎದುರಿಸಿದ ನೀರಿನ ಬಿಕ್ಕಟ್ಟಿಗೆ ಪರಿಹಾರ ಎಂದು ಯೋಜಿಸಲಾಗಿತ್ತು. ಆದರೆ ಇಂದು ಈ ಕಾಲುವೆಗಳು ಸಾಕಷ್ಟು ಸಂಸ್ಕರಿಸದ — ಭಾರೀ ಲೋಹಗಳು, ಕೈಗಾರಿಕಾ ಮಾಲಿನ್ಯಕಾರಕಗಳು ಮತ್ತು ಸೂಕ್ಷ್ಮಾಣು ಮಾಲಿನ್ಯ ಹೊಂದಿರುವ ನೀರನ್ನು ವಿತರಿಸುತ್ತಿವೆ — ಉಳಿಸಲು ಬಂದ ಭೂಮಿ ಮತ್ತು ಜನರನ್ನೇ ನಿಧಾನವಾಗಿ ವಿಷಪೂರಿತಗೊಳಿಸುತ್ತಿವೆ.</p>
+    <p><strong>ತಮ್ಮಿಂದ ನಾವು ಕೋರುವುದೇನೆಂದರೆ:</strong></p>
+    <ul>
+      <li>ಮುಂದಿನ ಅಧಿವೇಶನದಲ್ಲಿ ಕರ್ನಾಟಕ ವಿಧಾನಸಭೆ ನೆಲದ ಮೇಲೆ ಈ ವಿಷಯ ತುರ್ತಾಗಿ ಎತ್ತುವುದು</li>
+      <li>ನೀರಿನ ಗುಣಮಟ್ಟ ಮತ್ತು ಸಂಸ್ಕರಣಾ ಮಾನದಂಡಗಳ ಬಗ್ಗೆ ಸಂಬಂಧಿತ ಸಚಿವರಿಂದ ಹೇಳಿಕೆ ಅಥವಾ ಖಾಸಗಿ ಸದಸ್ಯರ ನಿರ್ಣಯ ಮಂಡಿಸುವುದು</li>
+      <li>ತ್ರಿಸ್ತರ ಶೋಧನಾ ವ್ಯವಸ್ಥೆ ತಕ್ಷಣ ಅನುಷ್ಠಾನ ಒತ್ತಾಯಿಸಿ ಮುಖ್ಯಮಂತ್ರಿ, ನೀರಾವರಿ ಮತ್ತು ಪರಿಸರ ಸಚಿವರಿಗೆ ಜಂಟಿ ಪತ್ರ ಬರೆಯುವುದು</li>
+      <li>ಕ್ಷೇತ್ರದಲ್ಲಿ ನೀರಿನ ಗುಣಮಟ್ಟ ಪರೀಕ್ಷಾ ಮೂಲಸೌಕರ್ಯ ಬೆಂಬಲಿಸಲು <strong>MLALAG ನಿಧಿ</strong> ಬಳಸುವುದು</li>
+      <li>ರೈತ ದೂರ ಪರಿಹಾರಕ್ಕಾಗಿ KSPCB ಮತ್ತು BWSSB ಅಧಿಕಾರಿಗಳೊಂದಿಗೆ ನೇರ ಸಂವಾದ ಸಾಧ್ಯಗೊಳಿಸುವುದು</li>
+      <li>ತ್ರೈಮಾಸಿಕ ನೀರಿನ ಗುಣಮಟ್ಟ ವರದಿ ವಿಧಾನಸಭೆಯಲ್ಲಿ ಮಂಡಿಸಲು ಮತ್ತು ಕನ್ನಡದಲ್ಲಿ ಸಾರ್ವಜನಿಕರಿಗೆ ಲಭ್ಯವಾಗುವಂತೆ ಒತ್ತಾಯಿಸುವುದು</li>
+    </ul>
+    <p>ವಿಧಾನಸಭೆಯಲ್ಲಿ ತಮ್ಮ ದನಿ ಪ್ರಜಾಸತ್ತಾತ್ಮಕ ಆದೇಶದ ಭಾರ ಹೊತ್ತಿದೆ. ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರದ ಜನರಿಗೆ ತಮ್ಮ ಭೂಮಿ ಮತ್ತು ಮನೆ ತಲುಪುವ ನೀರು ಸ್ವಚ್ಛ, ಸುರಕ್ಷಿತ ಮತ್ತು ಜೀವ ನೀಡುವಂಥದ್ದಾಗಿದೆ ಎಂದು ಖಾತ್ರಿಪಡಿಸಲು ನಾಯಕರ ಅಗತ್ಯ ಇದೆ — ನಿಧಾನ ವಿಷ ಅಲ್ಲ.</p>
+    <div class="closing"><p>ತಮ್ಮ ನಾಯಕತ್ವ ಮತ್ತು ಜನಪ್ರತಿನಿಧಿ ಎಂಬ ಜವಾಬ್ದಾರಿಯ ಮೇಲೆ ಗಾಢ ಗೌರವ ಮತ್ತು ನಿರೀಕ್ಷೆಯೊಂದಿಗೆ,</p></div>
+    <div class="signature-block">
+      <div class="sig-name">ಅಡ್ವ. ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ</div>
+      <div class="sig-title">ಹಿರಿಯ ವಕೀಲರು – NGT, ಉಚ್ಚ ನ್ಯಾಯಾಲಯ ಮತ್ತು ಸರ್ವೋಚ್ಚ ನ್ಯಾಯಾಲಯ | ಬೆಂಗಳೂರು ಲಾ ಹೌಸ್</div>
+      <div class="sig-title">ಹಿರಿಯ ಪತ್ರಕರ್ತರು | ಕಾನೂನು ಸಲಹೆಗಾರರು, R MAXX ಕನ್ನಡ ನ್ಯೂಸ್ ಚಾನೆಲ್</div>
+    </div>
+  </div>
+</div>
+
+<hr class="letter-divider">
+
+<!-- ══════════ ಪತ್ರ ೭: ಸಂಸದರು ══════════ -->
+<div class="letter" id="mps">
+  <div class="letterhead">
+    <div class="letterhead-icon">⚖️</div>
+    <div class="letterhead-text">
+      <div class="org">ಬೆಂಗಳೂರು ಲಾ ಹೌಸ್</div>
+      <div class="advocate">ಅಡ್ವ. ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ | ಹಿರಿಯ ವಕೀಲರು – NGT, ಉಚ್ಚ ನ್ಯಾಯಾಲಯ ಮತ್ತು ಸರ್ವೋಚ್ಚ ನ್ಯಾಯಾಲಯ</div>
+      <div class="address">ಸಹಕಾರನಗರ, ಬೆಂಗಳೂರು – 560092 | ಚೇಂಬರ್ಸ್: ನವದೆಹಲಿ | ದೂ: +91-XXXXXXXXXX</div>
+    </div>
+  </div>
+  <div class="letter-meta">
+    <span><strong>ಉಲ್ಲೇಖ:</strong> BLH/ENV/MP/2025/007</span>
+    <span><strong>ದಿನಾಂಕ:</strong> ಮಾರ್ಚ್ ೨೦೨೫</span>
+  </div>
+  <div class="letter-body">
+    <div class="letter-to">
+      <div class="to-label">ಸಲ್ಲಿಸಲಾಗಿದೆ</div>
+      <div class="to-name">ಗೌರವಾನ್ವಿತ ಸಂಸದ ಸದಸ್ಯರಿಗೆ</div>
+      <div class="to-post"><strong>ಲೋಕಸಭೆ:</strong> ಸಂಸದ – ಕೋಲಾರ ಕ್ಷೇತ್ರ (SC) | ಸಂಸದ – ಚಿಕ್ಕಬಳ್ಳಾಪುರ ಕ್ಷೇತ್ರ</div>
+      <div class="to-post"><strong>ರಾಜ್ಯಸಭೆ:</strong> ಕರ್ನಾಟಕದ ಗೌರವಾನ್ವಿತ ರಾಜ್ಯಸಭಾ ಸದಸ್ಯರು, ಭಾರತ ಸಂಸತ್, ನವದೆಹಲಿ</div>
+    </div>
+    <div class="letter-subject">ವಿಷಯ: ಸಂಸದೀಯ ಮನವಿ – HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆ ನೀರಿನ ಯೋಜನೆ, ಕರ್ನಾಟಕ – ಕೃಷಿಯಲ್ಲಿ ಸುರಕ್ಷಿತ ಮರು-ಬಳಕೆ ನೀರಿಗಾಗಿ ರಾಷ್ಟ್ರೀಯ ನೀತಿ ಕ್ರಮ ಕೋರಿ ಸಂಸತ್ತಿನಲ್ಲಿ ವಿಷಯ ಎತ್ತುವುದು</div>
+    <div class="salutation">ಗೌರವಾನ್ವಿತ ಸಂಸದ ಸದಸ್ಯರೇ,</div>
+    <p>ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರ ಜಿಲ್ಲೆಗಳ ರೈತ ಸಮುದಾಯಗಳ ಆರೋಗ್ಯ, ಸುರಕ್ಷತೆ, ಘನತೆ ಮತ್ತು ಆರ್ಥಿಕ ಭದ್ರತೆಗೆ ಸಂಬಂಧಿಸಿದ ರಾಷ್ಟ್ರೀಯ ಮಹತ್ವದ ವಿಷಯ ತಮ್ಮ ಮುಂದೆ ಇಡುತ್ತೇನೆ.</p>
+    <p>HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆ ನೀರಿನ ಯೋಜನೆಗಳು ನೀರಿನ ಕೊರತೆಗೆ ಭಾಗಶಃ ಪರಿಹಾರ ನೀಡಿವೆ. ಆದರೆ ವೈಜ್ಞಾನಿಕ ಡೇಟಾ ಮತ್ತು ಮೂಲಮಟ್ಟದ ಸಾಕ್ಷ್ಯ ಸರಬರಾಜಾಗುತ್ತಿರುವ ನೀರು ಭಾರೀ ಲೋಹಗಳು, ಔಷಧ ಅವಶೇಷಗಳು, ರೋಗಾಣುಗಳು ಮತ್ತು ಕೈಗಾರಿಕಾ ತ್ಯಾಜ್ಯ — ಮಣ್ಣಿನ ಆರೋಗ್ಯ, ಆಹಾರ ಸುರಕ್ಷತೆ, ಕೆರೆ ಪರಿಸರ ಮತ್ತು ಸಾರ್ವಜನಿಕ ಆರೋಗ್ಯಕ್ಕೆ ಗಂಭೀರ ಅಪಾಯ ಒಡ್ಡುವ ಅಪಾಯಕಾರಿ ಮಟ್ಟಗಳಲ್ಲಿ ಇರುವುದನ್ನು ಸ್ಥಾಪಿಸುತ್ತದೆ.</p>
+    <p>ಇದು ಕೇವಲ ಕರ್ನಾಟಕದ ವಿಷಯ ಅಲ್ಲ. ರಾಷ್ಟ್ರೀಯ ಜಲ ನೀತಿ ಅಡಿ ಭಾರತ ಕೃಷಿಗೆ ಮರು-ಬಳಕೆ ನೀರು ಹೆಚ್ಚಿಸಿದಂತೆ, ಈ ಯೋಜನೆಗಳಿಗೆ ಅನ್ವಯಿಸಲಾಗುವ ಸಂಸ್ಕರಣಾ ಮಾನದಂಡಗಳು ಇಡೀ ದೇಶದ ಆಹಾರ ಸುರಕ್ಷತೆ ಮತ್ತು ಪರಿಸರ ಆರೋಗ್ಯಕ್ಕೆ ನಿದರ್ಶನ ನಿರ್ಧರಿಸುತ್ತವೆ.</p>
+    <p><strong>ತಮ್ಮಿಂದ ವಿನಮ್ರವಾಗಿ ಕೋರುತ್ತೇವೆ:</strong></p>
+    <ul>
+      <li>HN ಕಣಿವೆ ಮತ್ತು KC ಕಣಿವೆ ನಿರ್ದಿಷ್ಟ ಉಲ್ಲೇಖದೊಂದಿಗೆ ಕೃಷಿಯಲ್ಲಿ ಮರು-ಬಳಕೆ ತ್ಯಾಜ್ಯ ನೀರಿನ ಗುಣಮಟ್ಟ ಮಾನದಂಡಗಳ ಬಗ್ಗೆ ಲೋಕಸಭೆ / ರಾಜ್ಯಸಭೆಯಲ್ಲಿ <strong>ನಕ್ಷತ್ರ/ಅನಕ್ಷತ್ರ ಪ್ರಶ್ನೆ</strong> ಎತ್ತುವುದು</li>
+      <li>ರಾಷ್ಟ್ರೀಯ ಗಮನ ಸೆಳೆಯಲು ಅಗತ್ಯಬಿದ್ದಲ್ಲಿ <strong>ಕರೆ ಗಮನ ಚಳವಳಿ</strong> ಅಥವಾ <strong>ಮುಂದೂಡಿಕೆ ಚಳವಳಿ</strong> ಮಂಡಿಸುವುದು</li>
+      <li>ಎಲ್ಲಾ ಮರು-ಬಳಕೆ ನೀರಿನ ಕೃಷಿ ಯೋಜನೆಗಳ ರಾಷ್ಟ್ರೀಯ ಲೆಕ್ಕಪರಿಶೋಧನೆ ಒತ್ತಾಯಿಸಿ ಜಲ ಶಕ್ತಿ, ಪರಿಸರ ಮತ್ತು ಕೃಷಿ ಸಚಿವರಿಗೆ ಪತ್ರ ಬರೆಯುವುದು</li>
+      <li>ಜಲ ಜೀವನ್ ಮಿಷನ್ ಮಾರ್ಗಸೂಚಿಗಳಲ್ಲಿ ಕಡ್ಡಾಯ ತ್ರಿಸ್ತರ ಶೋಧನಾ ವ್ಯವಸ್ಥೆ ಮಾನದಂಡ ಸೇರಿಸಲು ಪ್ರಚಾರ ಮಾಡುವುದು</li>
+      <li>ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರ ಕ್ಷೇತ್ರಗಳಲ್ಲಿ ನೀರಿನ ಗುಣಮಟ್ಟ ಮೇಲ್ವಿಚಾರಣಾ ಮೂಲಸೌಕರ್ಯ ಬೆಂಬಲಿಸಲು <strong>MPLADS ನಿಧಿ</strong> ಬಳಸುವುದು</li>
+    </ul>
+    <p>ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರದ ರೈತರು ಬಹಳ ಕಾಲ ಕಾದಿದ್ದಾರೆ. ಅವರಿಗೆ ಪೋಷಿಸುವ ನೀರು ಬೇಕು — ವಿಷಪೂರಿತ ನೀರಲ್ಲ. ಸಂಸತ್ತಿನಲ್ಲಿ ತಮ್ಮ ದನಿ ಆ ವ್ಯತ್ಯಾಸ ಮಾಡಬಲ್ಲದು.</p>
+    <div class="closing"><p>ತಮ್ಮ ಜನಪ್ರಿಯ ಬದ್ಧತೆ ಮತ್ತು ರಾಷ್ಟ್ರ ಸೇವೆಯ ಮೇಲೆ ಗಾಢ ಗೌರವ ಮತ್ತು ನಂಬಿಕೆಯೊಂದಿಗೆ,</p></div>
+    <div class="signature-block">
+      <div class="sig-name">ಅಡ್ವ. ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ</div>
+      <div class="sig-title">ಹಿರಿಯ ವಕೀಲರು – ರಾಷ್ಟ್ರೀಯ ಹಸಿರು ನ್ಯಾಯಮಂಡಳಿ, ಉಚ್ಚ ನ್ಯಾಯಾಲಯ ಮತ್ತು ಸರ್ವೋಚ್ಚ ನ್ಯಾಯಾಲಯ</div>
+      <div class="sig-title">ಬೆಂಗಳೂರು ಲಾ ಹೌಸ್ | ಹಿರಿಯ ಪತ್ರಕರ್ತರು | ಕಾನೂನು ಸಲಹೆಗಾರರು, R MAXX ಕನ್ನಡ ನ್ಯೂಸ್ ಚಾನೆಲ್</div>
+      <div class="sig-title">ಸಹಕಾರನಗರ, ಬೆಂಗಳೂರು – 560 092 | ಚೇಂಬರ್ಸ್: ನವದೆಹಲಿ</div>
+    </div>
+  </div>
+</div>
+
+<!-- ಕೊನೆಯ ಅಡಿಟಿಪ್ಪಣಿ -->
+<div style="background:#0a3d62; color:#a8d8ea; text-align:center; padding:25px; margin-top:30px; font-size:0.88em;">
+  <div style="font-size:1.15em; color:#ffd700; font-weight:700; margin-bottom:8px;">💧 ನಮಗೆ ಬೇಕಾಗಿರುವುದು ಕೇವಲ ನೀರಲ್ಲ… ಸ್ವಚ್ಛ ಮತ್ತು ಸುರಕ್ಷಿತ ನೀರು. 💧</div>
+  <div>ಬೆಂಗಳೂರು ಲಾ ಹೌಸ್ | ಅಡ್ವ. ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ | ಉಲ್ಲೇಖ: BLH/ENV/2025/001–007</div>
+  <div style="margin-top:5px;">ಕೋಲಾರ ಮತ್ತು ಚಿಕ್ಕಬಳ್ಳಾಪುರ ಜಿಲ್ಲೆಗಳ ರೈತರು, ಪರಿಸರ ಮತ್ತು ಸಾರ್ವಜನಿಕ ಆರೋಗ್ಯ ರಕ್ಷಣೆ — ಕರ್ನಾಟಕ, ಭಾರತ 🇮🇳</div>
+</div>
+
+</body>
+</html>
