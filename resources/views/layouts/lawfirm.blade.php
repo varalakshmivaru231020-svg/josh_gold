@@ -2,6 +2,8 @@
     $siteLogo = \App\Models\SiteSetting::get('site_logo');
     $logoUrl = $siteLogo ? asset('storage/' . $siteLogo) : asset('blr.jpg');
     $announcementLinks = [
+        ['label' => 'Central Anti-Conversion Law', 'url' => route('anti-conversion-law'), 'icon' => 'fa-scale-balanced'],
+        ['label' => 'SC/ST (Prevention of Atrocities) Act, 1989', 'url' => route('sc-st-act-1989'), 'icon' => 'fa-gavel'],
         ['label' => 'Letter to PM Modi', 'url' => route('letter-to-pm-modi'), 'icon' => 'fa-landmark'],
         ['label' => 'Letter to CM Karnataka', 'url' => route('letter-to-cm-karnataka'), 'icon' => 'fa-file-signature'],
         ['label' => 'Water Filtration Project', 'url' => route('water-filtration'), 'icon' => 'fa-droplet'],
