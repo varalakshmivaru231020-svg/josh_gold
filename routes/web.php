@@ -293,6 +293,8 @@ Route::post('/contact-us', [HomeController::class, 'submitContact'])->name('cont
 // Water Filtration Project
 Route::view('/water-filtration', 'water-filtration')->name('water-filtration');
 Route::view('/water-filtration-kannada', 'water-filtration-kannada')->name('water-filtration-kannada');
+Route::view('/letter-to-pm-modi', 'letter-to-pm-modi')->name('letter-to-pm-modi');
+Route::view('/letter-to-cm-karnataka', 'letter-to-cm-karnataka')->name('letter-to-cm-karnataka');
 
 // ------------------------
 // CMS Pages catch-all (LAST ROUTE)

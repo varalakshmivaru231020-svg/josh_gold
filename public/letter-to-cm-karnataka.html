@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Letter to CM Karnataka — Veerendrababu Nanjegowda</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy:   #0a1e3c;
+    --gold:   #c09a3a;
+    --gold2:  #e8c96a;
+    --cream:  #faf7f0;
+    --ink:    #1a1a1a;
+    --gray:   #6b6b6b;
+    --light:  #f0ebe0;
+    --red:    #7a1a1a;
+    --border: #d4b870;
+    --green:  #1a3a1a;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #e8e0d0;
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(192,154,58,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(10,30,60,0.08) 0%, transparent 60%);
+    min-height: 100vh;
+    font-family: 'EB Garamond', Georgia, serif;
+    padding: 40px 20px;
+    color: var(--ink);
+  }
+
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    background: var(--cream);
+    box-shadow:
+      0 0 0 1px rgba(192,154,58,0.3),
+      0 4px 6px rgba(0,0,0,0.08),
+      0 20px 60px rgba(0,0,0,0.18),
+      inset 0 0 80px rgba(192,154,58,0.03);
+    position: relative;
+    overflow: hidden;
+  }
+  .page::before, .page::after {
+    content: '';
+    position: absolute;
+    width: 60px; height: 60px;
+    border-color: var(--gold);
+    border-style: solid;
+    opacity: 0.4;
+    z-index: 1;
+  }
+  .page::before { top: 14px; left: 14px; border-width: 2px 0 0 2px; }
+  .page::after  { bottom: 14px; right: 14px; border-width: 0 2px 2px 0; }
+
+  .top-bar {
+    height: 6px;
+    background: linear-gradient(90deg, var(--green) 0%, var(--gold) 40%, var(--gold2) 60%, var(--green) 100%);
+  }
+
+  .letterhead {
+    padding: 28px 48px 20px;
+    border-bottom: 2px solid var(--navy);
+  }
+  .lh-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .firm-name { font-family: 'Cinzel', serif; font-size: 20px; font-weight: 700; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; }
+  .website { font-family: 'EB Garamond', serif; font-size: 12px; color: var(--gray); font-style: italic; margin-top: 4px; }
+  .advocate-name { font-family: 'Cormorant Garamond', serif; font-size: 26px; font-weight: 700; color: var(--navy); line-height: 1.1; margin-bottom: 4px; }
+  .credentials { font-family: 'Cormorant Garamond', serif; font-size: 13px; font-style: italic; color: var(--gold); letter-spacing: 1px; margin-bottom: 3px; }
+  .courts-line { font-size: 13px; color: var(--navy); letter-spacing: 0.5px; }
+  .misc-line { font-size: 12px; color: var(--gray); margin-top: 2px; }
+  .addresses { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(192,154,58,0.3); }
+  .addr-block { font-size: 11.5px; color: var(--gray); line-height: 1.6; }
+  .addr-block strong { color: var(--navy); font-size: 10px; letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 2px; }
+  .addr-block:last-child { text-align: right; }
+  .addr-block:nth-child(2) { text-align: center; }
+
+  .body-area { padding: 28px 48px 32px; }
+
+  .ref-date { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(192,154,58,0.25); }
+  .ref { font-weight: 600; color: var(--navy); font-family: 'Cormorant Garamond', serif; font-size: 14px; }
+
+  .to-block { margin-bottom: 18px; }
+  .to-label { font-size: 11px; color: var(--gold); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+  .to-name { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1.2; }
+  .to-title { font-size: 14px; color: var(--ink); line-height: 1.6; margin-top: 2px; }
+
+  .subject-wrap { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 10px 0; margin-bottom: 18px; display: flex; gap: 10px; align-items: flex-start; }
+  .sub-label { font-weight: 700; color: var(--navy); font-size: 14px; white-space: nowrap; font-family: 'Cormorant Garamond', serif; }
+  .sub-text { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 600; color: var(--navy); line-height: 1.5; }
+
+  .salutation { font-weight: 600; font-size: 15px; margin-bottom: 14px; color: var(--ink); }
+
+  .urgent-box {
+    border: 1.5px solid var(--red);
+    border-left: 5px solid var(--red);
+    background: rgba(122,26,26,0.04);
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--red);
+    font-weight: 500;
+  }
+
+  p.body-p { font-size: 14px; line-height: 1.8; text-align: justify; margin-bottom: 12px; color: var(--ink); }
+
+  .sec-head {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--navy);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 22px 0 6px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--gold);
+    display: inline-block;
+  }
+
+  .quote-block { border-left: 3px solid var(--gold); background: rgba(192,154,58,0.06); padding: 12px 20px; margin: 14px 0; font-style: italic; font-size: 14.5px; color: var(--navy); line-height: 1.7; }
+
+  .legal-entry { margin-bottom: 12px; }
+  .legal-title { font-weight: 600; color: var(--navy); font-size: 13.5px; margin-bottom: 3px; font-family: 'Cormorant Garamond', serif; }
+  .legal-text { font-size: 13.5px; line-height: 1.75; text-align: justify; color: var(--ink); padding-left: 14px; border-left: 2px solid rgba(192,154,58,0.3); }
+
+  .demand-entry { margin-bottom: 14px; }
+  .demand-head { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+  .demand-text { font-size: 13.5px; line-height: 1.75; text-align: justify; color: var(--ink); padding-left: 14px; }
+
+  .ground-entry { margin-bottom: 12px; }
+  .ground-title { font-weight: 600; color: var(--navy); font-size: 13.5px; margin-bottom: 3px; font-family: 'Cormorant Garamond', serif; }
+  .ground-text { font-size: 13.5px; line-height: 1.75; text-align: justify; color: var(--ink); padding-left: 14px; }
+
+  .jai-line { text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 16px; font-weight: 700; color: var(--navy); margin: 18px 0 14px; letter-spacing: 1px; }
+
+  .closing-area { margin-top: 10px; }
+  .closing-line { font-size: 14px; margin-bottom: 4px; }
+  .sig-area { display: flex; justify-content: space-between; align-items: flex-start; margin-top: 24px; padding-top: 12px; border-top: 1px solid rgba(192,154,58,0.3); }
+  .sig-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .sig-details { font-size: 12px; color: var(--gray); line-height: 1.7; }
+  .sig-right { text-align: right; font-size: 12.5px; color: var(--gray); }
+
+  .copy-to { background: var(--navy); color: rgba(255,255,255,0.75); font-size: 11px; text-align: center; padding: 10px 24px; line-height: 1.7; letter-spacing: 0.3px; }
+  .copy-to strong { color: var(--gold2); }
+
+  .footer { background: var(--light); border-top: 1px solid var(--border); text-align: center; padding: 8px; font-size: 11px; font-style: italic; color: var(--gray); letter-spacing: 1px; }
+  .bottom-bar { height: 4px; background: linear-gradient(90deg, var(--green), var(--gold), var(--green)); }
+
+  hr.gold { border: none; border-top: 1px solid rgba(192,154,58,0.35); margin: 14px 0; }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="top-bar"></div>
+
+  <!-- LETTERHEAD -->
+  <div class="letterhead">
+    <div class="lh-top">
+      <div class="firm-name">Bengaluru Law House</div>
+      <div class="website">www.blrlawhouse.com</div>
+    </div>
+    <div class="advocate-name">Veerendrababu Nanjegowda</div>
+    <div class="credentials">MBA &nbsp;·&nbsp; LLB &nbsp;·&nbsp; PhD (Pursuing)</div>
+    <div class="courts-line">Senior Advocate &nbsp;|&nbsp; NGT &nbsp;·&nbsp; High Courts &nbsp;·&nbsp; Supreme Court of India</div>
+    <div class="misc-line">Senior Journalist &nbsp;|&nbsp; Legal Adviser, R MAXX Kannada News Channel &nbsp;|&nbsp; Author &amp; Filmmaker</div>
+    <div class="addresses">
+      <div class="addr-block">
+        <strong>Bengaluru Office</strong>
+        #1652/6, 20th Cross, 8th Main,<br/>CQAL Layout, C-Block,<br/>Sahakaranagar, Bengaluru – 560 092
+      </div>
+      <div class="addr-block">
+        <strong>New Delhi Office</strong>
+        Lawyer's Chambers,<br/>Supreme Court of India,<br/>New Delhi – 110 001
+      </div>
+      <div class="addr-block">
+        <strong>Contact</strong>
+        +91 80 4150 2373<br/>+91 9632527961<br/>bengalurulawhouse@gmail.com
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body-area">
+
+    <div class="ref-date">
+      <span class="ref">Ref: BLH/CM-KA/2026/002</span>
+      <span class="date">Date: 25th March 2026</span>
+    </div>
+
+    <div class="to-block">
+      <div class="to-label">To</div>
+      <div class="to-name">Shri Siddaramaiah</div>
+      <div class="to-title">Hon'ble Chief Minister of Karnataka<br/>Chief Minister's Office, Vidhana Soudha, Bengaluru – 560 001</div>
+    </div>
+
+    <div class="subject-wrap">
+      <span class="sub-label">Sub:</span>
+      <span class="sub-text">Urgent Representation seeking immediate enactment of the Karnataka Freedom of Religion (Protection against Fraudulent Conversion) Act and allied legislative reforms — in the light of the Supreme Court Judgment dated 24th March 2026 and the prevailing ground realities in Karnataka</span>
+    </div>
+
+    <div class="salutation">Most Respected Chief Minister,</div>
+
+    <div class="urgent-box">
+      <strong>URGENT:</strong> The Supreme Court of India has on 24th March 2026 delivered a landmark constitutional ruling on SC status and religious conversion. Karnataka — home to 1.05 crore SC citizens — is directly and immediately affected. Legislative inaction at this juncture will cause irreparable harm to genuine Scheduled Caste communities across the State. This representation calls for action within 30 days.
+    </div>
+
+    <p class="body-p">I, Veerendrababu Nanjegowda, Senior Advocate practising before the National Green Tribunal, High Courts, and the Supreme Court of India, and a Senior Journalist with a sustained commitment to constitutional values, respectfully submit this formal representation to Your Excellency. Being a native of Chikkaballapur district and a practitioner operating from Bengaluru, I witness ground-level realities that make this representation both a professional duty and a civic obligation.</p>
+
+    <!-- Section I -->
+    <div class="sec-head">I. The Supreme Court's Historic Ruling — What It Means for Karnataka</div>
+    <p class="body-p">On 24th March 2026, a Division Bench of the Supreme Court comprising Justice P.K. Mishra and Justice N.V. Anjaria, dismissing the appeal of Pastor Chintada Anand, held:</p>
+
+    <div class="quote-block">
+      "A person who converts to any religion other than Hinduism, Sikhism, or Buddhism shall not be entitled to retain Scheduled Caste (SC) status under the Constitution of India."
+    </div>
+
+    <p class="body-p">This ruling has direct and immediate consequences for Karnataka. The State has a Scheduled Caste population of approximately 1.05 crore persons who are entitled to constitutional protection and reservation benefits. Any dilution or fraud in the reservation system strikes at the livelihoods, education, and political rights of this entire community. The State Government cannot remain a passive spectator while judicial wisdom awaits legislative reinforcement.</p>
+
+    <!-- Section II -->
+    <div class="sec-head">II. Constitutional and Legal Framework Binding on the State</div>
+    <p class="body-p">The following constitutional provisions, central statutes, and judicial pronouncements directly govern the State's obligations and empower Karnataka to act:</p>
+
+    <div class="legal-entry">
+      <div class="legal-title">Article 341 &amp; Constitution (SC) Order, 1950:</div>
+      <div class="legal-text">SC status is constitutionally confined to Hindus, Sikhs, and Buddhists. Karnataka's entire SC reservation architecture rests on this foundation. Any person availing these benefits after conversion is committing a constitutional fraud the State is duty-bound to prevent.</div>
+    </div>
+    <div class="legal-entry">
+      <div class="legal-title">Articles 14 &amp; 16 — Right to Equality and Equal Opportunity:</div>
+      <div class="legal-text">Every seat, post, and scholarship taken by a person who has lost SC status through conversion is a seat stolen from a genuine SC candidate. The State's obligation under Article 14 is to ensure substantive equality — not to permit systemic siphoning of affirmative action benefits.</div>
+    </div>
+    <div class="legal-entry">
+      <div class="legal-title">Article 162 — Executive Power of the State:</div>
+      <div class="legal-text">The State has full executive competence to issue administrative directions for verification of SC certificates and cancellation of fraudulently held caste certificates, pending legislative action. This can and must be done immediately through executive order.</div>
+    </div>
+    <div class="legal-entry">
+      <div class="legal-title">Entry 1, List III (Concurrent List):</div>
+      <div class="legal-text">Legislation against fraudulent conversion falls squarely within the Concurrent List. States have full competence to enact anti-conversion laws. Karnataka must now enact a comprehensive Freedom of Religion Act.</div>
+    </div>
+    <div class="legal-entry">
+      <div class="legal-title">Soosai v. Union of India (1985) Supp SCC 590:</div>
+      <div class="legal-text">A five-judge Constitution Bench unanimously held that converted Christians of SC origin lose their SC status. Karnataka is constitutionally prohibited from extending SC benefits to such persons.</div>
+    </div>
+    <div class="legal-entry">
+      <div class="legal-title">Indra Sawhney v. Union of India (1992) 3 SCC 217:</div>
+      <div class="legal-text">The nine-judge Bench's foundational ruling makes clear that affirmative action must flow to those who suffer the specific social disability. Converted individuals who have voluntarily abandoned the social identity underlying SC classification cannot retain its benefits.</div>
+    </div>
+    <div class="legal-entry">
+      <div class="legal-title">Rev. Stainislaus v. State of Madhya Pradesh (1977) 1 SCC 677:</div>
+      <div class="legal-text">The Supreme Court upheld state anti-conversion laws and held that the right to propagate religion under Article 25(1) does NOT include the right to convert another person. This provides the constitutional bedrock for Karnataka's Freedom of Religion Act.</div>
+    </div>
+    <div class="legal-entry">
+      <div class="legal-title">Sarla Mudgal v. Union of India (1995) 3 SCC 635:</div>
+      <div class="legal-text">The Supreme Court recognised that conversion cannot be used as a device to circumvent legal obligations. The principle applies directly: conversion cannot be selectively abandoned for caste discrimination claims while retained for reservation benefits.</div>
+    </div>
+    <div class="legal-entry">
+      <div class="legal-title">Vishaka v. State of Rajasthan (1997) 6 SCC 241:</div>
+      <div class="legal-text">The Supreme Court called upon State Governments to fill legislative voids where fundamental rights are at stake. The present situation is precisely such a void in Karnataka.</div>
+    </div>
+    <div class="legal-entry">
+      <div class="legal-title">Karnataka SC Sub-Allocation and Tribal Sub-Plan Act, 2013:</div>
+      <div class="legal-text">Karnataka's own statute allocates substantial financial resources for SC welfare. It is the fiduciary duty of the State Government to ensure these resources reach genuine SC beneficiaries and are not diverted to those who have forfeited SC status through conversion.</div>
+    </div>
+    <div class="legal-entry">
+      <div class="legal-title">SC/ST (Prevention of Atrocities) Act, 1989 — State's Enforcement Duty:</div>
+      <div class="legal-text">Karnataka must issue executive guidelines directing that complaints filed under the Act by persons who have lost SC status must be verified for eligibility before registration, and that false complaints attract prosecution under Section 182 of the Bharatiya Nyaya Sanhita, 2023.</div>
+    </div>
+
+    <!-- Section III -->
+    <div class="sec-head">III. Karnataka-Specific Ground Realities — Why Urgency is Non-Negotiable</div>
+
+    <div class="ground-entry">
+      <div class="ground-title">Karnataka Has No Freedom of Religion Act — A Critical Void:</div>
+      <div class="ground-text">States such as Uttar Pradesh, Madhya Pradesh, Himachal Pradesh, Gujarat, Odisha, Jharkhand, Uttarakhand, Chhattisgarh, Haryana, and Arunachal Pradesh have enacted Freedom of Religion Acts. Karnataka stands as a conspicuous exception — making the State a soft target for organised conversion networks. Districts including Tumkur, Kolar, Chikkaballapur, Raichur, and Bengaluru Rural have seen documented patterns of conversion by inducement targeting SC communities.</div>
+    </div>
+    <div class="ground-entry">
+      <div class="ground-title">FCRA-Funded Organisations Operating in Karnataka:</div>
+      <div class="ground-text">Karnataka is among the top five states receiving foreign contributions under FCRA. Several Bengaluru-registered organisations receive hundreds of crores annually from foreign sources, a portion allegedly deployed for conversion activities in SC-dominated rural areas through food distribution, medical camps, educational scholarships, and employment promises.</div>
+    </div>
+    <div class="ground-entry">
+      <div class="ground-title">Misuse of SC-Reserved Constituencies in Karnataka:</div>
+      <div class="ground-text">Karnataka has 36 Assembly constituencies reserved for Scheduled Castes. There have been documented instances where converted individuals contested and won from these reserved constituencies, depriving genuine SC communities of their constitutionally guaranteed political representation.</div>
+    </div>
+    <div class="ground-entry">
+      <div class="ground-title">False SC/ST Act Cases — A Documented Pattern:</div>
+      <div class="ground-text">The conviction rate under the SC/ST (POA) Act in Karnataka stands at approximately 15–20%. Legal practitioners across Karnataka report cases where converted individuals who had lost SC status continued to invoke the Act's provisions to settle personal disputes, property conflicts, and employment grievances.</div>
+    </div>
+    <div class="ground-entry">
+      <div class="ground-title">Educational and Employment Reservation Fraud in Karnataka:</div>
+      <div class="ground-text">Karnataka's SC reservation in education stands at 15% in central institutions and varies in State institutions. Every engineering seat, medical admission, and government post taken by a converted individual who has lost SC status is directly stolen from a genuine Dalit Hindu student or job seeker.</div>
+    </div>
+
+    <!-- Section IV -->
+    <div class="sec-head">IV. Why Immediate Legislative Action is Constitutionally Imperative</div>
+
+    <div class="ground-entry">
+      <div class="ground-title">Judicial verdicts are not self-executing:</div>
+      <div class="ground-text">The Supreme Court's ruling applies to the individual case of Pastor Chintada Anand. Without State law mandating registration of conversion, automatic cancellation of SC certificates, and recovery of illegally availed benefits, the judgment will have zero practical impact on the tens of thousands of similar situations across Karnataka.</div>
+    </div>
+    <div class="ground-entry">
+      <div class="ground-title">Prevention is constitutionally superior to cure:</div>
+      <div class="ground-text">In Vishaka v. State of Rajasthan (1997), the Supreme Court held that where a legislative void exists affecting fundamental rights, the State is duty-bound to fill it. The constitutional rights of Karnataka's SC population under Article 16 are being violated daily.</div>
+    </div>
+    <div class="ground-entry">
+      <div class="ground-title">Karnataka's own Dalit communities demand it:</div>
+      <div class="ground-text">Dalit organisations across Karnataka have consistently raised the issue of reservation fraud. Your Excellency's stated commitment to Dr. B.R. Ambedkar's legacy demands that reservation benefits reach only those for whom they were designed.</div>
+    </div>
+    <div class="ground-entry">
+      <div class="ground-title">National precedent demands State action:</div>
+      <div class="ground-text">When eleven States have already enacted Freedom of Religion Acts, Karnataka's absence from this list is not a neutral position — it is an invitation to conversion networks to relocate their activities to Karnataka. The State is effectively subsidising conversion fraud through legislative inaction.</div>
+    </div>
+
+    <!-- Section V -->
+    <div class="sec-head">V. Specific Demands — Action Required by Your Excellency's Government</div>
+
+    <div class="demand-entry">
+      <div class="demand-head">Demand 1: Enact the Karnataka Freedom of Religion (Protection against Fraudulent Conversion) Act</div>
+      <div class="demand-text">Introduce and pass comprehensive State legislation making conversion by force, fraud, inducement, or misrepresentation a cognizable, non-bailable offence punishable with minimum 3 years to 7 years imprisonment. Must include: mandatory prior notice to District Magistrate; mandatory post-conversion registration; independent inquiry mechanism; reversal of burden of proof; and enhanced sentence where the victim belongs to SC/ST communities, women, or minors.</div>
+    </div>
+    <div class="demand-entry">
+      <div class="demand-head">Demand 2: Issue an Immediate Executive Order for Mandatory SC Certificate Verification</div>
+      <div class="demand-text">Without waiting for legislation, immediately issue a Government Order under Article 162 directing all Deputy Commissioners and Tahsildars to cross-verify SC certificates against religious conversion records; immediate suspension of SC benefits where conversion is detected; recovery proceedings for benefits fraudulently availed; and criminal prosecution under BNS, 2023 for document fraud.</div>
+    </div>
+    <div class="demand-entry">
+      <div class="demand-head">Demand 3: Establish a Karnataka SC Benefits Audit Commission</div>
+      <div class="demand-text">Constitute a three-member Commission headed by a retired High Court Judge to conduct a State-wide audit of SC reservation benefits availed in the past 15 years — in employment, education, housing, loans, and political representation — with an interim report within 6 months and final report within 18 months.</div>
+    </div>
+    <div class="demand-entry">
+      <div class="demand-head">Demand 4: Amend State SC/ST Act Enforcement Guidelines</div>
+      <div class="demand-text">Issue binding guidelines to the Director General of Police directing that all complaints under the SC/ST (POA) Act must include mandatory SC status verification at the time of registration. Any complaint by a person who has converted and lost SC status must not be registered without prior Magistrate approval.</div>
+    </div>
+    <div class="demand-entry">
+      <div class="demand-head">Demand 5: Mandate Religious Status Declaration for SC Reserved Constituency Candidates</div>
+      <div class="demand-text">Write to the Election Commission of India seeking mandatory, verified religious status declaration in nomination papers for SC-reserved constituencies. Simultaneously enact a State law making filing of a false declaration an electoral offence with disqualification consequences.</div>
+    </div>
+    <div class="demand-entry">
+      <div class="demand-head">Demand 6: FCRA Audit and Referral to Central Authorities</div>
+      <div class="demand-text">Direct the State Intelligence Department to compile a comprehensive report on all FCRA-registered organisations operating in Karnataka engaged in conversion activities, and forward the report to the Ministry of Home Affairs with a recommendation for cancellation of FCRA registration of offending organisations.</div>
+    </div>
+    <div class="demand-entry">
+      <div class="demand-head">Demand 7: Establish a Dalit Protection and Rights Enforcement Cell</div>
+      <div class="demand-text">Create a dedicated cell within the Social Welfare Department to receive, investigate, and prosecute cases of reservation fraud against SC communities, with suo motu powers to investigate fraudulent SC certificates and coordinate with police, revenue, and educational authorities.</div>
+    </div>
+
+    <!-- Section VI -->
+    <div class="sec-head">VI. Conclusion — A Call to Constitutional Duty</div>
+    <p class="body-p">Your Excellency has throughout your distinguished political career championed the cause of Karnataka's Dalit and OBC communities. This representation does not seek to restrict religious freedom — a right this advocate has defended before the highest courts of the land. It seeks only to ensure that this freedom is not weaponized against the very communities the Constitution seeks to protect.</p>
+    <p class="body-p">The Supreme Court has reaffirmed the constitutional principle. The Central Government has been separately urged to act. Karnataka now has an independent opportunity — and an independent constitutional obligation — to protect its 1.05 crore SC citizens through decisive State-level legislative and executive action.</p>
+    <p class="body-p">Every day of delay is a day of injustice to genuine Dalit Hindu youth who are deprived of their rightful seat in a college, their rightful post in a government office, and their rightful representative in a reserved constituency. The Constitution does not permit this injustice to continue, and neither should the Government of Karnataka.</p>
+    <p class="body-p">I most respectfully urge Your Excellency to direct the Law Department to place a draft Karnataka Freedom of Religion Act before the next Cabinet meeting, and to issue the executive orders sought herein within <strong>30 days</strong> of receipt of this representation. I am available to appear before any committee constituted by your Government to provide legal assistance in drafting the proposed legislation.</p>
+
+    <div class="jai-line">Jai Babasaheb Ambedkar &nbsp;·&nbsp; Jai Karnataka &nbsp;·&nbsp; Jai Bharat 🇮🇳</div>
+
+    <hr class="gold"/>
+
+    <div class="closing-area">
+      <div class="closing-line">Thanking Your Excellency,</div>
+      <div class="closing-line">Yours faithfully, in service of Karnataka and the Constitution,</div>
+      <div class="sig-area">
+        <div>
+          <div class="sig-name">Veerendrababu Nanjegowda</div>
+          <div class="sig-details">
+            Senior Advocate &nbsp;|&nbsp; NGT · High Courts · Supreme Court of India<br/>
+            Senior Journalist &nbsp;|&nbsp; Legal Adviser, R MAXX Kannada News Channel<br/>
+            Author (15+ Published Works) &nbsp;|&nbsp; Filmmaker<br/>
+            Bengaluru Law House, Sahakaranagar, Bengaluru – 560 092<br/>
+            +91 9632527961 &nbsp;|&nbsp; bengalurulawhouse@gmail.com &nbsp;|&nbsp; www.blrlawhouse.com
+          </div>
+        </div>
+        <div class="sig-right">
+          <strong>Place:</strong> Bengaluru<br/>
+          <strong>Date:</strong> 25th March 2026
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /body-area -->
+
+  <div class="copy-to">
+    <strong>Copies to:</strong> Hon'ble Governor of Karnataka &nbsp;·&nbsp; Minister for Law, Justice &amp; Human Rights, Govt. of Karnataka &nbsp;·&nbsp; Minister for Social Welfare, Govt. of Karnataka &nbsp;·&nbsp; Director General of Police, Karnataka &nbsp;·&nbsp; National Commission for Scheduled Castes &nbsp;·&nbsp; Hon'ble Prime Minister of India
+  </div>
+  <div class="footer">BENGALURU LAW HOUSE &nbsp;·&nbsp; www.blrlawhouse.com &nbsp;·&nbsp; bengalurulawhouse@gmail.com</div>
+  <div class="bottom-bar"></div>
+</div>
+
+</body>
+</html>
