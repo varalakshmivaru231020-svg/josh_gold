@@ -2,10 +2,10 @@
     $siteLogo = \App\Models\SiteSetting::get('site_logo');
     $logoUrl = $siteLogo ? asset('storage/' . $siteLogo) : asset('blr.jpg');
     $announcementLinks = [
-        ['label' => 'Water Filtration Project', 'url' => route('water-filtration'), 'icon' => 'fa-droplet'],
-        ['label' => 'Water Filtration Kannada', 'url' => route('water-filtration-kannada'), 'icon' => 'fa-droplet'],
         ['label' => 'Letter to PM Modi', 'url' => route('letter-to-pm-modi'), 'icon' => 'fa-landmark'],
         ['label' => 'Letter to CM Karnataka', 'url' => route('letter-to-cm-karnataka'), 'icon' => 'fa-file-signature'],
+        ['label' => 'Water Filtration Project', 'url' => route('water-filtration'), 'icon' => 'fa-droplet'],
+        ['label' => 'Water Filtration Kannada', 'url' => route('water-filtration-kannada'), 'icon' => 'fa-droplet'],
         ['label' => 'Browse Publications', 'url' => route('products.index'), 'icon' => 'fa-book-open'],
         ['label' => 'Visit Our Offices', 'url' => route('offices.index'), 'icon' => 'fa-building-columns'],
     ];
