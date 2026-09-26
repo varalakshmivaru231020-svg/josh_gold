@@ -19,16 +19,42 @@ use App\Models\Stat;
 use App\Models\Office;
 use App\Models\SocialLink;
 use App\Models\GalleryPhoto;
+use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
-class SiteContentController extends Controller
+class SiteContentController extends Controller implements HasMiddleware
 {
-    // ==================== SLIDERS ====================
-    public function sliders()
+    /** A button link may be an http(s) URL, a site path, an #anchor, tel: or mailto:. */
+    private const LINK_PATTERN = '#^(https?://|/|\#|tel:|mailto:)#i';
+
+    // A blank Sort Order arrives as null, but the sort_order columns are NOT NULL: treat blank as 0.
+    public static function middleware(): array
     {
-        $sliders = Slider::ordered()->paginate(10);
-        return view('admin.site-content.sliders.index', compact('sliders'));
+        return [
+            function (Request $request, Closure $next) {
+                if ($request->exists('sort_order') && $request->input('sort_order') === null) {
+                    $request->merge(['sort_order' => 0]);
+                }
+
+                return $next($request);
+            },
+        ];
+    }
+
+    // ==================== SLIDERS ====================
+    public function sliders(Request $request)
+    {
+        // ?show= (not ?page=, which the paginator uses for the page number)
+        $show   = (string) $request->query('show');
+        $filter = array_key_exists($show, Slider::PAGES) ? $show : null;
+
+        $sliders = Slider::when($filter, fn ($q) => $q->where('page', $filter))
+            ->orderBy('page')->ordered()->paginate(15)->withQueryString();
+
+        return view('admin.site-content.sliders.index', compact('sliders', 'filter'));
     }
 
     public function createSlider()
@@ -39,14 +65,15 @@ class SiteContentController extends Controller
     public function storeSlider(Request $request)
     {
         $request->validate([
+            'page' => ['required', Rule::in(array_keys(Slider::PAGES))],
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'button_text' => 'nullable|string|max:100',
-            'button_link' => 'nullable|string|max:255',
+            'button_link' => ['nullable', 'string', 'max:255', 'regex:' . self::LINK_PATTERN],
             'sort_order' => 'nullable|integer',
-        ]);
+        ], ['button_link.regex' => 'Enter a full link (https://…), a path starting with / (e.g. /contact-us), or #section.']);
 
         $data = $request->except('image');
         $data['is_active'] = $request->has('is_active');
@@ -57,8 +84,8 @@ class SiteContentController extends Controller
 
         Slider::create($data);
 
-        return redirect()->route('admin.site-content.sliders')
-            ->with('success', 'Slider created successfully.');
+        return redirect()->route('admin.site-content.sliders', ['show' => $data['page']])
+            ->with('success', 'Slider created for ' . Slider::PAGES[$data['page']] . '.');
     }
 
     public function editSlider($id)
@@ -70,14 +97,15 @@ class SiteContentController extends Controller
     public function updateSlider(Request $request, $id)
     {
         $request->validate([
+            'page' => ['required', Rule::in(array_keys(Slider::PAGES))],
             'title' => 'nullable|string|max:255',
             'subtitle' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'button_text' => 'nullable|string|max:100',
-            'button_link' => 'nullable|string|max:255',
+            'button_link' => ['nullable', 'string', 'max:255', 'regex:' . self::LINK_PATTERN],
             'sort_order' => 'nullable|integer',
-        ]);
+        ], ['button_link.regex' => 'Enter a full link (https://…), a path starting with / (e.g. /contact-us), or #section.']);
 
         $slider = Slider::findOrFail($id);
         $data = $request->except('image');
@@ -118,24 +146,15 @@ class SiteContentController extends Controller
     public function updateAboutSection(Request $request)
     {
         $request->validate([
-            'title'            => 'required|string|max:255',
+            'title'            => 'nullable|string|max:255',
             'subtitle'         => 'nullable|string|max:255',
-            'content'          => 'required|string',
-            'image'            => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'hero_image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'id_card_image'    => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'years_experience' => 'nullable|string|max:50',
-            'designation'      => 'nullable|string|max:255',
-            'name_kn'          => 'nullable|string|max:255',
-            'qualifications'   => 'nullable|string|max:255',
-            'tagline'          => 'nullable|string',
-            'stat_courts'      => 'nullable|string|max:50',
-            'stat_books'       => 'nullable|string|max:50',
-            'stat_offices'     => 'nullable|string|max:50',
+            'content'          => 'nullable|string',
+            'image'            => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'hero_image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
         $about = AboutSection::first();
-        $data = $request->except(['image', 'hero_image', 'id_card_image']);
+        $data = $request->only(['title', 'subtitle', 'content']);
         $data['is_active'] = $request->has('is_active');
 
         // Handle Main Image (About Page)
@@ -154,12 +173,12 @@ class SiteContentController extends Controller
             $data['hero_image'] = $request->file('hero_image')->store('about/hero', 'public');
         }
 
-        // Handle ID Card Image
-        if ($request->hasFile('id_card_image')) {
-            if ($about && $about->id_card_image) {
-                Storage::disk('public')->delete($about->id_card_image);
+        // "Remove" checkboxes
+        foreach (['image' => 'about', 'hero_image' => 'about/hero'] as $field => $dir) {
+            if ($request->boolean("remove_$field") && ! $request->hasFile($field) && $about && $about->$field) {
+                Storage::disk('public')->delete($about->$field);
+                $data[$field] = null;
             }
-            $data['id_card_image'] = $request->file('id_card_image')->store('about/id_card', 'public');
         }
 
         if ($about) {
@@ -509,10 +528,23 @@ class SiteContentController extends Controller
     }
 
     // ==================== SITE SETTINGS ====================
-    public function siteSettings()
+    /** One Site Settings page with three tabs: General (logo), Contact and Offices. */
+    public function siteSettings(Request $request)
     {
-        $logo = SiteSetting::get('site_logo');
-        return view('admin.site-content.settings.index', compact('logo'));
+        $tab = in_array($request->query('tab'), ['general', 'contact', 'offices'], true) ? $request->query('tab') : 'general';
+
+        $logo = $tab === 'general' ? SiteSetting::get('site_logo') : null;
+        $contact = $tab === 'contact' ? [
+            'contact_address' => SiteSetting::get('contact_address'),
+            'contact_phone' => SiteSetting::get('contact_phone'),
+            'contact_email' => SiteSetting::get('contact_email'),
+            'contact_whatsapp' => SiteSetting::get('contact_whatsapp'),
+            'contact_map_embed' => SiteSetting::get('contact_map_embed'),
+            'contact_working_hours' => SiteSetting::get('contact_working_hours'),
+        ] : [];
+        $offices = $tab === 'offices' ? Office::ordered()->get() : collect();
+
+        return view('admin.site-content.settings.index', compact('tab', 'logo', 'contact', 'offices'));
     }
 
     public function updateSiteSettings(Request $request)
@@ -615,17 +647,10 @@ class SiteContentController extends Controller
     }
 
     // ==================== CONTACT SETTINGS ====================
+    // Contact Settings now lives in the Contact tab of Site Settings; the old URL still works.
     public function contactSettings()
     {
-        $settings = [
-            'contact_address' => SiteSetting::get('contact_address'),
-            'contact_phone' => SiteSetting::get('contact_phone'),
-            'contact_email' => SiteSetting::get('contact_email'),
-            'contact_whatsapp' => SiteSetting::get('contact_whatsapp'),
-            'contact_map_embed' => SiteSetting::get('contact_map_embed'),
-            'contact_working_hours' => SiteSetting::get('contact_working_hours'),
-        ];
-        return view('admin.site-content.contact.settings', compact('settings'));
+        return redirect()->route('admin.site-content.settings', ['tab' => 'contact']);
     }
 
     public function updateContactSettings(Request $request)
@@ -646,7 +671,7 @@ class SiteContentController extends Controller
         SiteSetting::set('contact_map_embed', $request->contact_map_embed);
         SiteSetting::set('contact_working_hours', $request->contact_working_hours);
 
-        return redirect()->route('admin.site-content.contact-settings')
+        return redirect()->route('admin.site-content.settings', ['tab' => 'contact'])
             ->with('success', 'Contact settings updated successfully.');
     }
 
@@ -687,15 +712,12 @@ class SiteContentController extends Controller
 
     public function storeService(Request $request)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'icon' => 'nullable|string|max:100',
-            'sort_order' => 'nullable|integer',
-        ]);
-
-        $data = $request->all();
+        $data = $this->validatedService($request);
         $data['is_active'] = $request->has('is_active');
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('services', 'public');
+        }
 
         Service::create($data);
 
@@ -711,16 +733,19 @@ class SiteContentController extends Controller
 
     public function updateService(Request $request, $id)
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'icon' => 'nullable|string|max:100',
-            'sort_order' => 'nullable|integer',
-        ]);
-
         $service = Service::findOrFail($id);
-        $data = $request->all();
+        $data = $this->validatedService($request);
         $data['is_active'] = $request->has('is_active');
+
+        if ($request->hasFile('image')) {
+            if ($service->image) {
+                Storage::disk('public')->delete($service->image);
+            }
+            $data['image'] = $request->file('image')->store('services', 'public');
+        } elseif ($request->boolean('remove_image') && $service->image) {
+            Storage::disk('public')->delete($service->image);
+            $data['image'] = null;
+        }
 
         $service->update($data);
 
@@ -730,16 +755,36 @@ class SiteContentController extends Controller
 
     public function deleteService($id)
     {
-        Service::findOrFail($id)->delete();
+        $service = Service::findOrFail($id);
+        if ($service->image) {
+            Storage::disk('public')->delete($service->image);
+        }
+        $service->delete();
+
         return redirect()->route('admin.site-content.services')
             ->with('success', 'Service deleted successfully.');
     }
 
+    private function validatedService(Request $request): array
+    {
+        $data = $request->validate([
+            'title'       => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:8192',
+            'sort_order'  => 'nullable|integer',
+        ]);
+
+        unset($data['image']); // the upload is stored separately
+        $data['sort_order'] = $data['sort_order'] ?? 0; // blank means 0 (the column is NOT NULL)
+
+        return $data;
+    }
+
     // ==================== OFFICES ====================
+    // The Offices list now lives in the Offices tab of Site Settings; the old URL still works.
     public function offices()
     {
-        $offices = Office::ordered()->paginate(10);
-        return view('admin.site-content.offices.index', compact('offices'));
+        return redirect()->route('admin.site-content.settings', ['tab' => 'offices']);
     }
 
     public function createOffice()
@@ -750,9 +795,9 @@ class SiteContentController extends Controller
     public function storeOffice(Request $request)
     {
         $request->validate([
-            'title'      => 'required|string|max:255',
+            'title'      => 'nullable|string|max:255|required_without:address',
             'subtitle'   => 'nullable|string|max:255',
-            'address'    => 'nullable|string',
+            'address'    => 'nullable|string|required_without:title',
             'phone'      => 'nullable|string|max:50',
             'mobile'     => 'nullable|string|max:50',
             'email'      => 'nullable|string|max:100',
@@ -765,6 +810,7 @@ class SiteContentController extends Controller
 
         $data = $request->except('image');
         $data['is_active'] = $request->has('is_active');
+        $data['title'] = $data['title'] ?? ''; // title is optional; the column itself is NOT NULL
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('offices', 'public');
@@ -772,7 +818,7 @@ class SiteContentController extends Controller
 
         Office::create($data);
 
-        return redirect()->route('admin.site-content.offices')
+        return redirect()->route('admin.site-content.settings', ['tab' => 'offices'])
             ->with('success', 'Office added successfully.');
     }
 
@@ -785,9 +831,9 @@ class SiteContentController extends Controller
     public function updateOffice(Request $request, $id)
     {
         $request->validate([
-            'title'      => 'required|string|max:255',
+            'title'      => 'nullable|string|max:255|required_without:address',
             'subtitle'   => 'nullable|string|max:255',
-            'address'    => 'nullable|string',
+            'address'    => 'nullable|string|required_without:title',
             'phone'      => 'nullable|string|max:50',
             'mobile'     => 'nullable|string|max:50',
             'email'      => 'nullable|string|max:100',
@@ -802,6 +848,7 @@ class SiteContentController extends Controller
         $office = Office::findOrFail($id);
         $data = $request->except('image', 'remove_image');
         $data['is_active'] = $request->has('is_active');
+        $data['title'] = $data['title'] ?? ''; // title is optional; the column itself is NOT NULL
 
         if ($request->boolean('remove_image') && $office->image) {
             Storage::disk('public')->delete($office->image);
@@ -815,7 +862,7 @@ class SiteContentController extends Controller
 
         $office->update($data);
 
-        return redirect()->route('admin.site-content.offices')
+        return redirect()->route('admin.site-content.settings', ['tab' => 'offices'])
             ->with('success', 'Office updated successfully.');
     }
 
@@ -824,7 +871,7 @@ class SiteContentController extends Controller
         $office = Office::findOrFail($id);
         if ($office->image) Storage::disk('public')->delete($office->image);
         $office->delete();
-        return redirect()->route('admin.site-content.offices')
+        return redirect()->route('admin.site-content.settings', ['tab' => 'offices'])
             ->with('success', 'Office deleted successfully.');
     }
 

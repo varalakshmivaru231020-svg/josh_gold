@@ -17,6 +17,17 @@
 
             <div class="row">
                 <div class="col-md-8">
+                    <div class="mb-4 p-3 rounded-3" style="background:#fef9eb;border:1px solid #f3e2b0;">
+                        <label for="page" class="form-label fw-semibold">Show on page <span class="text-danger">*</span></label>
+                        <select class="form-select @error('page') is-invalid @enderror" id="page" name="page" required>
+                            @foreach(\App\Models\Slider::PAGES as $key => $label)
+                            <option value="{{ $key }}" {{ old('page', request('page', 'home')) === $key ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
+                        </select>
+                        @error('page') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        <div class="form-text">This slider appears at the top of the chosen page on the website.</div>
+                    </div>
+
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
                         <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') }}">
@@ -54,7 +65,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="button_link" class="form-label">Button Link</label>
-                                <input type="text" class="form-control @error('button_link') is-invalid @enderror" id="button_link" name="button_link" value="{{ old('button_link') }}" placeholder="e.g., /products or https://...">
+                                <input type="text" class="form-control @error('button_link') is-invalid @enderror" id="button_link" name="button_link" value="{{ old('button_link') }}" placeholder="e.g., /live-rates or https://...">
                                 @error('button_link')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

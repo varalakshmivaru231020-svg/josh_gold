@@ -1,15 +1,15 @@
 @extends('layouts.lawfirm')
 
-@section('title', 'Legal Intelligence & News | Bengaluru Law House')
+@section('title', 'News & Updates | Josha Infinity Inc Service')
 
 @section('content')
 <section class="blog-luxury-page">
     <div class="blog-hero-header">
         <div class="container text-center" data-aos="fade-up">
-            <div class="label-gold">KNOWLEDGE HUB</div>
-            <h1 class="heading-premium text-white">Legal Intelligence Archives</h1>
+            <div class="label-gold">LATEST NEWS</div>
+            <h1 class="heading-premium text-white">News &amp; Updates</h1>
             <div class="accent-line-gold mx-auto"></div>
-            <p class="hero-subheader text-white opacity-75">Categorical insights into the evolving landscape of Indian Law & Jurisprudence</p>
+            <p class="hero-subheader text-white opacity-75">Stay informed with our latest announcements, market updates and company news</p>
         </div>
     </div>
 
@@ -33,8 +33,8 @@
             <div class="col-12" data-aos="fade-up">
                 <div class="empty-intelligence text-center">
                     <i class="fas fa-scroll fa-4x text-gold mb-4"></i>
-                    <h3 class="text-navy">No Commentaries Found</h3>
-                    <p class="text-muted">Archives are currently being organized. Please return shortly.</p>
+                    <h3 class="text-navy">No News Yet</h3>
+                    <p class="text-muted">New updates are on the way. Please check back shortly.</p>
                     <a href="{{ route('home') }}" class="btn-gold-action mt-4">Return Home</a>
                 </div>
             </div>
@@ -141,7 +141,9 @@
 
 @push('scripts')
 <script>
-document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+// The newsletter form is currently commented out of the page, so only wire it up when it exists
+const newsletterForm = document.getElementById('newsletter-form');
+if (newsletterForm) newsletterForm.addEventListener('submit', function(e) {
     e.preventDefault();
     
     const email = this.email.value;

@@ -17,6 +17,7 @@ use App\Models\Office;
 use App\Models\SiteSetting;
 use App\Models\ContactMessage;
 use App\Models\GalleryPhoto;
+use App\Models\BankAccount;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -24,7 +25,7 @@ class HomeController extends Controller
     public function index()
     {
         // Get all dynamic content
-        $sliders = Slider::active()->ordered()->get();
+        $sliders = Slider::active()->onPage('home')->ordered()->get();
         $about = AboutSection::active()->first();
         $featuredBook = FeaturedBook::active()->first();
         $testimonialVideos = TestimonialVideo::active()->featured()->ordered()->take(10)->get();
@@ -75,6 +76,12 @@ class HomeController extends Controller
     {
         $services = Service::active()->ordered()->get();
         return view('services.index', compact('services'));
+    }
+
+    public function bankDetails()
+    {
+        $accounts = BankAccount::active()->ordered()->get();
+        return view('bank-details', compact('accounts'));
     }
 
     public function offices()

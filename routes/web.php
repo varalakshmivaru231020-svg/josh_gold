@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\PageController;
+use App\Http\Controllers\LiveRatesController;
 
 // ------------------------
 // Public Routes   routes/web.php
@@ -29,10 +30,22 @@ Route::get('/purchase', function() {
 // Order Tracking
 Route::get('/track-order', [ProductController::class, 'trackOrder'])->name('track.order');
 
+// Live Metal Rates (public)
+Route::get('/live-rates', [LiveRatesController::class, 'index'])->name('live-rates');
+Route::get('/live-rates/history', [LiveRatesController::class, 'history'])->middleware('throttle:120,1')->name('live-rates.history');
+
 // Practice & Offices Pages
 Route::get('/about-us', [HomeController::class, 'aboutUs'])->name('about-us');
-Route::get('/practice-areas', [HomeController::class, 'services'])->name('services.index');
+Route::get('/services', [HomeController::class, 'services'])->name('services.index');
+Route::redirect('/practice-areas', '/services', 301);
+Route::redirect('/contact', '/contact-us', 301);
 Route::get('/offices', [HomeController::class, 'offices'])->name('offices.index');
+
+// Bank Details (public, managed from admin)
+Route::get('/bank-details', [HomeController::class, 'bankDetails'])->name('bank-details');
+
+// News & Updates (public, managed from admin under News & Updates)
+Route::get('/news', [HomeController::class, 'blogIndex'])->name('news');
 
 // Testimonials Page
 Route::get('/testimonials', [HomeController::class, 'testimonials'])->name('testimonials');
@@ -126,7 +139,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Dashboard
         Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
-        Route::get('/stats', [App\Http\Controllers\Admin\DashboardController::class, 'getStats'])->name('dashboard.stats');
 
         // Profile
         Route::get('/profile', [App\Http\Controllers\Admin\AuthController::class, 'profile'])->name('profile');
@@ -205,6 +217,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::put('/promo-banners/{id}', [App\Http\Controllers\Admin\SiteContentController::class, 'updatePromoBanner'])->name('promo-banners.update');
             Route::delete('/promo-banners/{id}', [App\Http\Controllers\Admin\SiteContentController::class, 'deletePromoBanner'])->name('promo-banners.delete');
 
+            // Call To Action banner (above the footer)
+            Route::get('/cta', [App\Http\Controllers\Admin\CtaController::class, 'edit'])->name('cta');
+            Route::put('/cta', [App\Http\Controllers\Admin\CtaController::class, 'update'])->name('cta.update');
+
             // Site Settings
             Route::get('/settings', [App\Http\Controllers\Admin\SiteContentController::class, 'siteSettings'])->name('settings');
             Route::put('/settings', [App\Http\Controllers\Admin\SiteContentController::class, 'updateSiteSettings'])->name('settings.update');
@@ -272,6 +288,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/beyond-bar', [App\Http\Controllers\Admin\SiteContentController::class, 'beyondBar'])->name('beyond-bar');
             Route::put('/beyond-bar', [App\Http\Controllers\Admin\SiteContentController::class, 'updateBeyondBar'])->name('beyond-bar.update');
         });
+
+        // Bank Details
+        Route::resource('bank-accounts', App\Http\Controllers\Admin\BankAccountController::class)
+            ->except(['show']);
+
+        // ── Metal Rates (Live Rates Module) ────────────────────
+        Route::resource('metal-rates', App\Http\Controllers\Admin\MetalRateController::class)
+            ->except(['show']);
+        Route::get('/metal-rates-history', [App\Http\Controllers\Admin\MetalRateController::class, 'history'])
+            ->name('metal-rates.history');
+        Route::delete('/metal-rates-sample', [App\Http\Controllers\Admin\MetalRateController::class, 'clearSample'])
+            ->name('metal-rates.clear-sample');
     });
 });
 

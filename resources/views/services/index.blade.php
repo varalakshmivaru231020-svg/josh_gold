@@ -1,17 +1,17 @@
 @extends('layouts.lawfirm')
 
-@section('title', 'Areas of Practice | Advocate Veerendrababu Nanjegowda')
+@section('title', 'Our Services | JOSHA INFINITY INC SERVICE')
 
 @section('content')
 <section class="pas-page">
     {{-- Cinematic Hero Header --}}
-    <div class="pas-page-hero" style="background-image: linear-gradient(rgba(12,20,40,0.85), rgba(12,20,40,0.85)), url('https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&q=80&w=1200'); background-size: cover; background-position: center;">
+    <div class="pas-page-hero">
         <div class="pas-page-hero-grid"></div>
         <div class="container text-center position-relative" style="z-index:2;" data-aos="fade-up">
-            <span class="pas-eyebrow" style="color: var(--gold);">AREAS OF PRACTICE</span>
-            <h1 class="pas-page-heading">Practicing at the Pinnacles<br>of India's Judiciary</h1>
+            <span class="pas-eyebrow" style="color: var(--gold);">OUR SERVICES</span>
+            <h1 class="pas-page-heading">Gold &amp; Silver Services<br>You Can Trust</h1>
             <div class="pas-separator mx-auto" style="background:var(--gold);"></div>
-            <p class="pas-page-sub text-white opacity-90 italic">"Justice is not a compromise — it is wisdom in action."</p>
+            <p class="pas-page-sub text-white opacity-90 italic">Transparent pricing, dependable quality and service you can count on.</p>
         </div>
     </div>
 
@@ -20,36 +20,29 @@
         <div class="breadcrumb-luxury mb-5" data-aos="fade-up">
             <a href="{{ route('home') }}">Home</a>
             <span class="sep">/</span>
-            <span class="curr">Areas of Practice</span>
+            <span class="curr">Services</span>
         </div>
 
         {{-- Cards Grid --}}
         <div class="pas-grid mb-5">
             @forelse($services as $index => $service)
             <div class="pas-card" data-aos="fade-up" data-aos-delay="{{ $index * 80 }}">
-                <div class="pas-card-icon">
-                    @if($service->icon && str_starts_with($service->icon, 'fa'))
-                        <i class="{{ $service->icon }}"></i>
-                    @else
-                        <span class="pas-emoji">{{ $service->icon ?? '⚖️' }}</span>
+                <div class="pas-card-media">
+                    @if($service->image)
+                        <img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->title }}" loading="lazy">
                     @endif
                 </div>
-                <h3 class="pas-card-title">{{ $service->title }}</h3>
-                <p class="pas-card-text">{{ $service->description }}</p>
+                <div class="pas-card-body">
+                    <h3 class="pas-card-title">{{ $service->title }}</h3>
+                    @if(filled($service->description))<p class="pas-card-text">{{ $service->description }}</p>@endif
+                </div>
             </div>
             @empty
             <div class="col-12 text-center py-5">
-                <i class="fas fa-balance-scale fa-3x text-gold mb-4 d-block opacity-50"></i>
-                <h3 class="text-navy">Practice Areas Coming Soon</h3>
-                <p class="text-muted">Please contact the principal office for detailed information on practice areas.</p>
+                <h3 class="text-navy">Services Coming Soon</h3>
+                <p class="text-muted">Please contact us for details of our services.</p>
             </div>
             @endforelse
-        </div>
-
-        {{-- Quote Banner --}}
-        <div class="pas-quote-banner" data-aos="fade-up">
-            <i class="fas fa-quote-left pas-quote-mark"></i>
-            <p class="pas-quote-text">"The best legal victory is one that heals, not one that merely wins. ADR is not a compromise — it is wisdom in action."</p>
         </div>
     </div>
 </section>
@@ -96,10 +89,14 @@
     }
     .pas-card {
         background: #ffffff; border: 1px solid #e8e8e8;
-        border-radius: 16px; padding: 36px 30px 32px;
+        border-radius: 16px; padding: 0;
         transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
         position: relative; overflow: hidden;
     }
+    .pas-card-media { aspect-ratio: 16 / 10; overflow: hidden; background: linear-gradient(135deg, #f6ecd0, #e4c766); }
+    .pas-card-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s ease; }
+    .pas-card:hover .pas-card-media img { transform: scale(1.06); }
+    .pas-card-body { padding: 24px 28px 30px; }
     .pas-card::before {
         content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
         background: linear-gradient(90deg, var(--gold, #c9a84c), transparent);

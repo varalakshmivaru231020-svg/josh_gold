@@ -5,8 +5,8 @@
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="h3 mb-0">Add Office</h1>
-    <a href="{{ route('admin.site-content.offices') }}" class="btn btn-outline-secondary">
-        <i class="fas fa-arrow-left me-2"></i>Back to Offices
+    <a href="{{ route('admin.site-content.settings', ['tab' => 'offices']) }}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Back to Site Settings
     </a>
 </div>
 
@@ -19,19 +19,20 @@
                 {{-- Left column: main fields --}}
                 <div class="col-md-8">
                     <div class="mb-3">
-                        <label for="title" class="form-label fw-semibold">Office Title <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') }}" placeholder="e.g. Bengaluru Office" required>
+                        <label for="title" class="form-label fw-semibold">Office Title <span class="text-muted fw-normal">(optional)</span></label>
+                        <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{ old('title') }}" placeholder="e.g. Bengaluru Office">
                         @error('title') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        <div class="form-text">Add a title, an address, or both.</div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="subtitle" class="form-label fw-semibold">Subtitle / Courts</label>
-                        <input type="text" class="form-control" id="subtitle" name="subtitle" value="{{ old('subtitle') }}" placeholder="e.g. Bengaluru Law House · Karnataka · High Courts · NGT">
+                        <label for="subtitle" class="form-label fw-semibold">Subtitle <span class="text-muted fw-normal">(optional)</span></label>
+                        <input type="text" class="form-control" id="subtitle" name="subtitle" value="{{ old('subtitle') }}" placeholder="e.g. Head Office">
                     </div>
 
                     <div class="mb-3">
                         <label for="address" class="form-label fw-semibold">Full Address</label>
-                        <textarea class="form-control" id="address" name="address" rows="3" placeholder="#1652/6, 20th Cross, 8th Main...">{{ old('address') }}</textarea>
+                        <textarea class="form-control" id="address" name="address" rows="3" placeholder="e.g. No.194 1st Floor, AMR Complex, Horamavu Agara, Bangalore 560043">{{ old('address') }}</textarea>
                     </div>
 
                     <div class="row">
@@ -52,7 +53,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="website" class="form-label fw-semibold">Website</label>
-                            <input type="text" class="form-control" id="website" name="website" value="{{ old('website') }}" placeholder="www.blrlawhouse.com">
+                            <input type="text" class="form-control" id="website" name="website" value="{{ old('website') }}" placeholder="www.example.com">
                         </div>
                     </div>
                 </div>
@@ -75,7 +76,7 @@
                             <input type="color" class="form-control form-control-color" id="colorPicker" value="#1a2e5e" style="width:50px;">
                             <input type="text" class="form-control" id="color" name="color" value="{{ old('color', '#1a2e5e') }}" placeholder="#1a2e5e">
                         </div>
-                        <small class="text-muted">Bengaluru: #1a2e5e (navy) · Delhi: #8b1a24 (dark red)</small>
+                        <small class="text-muted">Accent colour for the office card, e.g. #1a2e5e (navy)</small>
                     </div>
 
                     <div class="mb-3">
@@ -98,7 +99,7 @@
 
             <hr>
             <div class="d-flex justify-content-end gap-2">
-                <a href="{{ route('admin.site-content.offices') }}" class="btn btn-outline-secondary">Cancel</a>
+                <a href="{{ route('admin.site-content.settings', ['tab' => 'offices']) }}" class="btn btn-outline-secondary">Cancel</a>
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-save me-2"></i>Save Office
                 </button>

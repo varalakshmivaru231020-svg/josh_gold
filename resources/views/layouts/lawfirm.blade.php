@@ -548,16 +548,6 @@
             background: linear-gradient(135deg, #20BA5A, #1DA851);
         }
 
-        .phone-btn {
-            bottom: 100px;
-            right: 25px;
-            background: linear-gradient(135deg, var(--gold), #8b6914);
-        }
-
-        .phone-btn:hover {
-            background: linear-gradient(135deg, #8b6914, #6a5010);
-        }
-
         .contact-btn-label {
             position: absolute;
             right: 75px;
@@ -589,11 +579,6 @@
                 right: 20px;
             }
 
-            .phone-btn {
-                bottom: 90px;
-                right: 20px;
-            }
-
             .contact-btn-label {
                 right: 65px;
                 font-size: 0.75rem;
@@ -601,29 +586,31 @@
         }
     </style>
     @stack('styles')
+    {{-- White & gold theme: loaded after the page styles so it wins. Remove this line to go back to the navy look. --}}
+    <link rel="stylesheet" href="{{ asset('css/theme-white-gold.css') }}?v={{ filemtime(public_path('css/theme-white-gold.css')) }}">
 </head>
 <body>
 
     <nav class="nav-premium" id="mainHeader">
         <a class="nav-brand" href="{{ url('/') }}">
             @if($siteLogo)
-                <img src="{{ $logoUrl }}" alt="Bengaluru Law House" class="nav-brand-seal" style="object-fit:cover; padding:0;" loading="eager">
+                <img src="{{ $logoUrl }}" alt="JOSHA INFINITY INC SERVICE" class="nav-brand-seal" style="object-fit:cover; padding:0;" loading="eager">
             @else
                 <div class="nav-brand-seal">⚖</div>
             @endif
             <div class="nav-brand-info">
-                <div class="nav-brand-text">Bengaluru Law House</div>
-                <div class="nav-brand-sub">Adv. Veerendrababu Nanjegowda</div>
+                <div class="nav-brand-text">JOSHA INFINITY INC SERVICE</div>
+                <div class="nav-brand-sub">Gold & Silver Solutions</div>
             </div>
         </a>
         <div class="nav-links">
             <a href="{{ route('home') }}" class="nav-link-custom {{ request()->routeIs('home') ? 'active' : '' }}">Home</a>
-            <a href="{{ route('about-us') }}" class="nav-link-custom {{ request()->routeIs('about-us') ? 'active' : '' }}">About</a>
-            <a href="{{ route('blog.index') }}" class="nav-link-custom {{ request()->routeIs('blog.index') ? 'active' : '' }}">Blog</a>
-            <a href="{{ route('offices.index') }}" class="nav-link-custom {{ request()->routeIs('offices.index') ? 'active' : '' }}">Offices</a>
+            <a href="{{ url('/live-rates') }}" class="nav-link-custom {{ request()->is('live-rates') ? 'active' : '' }}">Live Rates</a>
+            <a href="{{ route('about-us') }}" class="nav-link-custom {{ request()->routeIs('about-us') ? 'active' : '' }}">About Us</a>
+            <a href="{{ route('services.index') }}" class="nav-link-custom {{ request()->routeIs('services.index') ? 'active' : '' }}">Services</a>
+            <a href="{{ route('bank-details') }}" class="nav-link-custom {{ request()->routeIs('bank-details') ? 'active' : '' }}">Bank Details</a>
             <a href="{{ route('gallery') }}" class="nav-link-custom {{ request()->routeIs('gallery') ? 'active' : '' }}">Gallery</a>
-            <a href="{{ route('services.index') }}" class="nav-link-custom {{ request()->routeIs('services.index') ? 'active' : '' }}">Practice</a>
-            <a href="{{ route('products.index') }}" class="nav-link-custom {{ request()->routeIs('products.index') ? 'active' : '' }}">Publications</a>
+            <a href="{{ route('news') }}" class="nav-link-custom {{ request()->routeIs('news', 'blog.*') ? 'active' : '' }}">News &amp; Updates</a>
             <a href="{{ route('contact') }}" class="nav-link-custom {{ request()->routeIs('contact') ? 'active' : '' }}">Contact Us</a>
 
             <div class="dropdown d-inline-block d-none">
@@ -651,149 +638,22 @@
             <span></span><span></span><span></span>
         </button>
     </nav>
-    <div class="announcement-bar" id="announcementBar" role="region" aria-label="Important links">
-        <div class="announcement-bar-inner">
-            <span class="announcement-kicker">
-                <i class="fas fa-bullhorn"></i>
-                Important Links
-            </span>
-            <div class="announcement-marquee">
-                <div class="announcement-track" id="announcementTrack">
-                    <div class="announcement-group" data-announcement-source="true">
-                        @foreach($announcementLinks as $announcementLink)
-                            <a href="{{ $announcementLink['url'] }}" class="announcement-link">
-                                <i class="fas {{ $announcementLink['icon'] }}"></i>
-                                <span>{{ $announcementLink['label'] }}</span>
-                            </a>
-                            <span class="announcement-divider"></span>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
     <div class="nav-overlay" id="navOverlay"></div>
 
-    <main class="main-content" style="min-height: 80vh;">
+    <main class="main-content{{ $pageSlides->isNotEmpty() ? ' has-page-slider' : '' }}" style="min-height: 80vh;">
+        {{-- Sliders chosen for this page in Admin → Sliders --}}
+        @if($pageSlides->isNotEmpty())
+            @include('layouts.partials.page-slider', ['slides' => $pageSlides, 'variant' => 'banner'])
+        @endif
         @yield('content')
     </main>
 
-    <!-- ── FOLLOW ONLINE (Light Background) ── -->
-    <section class="follow-online-global">
-        <div class="container">
-            <div class="text-center mb-5" data-aos="fade-up">
-                <span class="label-gold" style="font-size: 0.7rem; letter-spacing: 4px;">FOLLOW ONLINE</span>
-                <h2 class="font-display text-navy mb-4" style="font-size: 2.8rem;">Stay Connected with Advocate Veerendrababu</h2>
-                <div class="pas-separator mx-auto" style="background: var(--gold); opacity: 0.5;"></div>
-                <p class="text-muted mx-auto" style="max-width: 600px; font-size: 1.05rem;">Follow for legal insights, cultural updates, literary news and the latest from the practice.</p>
-            </div>
+    <!-- ── CALL TO ACTION (admin-managed) ── -->
+    @include('layouts.partials.cta')
 
-            <div class="follow-card-grid-lux" data-aos="fade-up">
-                <!-- Facebook -->
-                <a href="https://facebook.com" target="_blank" class="follow-card-lux fc-facebook">
-                    <div class="f-card-icon-lux"><i class="fab fa-facebook"></i></div>
-                    <div class="f-card-info-lux">
-                        <span class="f-card-platform-lux">FACEBOOK</span>
-                        <span class="f-card-handle-lux">ವೀರೇಂದ್ರಬಾಬು ನಂಜೇಗೌಡ</span>
-                    </div>
-                </a>
-                <!-- Instagram -->
-                <a href="https://instagram.com/veerendrababunanjegowda" target="_blank" class="follow-card-lux fc-instagram">
-                    <div class="f-card-icon-lux"><i class="fab fa-instagram"></i></div>
-                    <div class="f-card-info-lux">
-                        <span class="f-card-platform-lux">INSTAGRAM</span>
-                        <span class="f-card-handle-lux">@veerendrababunanjegowda</span>
-                    </div>
-                </a>
-                <!-- Website -->
-                <a href="https://www.blrlawhouse.com" target="_blank" class="follow-card-lux fc-website">
-                    <div class="f-card-icon-lux"><i class="fas fa-globe"></i></div>
-                    <div class="f-card-info-lux">
-                        <span class="f-card-platform-lux">OFFICIAL WEBSITE</span>
-                        <span class="f-card-handle-lux">www.blrlawhouse.com</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer-lux">
-        <div class="container" data-aos="fade-up">
-            <!-- Connect Cards -->
-            <div class="text-center mb-5">
-                <span class="label-gold" style="font-size: 0.7rem; letter-spacing: 4px;">GET IN TOUCH</span>
-                <h2 class="font-display mb-4" style="font-size: 2.5rem;">Connect with Advocate Veerendrababu Nanjegowda</h2>
-                <div class="pas-separator mx-auto"></div>
-                <p class="text-white opacity-60 mx-auto" style="max-width: 700px; font-size: 1rem;">For legal consultations, case inquiries, or professional engagements, reach out through any of the following channels.</p>
-            </div>
-
-            <div class="footer-connect-grid">
-                <!-- Bengaluru Office -->
-                <div class="f-connect-card">
-                    <i class="fas fa-university f-connect-icon"></i>
-                    <span class="f-connect-label">Bengaluru Office</span>
-                    <p class="f-connect-text">#1652/6, 20th Cross, 8th Main, CQAL Layout, C-Block, Sahakaranagar, Bengaluru - 560092</p>
-                </div>
-                <!-- New Delhi Office -->
-                <div class="f-connect-card">
-                    <i class="fas fa-landmark f-connect-icon"></i>
-                    <span class="f-connect-label">New Delhi Office</span>
-                    <p class="f-connect-text">Lawyer's Chambers, Supreme Court of India, New Delhi - 110001</p>
-                </div>
-                <!-- Phone -->
-                <div class="f-connect-card">
-                    <i class="fas fa-phone-alt f-connect-icon"></i>
-                    <span class="f-connect-label">Phone</span>
-                    <p class="f-connect-text">+91 96325 27961</p>
-                </div>
-                <!-- Email -->
-                <div class="f-connect-card">
-                    <i class="fas fa-envelope f-connect-icon"></i>
-                    <span class="f-connect-label">Email</span>
-                    <p class="f-connect-text">bengalurulawhouse@gmail.com</p>
-                </div>
-                <!-- Website -->
-                <div class="f-connect-card">
-                    <i class="fas fa-globe f-connect-icon"></i>
-                    <span class="f-connect-label">Website</span>
-                    <p class="f-connect-text">www.blrlawhouse.com</p>
-                </div>
-                <!-- Practice Courts -->
-                <div class="f-connect-card">
-                    <i class="fas fa-balance-scale f-connect-icon"></i>
-                    <span class="f-connect-label">Practice Courts</span>
-                    <p class="f-connect-text">Supreme Court of India • High Courts<br>NGT • All Courts, Karnataka</p>
-                </div>
-            </div>
-
-            <!-- Minimal Footer -->
-            <div class="pt-5 border-top border-white border-opacity-10">
-                <span class="footer-lux-title">Bengaluru Law House</span>
-                
-                <ul class="footer-lux-nav">
-                    <li><a href="{{ route('home') }}">Home</a></li>
-                    <li><a href="{{ url('/') }}#practice">Practice</a></li>
-                    <li><a href="{{ route('products.index') }}">Publications</a></li>
-                    <li><a href="{{ route('water-filtration') }}">Water Filtration</a></li>
-                    <li><a href="{{ route('water-filtration-kannada') }}">Water Filtration Kannada</a></li>
-                    <li><a href="{{ route('letter-to-pm-modi') }}">Letter to PM Modi</a></li>
-                    <li><a href="{{ route('letter-to-cm-karnataka') }}">Letter to CM Karnataka</a></li>
-                    <li><a href="{{ route('offices.index') }}">Offices</a></li>
-                    <li><a href="{{ route('gallery') }}">Gallery</a></li>
-                    <li><a href="{{ url('/contact-us') }}">Contact</a></li>
-                    <li><a href="https://instagram.com" target="_blank">Instagram</a></li>
-                    <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
-                </ul>
-
-                <div class="footer-lux-copyright">
-                    © 2026 Adv. Veerendrababu Nanjegowda • MBA, LLB, PhD (Pursuing) • www.blrlawhouse.com
-                </div>
-                <div class="footer-lux-location">
-                    Bengaluru, Karnataka • New Delhi
-                </div>
-            </div>
-        </div>
-    </footer>
+    <!-- ── GLOBAL FOOTER ── -->
+    @include('layouts.partials.footer')
     <!-- Back to Top -->
     <button class="back-to-top" id="backToTop">
         <i class="fas fa-arrow-up"></i>
@@ -803,10 +663,6 @@
     <a href="https://wa.me/919632527961" target="_blank" class="floating-contact-btn whatsapp-btn" title="WhatsApp">
         <i class="fab fa-whatsapp"></i>
         <span class="contact-btn-label">WhatsApp</span>
-    </a>
-    <a href="tel:+919632527961" class="floating-contact-btn phone-btn" title="Call">
-        <i class="fas fa-phone"></i>
-        <span class="contact-btn-label">Phone</span>
     </a>
 
     <!-- Scripts -->

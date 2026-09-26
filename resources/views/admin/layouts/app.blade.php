@@ -107,6 +107,26 @@
             gap: 1rem;
         }
 
+        .visit-site-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid #c7d2fe;
+            border-radius: 8px;
+            background: #eef2ff;
+            color: #4338ca;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .visit-site-btn:hover {
+            background: #e0e7ff;
+            border-color: #a5b4fc;
+            color: #3730a3;
+        }
+
         .user-dropdown .dropdown-toggle {
             display: flex;
             align-items: center;
@@ -435,14 +455,15 @@
         </a>
 
         <div class="topbar-right">
+            <a class="visit-site-btn" href="{{ route('home') }}" target="_blank" rel="noopener" title="Open the website in a new tab">
+                <i class="fas fa-up-right-from-square"></i><span class="d-none d-sm-inline">Visit Site</span>
+            </a>
             <div class="dropdown user-dropdown">
                 <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fas fa-user-circle"></i>
                     <span class="d-none d-md-inline">{{ Auth::guard('admin')->user()->name }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li><a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="fas fa-user-cog me-2"></i>Profile</a></li>
-                    <li><hr class="dropdown-divider"></li>
                     <li>
                         <form method="POST" action="{{ route('admin.logout') }}">
                             @csrf
@@ -471,33 +492,9 @@
             <!-- Management -->
             <div class="menu-heading">Management</div>
             <div class="menu-item">
-                <a href="{{ route('admin.products.index') }}" class="menu-link {{ Route::is('admin.products.*') ? 'active' : '' }}">
-                    <i class="fas fa-box"></i>
-                    <span>Products</span>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{{ route('admin.orders.index') }}" class="menu-link {{ Route::is('admin.orders.*') ? 'active' : '' }}">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span>Orders</span>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{{ route('admin.agents.index') }}" class="menu-link {{ Route::is('admin.agents.*') ? 'active' : '' }}">
-                    <i class="fas fa-users"></i>
-                    <span>Agents</span>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{{ route('admin.commissions.index') }}" class="menu-link {{ Route::is('admin.commissions.*') ? 'active' : '' }}">
-                    <i class="fas fa-money-bill-wave"></i>
-                    <span>Commissions</span>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{{ route('admin.settlements.index') }}" class="menu-link {{ Route::is('admin.settlements.*') ? 'active' : '' }}">
-                    <i class="fas fa-hand-holding-usd"></i>
-                    <span>Settlements</span>
+                <a href="{{ route('admin.metal-rates.index') }}" class="menu-link {{ Route::is('admin.metal-rates*') ? 'active' : '' }}">
+                    <i class="fas fa-coins" style="color:#c9a84c;"></i>
+                    <span>Live Rates</span>
                 </a>
             </div>
             <div class="menu-item">
@@ -510,66 +507,6 @@
             <!-- Site Content -->
             <div class="menu-heading">Site Content</div>
             <div class="menu-item">
-                <a href="{{ route('admin.site-content.sliders') }}" class="menu-link {{ Route::is('admin.site-content.sliders*') ? 'active' : '' }}">
-                    <i class="fas fa-images"></i>
-                    <span>Sliders</span>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{{ route('admin.site-content.about') }}" class="menu-link {{ Route::is('admin.site-content.about*') ? 'active' : '' }}">
-                    <i class="fas fa-info-circle"></i>
-                    <span>About Section</span>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{{ route('admin.site-content.featured-book') }}" class="menu-link {{ Route::is('admin.site-content.featured-book*') ? 'active' : '' }}">
-                    <i class="fas fa-book"></i>
-                    <span>Featured Book</span>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{{ route('admin.site-content.testimonials') }}" class="menu-link {{ Route::is('admin.site-content.testimonials*') ? 'active' : '' }}">
-                    <i class="fas fa-video"></i>
-                    <span>Videos</span>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{{ route('admin.site-content.order-flow') }}" class="menu-link {{ Route::is('admin.site-content.order-flow*') ? 'active' : '' }}">
-                    <i class="fas fa-shopping-bag"></i>
-                    <span>Order Flow</span>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{{ route('admin.site-content.whatsapp-flow') }}" class="menu-link {{ Route::is('admin.site-content.whatsapp-flow*') ? 'active' : '' }}">
-                    <i class="fab fa-whatsapp"></i>
-                    <span>WhatsApp Flow</span>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{{ route('admin.site-content.promo-banners') }}" class="menu-link {{ Route::is('admin.site-content.promo-banners*') ? 'active' : '' }}">
-                    <i class="fas fa-ad"></i>
-                    <span>Promo Banners</span>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{{ route('admin.site-content.settings') }}" class="menu-link {{ Route::is('admin.site-content.settings*') ? 'active' : '' }}">
-                    <i class="fas fa-cog"></i>
-                    <span>Site Settings</span>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{{ route('admin.site-content.blogs') }}" class="menu-link {{ Route::is('admin.site-content.blogs*') ? 'active' : '' }}">
-                    <i class="fas fa-newspaper"></i>
-                    <span>Blog Posts</span>
-                </a>
-            </div>
-            <div class="menu-item">
-                <a href="{{ route('admin.site-content.contact-settings') }}" class="menu-link {{ Route::is('admin.site-content.contact-settings*') ? 'active' : '' }}">
-                    <i class="fas fa-address-card"></i>
-                    <span>Contact Settings</span>
-                </a>
-            </div>
-            <div class="menu-item">
                 <a href="{{ route('admin.site-content.contact-messages') }}" class="menu-link {{ Route::is('admin.site-content.contact-messages*') ? 'active' : '' }}">
                     <i class="fas fa-envelope"></i>
                     <span>Contact Messages</span>
@@ -580,32 +517,41 @@
                 </a>
             </div>
             <div class="menu-item">
+                <a href="{{ route('admin.site-content.sliders') }}" class="menu-link {{ Route::is('admin.site-content.sliders*') ? 'active' : '' }}">
+                    <i class="fas fa-images"></i>
+                    <span>Sliders</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.cta') }}" class="menu-link {{ Route::is('admin.site-content.cta*') ? 'active' : '' }}">
+                    <i class="fas fa-bullhorn"></i>
+                    <span>Call To Action</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="{{ route('admin.site-content.about') }}" class="menu-link {{ Route::is('admin.site-content.about*') ? 'active' : '' }}">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About Section</span>
+                </a>
+            </div>
+            <div class="menu-item">
                 <a href="{{ route('admin.site-content.services') }}" class="menu-link {{ Route::is('admin.site-content.services*') ? 'active' : '' }}">
-                    <i class="fas fa-balance-scale"></i>
-                    <span>Legal Practice</span>
+                    <i class="fas fa-concierge-bell"></i>
+                    <span>Services</span>
                 </a>
             </div>
             <div class="menu-item">
-                <a href="{{ route('admin.site-content.stats') }}" class="menu-link {{ Route::is('admin.site-content.stats*') ? 'active' : '' }}">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Counters / Stats</span>
+                <a href="{{ route('admin.bank-accounts.index') }}" class="menu-link {{ Route::is('admin.bank-accounts*') ? 'active' : '' }}">
+                    <i class="fas fa-building-columns"></i>
+                    <span>Bank Details</span>
                 </a>
             </div>
-
             <div class="menu-item">
-                <a href="{{ route('admin.site-content.offices') }}" class="menu-link {{ Route::is('admin.site-content.offices*') ? 'active' : '' }}">
-                    <i class="fas fa-building"></i>
-                    <span>Our Offices</span>
+                <a href="{{ route('admin.site-content.blogs') }}" class="menu-link {{ Route::is('admin.site-content.blogs*') ? 'active' : '' }}">
+                    <i class="fas fa-newspaper"></i>
+                    <span>News &amp; Updates</span>
                 </a>
             </div>
-
-            <div class="menu-item">
-                <a href="{{ route('admin.site-content.social-links') }}" class="menu-link {{ Route::is('admin.site-content.social-links*') ? 'active' : '' }}">
-                    <i class="fas fa-share-alt"></i>
-                    <span>Connect Content</span>
-                </a>
-            </div>
-
             <div class="menu-item">
                 <a href="{{ route('admin.site-content.gallery') }}" class="menu-link {{ Route::is('admin.site-content.gallery*') ? 'active' : '' }}">
                     <i class="fas fa-camera"></i>
@@ -613,19 +559,12 @@
                 </a>
             </div>
 
+            <!-- Settings: logo, contact details and offices are tabs of this one page -->
+            <div class="menu-heading">Settings</div>
             <div class="menu-item">
-                <a href="{{ route('admin.site-content.beyond-bar') }}" class="menu-link {{ Route::is('admin.site-content.beyond-bar*') ? 'active' : '' }}">
-                    <i class="fas fa-clapperboard"></i>
-                    <span>Beyond the Bar</span>
-                </a>
-            </div>
-
-            <!-- System -->
-            <div class="menu-heading">System</div>
-            <div class="menu-item">
-                <a href="{{ route('admin.profile') }}" class="menu-link {{ Route::is('admin.profile') ? 'active' : '' }}">
+                <a href="{{ route('admin.site-content.settings') }}" class="menu-link {{ Route::is('admin.site-content.settings*', 'admin.site-content.contact-settings*', 'admin.site-content.offices*') ? 'active' : '' }}">
                     <i class="fas fa-cog"></i>
-                    <span>Settings</span>
+                    <span>Site Settings</span>
                 </a>
             </div>
         </div>

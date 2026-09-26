@@ -1,10 +1,6 @@
-@extends('admin.layouts.app')
-
-@section('title', 'Manage Offices')
-
-@section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 mb-0">Manage Offices</h1>
+{{-- Site Settings → Offices tab (shown in the footer and on the Offices page) --}}
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <p class="text-muted mb-0">Offices listed in the website footer.</p>
     <a href="{{ route('admin.site-content.offices.create') }}" class="btn btn-primary">
         <i class="fas fa-plus me-2"></i>Add Office
     </a>
@@ -41,13 +37,13 @@
                             @endif
                         </td>
                         <td>
-                            <a href="{{ route('admin.site-content.offices.edit', $office->id) }}" class="btn btn-sm btn-outline-primary">
+                            <a href="{{ route('admin.site-content.offices.edit', $office->id) }}" class="btn btn-sm btn-outline-primary" title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
                             <form action="{{ route('admin.site-content.offices.delete', $office->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this office?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
@@ -61,12 +57,5 @@
                 </tbody>
             </table>
         </div>
-
-        @if($offices->hasPages())
-        <div class="mt-3">
-            {{ $offices->links() }}
-        </div>
-        @endif
     </div>
 </div>
-@endsection

@@ -62,6 +62,13 @@
                                    {{ $page->is_published ? 'checked' : '' }}>
                             <label class="form-check-label">Publish Page</label>
                         </div>
+
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" name="show_in_footer" id="show_in_footer" value="1"
+                                   {{ old('show_in_footer', $page->show_in_footer) ? 'checked' : '' }}>
+                            <label class="form-check-label" for="show_in_footer">Show a link in the website footer</label>
+                            <div class="form-text">Handy for pages like Terms &amp; Conditions or Privacy Policy. Only published pages appear.</div>
+                        </div>
                     </div>
                 </div>
 

@@ -16,7 +16,7 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th width="80">Icon</th>
+                        <th width="110">Image</th>
                         <th>Title</th>
                         <th>Description</th>
                         <th width="80">Order</th>
@@ -27,7 +27,13 @@
                 <tbody>
                     @forelse($services as $service)
                     <tr>
-                        <td class="fs-4">{{ $service->icon }}</td>
+                        <td>
+                            @if($service->image)
+                            <img src="{{ asset('storage/' . $service->image) }}" alt="" class="rounded border" style="width: 84px; height: 54px; object-fit: cover;">
+                            @else
+                            <span class="d-inline-flex align-items-center justify-content-center rounded border bg-light text-muted" style="width: 84px; height: 54px;"><i class="fas fa-image"></i></span>
+                            @endif
+                        </td>
                         <td>{{ $service->title }}</td>
                         <td>{{ Str::limit($service->description, 60) }}</td>
                         <td>{{ $service->sort_order }}</td>

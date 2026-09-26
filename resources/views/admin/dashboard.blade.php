@@ -2,297 +2,185 @@
 
 @section('title', 'Admin Dashboard')
 
+@push('styles')
+<style>
+    .dash-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; height: 100%; }
+    .dash-stat { padding: 1.25rem 1.4rem; display: flex; flex-direction: column; gap: .35rem; height: 100%; position: relative; overflow: hidden; }
+    .dash-stat::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent, #c9a84c); }
+    .dash-label { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; color: #94a3b8; }
+    .dash-value { font-size: 1.75rem; font-weight: 700; color: #0f172a; line-height: 1.15; font-variant-numeric: tabular-nums; }
+    .dash-sub { font-size: .82rem; color: #64748b; }
+    .dash-up { color: #16a34a; font-weight: 600; }
+    .dash-down { color: #dc2626; font-weight: 600; }
+    .dash-card .card-header-lite { padding: 1rem 1.4rem; border-bottom: 1px solid #eef1f5; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+    .dash-card .card-header-lite h5 { margin: 0; font-size: 1rem; font-weight: 700; color: #0f172a; }
+    .session-pill { display: inline-flex; align-items: center; gap: .35rem; font-size: .78rem; font-weight: 600; padding: .25rem .65rem; border-radius: 999px; }
+    .session-pill.done { background: #dcfce7; color: #15803d; }
+    .session-pill.todo { background: #fef3c7; color: #b45309; }
+    .quick-tile { display: flex; align-items: center; gap: .85rem; padding: 1rem 1.1rem; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; text-decoration: none; color: #0f172a; transition: border-color .2s, transform .2s, box-shadow .2s; height: 100%; }
+    .quick-tile:hover { border-color: #c9a84c; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15, 23, 42, .06); color: #0f172a; }
+    .quick-tile i { width: 40px; height: 40px; border-radius: 10px; background: #fef9eb; color: #b45309; display: grid; place-items: center; font-size: 1rem; flex-shrink: 0; }
+    .quick-tile strong { display: block; font-size: .95rem; }
+    .quick-tile span { font-size: .8rem; color: #94a3b8; }
+</style>
+@endpush
+
 @section('content')
+@php
+    $goldNow   = $latest ? $latest->gold_999_rate * 10 : null;      // stored per 1 gm, shown per 10 gm
+    $silverNow = $latest ? $latest->silver_999_rate * 1000 : null;  // shown per 1 kg
+    $change = function ($now, $prev) {
+        if ($now === null || $prev === null || $prev == 0) { return null; }
+        return ['diff' => $now - $prev, 'pct' => ($now - $prev) / $prev * 100];
+    };
+    $goldChange   = $change($goldNow,   $previous ? $previous->gold_999_rate * 10 : null);
+    $silverChange = $change($silverNow, $previous ? $previous->silver_999_rate * 1000 : null);
+    $sessionsDone = count($todaySessions);
+@endphp
+
 <div class="container-fluid px-4">
-    <h1 class="mt-4">Dashboard</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Overview</li>
-    </ol>
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-4 mb-4">
+        <div>
+            <h1 class="h3 mb-1">Dashboard</h1>
+            <p class="text-muted mb-0">Gold &amp; silver rates and site content at a glance.</p>
+        </div>
+        <a href="{{ route('admin.metal-rates.create') }}" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Enter Session Rates</a>
+    </div>
 
-    <!-- Stats Cards -->
-    <div class="row">
+    @if($counts['sample_rates'] > 0)
+    <div class="alert border-0 rounded-3 mb-4 d-flex justify-content-between align-items-center flex-wrap gap-2" style="background:#fef3c7;color:#92400e;">
+        <div><i class="fas fa-flask me-2"></i><strong>{{ number_format($counts['sample_rates']) }} sample rate entries</strong> are loaded as demo history. Remove them before going live.</div>
+        <a href="{{ route('admin.metal-rates.index') }}" class="btn btn-sm btn-outline-danger">Manage in Live Rates</a>
+    </div>
+    @endif
+
+    {{-- Stat cards --}}
+    <div class="row g-4 mb-4">
         <div class="col-xl-3 col-md-6">
-            <div class="card bg-primary text-white mb-4">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="fw-normal">Total Orders</h6>
-                            <h4 class="mb-0">{{ $stats['total_orders'] }}</h4>
-                        </div>
-                        <i class="fas fa-shopping-cart fa-2x"></i>
-                    </div>
+            <div class="dash-card dash-stat" style="--accent:#c9a84c;">
+                <span class="dash-label">Gold 24K &middot; per 10 gm</span>
+                <span class="dash-value">{{ $goldNow !== null ? '₹' . number_format($goldNow) : '—' }}</span>
+                @if($goldChange)
+                    <span class="dash-sub {{ $goldChange['diff'] >= 0 ? 'dash-up' : 'dash-down' }}">
+                        {{ $goldChange['diff'] >= 0 ? '▲ +' : '▼ −' }}₹{{ number_format(abs($goldChange['diff'])) }} ({{ number_format(abs($goldChange['pct']), 2) }}%)
+                    </span>
+                @else
+                    <span class="dash-sub">{{ $latest ? 'No earlier rate to compare' : 'No rates entered yet' }}</span>
+                @endif
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="dash-card dash-stat" style="--accent:#64748b;">
+                <span class="dash-label">Silver 999 &middot; per 1 kg</span>
+                <span class="dash-value">{{ $silverNow !== null ? '₹' . number_format($silverNow) : '—' }}</span>
+                @if($silverChange)
+                    <span class="dash-sub {{ $silverChange['diff'] >= 0 ? 'dash-up' : 'dash-down' }}">
+                        {{ $silverChange['diff'] >= 0 ? '▲ +' : '▼ −' }}₹{{ number_format(abs($silverChange['diff'])) }} ({{ number_format(abs($silverChange['pct']), 2) }}%)
+                    </span>
+                @else
+                    <span class="dash-sub">{{ $latest ? 'No earlier rate to compare' : 'No rates entered yet' }}</span>
+                @endif
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="dash-card dash-stat" style="--accent:#16a34a;">
+                <span class="dash-label">Today's rates</span>
+                <span class="dash-value">{{ $sessionsDone }} <span style="font-size:1rem;color:#94a3b8;font-weight:600;">of 2 entered</span></span>
+                <span class="dash-sub d-flex gap-2 flex-wrap">
+                    <span class="session-pill {{ in_array('morning', $todaySessions) ? 'done' : 'todo' }}"><i class="fas fa-sun"></i> Morning</span>
+                    <span class="session-pill {{ in_array('evening', $todaySessions) ? 'done' : 'todo' }}"><i class="fas fa-moon"></i> Evening</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <a href="{{ route('admin.site-content.contact-messages') }}" class="text-decoration-none d-block h-100">
+                <div class="dash-card dash-stat" style="--accent:#2563eb;">
+                    <span class="dash-label">Unread messages</span>
+                    <span class="dash-value">{{ $counts['unread_messages'] }}</span>
+                    <span class="dash-sub">From the Contact Us form</span>
                 </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="{{ route('admin.orders.index') }}">
-                        View Details
-                    </a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        {{-- Recent rate entries --}}
+        <div class="col-xl-7">
+            <div class="dash-card">
+                <div class="card-header-lite">
+                    <h5><i class="fas fa-coins me-2 text-warning"></i>Recent Rate Entries</h5>
+                    <a href="{{ route('admin.metal-rates.index') }}" class="btn btn-sm btn-outline-secondary">Manage</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr><th class="ps-4">Date</th><th>Session</th><th>Gold / 1 gm</th><th class="pe-4">Silver / 1 gm</th></tr>
+                        </thead>
+                        <tbody>
+                            @forelse($recentRates as $rate)
+                            <tr>
+                                <td class="ps-4 fw-semibold">{{ $rate->rate_date->format('d M Y') }}@if($rate->is_sample)<span class="badge bg-warning text-dark ms-2" style="font-size:.65rem;">Sample</span>@endif</td>
+                                <td class="text-capitalize">{{ $rate->session }}</td>
+                                <td>₹{{ number_format($rate->gold_999_rate, 2) }}</td>
+                                <td class="pe-4">₹{{ number_format($rate->silver_999_rate, 2) }}</td>
+                            </tr>
+                            @empty
+                            <tr><td colspan="4" class="text-center text-muted py-4">No rate entries yet.</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-        
-        <div class="col-xl-3 col-md-6">
-            <div class="card bg-success text-white mb-4">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="fw-normal">Total Revenue</h6>
-                            <h4 class="mb-0">₹{{ number_format($stats['total_revenue'], 2) }}</h4>
+
+        {{-- Recent messages --}}
+        <div class="col-xl-5">
+            <div class="dash-card">
+                <div class="card-header-lite">
+                    <h5><i class="fas fa-envelope me-2 text-primary"></i>Recent Messages</h5>
+                    <a href="{{ route('admin.site-content.contact-messages') }}" class="btn btn-sm btn-outline-secondary">View all</a>
+                </div>
+                <div class="list-group list-group-flush">
+                    @forelse($recentMessages as $message)
+                    <a href="{{ route('admin.site-content.contact-messages.view', $message->id) }}" class="list-group-item list-group-item-action px-4 py-3">
+                        <div class="d-flex justify-content-between gap-2">
+                            <strong>{{ $message->name }}@if($message->status === 'unread') <span class="badge bg-warning text-dark ms-1">New</span>@endif</strong>
+                            <small class="text-muted text-nowrap">{{ $message->created_at->diffForHumans() }}</small>
                         </div>
-                        <i class="fas fa-rupee-sign fa-2x"></i>
-                    </div>
-                </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="{{ route('admin.orders.index') }}">
-                        View Details
+                        <div class="text-muted small text-truncate">{{ $message->subject }}</div>
                     </a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-xl-3 col-md-6">
-            <div class="card bg-warning text-white mb-4">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="fw-normal">Total Agents</h6>
-                            <h4 class="mb-0">{{ $stats['total_agents'] }}</h4>
-                        </div>
-                        <i class="fas fa-users fa-2x"></i>
-                    </div>
-                </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="{{ route('admin.agents.index') }}">
-                        View Details
-                    </a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-xl-3 col-md-6">
-            <div class="card bg-info text-white mb-4">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h6 class="fw-normal">Pending Settlements</h6>
-                            <h4 class="mb-0">₹{{ number_format($stats['pending_settlements'], 2) }}</h4>
-                        </div>
-                        <i class="fas fa-hand-holding-usd fa-2x"></i>
-                    </div>
-                </div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <a class="small text-white stretched-link" href="{{ route('admin.settlements.index') }}">
-                        View Details
-                    </a>
-                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    @empty
+                    <div class="text-center text-muted py-4">No messages yet.</div>
+                    @endforelse
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Charts and Tables -->
-    <div class="row">
-        <div class="col-xl-8">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-chart-area me-1"></i>
-                    Revenue Analysis (Last 30 Days)
+    {{-- Quick links --}}
+    <h5 class="fw-bold mb-3">Manage site content</h5>
+    <div class="row g-3 mb-5">
+        @foreach([
+            ['route' => 'admin.bank-accounts.index',         'icon' => 'fa-building-columns', 'label' => 'Bank Details',    'count' => $counts['bank_accounts'], 'unit' => 'accounts'],
+            ['route' => 'admin.site-content.services',       'icon' => 'fa-concierge-bell',   'label' => 'Services',        'count' => $counts['services'],      'unit' => 'services'],
+            ['route' => 'admin.site-content.blogs',          'icon' => 'fa-newspaper',        'label' => 'News & Updates',  'count' => $counts['news'],          'unit' => 'posts'],
+            ['route' => 'admin.site-content.gallery',        'icon' => 'fa-camera',           'label' => 'Photo Gallery',   'count' => $counts['gallery'],       'unit' => 'photos'],
+            ['route' => 'admin.site-content.settings', 'params' => ['tab' => 'offices'], 'icon' => 'fa-building', 'label' => 'Offices',         'count' => $counts['offices'],       'unit' => 'offices'],
+            ['route' => 'admin.site-content.settings', 'params' => ['tab' => 'contact'], 'icon' => 'fa-address-card', 'label' => 'Contact Details', 'count' => null,                     'unit' => 'phone, email, map'],
+        ] as $tile)
+        <div class="col-xl-2 col-md-4 col-6">
+            <a href="{{ route($tile['route'], $tile['params'] ?? []) }}" class="quick-tile">
+                <i class="fas {{ $tile['icon'] }}"></i>
+                <div>
+                    <strong>{{ $tile['label'] }}</strong>
+                    <span>{{ $tile['count'] !== null ? $tile['count'] . ' ' . $tile['unit'] : $tile['unit'] }}</span>
                 </div>
-                <div class="card-body">
-                    <canvas id="revenueChart" width="100%" height="40"></canvas>
-                </div>
-            </div>
+            </a>
         </div>
-        
-        <div class="col-xl-4">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-chart-pie me-1"></i>
-                    Quick Stats
-                </div>
-                <div class="card-body">
-                    <div class="d-flex justify-content-between mb-3">
-                        <span>Today's Orders</span>
-                        <strong id="todayOrders">0</strong>
-                    </div>
-                    <div class="d-flex justify-content-between mb-3">
-                        <span>This Week's Revenue</span>
-                        <strong id="weekRevenue">₹0</strong>
-                    </div>
-                    <div class="d-flex justify-content-between mb-3">
-                        <span>Monthly Commissions</span>
-                        <strong id="monthCommissions">₹0</strong>
-                    </div>
-                    <div class="mt-4">
-                        <select class="form-select" id="periodSelect">
-                            <option value="daily">Today</option>
-                            <option value="weekly">This Week</option>
-                            <option value="monthly" selected>This Month</option>
-                            <option value="yearly">This Year</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Recent Orders and Top Agents -->
-    <div class="row">
-        <div class="col-xl-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-table me-1"></i>
-                    Recent Orders
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Order #</th>
-                                    <th>Customer</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($recentOrders as $order)
-                                <tr>
-                                    <td>
-                                        <a href="{{ route('admin.orders.show', $order) }}">
-                                            {{ $order->order_number }}
-                                        </a>
-                                    </td>
-                                    <td>{{ $order->customer_name }}</td>
-                                    <td>₹{{ $order->total }}</td>
-                                    <td>
-                                        <span class="badge bg-{{ $order->order_status === 'delivered' ? 'success' : ($order->order_status === 'cancelled' ? 'danger' : 'warning') }}">
-                                            {{ ucfirst($order->order_status) }}
-                                        </span>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-xl-6">
-            <div class="card mb-4">
-                <div class="card-header">
-                    <i class="fas fa-trophy me-1"></i>
-                    Top Performing Agents
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Agent</th>
-                                    <th>Referrals</th>
-                                    <th>Earnings</th>
-                                    <th>Rank</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($topAgents as $index => $agent)
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <div class="avatar-sm me-3">
-                                                <div class="avatar-title bg-light rounded-circle">
-                                                    {{ strtoupper(substr($agent->name, 0, 1)) }}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <h6 class="mb-0">{{ $agent->name }}</h6>
-                                                <small class="text-muted">{{ $agent->referral_code }}</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>{{ $agent->referrals_count }}</td>
-                                    <td>₹{{ number_format($agent->total_commission ?? 0, 2) }}</td>
-                                    <td>
-                                        <span class="badge bg-{{ $index < 3 ? 'warning' : 'secondary' }}">
-                                            #{{ $index + 1 }}
-                                        </span>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @endforeach
     </div>
 </div>
 @endsection
-
-@push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-// Revenue Chart
-const ctx = document.getElementById('revenueChart').getContext('2d');
-const revenueChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: @json($dailyEarnings->pluck('date')),
-        datasets: [{
-            label: 'Daily Revenue',
-            data: @json($dailyEarnings->pluck('earnings')),
-            borderColor: '#4e73df',
-            backgroundColor: 'rgba(78, 115, 223, 0.05)',
-            pointBackgroundColor: '#4e73df',
-            pointBorderColor: '#4e73df',
-            pointRadius: 3,
-            fill: true,
-            tension: 0.4
-        }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    callback: function(value) {
-                        return '₹' + value;
-                    }
-                }
-            }
-        },
-        plugins: {
-            tooltip: {
-                callbacks: {
-                    label: function(context) {
-                        return 'Revenue: ₹' + context.parsed.y.toFixed(2);
-                    }
-                }
-            }
-        }
-    }
-});
-
-// Load quick stats
-function loadStats(period) {
-    fetch(`{{ route('admin.dashboard.stats') }}?period=${period}`)
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('todayOrders').textContent = data.total_orders || 0;
-            document.getElementById('weekRevenue').textContent = '₹' + (data.total_revenue || 0).toFixed(2);
-            document.getElementById('monthCommissions').textContent = '₹' + (data.total_commissions || 0).toFixed(2);
-        });
-}
-
-document.getElementById('periodSelect').addEventListener('change', function() {
-    loadStats(this.value);
-});
-
-// Load initial stats
-loadStats('monthly');
-</script>
-@endpush

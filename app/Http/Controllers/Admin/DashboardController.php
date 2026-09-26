@@ -3,78 +3,60 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
-use App\Models\Agent;
-use App\Models\Product;
-use App\Models\Commission;
-use App\Models\Settlement;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\BankAccount;
+use App\Models\Blog;
+use App\Models\ContactMessage;
+use App\Models\GalleryPhoto;
+use App\Models\MetalRate;
+use App\Models\Office;
+use App\Models\Service;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $stats = [
-            'total_orders' => Order::count(),
-            'total_agents' => Agent::count(),
-            'total_products' => Product::count(),
-            'total_revenue' => Order::sum('total'),
-            'total_commissions' => Commission::sum('amount'),
-            'pending_settlements' => Commission::where('status', 'pending')->sum('amount')
-        ];
+        // Latest published rate and the one before it (for the ▲/▼ change)
+        $latest = MetalRate::orderByDesc('rate_date')
+            ->orderByRaw("CASE session WHEN 'evening' THEN 0 ELSE 1 END")
+            ->first();
 
-        // Daily earnings for chart
-        $dailyEarnings = Order::select(
-            DB::raw('DATE(created_at) as date'),
-            DB::raw('SUM(total) as earnings')
-        )
-        ->where('created_at', '>=', now()->subDays(30))
-        ->groupBy('date')
-        ->orderBy('date')
-        ->get();
-
-        $topAgents = Agent::withSum(['commissions' => function($q) {
-                $q->where('status', 'settled');
-            }], 'amount')
-            ->orderBy('commissions_sum_amount', 'desc') // <-- USE THIS
-            ->take(5)
-            ->get();
-
-        // Recent orders
-        $recentOrders = Order::with('product')
-            ->latest()
-            ->take(10)
-            ->get();
-
-        return view('admin.dashboard', compact('stats', 'dailyEarnings', 'topAgents', 'recentOrders'));
-    }
-
-    public function getStats(Request $request)
-    {
-        $period = $request->get('period', 'monthly');
-
-        switch ($period) {
-            case 'daily':
-                $query = Order::whereDate('created_at', today());
-                break;
-            case 'weekly':
-                $query = Order::whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
-                break;
-            case 'monthly':
-                $query = Order::whereMonth('created_at', now()->month)
-                            ->whereYear('created_at', now()->year);
-                break;
-            default:
-                $query = Order::whereYear('created_at', now()->year);
+        $previous = null;
+        if ($latest) {
+            $previous = MetalRate::where(function ($q) use ($latest) {
+                $q->where('rate_date', '<', $latest->rate_date)
+                  ->orWhere(function ($same) use ($latest) {
+                      $same->where('rate_date', $latest->rate_date)->where('id', '<', $latest->id);
+                  });
+            })
+            ->orderByDesc('rate_date')
+            ->orderByRaw("CASE session WHEN 'evening' THEN 0 ELSE 1 END")
+            ->first();
         }
 
-        $stats = [
-            'total_orders' => $query->count(),
-            'total_revenue' => $query->sum('total'),
-            'total_commissions' => Commission::whereIn('order_id', $query->pluck('id'))->sum('amount')
+        // Which of today's two sessions (IST) already have a rate
+        $today         = Carbon::now(MetalRate::TIMEZONE)->toDateString();
+        $todaySessions = MetalRate::where('rate_date', $today)->pluck('session')->all();
+
+        $recentRates = MetalRate::orderByDesc('rate_date')
+            ->orderByRaw("CASE session WHEN 'evening' THEN 0 ELSE 1 END")
+            ->take(8)
+            ->get();
+
+        $recentMessages = ContactMessage::latest()->take(5)->get();
+
+        $counts = [
+            'unread_messages' => ContactMessage::unread()->count(),
+            'sample_rates'    => MetalRate::where('is_sample', true)->count(),
+            'bank_accounts'   => BankAccount::count(),
+            'services'        => Service::count(),
+            'news'            => Blog::count(),
+            'gallery'         => GalleryPhoto::count(),
+            'offices'         => Office::count(),
         ];
 
-        return response()->json($stats);
+        return view('admin.dashboard', compact(
+            'latest', 'previous', 'todaySessions', 'recentRates', 'recentMessages', 'counts'
+        ));
     }
 }

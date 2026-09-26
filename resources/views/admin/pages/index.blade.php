@@ -42,6 +42,9 @@
                             @else
                                 <span class="badge bg-danger">Unpublished</span>
                             @endif
+                            @if($page->is_published && $page->show_in_footer)
+                                <span class="badge bg-warning text-dark ms-1" title="Linked from the website footer"><i class="fas fa-link me-1"></i>Footer</span>
+                            @endif
                         </td>
                         <td>
                             <a href="{{ route('admin.pages.edit', $page->id) }}" class="btn btn-sm btn-warning">

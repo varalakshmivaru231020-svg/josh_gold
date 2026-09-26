@@ -33,6 +33,7 @@ class PageController extends Controller
             'slug'         => Str::slug($request->title),
             'content'      => $request->content,
             'is_published' => $request->has('is_published'),
+            'show_in_footer' => $request->has('show_in_footer'),
         ]);
 
         return redirect()->route('admin.pages.index')
@@ -62,6 +63,7 @@ class PageController extends Controller
             'content'      => $request->content,
             'banner_title' => $request->banner_title,
             'is_published' => $request->has('is_published'),
+            'show_in_footer' => $request->has('show_in_footer'),
         ];
 
         if ($request->hasFile('banner_image')) {

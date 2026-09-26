@@ -1,6 +1,21 @@
 @extends('layouts.lawfirm')
 
-@section('title', 'Contact Us | Bengaluru Law House')
+@section('title', 'Contact Us | JOSHA INFINITY INC SERVICE')
+
+@php
+    // Everything here comes from admin (Contact Settings) and is optional: blank = not shown
+    $address  = trim((string) ($contact['address'] ?? ''));
+    $phone    = trim((string) ($contact['phone'] ?? ''));
+    $email    = trim((string) ($contact['email'] ?? ''));
+    $waNumber = preg_replace('/\D+/', '', (string) ($contact['whatsapp'] ?? ''));
+    $hours    = trim((string) ($contact['working_hours'] ?? ''));
+    $mapEmbed = trim((string) ($contact['map_embed'] ?? ''));
+    $addrLines = array_values(array_filter(array_map(fn ($line) => trim($line, " 	,"), preg_split('/\R/', $address))));
+    $mapQuery  = implode(', ', $addrLines);   // shown as text
+    // A leading door/floor/building line makes Google guess between similarly named places,
+    // so the map searches by the locality lines (all but the first) when there are 3 or more
+    $mapSearch = count($addrLines) >= 3 ? implode(', ', array_slice($addrLines, 1)) : $mapQuery;
+@endphp
 
 @section('content')
 <section class="contact-luxury-page">
@@ -8,12 +23,12 @@
     {{-- Hero Banner --}}
     <div class="contact-hero-header">
         {{-- decorative background icon --}}
-        <div class="contact-hero-deco" aria-hidden="true"><i class="fas fa-balance-scale"></i></div>
+        <div class="contact-hero-deco" aria-hidden="true"><i class="fas fa-coins"></i></div>
         <div class="container text-center" data-aos="fade-up">
             <div class="label-gold">GET IN TOUCH</div>
             <h1 class="heading-premium text-white">Contact Us</h1>
             <div class="accent-line-gold mx-auto"></div>
-            <p class="contact-subheader text-white mt-3">Have questions about our publications? We'd love to hear from you.</p>
+            <p class="contact-subheader text-white mt-3">Questions about gold &amp; silver rates or our services? We'd love to hear from you.</p>
         </div>
     </div>
 
@@ -75,62 +90,95 @@
                 <div class="contact-sidebar-luxury">
                     <h3 class="sidebar-heading mb-4">Contact Information</h3>
 
+                    @if($address !== '')
                     {{-- Address --}}
                     <div class="contact-info-block mb-4">
                         <div class="cib-icon"><i class="fas fa-map-marker-alt"></i></div>
                         <div class="cib-content">
                             <span class="cib-label">Address</span>
-                            <p class="cib-text">1652/6, 20th Cross, 8th Main Road,<br>C Block, CQAL Layout, Sahakar Nagar,<br>Bengaluru, Karnataka – 560092.</p>
+                            <p class="cib-text">{!! nl2br(e($address)) !!}</p>
                         </div>
                     </div>
+                    @endif
 
+                    @if($phone !== '')
                     {{-- Phone --}}
                     <div class="contact-info-block mb-4">
                         <div class="cib-icon"><i class="fas fa-phone-alt"></i></div>
                         <div class="cib-content">
                             <span class="cib-label">Phone</span>
-                            <a href="tel:+919632527961" class="cib-link">+91 96325 27961</a>
+                            <a href="tel:{{ preg_replace('/[^\d+]/', '', $phone) }}" class="cib-link">{{ $phone }}</a>
                         </div>
                     </div>
+                    @endif
 
+                    @if($email !== '')
                     {{-- Email --}}
                     <div class="contact-info-block mb-4">
                         <div class="cib-icon"><i class="fas fa-envelope"></i></div>
                         <div class="cib-content">
                             <span class="cib-label">Email</span>
-                            <a href="mailto:bengalurulawhouse@gmail.com" class="cib-link">bengalurulawhouse@gmail.com</a>
+                            <a href="mailto:{{ $email }}" class="cib-link">{{ $email }}</a>
                         </div>
                     </div>
+                    @endif
 
+                    @if($waNumber !== '')
                     {{-- WhatsApp --}}
                     <div class="contact-info-block mb-4">
                         <div class="cib-icon cib-whatsapp"><i class="fab fa-whatsapp"></i></div>
                         <div class="cib-content">
                             <span class="cib-label">WhatsApp</span>
-                            <a href="https://wa.me/919632527961" target="_blank" class="cib-link cib-wa-link">
+                            <a href="https://wa.me/{{ $waNumber }}" target="_blank" rel="noopener" class="cib-link cib-wa-link">
                                 Chat with us <i class="fas fa-external-link-alt ms-1" style="font-size: 0.7em;"></i>
                             </a>
                         </div>
                     </div>
+                    @endif
 
+                    @if($hours !== '')
                     {{-- Working Hours --}}
                     <div class="contact-info-block">
                         <div class="cib-icon"><i class="fas fa-clock"></i></div>
                         <div class="cib-content">
                             <span class="cib-label">Working Hours</span>
-                            <p class="cib-text">Mon – Sat: 9:00 AM – 6:00 PM</p>
+                            <p class="cib-text">{!! nl2br(e($hours)) !!}</p>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
 
         </div>
 
-        {{-- Map --}}
-        @if(isset($contact['map_embed']) && $contact['map_embed'])
-        <div class="map-premium-card mt-5" data-aos="fade-up">
-            <div class="map-inner">
-                 {!! $contact['map_embed'] !!}
+        {{-- Map: the embed pasted in admin, or Google Maps for the address; hidden if neither is set --}}
+        @if($mapEmbed !== '' || $mapQuery !== '')
+        <div class="map-section mt-5" data-aos="fade-up">
+            <div class="map-head">
+                <div>
+                    <span class="label-gold-sm">FIND US</span>
+                    <h3 class="map-title">Visit Our Office</h3>
+                    @if($mapQuery !== '')
+                    <p class="map-address"><i class="fas fa-map-marker-alt me-2"></i>{{ $mapQuery }}</p>
+                    @endif
+                </div>
+                @if($mapQuery !== '')
+                <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($mapSearch) }}" target="_blank" rel="noopener" class="btn-gold-action map-directions">
+                    <i class="fas fa-directions me-2"></i> Get Directions
+                </a>
+                @endif
+            </div>
+
+            <div class="map-premium-card">
+                <div class="map-inner">
+                    @if($mapEmbed !== '')
+                        {!! $mapEmbed !!}
+                    @else
+                        <iframe src="https://www.google.com/maps?q={{ urlencode($mapSearch) }}&output=embed"
+                                title="Map showing {{ $mapQuery }}" loading="lazy" allowfullscreen
+                                referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    @endif
+                </div>
             </div>
         </div>
         @endif
@@ -287,6 +335,11 @@
     .cib-wa-link:hover { color: #7fffb0; }
 
     /* Map */
+    .map-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 1.25rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+    .map-title { font-family: var(--font-display); font-size: 2rem; font-weight: 700; color: var(--navy, #0c1428); margin: .2rem 0 .4rem; }
+    .map-address { margin: 0; color: #666; max-width: 640px; }
+    .map-address i { color: var(--gold, #c9a84c); }
+    .map-directions { width: auto !important; padding: .8rem 1.6rem; text-decoration: none; white-space: nowrap; }
     .map-premium-card {
         border-radius: 24px; overflow: hidden;
         border: 1px solid rgba(201,168,76,0.2);
@@ -302,6 +355,8 @@
         .card-heading-navy { font-size: 1.5rem; }
     }
     @media (max-width: 576px) {
+        .map-title { font-size: 1.6rem; }
+        .map-premium-card { height: 320px; border-radius: 18px; }
         .contact-content-container { padding-top: 40px; }
         .contact-card-premium, .contact-sidebar-luxury { padding: 28px; }
     }

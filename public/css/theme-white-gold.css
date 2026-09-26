@@ -1,0 +1,200 @@
+/*
+ * White & gold theme for the public website.
+ *
+ * Loaded last by resources/views/layouts/lawfirm.blade.php, so it overrides the navy styling
+ * that individual pages still declare. To go back to the old look, delete that <link> tag.
+ *
+ * Palette: white / warm cream surfaces, gold accents, warm near-black ink for text.
+ * Gold text on white is only used for large type; small text uses --gold-dark for contrast.
+ */
+
+:root {
+    --gold: #c9a84c;
+    --gold-light: #e8c878;
+    --gold-dark: #8b6914;
+
+    --ink: #2b2417;        /* headings and body text */
+    --ink-soft: #4a412c;
+    --muted: #6f6650;
+
+    /* Legacy tokens: pages use these for dark text and dark panels. They now mean "ink". */
+    --navy: #2b2417;
+    --navy-mid: #3a3120;
+    --navy-light: #4a3f2b;
+
+    --cream: #fbf8f1;
+    --cream-dark: #f1e9d6;
+    --text: #3a3428;
+    --text-muted: #6f6650;
+    --white: #ffffff;
+}
+
+body { background: #fff; color: var(--text); }
+::selection { background: var(--gold-light); color: var(--ink); }
+::-webkit-scrollbar-track { background: var(--cream); }
+
+/* ───────────────────────── Navigation ───────────────────────── */
+.nav-premium {
+    background: rgba(255, 255, 255, .97);
+    border-bottom: 1px solid rgba(201, 168, 76, .4);
+    box-shadow: 0 2px 18px rgba(139, 105, 20, .08);
+}
+.nav-premium.scrolled { background: #fff; box-shadow: 0 8px 30px rgba(139, 105, 20, .16); }
+.nav-brand-seal { color: var(--ink); border-color: rgba(255, 255, 255, .7); box-shadow: 0 0 14px rgba(201, 168, 76, .35); }
+.nav-brand-text { color: var(--gold-dark); text-shadow: none; }
+.nav-brand-sub { color: var(--muted); }
+.nav-link-custom { color: var(--ink-soft); }
+.nav-link-custom:hover { color: var(--gold-dark); background: rgba(201, 168, 76, .14); }
+.nav-link-custom.active { color: var(--gold-dark); box-shadow: inset 0 -2px 0 var(--gold); border-radius: 8px 8px 0 0; }
+.nav-toggle span { background: var(--gold-dark) !important; }
+.nav-premium .dropdown-menu { background: #fff !important; border: 1px solid rgba(201, 168, 76, .35) !important; }
+.nav-premium .dropdown-item { color: var(--ink-soft); }
+.nav-premium .dropdown-item:hover { background: rgba(201, 168, 76, .14); color: var(--gold-dark); }
+
+@media (max-width: 1100px) {
+    .nav-links { background: #fff; box-shadow: -10px 0 40px rgba(139, 105, 20, .25); }
+    .nav-link-custom { border-bottom: 1px solid rgba(201, 168, 76, .2); }
+    .nav-link-custom:hover { background: rgba(201, 168, 76, .12); color: var(--gold-dark); }
+    .nav-link-custom.active { box-shadow: inset 3px 0 0 var(--gold); border-radius: 0; }
+    .nav-overlay { background: rgba(43, 36, 23, .45); }
+}
+
+/* Announcement bar (if shown) */
+.announcement-bar { box-shadow: 0 6px 14px rgba(139, 105, 20, .15); }
+.announcement-link { color: var(--ink); }
+.announcement-link:hover { background: rgba(139, 105, 20, .1); color: var(--gold-dark); }
+.announcement-divider { background: rgba(139, 105, 20, .45); }
+
+/* ───────────────────────── Page headers (every inner page) ───────────────────────── */
+.about-hero-header, .contact-hero-header, .gallery-hero-header, .video-hero-header,
+.blog-hero-header, .office-hero-header, .pas-page-hero, .cms-hero-header, .rates-hero, .bank-hero, .pub-hero-header {
+    background: linear-gradient(180deg, #ffffff 0%, var(--cream) 100%) !important;
+    border-bottom: 1px solid rgba(201, 168, 76, .35);
+}
+:is(.about-hero-header, .contact-hero-header, .gallery-hero-header, .video-hero-header, .blog-hero-header,
+    .office-hero-header, .pas-page-hero, .cms-hero-header, .rates-hero, .bank-hero, .pub-hero-header)
+:is(h1, h2, h3, p, .heading-premium, .hero-subheader, .text-white, .pas-page-heading, .pas-page-sub, .hero-title,
+    .hero-meta, .bank-heading, .bank-sub, .contact-subheader, .gallery-subheader, .hero-title span:not(.gold)) {
+    color: var(--ink) !important;
+    text-shadow: none !important;
+}
+:is(.about-hero-header, .contact-hero-header, .gallery-hero-header, .video-hero-header, .blog-hero-header,
+    .office-hero-header, .pas-page-hero, .cms-hero-header, .rates-hero, .bank-hero, .pub-hero-header)
+:is(.label-gold, .pas-eyebrow, .bank-eyebrow, .hero-badge, .section-eyebrow) { color: var(--gold-dark) !important; }
+.rates-hero .hero-title span { color: var(--gold-dark) !important; }
+.rates-hero .hero-badge { background: rgba(201, 168, 76, .16); border-color: rgba(201, 168, 76, .5); }
+.hero-deco, .contact-hero-deco, .gallery-hero-deco { color: rgba(201, 168, 76, .18) !important; }
+
+/* ───────────────────────── Home ───────────────────────── */
+/* Top rates strip */
+.ticker-wrap.bg-navy { background: #fff !important; color: var(--gold-dark) !important; border-bottom-color: var(--gold) !important; }
+.ticker-wrap .text-white { color: var(--ink) !important; }
+.ticker-wrap .text-gold { color: var(--gold-dark) !important; }
+
+/* Hero: light wash over the gold-bar photo, dark text */
+.hero-overlay { background: linear-gradient(90deg, rgba(255, 255, 255, .97) 0%, rgba(255, 255, 255, .82) 42%, rgba(255, 250, 235, .12) 100%) !important; }
+.hero-section h1.hero-title, .hero-section h1.text-white { color: var(--ink) !important; }
+.hero-section p.text-white-50, .hero-section p.text-white { color: var(--ink-soft) !important; }
+.hero-section .text-gold { color: var(--gold-dark) !important; }
+.hero-section .btn-outline-light { border-color: var(--gold-dark); color: var(--gold-dark); background: rgba(255, 255, 255, .6); }
+.hero-section .btn-outline-light:hover { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+
+/* News strip */
+.badge.bg-navy { background: #fff !important; color: var(--gold-dark) !important; border: 1px solid rgba(139, 105, 20, .35); }
+.bg-gold .text-navy { color: var(--ink) !important; }
+
+/* Cards that used dark panels */
+.service-overlay { background: linear-gradient(to top, rgba(43, 36, 23, .88), rgba(43, 36, 23, 0)) !important; }
+.cta-banner.text-white { background: #fff !important; color: var(--ink) !important; border: 1px solid rgba(201, 168, 76, .5); box-shadow: 0 20px 50px rgba(139, 105, 20, .12) !important; }
+.cta-banner.text-white .text-white-50 { color: var(--muted) !important; }
+.cta-banner .fa-handshake { color: var(--gold); }
+
+/* Buttons that were navy */
+.btn-navy { background: var(--gold); color: var(--ink); }
+.btn-navy:hover { background: var(--gold-dark); color: #fff; }
+.btn-outline-navy { border-color: var(--gold-dark); color: var(--gold-dark); }
+.btn-outline-navy:hover { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+.btn-gold { color: var(--ink); }
+
+/* ───────────────────────── Generic dark panels → light panels ───────────────────────── */
+.bg-navy:not(.badge):not(.ticker-wrap) { background: linear-gradient(180deg, var(--cream) 0%, #fff 100%) !important; color: var(--ink); }
+.bg-navy:not(.badge) :is(.text-white, h3.text-white, h4.text-white) { color: var(--ink) !important; }
+.bg-navy:not(.badge) .text-white-50 { color: var(--muted) !important; }
+.glass-card-dark { background: #fff !important; border: 1px solid rgba(201, 168, 76, .4) !important; color: var(--ink); box-shadow: 0 16px 40px rgba(139, 105, 20, .1) !important; }
+.glass-card-dark:hover { border-color: var(--gold) !important; }
+[style*="background: var(--navy)"], [style*="background:var(--navy)"] { background: #fff !important; color: var(--ink) !important; border: 1px solid rgba(201, 168, 76, .4); box-shadow: 0 16px 40px rgba(139, 105, 20, .1); }
+[style*="background: var(--navy)"] :is(.text-white, h3, h4), [style*="background:var(--navy)"] :is(.text-white, h3, h4) { color: var(--ink) !important; }
+[style*="background: var(--navy)"] .text-white-50 { color: var(--muted) !important; }
+.abstract-shape { opacity: .5; }
+
+/* ───────────────────────── Live rates ───────────────────────── */
+.purity-table thead tr { background: var(--gold-light); }
+.purity-table thead th { color: var(--ink) !important; }
+.chart-tab.active { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+
+/* ───────────────────────── Contact ───────────────────────── */
+.contact-sidebar-luxury { background: #fff !important; border: 1px solid rgba(201, 168, 76, .45); box-shadow: 0 25px 60px rgba(139, 105, 20, .12) !important; }
+.contact-sidebar-luxury :is(h3, h4, .sidebar-heading) { color: var(--ink) !important; }
+.contact-sidebar-luxury .cib-label { color: var(--gold-dark) !important; }
+.contact-sidebar-luxury .cib-text { color: var(--ink-soft) !important; }
+.contact-sidebar-luxury .cib-link, .cib-link { color: var(--gold-dark) !important; }
+.contact-sidebar-luxury .cib-link:hover, .cib-link:hover { color: var(--ink) !important; }
+.contact-sidebar-luxury .cib-wa-link { color: #128c4a !important; }
+.contact-sidebar-luxury .cib-icon { background: rgba(201, 168, 76, .16) !important; color: var(--gold-dark) !important; }
+
+/* ───────────────────────── Services ───────────────────────── */
+.pas-quote-banner { background: linear-gradient(135deg, #fff, var(--cream)) !important; border: 1px solid rgba(201, 168, 76, .45); box-shadow: 0 20px 50px rgba(139, 105, 20, .1) !important; }
+.pas-quote-banner :is(p, .pas-quote-text) { color: var(--ink) !important; }
+.pas-quote-mark { color: var(--gold) !important; }
+
+/* ───────────────────────── Gallery / misc ───────────────────────── */
+.gallery-overlay, .gallery-mosaic-item .gallery-overlay { background: linear-gradient(to top, rgba(43, 36, 23, .82) 0%, transparent 60%) !important; }
+
+/* Watermark icons on the Home cards use opacity-10 / opacity-20, which Bootstrap does not define */
+.opacity-10 { opacity: .10; }
+.opacity-20 { opacity: .20; }
+
+/* About hero: the dark tint layer over the (removed) photo */
+.hero-bg-overlay { background: transparent !important; }
+.hero-particles { opacity: .35; }
+
+/* Text on solid gold panels must be dark to stay readable */
+.bg-gold :is(.text-white, .text-white-50, h3, h4, p, li), .bg-gold .text-white { color: var(--ink) !important; }
+.bg-gold .btn-outline-light { border-color: var(--ink); color: var(--ink); }
+
+/* ───────────────────────── Offices ───────────────────────── */
+/* Card headers took each office's stored accent colour (navy / maroon); in this theme they are all gold */
+.ocl-header { background: linear-gradient(135deg, #e4c766, #c9a84c) !important; }
+.ocl-header, .ocl-header :is(h3, h4, h5, span, i, a) { color: var(--ink) !important; }
+.ocl-header .ocl-header-icon-white, .ocl-header .ocl-header-icon-blue { color: var(--ink) !important; }
+.ocl-pin, .ocl-phone, .ocl-mobile, .ocl-email, .ocl-web { color: var(--gold-dark) !important; }
+
+/* ───────────────────────── Shared fallbacks ───────────────────────── */
+/* Pages that never defined these got a plain blue link. :where() keeps this at zero specificity,
+   so any page that does define its own .btn-gold-action still wins. */
+:where(a.btn-gold-action) {
+    display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    padding: .8rem 1.8rem; border-radius: 999px; text-decoration: none;
+    background: linear-gradient(135deg, #d8b95a, #c9a84c); color: var(--ink);
+    font-weight: 700; letter-spacing: .04em; border: 0;
+}
+:where(a.btn-gold-action:hover) { filter: brightness(1.06); color: var(--ink); }
+/* Bootstrap's plain link rule would otherwise make the label blue and underlined */
+a.btn-gold-action, a.btn-gold-action:hover { color: var(--ink); text-decoration: none; }
+
+/* Phones: the hero text spans the whole photo, so wash the entire image */
+@media (max-width: 991px) {
+    .hero-overlay { background: linear-gradient(180deg, rgba(255, 255, 255, .94) 0%, rgba(255, 255, 255, .86) 100%) !important; }
+}
+
+/* ───────────────────────── Products & orders ───────────────────────── */
+.pub-cover { background: linear-gradient(160deg, #f6ecd0, #e4c766); }
+.pub-cover :is(h3, h4, p, span:not(.pub-emoji)) { color: var(--ink) !important; }
+.track-card-header { background: linear-gradient(135deg, #e4c766, #c9a84c) !important; color: var(--ink) !important; }
+.track-card-header :is(h4, i, span) { color: var(--ink) !important; }
+
+/* A slider sits above the page title area: no need for the extra room that clears the fixed menu */
+.main-content.has-page-slider { padding-top: 0; }
+.has-page-slider :is(.about-hero-header, .contact-hero-header, .gallery-hero-header, .video-hero-header, .blog-hero-header,
+    .office-hero-header, .pas-page-hero, .cms-hero-header, .bank-hero, .pub-hero-header) { padding-top: 64px !important; }
+.has-page-slider .rates-hero { padding-top: 2.5rem; }
