@@ -1,8 +1,11 @@
 {{--
     Site footer, floating WhatsApp button and the mobile-drawer script, used by layouts/bullion and layouts/lawfirm.
     Expects from the view composer: $socialLinks, $footerOffices, $footerPages
+    Link columns, their headings, the about text and the note are managed in Admin → Footer;
+    the Contact column comes from Site Settings → Contact.
 --}}
 @php
+    use App\Models\FooterLink;
     use App\Models\SiteSetting;
 
     $jfPhone    = trim((string) SiteSetting::get('contact_phone'));
@@ -11,14 +14,9 @@
     $jfHours    = trim((string) SiteSetting::get('contact_working_hours'));
     $jfAddress  = trim((string) SiteSetting::get('contact_address'))
         ?: (string) $footerOffices->first(fn ($o) => filled($o->address))?->address;
-    $jfNotices = [
-        ['Central Anti-Conversion Law',               route('anti-conversion-law')],
-        ['SC/ST (Prevention of Atrocities) Act, 1989', route('sc-st-act-1989')],
-        ['Letter to PM Modi',                         route('letter-to-pm-modi')],
-        ['Letter to CM Karnataka',                    route('letter-to-cm-karnataka')],
-        ['Water Filtration Project',                  route('water-filtration')],
-        ['Water Filtration (Kannada)',                route('water-filtration-kannada')],
-    ];
+    $jfColumns = FooterLink::activeByColumnCached(); // ['rates' => [['label', 'url', 'new_tab'], …], …]
+    $jfAbout   = FooterLink::about();
+    $jfNote    = FooterLink::note();
 @endphp
 
 <footer class="jb-footer">
@@ -28,7 +26,7 @@
                 <a href="{{ route('home') }}" class="jb-footer__logo">
                     <img src="{{ asset('images/brand/josha-logo.webp') }}" alt="{{ config('company.name') }}" width="200" height="165" loading="lazy">
                 </a>
-                <p class="jb-footer__about">Daily gold and silver rates, published each morning and evening, with clear pricing by purity and weight.</p>
+                @if($jfAbout !== '')<p class="jb-footer__about">{{ $jfAbout }}</p>@endif
                 @if($socialLinks->isNotEmpty())
                     <div class="jb-footer__social">
                         @foreach($socialLinks as $link)
@@ -40,39 +38,17 @@
                 @endif
             </div>
 
-            <div>
-                <h4>Rates</h4>
-                <ul>
-                    <li><a href="{{ route('rates.gold') }}">Gold rate today</a></li>
-                    <li><a href="{{ route('rates.silver') }}">Silver rate today</a></li>
-                    <li><a href="{{ route('rates.cities') }}">Rates by city</a></li>
-                    <li><a href="{{ route('rates.charts') }}">Charts</a></li>
-                    <li><a href="{{ route('rates.pulse') }}">Gold Pulse</a></li>
-                    <li><a href="{{ route('live-rates') }}">Full rate table</a></li>
-                    <li><a href="{{ route('knowledge') }}">Knowledge</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4>Company</h4>
-                <ul>
-                    <li><a href="{{ route('about-us') }}">About us</a></li>
-                    <li><a href="{{ route('services.index') }}">Services</a></li>
-                    <li><a href="{{ route('offices.index') }}">Our offices</a></li>
-                    <li><a href="{{ route('gallery') }}">Gallery</a></li>
-                    <li><a href="{{ route('news') }}">News &amp; updates</a></li>
-                    <li><a href="{{ route('bank-details') }}">Bank details</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4>Notices &amp; letters</h4>
-                <ul>
-                    @foreach($jfNotices as [$label, $url])
-                        <li><a href="{{ $url }}">{{ $label }}</a></li>
-                    @endforeach
-                </ul>
-            </div>
+            @foreach($jfColumns as $jfColumn => $jfLinks)
+                @continue(empty($jfLinks))
+                <div>
+                    <h4>{{ FooterLink::heading($jfColumn) }}</h4>
+                    <ul>
+                        @foreach($jfLinks as $jfLink)
+                            <li><a href="{{ url($jfLink['url']) }}" @if($jfLink['new_tab']) target="_blank" rel="noopener" @endif>{{ $jfLink['label'] }}</a></li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endforeach
 
             <div>
                 <h4>Contact</h4>
@@ -91,15 +67,14 @@
     <div class="jb-wrap">
         <div class="jb-footer__bottom">
             <span>&copy; {{ date('Y') }} {{ config('company.name') }}. All rights reserved. · GSTIN {{ config('company.gstin') }}</span>
-            @if($footerPages->isNotEmpty())
-                <nav class="jb-footer__legal" aria-label="Legal and information pages">
-                    @foreach($footerPages as $footerPage)
-                        <a href="{{ route('pages.show', ['page' => $footerPage->slug]) }}">{{ $footerPage->title }}</a>
-                    @endforeach
-                </nav>
-            @endif
+            <nav class="jb-footer__legal" aria-label="Legal and information pages">
+                @foreach($footerPages as $footerPage)
+                    <a href="{{ route('pages.show', ['page' => $footerPage->slug]) }}">{{ $footerPage->title }}</a>
+                @endforeach
+                <a href="{{ route('sitemap') }}">Sitemap</a>
+            </nav>
         </div>
-        <p class="jb-footer__note">Rates on this site are reference prices for the metal value only, based on our published morning and evening rates. Making charges and GST are extra. Please confirm the final price with our desk before you pay.</p>
+        @if($jfNote !== '')<p class="jb-footer__note">{{ $jfNote }}</p>@endif
     </div>
 </footer>
 

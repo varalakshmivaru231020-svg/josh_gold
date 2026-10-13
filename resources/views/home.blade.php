@@ -23,6 +23,8 @@
     $hours    = trim((string) SiteSetting::get('contact_working_hours'));
     $address  = trim((string) SiteSetting::get('contact_address')) ?: (string) $offices->first(fn ($o) => filled($o->address))?->address;
     $waLink   = fn (string $text) => 'https://wa.me/' . $whatsapp . '?text=' . rawurlencode($text);
+    // "Get a quote" opens the contact page with the item filled in
+    $quoteLink = fn (string $item = '') => route('contact', $item !== '' ? ['item' => $item] : []);
 
     if ($rate) {
         $published = $rate->published_at;
@@ -101,7 +103,7 @@
                 <input id="jbSearch" type="search" placeholder="Search 10 g, 22K, silver bar…" autocomplete="off" data-search>
             </form>
             @endif
-            <a class="jb-btn jb-btn--primary jb-btn--sm jb-md-up" href="{{ $waLink('Hi, I would like a gold/silver quote.') }}" target="_blank" rel="noopener">Get a quote</a>
+            <a class="jb-btn jb-btn--primary jb-btn--sm jb-md-up" href="{{ $quoteLink() }}">Get a quote</a>
         </div>
         @if($rate)
         <div class="jb-subnav__search jb-md-down">
@@ -150,14 +152,14 @@
             <div class="jb-hero__art">
                 @php
                     $heroTiles = [
-                        ['gold-necklace.webp',    'Gold jewellery',    'Enquire',    $waLink("Hi, I'm interested in gold jewellery."), null],
+                        ['gold-necklace.webp',    'Gold jewellery',    'Enquire',    $quoteLink('Gold jewellery'), null],
                         ['gold-bars.webp',        '24K gold bars',     'Live price', '#by-weight', 'bar'],
-                        ['diamond-ring.webp',     'Diamond rings',     'Enquire',    $waLink("Hi, I'm interested in diamond rings."), null],
-                        ['diamond-necklace.webp', 'Diamond necklaces', 'Enquire',    $waLink("Hi, I'm interested in diamond necklaces."), null],
+                        ['diamond-ring.webp',     'Diamond rings',     'Enquire',    $quoteLink('Diamond rings'), null],
+                        ['diamond-necklace.webp', 'Diamond necklaces', 'Enquire',    $quoteLink('Diamond necklaces'), null],
                     ];
                 @endphp
                 @foreach($heroTiles as [$photo, $label, $chip, $href, $form])
-                    <a class="jb-hero__tile" href="{{ $href }}" @if($form) data-jump-metal="gold" data-jump-form="{{ $form }}" @else target="_blank" rel="noopener" @endif>
+                    <a class="jb-hero__tile" href="{{ $href }}" @if($form) data-jump-metal="gold" data-jump-form="{{ $form }}" @endif>
                         <img src="{{ asset('images/site/' . $photo) }}" alt="{{ $label }}" width="450" height="450" @if($loop->index > 1) loading="lazy" @endif>
                         <span class="jb-hero__tile-label"><span>{{ $label }}</span><span class="jb-chip jb-chip--gold">{{ $chip }}</span></span>
                     </a>
@@ -200,14 +202,14 @@
             <div class="jb-cats">
                 @php
                     $categories = [
-                        ['gold-bracelet-wide.webp',    'Gold jewellery',      'Chains, bangles, necklaces →', $waLink("Hi, I'm interested in gold jewellery."), null],
-                        ['diamond-necklace-wide.webp', 'Diamond jewellery',   'Rings, necklaces, earrings →', $waLink("Hi, I'm interested in diamond jewellery."), null],
+                        ['gold-bracelet-wide.webp',    'Gold jewellery',      'Chains, bangles, necklaces →', $quoteLink('Gold jewellery'), null],
+                        ['diamond-necklace-wide.webp', 'Diamond jewellery',   'Rings, necklaces, earrings →', $quoteLink('Diamond jewellery'), null],
                         ['gold-coins-wide.webp',       'Gold coins & bars',   '1 g to 1 kg, priced live →',   '#by-weight', 'gold'],
                         ['silver-coins-wide.webp',     'Silver coins & bars', '5 g to 5 kg, priced live →',   '#by-weight', 'silver'],
                     ];
                 @endphp
                 @foreach($categories as [$photo, $label, $sub, $href, $metal])
-                    <a class="jb-cat" href="{{ $href }}" @if($metal) data-jump-metal="{{ $metal }}" data-jump-form="all" @else target="_blank" rel="noopener" @endif>
+                    <a class="jb-cat" href="{{ $href }}" @if($metal) data-jump-metal="{{ $metal }}" data-jump-form="all" @endif>
                         <img src="{{ asset('images/site/' . $photo) }}" alt="" width="500" height="375" loading="lazy">
                         <span class="jb-cat__label"><strong>{{ $label }}</strong><span>{{ $sub }}</span></span>
                     </a>
@@ -296,7 +298,7 @@
                                     <p class="jb-card__meta"><span data-purity-label>{{ $purity }}</span><span>·</span><span>{{ $form === 'coin' ? 'Coin' : 'Minted bar' }}</span></p>
                                     <p class="jb-card__price" data-price>{{ $inr($rate->priceFor($metal, $purity, $grams)) }}</p>
                                     <p class="jb-card__sub">metal value · excl. GST</p>
-                                    <a class="jb-btn jb-btn--primary jb-card__cta" data-enquire href="{{ $waLink("Hi, I'd like a quote for a {$weight} {$purity} {$metal} {$form}.") }}" target="_blank" rel="noopener">Get a quote</a>
+                                    <a class="jb-btn jb-btn--primary jb-card__cta" data-enquire href="{{ $quoteLink("{$weight} {$purity} {$metal} {$form}") }}">Get a quote</a>
                                 </div>
                             </article>
                         @endforeach
@@ -414,6 +416,7 @@
                     <h2 class="jb-section__title">Get a firm quote before you pay.</h2>
                     <p class="jb-muted" style="margin-top: 10px; max-width: 560px;">Send us the metal, purity and weight you need. We'll confirm today's price and the payment details, and you pay only into the accounts listed on our Bank Details page.</p>
                     <div class="jb-band__actions">
+                        <a class="jb-btn jb-btn--primary jb-btn--lg" href="{{ $quoteLink() }}">Send an enquiry</a>
                         <a class="jb-btn jb-btn--wa jb-btn--lg" href="{{ $waLink('Hi, I would like a gold/silver quote.') }}" target="_blank" rel="noopener">WhatsApp us</a>
                         @if($phone !== '')<a class="jb-btn jb-btn--ghost jb-btn--lg" href="tel:{{ preg_replace('/[^\d+]/', '', $phone) }}">Call {{ $phone }}</a>@endif
                         <a class="jb-btn jb-btn--ghost jb-btn--lg" href="{{ route('bank-details') }}">Bank details</a>
@@ -463,7 +466,7 @@
                 </details>
                 <details>
                     <summary>How do I place an order?</summary>
-                    <p>Message us on WhatsApp{{ $phone !== '' ? ' or call ' . $phone : '' }} with the metal, purity and weight you want. We'll confirm the price and how to pay.</p>
+                    <p>Press <a class="jb-link" href="{{ $quoteLink() }}">Get a quote</a> on any item, or send an enquiry from our Contact page, with the metal, purity and weight you want. You can also WhatsApp us{{ $phone !== '' ? ' or call ' . $phone : '' }}. We'll confirm the price and how to pay.</p>
                 </details>
                 <details>
                     <summary>How do I pay?</summary>
@@ -494,7 +497,7 @@
             gold_purity: @json(MetalRate::PURITY),
             silver_purity: @json(collect(MetalRate::SILVER_PURITY)->map(fn ($p) => $p['multiplier'])),
         };
-        var WA = @json('https://wa.me/' . $whatsapp . '?text=');
+        var QUOTE = @json(route('contact')) + '?item=';
         var state = { metal: 'gold', purity: { gold: '24K', silver: '999' }, form: 'all', grams: null };
         var cards = Array.prototype.slice.call(shop.querySelectorAll('[data-grid] .jb-card'));
         var count = shop.querySelector('[data-count]');
@@ -524,8 +527,8 @@
                 var price = Math.round(RATE[metal] * mult * grams * 100) / 100;
                 card.querySelector('[data-price]').textContent = inr(price);
                 card.querySelectorAll('[data-purity-label]').forEach(function (el) { el.textContent = purity; });
-                card.querySelector('[data-enquire]').href = WA + encodeURIComponent(
-                    "Hi, I'd like a quote for a " + weightLabel(grams) + ' ' + purity + ' ' + metal + ' ' + form + '.'
+                card.querySelector('[data-enquire]').href = QUOTE + encodeURIComponent(
+                    weightLabel(grams) + ' ' + purity + ' ' + metal + ' ' + form
                 );
             });
 

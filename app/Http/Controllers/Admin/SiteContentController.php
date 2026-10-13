@@ -5,17 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Slider;
 use App\Models\AboutSection;
-use App\Models\FeaturedBook;
 use App\Models\TestimonialVideo;
-use App\Models\OrderFlowStep;
-use App\Models\WhatsappFlowStep;
-use App\Models\PromoBanner;
-use App\Models\Product;
 use App\Models\SiteSetting;
 use App\Models\Blog;
 use App\Models\ContactMessage;
 use App\Models\Service;
-use App\Models\Stat;
 use App\Models\Office;
 use App\Models\SocialLink;
 use App\Models\GalleryPhoto;
@@ -191,52 +185,6 @@ class SiteContentController extends Controller implements HasMiddleware
             ->with('success', 'About section updated successfully.');
     }
 
-    // ==================== FEATURED BOOK ====================
-    public function featuredBook()
-    {
-        $book = FeaturedBook::first();
-        $products = Product::where('is_active', true)->get();
-        return view('admin.site-content.featured-book.edit', compact('book', 'products'));
-    }
-
-    public function updateFeaturedBook(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'book_name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'price' => 'nullable|numeric|min:0',
-            'button_text' => 'nullable|string|max:100',
-            'product_id' => 'nullable|exists:products,id',
-        ]);
-
-        $book = FeaturedBook::first();
-        $data = $request->except('image');
-        $data['is_active'] = $request->has('is_active');
-
-        // Set button link based on product_id
-        if ($request->product_id) {
-            $data['button_link'] = route('products.show', $request->product_id);
-        }
-
-        if ($request->hasFile('image')) {
-            if ($book && $book->image) {
-                Storage::disk('public')->delete($book->image);
-            }
-            $data['image'] = $request->file('image')->store('featured-book', 'public');
-        }
-
-        if ($book) {
-            $book->update($data);
-        } else {
-            FeaturedBook::create($data);
-        }
-
-        return redirect()->route('admin.site-content.featured-book')
-            ->with('success', 'Featured book updated successfully.');
-    }
-
     // ==================== TESTIMONIAL VIDEOS ====================
     public function testimonialVideos()
     {
@@ -321,212 +269,6 @@ class SiteContentController extends Controller implements HasMiddleware
             ->with('success', 'Testimonial video deleted successfully.');
     }
 
-    // ==================== ORDER FLOW STEPS ====================
-    public function orderFlow()
-    {
-        $steps = OrderFlowStep::ordered()->get();
-        return view('admin.site-content.order-flow.index', compact('steps'));
-    }
-
-    public function createOrderFlowStep()
-    {
-        return view('admin.site-content.order-flow.create');
-    }
-
-    public function storeOrderFlowStep(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'icon' => 'required|string|max:100',
-            'step_number' => 'required|integer|min:1',
-        ]);
-
-        $data = $request->all();
-        $data['is_active'] = $request->has('is_active');
-
-        OrderFlowStep::create($data);
-
-        return redirect()->route('admin.site-content.order-flow')
-            ->with('success', 'Order flow step added successfully.');
-    }
-
-    public function editOrderFlowStep($id)
-    {
-        $step = OrderFlowStep::findOrFail($id);
-        return view('admin.site-content.order-flow.edit', compact('step'));
-    }
-
-    public function updateOrderFlowStep(Request $request, $id)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'icon' => 'required|string|max:100',
-            'step_number' => 'required|integer|min:1',
-        ]);
-
-        $step = OrderFlowStep::findOrFail($id);
-        $data = $request->all();
-        $data['is_active'] = $request->has('is_active');
-
-        $step->update($data);
-
-        return redirect()->route('admin.site-content.order-flow')
-            ->with('success', 'Order flow step updated successfully.');
-    }
-
-    public function deleteOrderFlowStep($id)
-    {
-        OrderFlowStep::findOrFail($id)->delete();
-        return redirect()->route('admin.site-content.order-flow')
-            ->with('success', 'Order flow step deleted successfully.');
-    }
-
-    // ==================== WHATSAPP FLOW STEPS ====================
-    public function whatsappFlow()
-    {
-        $steps = WhatsappFlowStep::ordered()->get();
-        return view('admin.site-content.whatsapp-flow.index', compact('steps'));
-    }
-
-    public function createWhatsappFlowStep()
-    {
-        return view('admin.site-content.whatsapp-flow.create');
-    }
-
-    public function storeWhatsappFlowStep(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'icon' => 'required|string|max:100',
-            'step_number' => 'required|integer|min:1',
-        ]);
-
-        $data = $request->all();
-        $data['is_active'] = $request->has('is_active');
-
-        WhatsappFlowStep::create($data);
-
-        return redirect()->route('admin.site-content.whatsapp-flow')
-            ->with('success', 'WhatsApp flow step added successfully.');
-    }
-
-    public function editWhatsappFlowStep($id)
-    {
-        $step = WhatsappFlowStep::findOrFail($id);
-        return view('admin.site-content.whatsapp-flow.edit', compact('step'));
-    }
-
-    public function updateWhatsappFlowStep(Request $request, $id)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'icon' => 'required|string|max:100',
-            'step_number' => 'required|integer|min:1',
-        ]);
-
-        $step = WhatsappFlowStep::findOrFail($id);
-        $data = $request->all();
-        $data['is_active'] = $request->has('is_active');
-
-        $step->update($data);
-
-        return redirect()->route('admin.site-content.whatsapp-flow')
-            ->with('success', 'WhatsApp flow step updated successfully.');
-    }
-
-    public function deleteWhatsappFlowStep($id)
-    {
-        WhatsappFlowStep::findOrFail($id)->delete();
-        return redirect()->route('admin.site-content.whatsapp-flow')
-            ->with('success', 'WhatsApp flow step deleted successfully.');
-    }
-
-    // ==================== PROMO BANNERS ====================
-    public function promoBanners()
-    {
-        $banners = PromoBanner::paginate(10);
-        return view('admin.site-content.promo-banners.index', compact('banners'));
-    }
-
-    public function createPromoBanner()
-    {
-        return view('admin.site-content.promo-banners.create');
-    }
-
-    public function storePromoBanner(Request $request)
-    {
-        $request->validate([
-            'title' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'button_text' => 'nullable|string|max:100',
-            'button_link' => 'nullable|string|max:255',
-            'position' => 'required|in:bottom,middle',
-        ]);
-
-        $data = $request->except('image');
-        $data['is_active'] = $request->has('is_active');
-
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('promo-banners', 'public');
-        }
-
-        PromoBanner::create($data);
-
-        return redirect()->route('admin.site-content.promo-banners')
-            ->with('success', 'Promo banner created successfully.');
-    }
-
-    public function editPromoBanner($id)
-    {
-        $banner = PromoBanner::findOrFail($id);
-        return view('admin.site-content.promo-banners.edit', compact('banner'));
-    }
-
-    public function updatePromoBanner(Request $request, $id)
-    {
-        $request->validate([
-            'title' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
-            'button_text' => 'nullable|string|max:100',
-            'button_link' => 'nullable|string|max:255',
-            'position' => 'required|in:bottom,middle',
-        ]);
-
-        $banner = PromoBanner::findOrFail($id);
-        $data = $request->except('image');
-        $data['is_active'] = $request->has('is_active');
-
-        if ($request->hasFile('image')) {
-            if ($banner->image) {
-                Storage::disk('public')->delete($banner->image);
-            }
-            $data['image'] = $request->file('image')->store('promo-banners', 'public');
-        }
-
-        $banner->update($data);
-
-        return redirect()->route('admin.site-content.promo-banners')
-            ->with('success', 'Promo banner updated successfully.');
-    }
-
-    public function deletePromoBanner($id)
-    {
-        $banner = PromoBanner::findOrFail($id);
-        if ($banner->image) {
-            Storage::disk('public')->delete($banner->image);
-        }
-        $banner->delete();
-
-        return redirect()->route('admin.site-content.promo-banners')
-            ->with('success', 'Promo banner deleted successfully.');
-    }
-
     // ==================== SITE SETTINGS ====================
     /** One Site Settings page with three tabs: General (logo), Contact and Offices. */
     public function siteSettings(Request $request)
@@ -550,22 +292,56 @@ class SiteContentController extends Controller implements HasMiddleware
     public function updateSiteSettings(Request $request)
     {
         $request->validate([
-            'site_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:10240',
+            // The header is black, so the logo must be transparent: PNG or WebP only, and not on a solid box
+            'site_logo' => ['nullable', 'file', 'mimes:png,webp', 'max:10240', function (string $attribute, $file, Closure $fail) {
+                if (! $this->hasTransparentEdges($file->getRealPath())) {
+                    $fail('This logo has a solid background, so it would show as a box in the header. Upload a PNG or WebP with a transparent background.');
+                }
+            }],
+            'remove_logo' => 'nullable|boolean',
         ]);
 
+        $oldLogo = SiteSetting::get('site_logo');
+
         if ($request->hasFile('site_logo')) {
-            // Delete old logo if exists
-            $oldLogo = SiteSetting::get('site_logo');
             if ($oldLogo) {
                 Storage::disk('public')->delete($oldLogo);
             }
 
             $path = $request->file('site_logo')->store('settings', 'public');
             SiteSetting::set('site_logo', $path, 'image');
+        } elseif ($request->boolean('remove_logo') && $oldLogo) {
+            // Back to the bundled Josha logo
+            Storage::disk('public')->delete($oldLogo);
+            SiteSetting::set('site_logo', '', 'image');
         }
 
         return redirect()->route('admin.site-content.settings')
             ->with('success', 'Site settings updated successfully.');
+    }
+
+    // True when most of the image's corners and edge midpoints are (nearly) transparent
+    private function hasTransparentEdges(string $path): bool
+    {
+        $image = @imagecreatefromstring((string) file_get_contents($path));
+        if (! $image) {
+            return true; // cannot inspect it here: let it through rather than block the upload
+        }
+
+        $w = imagesx($image) - 1;
+        $h = imagesy($image) - 1;
+        $points = [[0, 0], [$w, 0], [0, $h], [$w, $h], [intdiv($w, 2), 0], [intdiv($w, 2), $h], [0, intdiv($h, 2)], [$w, intdiv($h, 2)]];
+
+        $transparent = 0;
+        foreach ($points as [$x, $y]) {
+            // GD alpha: 0 = opaque … 127 = fully transparent
+            if (imagecolorsforindex($image, imagecolorat($image, $x, $y))['alpha'] >= 100) {
+                $transparent++;
+            }
+        }
+        imagedestroy($image);
+
+        return $transparent >= 5;
     }
 
     // ==================== BLOGS ====================
@@ -937,70 +713,6 @@ class SiteContentController extends Controller implements HasMiddleware
             ->with('success', 'Social link deleted successfully.');
     }
 
-    // ==================== STATS ====================
-    public function stats()
-    {
-        $stats = Stat::ordered()->get();
-        return view('admin.site-content.stats.index', compact('stats'));
-    }
-
-    public function createStat()
-    {
-        return view('admin.site-content.stats.create');
-    }
-
-    public function storeStat(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'count' => 'required|integer',
-            'suffix' => 'nullable|string|max:20',
-            'icon' => 'nullable|string|max:100',
-            'sort_order' => 'nullable|integer',
-        ]);
-
-        $data = $request->all();
-        $data['is_active'] = $request->has('is_active');
-
-        Stat::create($data);
-
-        return redirect()->route('admin.site-content.stats')
-            ->with('success', 'Stat added successfully.');
-    }
-
-    public function editStat($id)
-    {
-        $stat = Stat::findOrFail($id);
-        return view('admin.site-content.stats.edit', compact('stat'));
-    }
-
-    public function updateStat(Request $request, $id)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'count' => 'required|integer',
-            'suffix' => 'nullable|string|max:20',
-            'icon' => 'nullable|string|max:100',
-            'sort_order' => 'nullable|integer',
-        ]);
-
-        $stat = Stat::findOrFail($id);
-        $data = $request->all();
-        $data['is_active'] = $request->has('is_active');
-
-        $stat->update($data);
-
-        return redirect()->route('admin.site-content.stats')
-            ->with('success', 'Stat updated successfully.');
-    }
-
-    public function deleteStat($id)
-    {
-        Stat::findOrFail($id)->delete();
-        return redirect()->route('admin.site-content.stats')
-            ->with('success', 'Stat deleted successfully.');
-    }
-
     // ==================== GALLERY PHOTOS ====================
     public function galleryPhotos()
     {
@@ -1071,77 +783,5 @@ class SiteContentController extends Controller implements HasMiddleware
         $photo->delete();
         return redirect()->route('admin.site-content.gallery')
             ->with('success', 'Photo deleted successfully.');
-    }
-
-    // ==================== BEYOND THE BAR SECTION ====================
-    public function beyondBar()
-    {
-        $settings = [
-            'bb_eyebrow'       => SiteSetting::get('bb_eyebrow', 'BEYOND THE BAR'),
-            'bb_title'         => SiteSetting::get('bb_title', 'Filmmaker, Journalist & Cultural Visionary'),
-            'bb_image_top'     => SiteSetting::get('bb_image_top'),
-            'bb_image_left'    => SiteSetting::get('bb_image_left'),
-            'bb_image_right'   => SiteSetting::get('bb_image_right'),
-            
-            'bb_item1_title'   => SiteSetting::get('bb_item1_title', 'Filmmaker, Director & Lead Actor'),
-            'bb_item1_desc'    => SiteSetting::get('bb_item1_desc', 'Produced, directed and acted in the Kannada film Swayam Krushi — transforming stories of farmers and the soil into powerful cinema that honours Karnataka\'s rural heritage.'),
-            'bb_item1_icon'    => SiteSetting::get('bb_item1_icon', 'fas fa-clapperboard'),
-            
-            'bb_item2_title'   => SiteSetting::get('bb_item2_title', 'Senior Journalist & Chief Editor'),
-            'bb_item2_desc'    => SiteSetting::get('bb_item2_desc', 'Served as Chief Editor of Mussanje (Kannada evening daily) and editorial head of V News 24 (Kannada TV channel) — a career built on truth, accountability and fearless reporting.'),
-            'bb_item2_icon'    => SiteSetting::get('bb_item2_icon', 'fas fa-newspaper'),
-            
-            'bb_item3_title'   => SiteSetting::get('bb_item3_title', 'Prolific Kannada Author — 15+ Works'),
-            'bb_item3_desc'    => SiteSetting::get('bb_item3_desc', 'From Swayam Krushi to Thanks Appa to State vs Abhiram and the 12-volume Dainandina Jeevanakkagi Kanunu series — his literary output is a gift to Karnataka\'s language and legal awareness.'),
-            'bb_item3_icon'    => SiteSetting::get('bb_item3_icon', 'fas fa-feather-pointed'),
-        ];
-        return view('admin.site-content.beyond-bar.edit', compact('settings'));
-    }
-
-    public function updateBeyondBar(Request $request)
-    {
-        $request->validate([
-            'bb_eyebrow'     => 'nullable|string|max:100',
-            'bb_title'       => 'nullable|string|max:255',
-            'bb_image_top'   => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:8192',
-            'bb_image_left'  => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:8192',
-            'bb_image_right' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:8192',
-            
-            'bb_item1_title' => 'nullable|string|max:255',
-            'bb_item1_desc'  => 'nullable|string',
-            'bb_item1_icon'  => 'nullable|string|max:100',
-            'bb_item2_title' => 'nullable|string|max:255',
-            'bb_item2_desc'  => 'nullable|string',
-            'bb_item2_icon'  => 'nullable|string|max:100',
-            'bb_item3_title' => 'nullable|string|max:255',
-            'bb_item3_desc'  => 'nullable|string',
-            'bb_item3_icon'  => 'nullable|string|max:100',
-        ]);
-
-        SiteSetting::set('bb_eyebrow', $request->bb_eyebrow ?? 'BEYOND THE BAR');
-        SiteSetting::set('bb_title',   $request->bb_title ?? 'Filmmaker, Journalist & Cultural Visionary');
-        
-        SiteSetting::set('bb_item1_title', $request->bb_item1_title);
-        SiteSetting::set('bb_item1_desc',  $request->bb_item1_desc);
-        SiteSetting::set('bb_item1_icon',  $request->bb_item1_icon);
-        SiteSetting::set('bb_item2_title', $request->bb_item2_title);
-        SiteSetting::set('bb_item2_desc',  $request->bb_item2_desc);
-        SiteSetting::set('bb_item2_icon',  $request->bb_item2_icon);
-        SiteSetting::set('bb_item3_title', $request->bb_item3_title);
-        SiteSetting::set('bb_item3_desc',  $request->bb_item3_desc);
-        SiteSetting::set('bb_item3_icon',  $request->bb_item3_icon);
-
-        foreach (['bb_image_top', 'bb_image_left', 'bb_image_right'] as $field) {
-            if ($request->hasFile($field)) {
-                // Delete old image
-                $old = SiteSetting::get($field);
-                if ($old) Storage::disk('public')->delete($old);
-                $path = $request->file($field)->store('beyond-bar', 'public');
-                SiteSetting::set($field, $path, 'image');
-            }
-        }
-
-        return redirect()->route('admin.site-content.beyond-bar')
-            ->with('success', 'Beyond the Bar section updated successfully.');
     }
 }

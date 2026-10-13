@@ -29,28 +29,21 @@
             ['News',      route('news'),      request()->routeIs('news', 'blog.*')],
             ['Videos',    route('videos'),    request()->routeIs('videos', 'testimonials')],
         ],
-        'cities' => [
-            ['Mumbai',  $jbCityUrl('maharashtra/mumbai'), $jbOnCity('maharashtra/mumbai')],
-            ['Delhi',   $jbCityUrl('delhi/delhi'),        $jbOnCity('delhi/delhi')],
-            ['Chennai', $jbCityUrl('tamil-nadu/chennai'), $jbOnCity('tamil-nadu/chennai')],
-        ],
+        // Cities marked "Show in menu" in Admin → Cities
+        'cities' => [],
     ];
-    $jbCompany = [
-        ['About us',     route('about-us'),       request()->routeIs('about-us')],
-        ['Services',     route('services.index'), request()->routeIs('services.index')],
-        ['Our offices',  route('offices.index'),  request()->routeIs('offices.index')],
-        ['Gallery',      route('gallery'),        request()->routeIs('gallery')],
-        ['Bank details', route('bank-details'),   request()->routeIs('bank-details')],
-        ['Contact',      route('contact'),        request()->routeIs('contact')],
-    ];
-    $jbNotices = [
-        ['Central Anti-Conversion Law',               route('anti-conversion-law')],
-        ['SC/ST (Prevention of Atrocities) Act, 1989', route('sc-st-act-1989')],
-        ['Letter to PM Modi',                         route('letter-to-pm-modi')],
-        ['Letter to CM Karnataka',                    route('letter-to-cm-karnataka')],
-        ['Water Filtration Project',                  route('water-filtration')],
-        ['Water Filtration (Kannada)',                route('water-filtration-kannada')],
-    ];
+    foreach (RateBook::menuCities() as $key => [$name]) {
+        $jbNav['cities'][] = [$name, $jbCityUrl($key), $jbOnCity($key)];
+    }
+    $jbCities = RateBook::cities(); // every active city, for the drawer
+    // Drawer "Company" and "Notices & letters" follow the footer columns (Admin → Footer)
+    $jbFooter = \App\Models\FooterLink::activeByColumnCached();
+    $jbLink = fn (array $l) => [$l['label'], url($l['url']), url($l['url']) === url()->current()];
+    $jbCompany = array_map($jbLink, $jbFooter['company'] ?? []);
+    if (! collect($jbCompany)->contains(fn ($l) => $l[1] === route('contact'))) {
+        $jbCompany[] = ['Contact', route('contact'), request()->routeIs('contact')];
+    }
+    $jbNotices = array_map($jbLink, $jbFooter['notices'] ?? []);
 @endphp
 
 <a class="jb-skip" href="#main-content">Skip to content</a>
@@ -66,6 +59,7 @@
                 <a href="{{ $url }}" class="jb-nav__link" @if($active) aria-current="page" @endif>{{ $label }}</a>
             @endforeach
             @foreach(['learn', 'cities'] as $group)
+                @continue(empty($jbNav[$group]))
                 <div class="jb-nav__group">
                     @foreach($jbNav[$group] as [$label, $url, $active])
                         <a href="{{ $url }}" class="jb-nav__link jb-nav__link--sm" @if($active) aria-current="page" @endif>{{ $label }}</a>
@@ -105,20 +99,24 @@
                 <a href="{{ $url }}" class="jb-drawer__link" @if($active) aria-current="page" @endif>{{ $label }}</a>
             @endforeach
 
-            <p class="jb-drawer__label">Cities</p>
-            @foreach(RateBook::CITIES as $key => [$name])
-                <a href="{{ $jbCityUrl($key) }}" class="jb-drawer__link" @if($jbOnCity($key)) aria-current="page" @endif>{{ $name }}</a>
-            @endforeach
+            @if($jbCities)
+                <p class="jb-drawer__label">Cities</p>
+                @foreach($jbCities as $key => [$name])
+                    <a href="{{ $jbCityUrl($key) }}" class="jb-drawer__link" @if($jbOnCity($key)) aria-current="page" @endif>{{ $name }}</a>
+                @endforeach
+            @endif
 
             <p class="jb-drawer__label">Company</p>
             @foreach($jbCompany as [$label, $url, $active])
                 <a href="{{ $url }}" class="jb-drawer__link" @if($active) aria-current="page" @endif>{{ $label }}</a>
             @endforeach
 
-            <p class="jb-drawer__label">Notices &amp; letters</p>
-            @foreach($jbNotices as [$label, $url])
-                <a href="{{ $url }}" class="jb-drawer__link">{{ $label }}</a>
-            @endforeach
+            @if(count($jbNotices))
+                <p class="jb-drawer__label">{{ \App\Models\FooterLink::heading('notices') }}</p>
+                @foreach($jbNotices as [$label, $url, $active])
+                    <a href="{{ $url }}" class="jb-drawer__link" @if($active) aria-current="page" @endif>{{ $label }}</a>
+                @endforeach
+            @endif
         </nav>
     </aside>
 </div>

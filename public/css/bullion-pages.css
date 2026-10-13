@@ -136,3 +136,11 @@
 
 /* A white "paper" sheet for documents (letters, notices) */
 .jb-paper { background: #fff; color: #222; border-radius: 6px; box-shadow: 0 30px 70px -20px rgba(0, 0, 0, .9); }
+
+/* Sitemap (sitemap page and contact page) */
+.jb-sitemap { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.jb-sitemap__group { padding: 18px; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel); }
+.jb-sitemap__group h3 { margin: 0 0 10px; font-size: 15px; font-weight: 600; }
+.jb-sitemap__group ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; }
+.jb-sitemap__group a { color: var(--jb-text); font-size: 13.5px; text-decoration: none; }
+.jb-sitemap__group a:hover { color: var(--jb-gold-light); }

@@ -22,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
         // Admin and the public pages both use Bootstrap 5, so render pagination with its markup
         \Illuminate\Pagination\Paginator::useBootstrapFive();
 
-        \Illuminate\Support\Facades\View::composer(['layouts.lawfirm', 'layouts.app', 'layouts.bullion', 'layouts.partials.jb-footer'], function ($view) {
+        \Illuminate\Support\Facades\View::composer(['layouts.lawfirm', 'layouts.bullion', 'layouts.partials.jb-footer'], function ($view) {
             $view->with('socialLinks', \App\Models\SocialLink::getActiveOrderedCached());
         });
 

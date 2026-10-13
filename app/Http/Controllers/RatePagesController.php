@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KnowledgeArticle;
 use App\Support\RateBook;
 
 // Public rate pages behind the main menu: gold rate, silver rate, charts, Gold Pulse,
@@ -33,7 +34,9 @@ class RatePagesController extends Controller
 
     public function knowledge()
     {
-        return view('rates.knowledge');
+        return view('rates.knowledge', [
+            'articles' => KnowledgeArticle::active()->ordered()->get(),
+        ]);
     }
 
     public function cities()
@@ -43,10 +46,12 @@ class RatePagesController extends Controller
 
     public function city(string $state, string $city)
     {
-        $key = $state . '/' . $city;
-        abort_unless(isset(RateBook::CITIES[$key]), 404);
+        // Only active cities have a page (Admin → Cities)
+        $key    = $state . '/' . $city;
+        $cities = RateBook::cities();
+        abort_unless(isset($cities[$key]), 404);
 
-        [$name, $stateName] = RateBook::CITIES[$key];
+        [$name, $stateName] = $cities[$key];
 
         return view('rates.city', $this->rates(10) + [
             'cityKey'   => $key,
@@ -63,7 +68,7 @@ class RatePagesController extends Controller
         return [
             'rate'   => $rate,
             'closes' => ($rate && $days) ? RateBook::dailyCloses($rate, $days) : collect(),
-            'cities' => RateBook::CITIES,
+            'cities' => RateBook::cities(),
         ];
     }
 }

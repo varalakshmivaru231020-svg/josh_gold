@@ -1,0 +1,73 @@
+<?php
+
+namespace App\Support;
+
+use App\Models\Blog;
+use App\Models\FooterLink;
+use App\Models\Page;
+
+/**
+ * Every public page of the site, grouped. Used by the sitemap page, the contact page
+ * and sitemap.xml so all three always list the same pages. The Rates, Company and
+ * Notices groups follow the footer columns (Admin → Footer); cities follow Admin → Cities.
+ */
+class SiteMap
+{
+    // [group label => [[label, url], …]]
+    public static function groups(): array
+    {
+        $footer = FooterLink::activeByColumnCached();
+        $column = fn (string $key) => array_map(fn ($l) => [$l['label'], url($l['url'])], $footer[$key] ?? []);
+
+        $cities = [];
+        foreach (RateBook::cities() as $key => [$name]) {
+            [$state, $city] = explode('/', $key);
+            $cities[] = ['Gold rate in ' . $name, route('rates.city', ['state' => $state, 'city' => $city])];
+        }
+
+        $company = $column('company');
+        array_unshift($company, ['Home', route('home')]);
+        if (! collect($company)->contains(fn ($l) => $l[1] === route('contact'))) {
+            $company[] = ['Contact us', route('contact')];
+        }
+
+        $groups = [
+            FooterLink::heading('rates') => $column('rates'),
+            'Cities' => $cities,
+            'Learn' => [
+                ['Knowledge', route('knowledge')],
+                ['News & updates', route('news')],
+                ['Videos', route('videos')],
+            ],
+            FooterLink::heading('company') => $company,
+            FooterLink::heading('notices') => $column('notices'),
+        ];
+
+        $pages = Page::where('is_published', true)->orderBy('title')->get(['title', 'slug']);
+        if ($pages->isNotEmpty()) {
+            $groups['More'] = $pages->map(fn ($p) => [$p->title, route('pages.show', ['page' => $p->slug])])->all();
+        }
+
+        return array_filter($groups);
+    }
+
+    // Every URL on this site for sitemap.xml: the grouped pages plus each news article
+    public static function urls(): array
+    {
+        $base = rtrim(url('/'), '/');
+        $urls = [];
+        foreach (self::groups() as $links) {
+            foreach ($links as [, $url]) {
+                $urls[] = $url;
+            }
+        }
+        foreach (Blog::active()->get(['slug']) as $blog) {
+            $urls[] = route('blog.show', $blog->slug);
+        }
+
+        // External links an admin may add to the footer do not belong in this site's sitemap
+        $urls = array_filter($urls, fn ($u) => str_starts_with($u, $base));
+
+        return array_values(array_unique($urls));
+    }
+}

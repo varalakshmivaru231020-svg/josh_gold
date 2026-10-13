@@ -61,8 +61,8 @@
                 </div>
 
                 <div class="text-center mt-4">
-                    <a href="{{ route('products.index') }}" class="back-link">
-                        <i class="fas fa-arrow-left me-1"></i> Back to Store
+                    <a href="{{ route('home') }}" class="back-link">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Website
                     </a>
                 </div>
             </div>

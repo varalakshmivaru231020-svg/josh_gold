@@ -1,5 +1,5 @@
 {{--
-    City cards linking to the city rate pages. Expects: $rate, $cities, $metal ('gold'|'silver'), optional $except (city key)
+    City cards linking to the city rate pages. Expects: $rate, $cities (RateBook::cities()), $metal ('gold'|'silver'), optional $except (city key)
 --}}
 @php use App\Support\RateBook; @endphp
 <div class="jb-citygrid">

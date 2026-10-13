@@ -15,6 +15,9 @@
     // A leading door/floor/building line makes Google guess between similarly named places,
     // so the map searches by the locality lines (all but the first) when there are 3 or more
     $mapSearch = count($addrLines) >= 3 ? implode(', ', array_slice($addrLines, 1)) : $mapQuery;
+
+    // "Get a quote" links pass the item, e.g. ?item=10 g 24K gold coin
+    $quoteItem = \Illuminate\Support\Str::limit(trim(strip_tags((string) request('item'))), 120, '');
 @endphp
 
 @section('content')
@@ -35,7 +38,10 @@
             {{-- Contact Form --}}
             <div class="col-lg-7" data-aos="fade-up">
                 <div class="contact-card-premium">
-                    <h3 class="card-heading-navy mb-4">Send us a Message</h3>
+                    <h3 class="card-heading-navy mb-4">{{ $quoteItem !== '' ? 'Request a quote' : 'Send us a Message' }}</h3>
+                    @if($quoteItem !== '')
+                        <p class="jb-muted mb-4">You're asking about <strong class="text-white">{{ $quoteItem }}</strong>. Add your details and we'll reply with today's price.</p>
+                    @endif
 
                     @if(session('success'))
                         <div class="alert alert-success border-0 shadow-sm mb-4" role="alert">
@@ -65,13 +71,13 @@
                             </div>
                             <div class="col-md-6 mb-4">
                                 <label class="label-gold-sm">Subject <span class="text-danger">*</span></label>
-                                <input type="text" name="subject" class="form-luxury @error('subject') is-invalid @enderror" required placeholder="How can we help?" value="{{ old('subject') }}">
+                                <input type="text" name="subject" class="form-luxury @error('subject') is-invalid @enderror" required placeholder="How can we help?" value="{{ old('subject', $quoteItem !== '' ? 'Quote request: ' . $quoteItem : '') }}">
                                 @error('subject') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
                         <div class="mb-4">
                             <label class="label-gold-sm">Message <span class="text-danger">*</span></label>
-                            <textarea name="message" class="form-luxury @error('message') is-invalid @enderror" rows="5" required placeholder="Write your message here...">{{ old('message') }}</textarea>
+                            <textarea name="message" class="form-luxury @error('message') is-invalid @enderror" rows="5" required placeholder="Write your message here...">{{ old('message', $quoteItem !== '' ? "Please send me a quote for: {$quoteItem}." : '') }}</textarea>
                             @error('message') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
                         <button type="submit" class="btn-gold-action w-100 py-3">
@@ -178,6 +184,20 @@
             </div>
         </div>
         @endif
+    </div>
+</section>
+
+{{-- Sitemap: every page of the site --}}
+<section class="jb-section" id="sitemap" style="border-top: 1px solid var(--jb-line-soft);">
+    <div class="jb-wrap">
+        <div class="jb-section__head">
+            <div>
+                <p class="jb-eyebrow">Sitemap</p>
+                <h2 class="jb-section__title">Find any page</h2>
+            </div>
+            <a class="jb-link" href="{{ route('sitemap') }}">Full sitemap →</a>
+        </div>
+        @include('partials.sitemap-links', ['groups' => \App\Support\SiteMap::groups()])
     </div>
 </section>
 @endsection

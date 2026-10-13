@@ -2,16 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\Slider;
 use App\Models\AboutSection;
-use App\Models\FeaturedBook;
 use App\Models\TestimonialVideo;
-use App\Models\OrderFlowStep;
-use App\Models\WhatsappFlowStep;
-use App\Models\PromoBanner;
 use App\Models\Blog;
-use App\Models\Stat;
 use App\Models\Service;
 use App\Models\Office;
 use App\Models\SiteSetting;
@@ -25,38 +18,14 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Get all dynamic content
-        $sliders = Slider::active()->onPage('home')->ordered()->get();
-        $about = AboutSection::active()->first();
-        $featuredBook = FeaturedBook::active()->first();
-        $testimonialVideos = TestimonialVideo::active()->featured()->ordered()->take(10)->get();
-        $orderFlowSteps = OrderFlowStep::active()->ordered()->get();
-        $whatsappFlowSteps = WhatsappFlowStep::active()->ordered()->get();
-        $promoBanner = PromoBanner::active()->position('bottom')->first();
+        // Only what the home page shows: services, offices (contact address fallback) and the latest rate
         $services = Service::active()->ordered()->get();
         $offices = Office::active()->ordered()->get();
-        $stats = Stat::active()->ordered()->get();
-        $galleryPhotos = GalleryPhoto::active()->ordered()->get();
-        $latestBlogs = Blog::active()->ordered()->take(3)->get();
 
         // Latest published rate, for the rate strip and the price-by-weight cards
         $rate = MetalRate::currentRate();
 
-        return view('home', compact(
-            'rate',
-            'sliders',
-            'about',
-            'featuredBook',
-            'testimonialVideos',
-            'orderFlowSteps',
-            'whatsappFlowSteps',
-            'promoBanner',
-            'services',
-            'offices',
-            'stats',
-            'galleryPhotos',
-            'latestBlogs'
-        ));
+        return view('home', compact('rate', 'services', 'offices'));
     }
 
     public function testimonials()

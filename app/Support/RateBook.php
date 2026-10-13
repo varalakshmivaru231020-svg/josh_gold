@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use App\Models\City;
 use App\Models\MetalRate;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -12,18 +13,31 @@ use Illuminate\Support\Collection;
  */
 class RateBook
 {
-    // Cities with a rate page, keyed by their URL path (state/city). We publish one reference
-    // rate for all of them; the pages say so.
-    public const CITIES = [
-        'maharashtra/mumbai'  => ['Mumbai', 'Maharashtra'],
-        'delhi/delhi'         => ['Delhi', 'Delhi'],
-        'tamil-nadu/chennai'  => ['Chennai', 'Tamil Nadu'],
-        'karnataka/bengaluru' => ['Bengaluru', 'Karnataka'],
-        'telangana/hyderabad' => ['Hyderabad', 'Telangana'],
-        'gujarat/ahmedabad'   => ['Ahmedabad', 'Gujarat'],
-        'west-bengal/kolkata' => ['Kolkata', 'West Bengal'],
-        'rajasthan/jaipur'    => ['Jaipur', 'Rajasthan'],
-    ];
+    // Cities with a rate page, keyed by their URL path: ['state/city' => [city name, state name]].
+    // Active cities in admin order (Admin → Cities); cached until a city is saved or deleted.
+    // We publish one reference rate for all of them; the pages say so.
+    public static function cities(): array
+    {
+        $cities = [];
+        foreach (City::activeCached() as $city) {
+            $cities[$city['key']] = [$city['name'], $city['state']];
+        }
+
+        return $cities;
+    }
+
+    // Cities linked from the header menu, same shape as cities()
+    public static function menuCities(): array
+    {
+        $cities = [];
+        foreach (City::activeCached() as $city) {
+            if ($city['menu']) {
+                $cities[$city['key']] = [$city['name'], $city['state']];
+            }
+        }
+
+        return $cities;
+    }
 
     public static function latest(): ?MetalRate
     {

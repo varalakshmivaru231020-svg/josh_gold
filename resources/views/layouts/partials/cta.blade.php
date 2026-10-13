@@ -1,13 +1,10 @@
 {{--
     Call-to-action banner shown above the footer on public pages.
     Editable in Admin → Call To Action (photo, text, buttons). Skipped on pages where it makes no
-    sense: Contact Us (the enquiry form is right there), login / account pages and checkout.
+    sense: Contact Us (the enquiry form is right there) and the login / admin pages.
 --}}
 @php
-    $skipCta = request()->routeIs(
-        'contact', 'contact.submit', 'login', 'admin.*', 'agent.*',
-        'checkout', 'orders.*', 'purchase', 'track.order'
-    );
+    $skipCta = request()->routeIs('contact', 'contact.submit', 'login', 'admin.*');
     $cta      = \App\Support\CtaContent::get();
     $heading  = trim((string) $cta['cta_heading']);
     $subtext  = trim((string) $cta['cta_subtext']);

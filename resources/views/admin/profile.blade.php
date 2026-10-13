@@ -94,20 +94,7 @@
                         </div>
                     </div>
                     <h4>{{ $admin->name }}</h4>
-                    <p class="text-muted">{{ $admin->email }}</p>
-                    
-                    <hr>
-                    
-                    <div class="row text-center">
-                        <div class="col-6">
-                            <h6 class="mb-0">{{ \App\Models\Order::count() }}</h6>
-                            <small class="text-muted">Total Orders</small>
-                        </div>
-                        <div class="col-6">
-                            <h6 class="mb-0">{{ \App\Models\Agent::count() }}</h6>
-                            <small class="text-muted">Total Agents</small>
-                        </div>
-                    </div>
+                    <p class="text-muted mb-0">{{ $admin->email }}</p>
                 </div>
             </div>
             

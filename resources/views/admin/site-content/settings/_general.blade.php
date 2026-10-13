@@ -12,25 +12,31 @@
 
                     <div class="mb-4">
                         <label class="form-label fw-semibold">Site Logo</label>
-                        <p class="text-muted small mb-2">This logo will appear in the header and footer of the website.</p>
+                        <p class="text-muted small mb-2">Shown in the website header, on a black background. Use a <strong>transparent PNG or WebP</strong>: a JPG always has a white box around it.</p>
 
                         <div class="row align-items-center">
                             <div class="col-auto">
-                                <div class="logo-preview-box" style="width: 120px; height: 120px; border: 2px dashed #dee2e6; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #f8f9fa;">
+                                <div class="logo-preview-box" style="width: 160px; height: 120px; border: 2px dashed #c9a35c; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #050505; padding: 8px;" title="Preview on the website header colour">
                                     @if($logo)
                                         <img src="{{ asset('storage/' . $logo) }}" alt="Current Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;" id="logoPreview">
                                     @else
-                                        <img src="{{ asset('blr.jpg') }}" alt="Default Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;" id="logoPreview">
+                                        <img src="{{ asset('images/brand/josha-logo.png') }}" alt="Default Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;" id="logoPreview">
                                     @endif
                                 </div>
                             </div>
                             <div class="col">
-                                <input type="file" class="form-control @error('site_logo') is-invalid @enderror" id="site_logo_input" accept="image/*">
+                                <input type="file" class="form-control @error('site_logo') is-invalid @enderror" id="site_logo_input" accept="image/png,image/webp">
                                 <input type="file" name="site_logo" id="site_logo" style="display: none;">
                                 @error('site_logo')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                                <div class="form-text">Images will be automatically compressed. Original max: 10MB.</div>
+                                <div class="form-text">PNG or WebP with a transparent background. Large images are resized automatically (transparency is kept). Max 10MB.</div>
+                                @if($logo)
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" name="remove_logo" value="1" id="remove_logo">
+                                    <label class="form-check-label small" for="remove_logo">Remove the uploaded logo and use the default Josha logo</label>
+                                </div>
+                                @endif
                                 <div id="compressionStatus" class="small text-info mt-1" style="display: none;"></div>
                             </div>
                         </div>
@@ -56,10 +62,10 @@
             <div class="card-body">
                 <p class="mb-2"><strong>Logo Guidelines:</strong></p>
                 <ul class="small text-muted mb-0">
-                    <li>Use a high-quality image</li>
-                    <li>Square images work best</li>
-                    <li>Transparent PNG recommended</li>
-                    <li>Minimum 200x200 pixels</li>
+                    <li>Transparent PNG or WebP only (no white background)</li>
+                    <li>Shown about 68 px tall in the header, on black</li>
+                    <li>At least 400 px wide for sharp results</li>
+                    <li>Remove the uploaded logo to go back to the default Josha logo</li>
                     <li>Maximum file size: 10MB</li>
                 </ul>
             </div>
@@ -133,17 +139,20 @@ function compressImage(file, maxWidth, quality) {
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
 
+                // Keep transparency: WebP when the browser supports it, otherwise PNG (never JPEG)
+                const toFile = (blob, type, ext) => new File([blob], file.name.replace(/\.[^.]+$/, '') + ext, {
+                    type: type,
+                    lastModified: Date.now()
+                });
                 canvas.toBlob(function(blob) {
-                    if (blob) {
-                        const compressedFile = new File([blob], file.name, {
-                            type: 'image/jpeg',
-                            lastModified: Date.now()
-                        });
-                        resolve(compressedFile);
-                    } else {
-                        reject(new Error('Canvas to Blob failed'));
+                    if (blob && blob.type === 'image/webp') {
+                        resolve(toFile(blob, 'image/webp', '.webp'));
+                        return;
                     }
-                }, 'image/jpeg', quality);
+                    canvas.toBlob(function(png) {
+                        png ? resolve(toFile(png, 'image/png', '.png')) : reject(new Error('Canvas to Blob failed'));
+                    }, 'image/png');
+                }, 'image/webp', quality);
             };
             img.onerror = reject;
         };

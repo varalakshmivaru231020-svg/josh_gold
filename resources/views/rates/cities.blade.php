@@ -1,7 +1,7 @@
 @extends('layouts.lawfirm')
 
 @section('title', 'Gold & Silver Rates by City | ' . config('company.name'))
-@section('meta_description', 'Gold and silver reference rates for Mumbai, Delhi, Chennai, Bengaluru, Hyderabad, Ahmedabad, Kolkata and Jaipur.')
+@section('meta_description', 'Gold and silver reference rates ' . ($cities ? 'for ' . collect($cities)->pluck(0)->join(', ', ' and ') : 'by city') . '.')
 
 @section('content')
 @include('layouts.partials.page-head', [
