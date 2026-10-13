@@ -33,7 +33,7 @@
     </div>
 </section>
 
-<section class="jb-section">
+<section class="jb-section jb-section--white">
     <div class="jb-wrap">
         <div class="jb-section__head">
             <div>
@@ -59,7 +59,7 @@
     </div>
 </section>
 
-<section class="jb-section" id="chart">
+<section class="jb-section jb-section--white" id="chart">
     <div class="jb-wrap">
         <div class="jb-section__head">
             <div>

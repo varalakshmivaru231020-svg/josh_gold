@@ -1,26 +1,29 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Manage Blog Posts')
+@section('title', 'Updates')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 mb-0">Manage Blog Posts</h1>
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <div>
+        <h1 class="h3 mb-1">Updates</h1>
+        <p class="text-muted mb-0">News posts with a cover image, shown on the website's <a href="{{ route('updates') }}" target="_blank" rel="noopener">Updates page</a>.</p>
+    </div>
     <a href="{{ route('admin.site-content.blogs.create') }}" class="btn btn-primary">
-        <i class="fas fa-plus me-2"></i>Add Blog Post
+        <i class="fas fa-plus me-2"></i>Add Update
     </a>
 </div>
 
 <div class="card">
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover align-middle">
                 <thead>
                     <tr>
-                        <th width="80">Image</th>
+                        <th width="96">Cover</th>
                         <th>Title</th>
-                        <th>Excerpt</th>
+                        <th>Summary</th>
                         <th width="100">Status</th>
-                        <th width="120">Created</th>
+                        <th width="120">Posted</th>
                         <th width="150">Actions</th>
                     </tr>
                 </thead>
@@ -29,32 +32,34 @@
                     <tr>
                         <td>
                             @if($blog->image)
-                            <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}" class="rounded" style="width: 60px; height: 40px; object-fit: cover;">
+                            <img src="{{ asset('storage/' . $blog->image) }}" alt="" class="rounded" style="width: 72px; height: 45px; object-fit: cover;">
                             @else
-                            <span class="text-muted">No Image</span>
+                            <span class="badge bg-warning text-dark" title="Add a cover image so this update looks its best">No cover</span>
                             @endif
                         </td>
-                        <td>{{ $blog->title }}</td>
-                        <td>{{ Str::limit(strip_tags($blog->description), 60) }}</td>
+                        <td><strong>{{ $blog->title }}</strong></td>
+                        <td class="text-muted">{{ Str::limit($blog->excerpt, 70) }}</td>
                         <td>
                             @if($blog->is_active)
-                            <span class="badge bg-success">Active</span>
+                            <span class="badge bg-success">Live</span>
                             @else
-                            <span class="badge bg-secondary">Inactive</span>
+                            <span class="badge bg-secondary">Hidden</span>
                             @endif
                         </td>
                         <td>{{ $blog->created_at->format('d M Y') }}</td>
-                        <td>
-                            <a href="{{ route('blog.show', $blog->slug) }}" target="_blank" class="btn btn-sm btn-outline-info" title="View">
+                        <td class="text-nowrap">
+                            @if($blog->is_active)
+                            <a href="{{ route('updates.show', $blog->slug) }}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-info" title="View on site">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <a href="{{ route('admin.site-content.blogs.edit', $blog->id) }}" class="btn btn-sm btn-outline-primary">
+                            @endif
+                            <a href="{{ route('admin.site-content.blogs.edit', $blog->id) }}" class="btn btn-sm btn-outline-primary" title="Edit">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <form action="{{ route('admin.site-content.blogs.delete', $blog->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this blog post?');">
+                            <form action="{{ route('admin.site-content.blogs.delete', $blog->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this update? It will be removed from the website.');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
@@ -62,7 +67,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="text-center text-muted py-4">No blog posts found. Add your first blog post!</td>
+                        <td colspan="6" class="text-center text-muted py-4">No updates yet. Add your first update!</td>
                     </tr>
                     @endforelse
                 </tbody>

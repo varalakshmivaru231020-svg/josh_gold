@@ -1,0 +1,128 @@
+/*
+ * Collections: the category tiles (resources/views/partials/collection-cards) and the
+ * collection pages (resources/views/collections/show). Builds on bullion-theme.css tokens and components.
+ */
+
+/* ── Category tiles ───────────────────────────────────── */
+
+/* Home "Shop by category": rows of four; the last row stretches to the full width (7 tiles = 4 + 3) */
+@media (max-width: 899px) {
+    /* Two per row on phones; an odd last tile runs across both columns */
+    .jb-cats--collections > .jb-cat:nth-child(odd):last-child { grid-column: 1 / -1; aspect-ratio: 2 / 1; }
+}
+@media (min-width: 900px) {
+    .jb-cats--collections { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+    .jb-cats--collections > .jb-cat { grid-column: span 3; aspect-ratio: auto; height: clamp(200px, 18.5vw, 240px); }
+    .jb-cats--collections > .jb-cat:nth-child(4n+1):nth-last-child(3),
+    .jb-cats--collections > .jb-cat:nth-child(4n+1):nth-last-child(3) ~ .jb-cat { grid-column: span 4; }
+    .jb-cats--collections > .jb-cat:nth-child(4n+1):nth-last-child(2),
+    .jb-cats--collections > .jb-cat:nth-child(4n+1):nth-last-child(2) ~ .jb-cat { grid-column: span 6; }
+    .jb-cats--collections > .jb-cat:nth-child(4n+1):last-child { grid-column: 1 / -1; }
+}
+
+/* One-row strip ("Other collections"): fills the row, scrolls sideways when there are more tiles than fit */
+.jb-cats.jb-cats--strip {
+    grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 62%;
+    gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+    padding: 6px 2px 22px; margin: -6px -2px -22px;
+}
+.jb-cats--strip::-webkit-scrollbar { display: none; }
+@media (max-width: 767px) {
+    /* Run to the screen edges on phones so the next tile peeks in */
+    .jb-cats.jb-cats--strip { margin-left: -16px; margin-right: -16px; padding-left: 16px; padding-right: 16px; scroll-padding-left: 16px; }
+}
+.jb-cats--strip > .jb-cat { aspect-ratio: auto; height: 156px; scroll-snap-align: start; }
+@media (min-width: 600px) { .jb-cats.jb-cats--strip { grid-auto-columns: 38%; } }
+@media (min-width: 900px) {
+    .jb-cats.jb-cats--strip { grid-auto-columns: minmax(160px, 1fr); gap: 16px; }
+    .jb-cats--strip > .jb-cat { height: 172px; }
+    .jb-cats--strip .jb-cat__label { padding: 36px 14px 13px; }
+    .jb-cats--strip .jb-cat__label strong { font-size: 15px; }
+    .jb-cats--strip .jb-cat__label span { font-size: 11.5px; }
+}
+
+/* ── Collection page ──────────────────────────────────── */
+
+/* Bootstrap margins off inside the page (the theme sets the spacing) */
+.jb-col :where(h2, h3, p, figure, dl, dd, table) { margin-bottom: 0; }
+
+.jb-chip--glass { color: #fff; background: rgba(20, 14, 4, .38); border: 1px solid rgba(255, 255, 255, .5); backdrop-filter: blur(6px); }
+
+/* Hero band: photo + summary panel */
+.jb-colhero-sec { padding-top: 28px !important; }
+@media (min-width: 768px) { .jb-colhero-sec { padding-top: 44px !important; } }
+.jb-colhero { display: grid; gap: 16px; }
+@media (min-width: 900px) { .jb-colhero { grid-template-columns: minmax(0, 1.22fr) minmax(0, 1fr); gap: 26px; align-items: stretch; } }
+.jb-colhero__media { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: #f3ead6; box-shadow: var(--jb-shadow-lg); }
+@media (min-width: 900px) { .jb-colhero__media { aspect-ratio: auto; min-height: 400px; } }
+.jb-colhero__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.jb-colhero__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 62%, rgba(20, 14, 4, .55)); pointer-events: none; }
+.jb-colhero__chips { position: absolute; z-index: 1; left: 14px; right: 14px; bottom: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+.jb-colhero__chips .jb-chip { height: 24px; padding: 0 10px; font-size: 11.5px; }
+
+.jb-colhero__panel { display: flex; flex-direction: column; justify-content: center; }
+.jb-colhero__from { margin-top: 14px !important; color: var(--jb-muted); font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+.jb-colhero__price { margin-top: 4px !important; color: var(--jb-gold-strong); font: 600 clamp(30px, 3.4vw, 40px)/1.05 var(--jb-serif); font-variant-numeric: tabular-nums; }
+.jb-colhero__unit { margin-top: 6px !important; color: var(--jb-muted); font-size: 12.5px; }
+.jb-colhero__heading { margin-top: 10px !important; font-size: 22px; font-weight: 600; line-height: 1.3; }
+.jb-colhero__note { margin-top: 12px !important; color: var(--jb-muted); font-size: 12.5px; line-height: 1.6; }
+.jb-colhero__note .jb-chip { margin: 0 4px; vertical-align: 1px; }
+.jb-colhero__cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+@media (max-width: 480px) { .jb-colhero__cta .jb-btn { flex: 1 1 100%; } }
+
+.jb-facts { margin-top: 18px; border-top: 1px solid var(--jb-line-soft); }
+.jb-facts > div { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--jb-line-soft); }
+.jb-facts dt { flex: none; color: var(--jb-muted); font-size: 10.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+.jb-facts dd { margin: 0; color: var(--jb-ink); font-size: 14px; font-weight: 600; text-align: right; }
+
+/* Jewellery: today's rate by purity */
+.jb-ratepanel { width: 100%; margin-top: 12px; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.jb-ratepanel th, .jb-ratepanel td { padding: 12px 0; border-bottom: 1px solid var(--jb-line-soft); text-align: right; white-space: nowrap; }
+.jb-ratepanel :is(th, td):first-child { text-align: left; }
+.jb-ratepanel thead th { padding-top: 4px; color: var(--jb-muted); font-size: 10.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.jb-ratepanel tbody th { color: var(--jb-ink); font: 600 18px/1.2 var(--jb-serif); }
+.jb-ratepanel tbody th span { margin-left: 4px; color: var(--jb-muted); font: 600 11.5px/1 var(--jb-sans); }
+.jb-ratepanel td { color: var(--jb-text); font-size: 14.5px; }
+.jb-ratepanel td b { color: var(--jb-gold-strong); font: 700 18px/1.2 var(--jb-serif); }
+
+/* Bullion: prices by weight */
+.jb-colprices__head { flex-wrap: wrap; }
+.jb-colprices__pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.jb-col .jb-ratemeta { margin-bottom: 16px; }
+@media (min-width: 1100px) {
+    .jb-colgrid--5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .jb-colgrid--6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+.jb-colgrid .jb-card__name { min-height: 0; }
+.jb-colempty { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; }
+
+/* About text */
+.jb-colabout { display: grid; gap: 14px; }
+@media (min-width: 900px) { .jb-colabout { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 48px; } }
+.jb-colabout__text p { color: var(--jb-text); font-size: 15.5px; line-height: 1.75; }
+.jb-colabout__text p + p { margin-top: 14px; }
+.jb-colabout__text .jb-link { display: inline-block; margin-top: 16px; }
+
+/* Jewellery gallery */
+.jb-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.jb-gallery__item { position: relative; margin: 0; aspect-ratio: 1; overflow: hidden; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: #f3ead6; box-shadow: var(--jb-shadow); }
+.jb-gallery__item img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .45s; }
+@media (hover: hover) { .jb-gallery__item:hover img { transform: scale(1.03); } }
+.jb-gallery--1 { grid-template-columns: 1fr; }
+.jb-gallery--1 .jb-gallery__item { aspect-ratio: 16 / 9; }
+.jb-gallery--3 .jb-gallery__item:first-child { grid-column: 1 / -1; aspect-ratio: 16 / 10; }
+@media (min-width: 768px) {
+    .jb-gallery { gap: 18px; }
+    .jb-gallery__item { aspect-ratio: 4 / 3; }
+    .jb-gallery--1 .jb-gallery__item { aspect-ratio: 21 / 9; }
+    /* Three photos: a large one on the left, two stacked on the right */
+    .jb-gallery--3 { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); grid-template-rows: repeat(2, clamp(170px, 16vw, 230px)); }
+    .jb-gallery--3 .jb-gallery__item { aspect-ratio: auto; }
+    .jb-gallery--3 .jb-gallery__item:first-child { grid-column: auto; grid-row: span 2; aspect-ratio: auto; }
+    .jb-gallery--2 .jb-gallery__item { aspect-ratio: 16 / 10; }
+    .jb-gallery--4 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .jb-gallery__item img { transition: none !important; }
+}

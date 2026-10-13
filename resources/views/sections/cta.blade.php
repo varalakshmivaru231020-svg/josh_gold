@@ -26,63 +26,28 @@
 </section>
 
 <style>
-.cta-container {
-    background: linear-gradient(135deg, #0a1628 0%, #1a2b4b 100%);
-    border-radius: 30px;
-    position: relative;
-    overflow: hidden;
-    color: white;
-    border: 1px solid rgba(201, 162, 39, 0.2);
+/* CMS section: call to action (white-and-gold theme) */
+.cta-section .cta-container {
+    position: relative; overflow: hidden; border-radius: 22px; border: 1px solid var(--jb-line-strong);
+    background: radial-gradient(600px 260px at 100% 0%, rgba(214, 178, 95, .28), transparent 65%),
+        radial-gradient(500px 240px at 0% 100%, rgba(214, 178, 95, .16), transparent 65%), linear-gradient(180deg, #fffaf0, #fbf1da);
+    box-shadow: var(--jb-shadow-lg) !important; color: var(--jb-text);
 }
-.cta-main-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3.5rem;
-    font-weight: 700;
-    line-height: 1.2;
-    color: var(--gold-primary);
+.cta-section .cta-content-inner { position: relative; z-index: 1; }
+.cta-section .cta-main-title { font-family: var(--jb-serif); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 600; line-height: 1.2; color: var(--jb-ink); }
+.cta-section .cta-description { color: var(--jb-text); font-size: 1.1rem; line-height: 1.65; }
+.cta-section .btn-premium-gold {
+    padding: 1rem 2.4rem; border: 1px solid #b48b3c; border-radius: var(--jb-r-btn);
+    background: var(--jb-gold-band); color: #2a1d06; font-size: .95rem; letter-spacing: .06em;
+    box-shadow: 0 10px 24px -14px rgba(138, 101, 22, .8), inset 0 1px 0 rgba(255, 255, 255, .45);
+    transition: filter .15s, transform .15s;
 }
-.cta-description {
-    font-size: 1.25rem;
-    opacity: 0.9;
-    letter-spacing: 0.5px;
-}
-.btn-premium-gold {
-    background: var(--gold-primary);
-    color: #0a1628;
-    border: none;
-    padding: 1.2rem 3rem;
-    border-radius: 12px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    font-size: 1rem;
-}
-.btn-premium-gold:hover {
-    background: #e5c05b;
-    transform: scale(1.05);
-    box-shadow: 0 15px 30px rgba(201, 162, 39, 0.4);
-    color: #0a1628;
-}
-.cta-decoration-left, .cta-decoration-right {
-    position: absolute;
-    font-size: 12rem;
-    opacity: 0.05;
-    color: white;
-}
-.cta-decoration-left {
-    bottom: -30px;
-    left: -20px;
-    transform: rotate(15deg);
-}
-.cta-decoration-right {
-    top: -30px;
-    right: -20px;
-    transform: rotate(-15deg);
-}
+.cta-section .btn-premium-gold:hover { filter: brightness(1.06); transform: translateY(-1px); color: #2a1d06; }
+.cta-section .cta-decoration-left, .cta-section .cta-decoration-right { position: absolute; font-size: 12rem; color: var(--jb-gold); opacity: .08; }
+.cta-section .cta-decoration-left { bottom: -30px; left: -20px; transform: rotate(15deg); }
+.cta-section .cta-decoration-right { top: -30px; right: -20px; transform: rotate(-15deg); }
 @media (max-width: 768px) {
-    .cta-main-title {
-        font-size: 2.5rem;
-    }
-    .cta-container {
-        padding: 3rem 1rem !important;
-    }
+    .cta-section .cta-container { padding: 3rem 1rem !important; }
+    .cta-section .cta-decoration-left, .cta-section .cta-decoration-right { font-size: 7rem; }
 }
 </style>

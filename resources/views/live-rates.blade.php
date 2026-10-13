@@ -21,24 +21,26 @@
     .lr-note {
         display: flex; align-items: center; gap: 12px;
         margin-bottom: 16px; padding: 13px 16px;
-        border: 1px solid rgba(201, 163, 92, .32); border-radius: 14px;
-        background: rgba(201, 163, 92, .07);
-        color: var(--jb-gold-light); font-size: 14px; line-height: 1.5;
+        border: 1px solid var(--jb-line-strong); border-radius: 14px;
+        background: #fffaf0;
+        color: var(--jb-gold-deep); font-size: 14px; line-height: 1.5;
     }
     .lr-note i { flex: none; }
-    .lr-note--sample { border-color: rgba(255, 112, 112, .42); background: rgba(255, 112, 112, .08); color: #ffc4c4; }
-    .lr-note--sample strong { color: var(--jb-white); }
+    .lr-note--sample { border-color: #f2c4bd; background: #fbe9e7; color: var(--jb-down); }
+    .lr-note--sample strong { color: var(--jb-ink); }
 
     /* ═══ Today's rate: gold | silver ════════════════════ */
     .lr-now {
         display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+        position: relative; overflow: hidden;
         border: 1px solid var(--jb-line); border-radius: var(--jb-r-card);
-        background: linear-gradient(180deg, rgba(201, 163, 92, .06), transparent 60%), var(--jb-panel);
+        background: radial-gradient(520px 200px at 50% 0%, rgba(214, 178, 95, .16), transparent 70%), linear-gradient(180deg, #fffaf0, #fff 60%);
+        box-shadow: var(--jb-shadow-lg);
         text-align: center;
     }
     .lr-now__cell { min-width: 0; padding: 24px 14px 22px; }
     .lr-now__cell + .lr-now__cell { border-left: 1px solid var(--jb-line); }
-    .lr-now__metal { margin: 0 0 12px; color: var(--jb-white); font: 700 14px/1 var(--jb-sans); letter-spacing: .18em; text-transform: uppercase; }
+    .lr-now__metal { margin: 0 0 12px; color: var(--jb-gold-strong); font: 700 14px/1 var(--jb-sans); letter-spacing: .18em; text-transform: uppercase; }
     .lr-now__rate {
         display: flex; justify-content: center; align-items: center; gap: 10px;
         font: 600 clamp(22px, 4.4vw, 44px)/1.1 var(--jb-serif);
@@ -49,7 +51,7 @@
     .lr-now__unit { margin-top: 6px; color: var(--jb-muted); font-size: 13px; font-weight: 600; }
     .lr-up { color: var(--jb-up); }
     .lr-down { color: var(--jb-down); }
-    .lr-flat { color: var(--jb-white); }
+    .lr-flat { color: var(--jb-ink); }
     @media (max-width: 575px) {
         .lr-now__cell { padding: 18px 8px 16px; }
         .lr-now__metal { font-size: 12px; margin-bottom: 10px; }
@@ -61,17 +63,17 @@
     /* ═══ Rate tables (home-page table style) ═════════════ */
     .lr-table th, .lr-table td { border-right: 1px solid var(--jb-line-soft); }
     .lr-table th:last-child, .lr-table td:last-child { border-right: 0; }
-    .lr-table td.lr-num { color: var(--jb-gold-light); font-family: var(--jb-serif); font-weight: 600; }
-    .lr-table--silver td.lr-num { color: #dfe3e8; }
+    .lr-table td.lr-num { color: var(--jb-gold-strong); font-family: var(--jb-serif); font-weight: 600; }
+    .lr-table--silver td.lr-num { color: #4f5965; }  /* silver grey, readable on white */
     .lr-table .lr-cur { color: var(--jb-muted); font-size: .85em; font-weight: 500; }
 
     /* ═══ No data ════════════════════════════════════════ */
     .no-data-state {
         padding: 48px 20px; text-align: center; color: var(--jb-muted);
-        border: 1px dashed var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel);
+        border: 1px dashed var(--jb-line-strong); border-radius: var(--jb-r-card); background: #fff; box-shadow: var(--jb-shadow);
     }
     .no-data-state i { display: block; margin-bottom: 14px; font-size: 2.6rem; color: var(--jb-gold); }
-    .no-data-state h4 { color: var(--jb-white); font-size: 20px; }
+    .no-data-state h4 { color: var(--jb-ink); font-size: 20px; }
     .no-data-state p { margin: 8px 0 0; }
 </style>
 @endpush

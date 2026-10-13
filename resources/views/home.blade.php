@@ -89,12 +89,10 @@
     <nav class="jb-subnav" aria-label="Sections">
         <div class="jb-wrap jb-subnav__inner">
             <div class="jb-scroll-x">
-                <a class="jb-pill" href="#by-weight" aria-current="true" data-jump-metal="gold" data-jump-form="all">All</a>
-                <a class="jb-pill" href="#by-weight" data-jump-metal="gold" data-jump-form="coin">Gold Coins</a>
-                <a class="jb-pill" href="#by-weight" data-jump-metal="gold" data-jump-form="bar">Gold Bars</a>
-                <a class="jb-pill" href="#by-weight" data-jump-metal="silver" data-jump-form="coin">Silver Coins</a>
-                <a class="jb-pill" href="#by-weight" data-jump-metal="silver" data-jump-form="bar">Silver Bars</a>
-                <a class="jb-pill" href="#categories">Jewellery</a>
+                <a class="jb-pill" href="#categories" aria-current="true">All</a>
+                @foreach(\App\Models\Collection::activeCached() as $collectionPill)
+                    <a class="jb-pill" href="{{ $collectionPill->url }}">{{ $collectionPill->name }}</a>
+                @endforeach
             </div>
             @if($rate)
             <form class="jb-search jb-md-up" role="search" data-search-form>
@@ -151,15 +149,16 @@
 
             <div class="jb-hero__art">
                 @php
+                    $collectionUrl = fn (string $slug, string $fallback) => \App\Models\Collection::activeCached()->firstWhere('slug', $slug)?->url ?? $fallback;
                     $heroTiles = [
-                        ['gold-necklace.webp',    'Gold jewellery',    'Enquire',    $quoteLink('Gold jewellery'), null],
-                        ['gold-bars.webp',        '24K gold bars',     'Live price', '#by-weight', 'bar'],
-                        ['diamond-ring.webp',     'Diamond rings',     'Enquire',    $quoteLink('Diamond rings'), null],
-                        ['diamond-necklace.webp', 'Diamond necklaces', 'Enquire',    $quoteLink('Diamond necklaces'), null],
+                        ['gold-necklace.webp',    'Gold jewellery',    'View',       $collectionUrl('gold-jewellery', $quoteLink('Gold jewellery'))],
+                        ['gold-bars.webp',        '24K gold bars',     'Live price', $collectionUrl('gold-bars', '#by-weight')],
+                        ['diamond-ring.webp',     'Diamond rings',     'View',       $collectionUrl('diamond-jewellery', $quoteLink('Diamond rings'))],
+                        ['diamond-necklace.webp', 'Diamond necklaces', 'View',       $collectionUrl('diamond-jewellery', $quoteLink('Diamond necklaces'))],
                     ];
                 @endphp
-                @foreach($heroTiles as [$photo, $label, $chip, $href, $form])
-                    <a class="jb-hero__tile" href="{{ $href }}" @if($form) data-jump-metal="gold" data-jump-form="{{ $form }}" @endif>
+                @foreach($heroTiles as [$photo, $label, $chip, $href])
+                    <a class="jb-hero__tile" href="{{ $href }}">
                         <img src="{{ asset('images/site/' . $photo) }}" alt="{{ $label }}" width="450" height="450" @if($loop->index > 1) loading="lazy" @endif>
                         <span class="jb-hero__tile-label"><span>{{ $label }}</span><span class="jb-chip jb-chip--gold">{{ $chip }}</span></span>
                     </a>
@@ -199,22 +198,7 @@
                     <h2 class="jb-section__title">Shop by category</h2>
                 </div>
             </div>
-            <div class="jb-cats">
-                @php
-                    $categories = [
-                        ['gold-bracelet-wide.webp',    'Gold jewellery',      'Chains, bangles, necklaces →', $quoteLink('Gold jewellery'), null],
-                        ['diamond-necklace-wide.webp', 'Diamond jewellery',   'Rings, necklaces, earrings →', $quoteLink('Diamond jewellery'), null],
-                        ['gold-coins-wide.webp',       'Gold coins & bars',   '1 g to 1 kg, priced live →',   '#by-weight', 'gold'],
-                        ['silver-coins-wide.webp',     'Silver coins & bars', '5 g to 5 kg, priced live →',   '#by-weight', 'silver'],
-                    ];
-                @endphp
-                @foreach($categories as [$photo, $label, $sub, $href, $metal])
-                    <a class="jb-cat" href="{{ $href }}" @if($metal) data-jump-metal="{{ $metal }}" data-jump-form="all" @endif>
-                        <img src="{{ asset('images/site/' . $photo) }}" alt="" width="500" height="375" loading="lazy">
-                        <span class="jb-cat__label"><strong>{{ $label }}</strong><span>{{ $sub }}</span></span>
-                    </a>
-                @endforeach
-            </div>
+            @include('partials.collection-cards')
         </div>
     </section>
 
@@ -325,14 +309,16 @@
             <div class="jb-services">
                 @foreach($services->take(3) as $service)
                     <article class="jb-service">
-                        @if($service->image)
-                            <div class="jb-service__img"><img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->title }}" loading="lazy"></div>
-                        @endif
-                        <span class="jb-service__num">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
-                        <h3>{{ $service->title }}</h3>
-                        @if(filled($service->description))
-                            <p>{{ Str::limit(strip_tags($service->description), 150) }}</p>
-                        @endif
+                        <div class="jb-service__img">
+                            @if($service->image)<img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->title }}" loading="lazy">@endif
+                            <span class="jb-service__num">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
+                        </div>
+                        <div class="jb-service__body">
+                            <h3>{{ $service->title }}</h3>
+                            @if(filled($service->description))
+                                <p>{{ Str::limit(strip_tags($service->description), 150) }}</p>
+                            @endif
+                        </div>
                     </article>
                 @endforeach
             </div>
@@ -388,24 +374,70 @@
             <h2 class="jb-section__title">Before you buy gold or silver</h2>
             <div class="jb-guide">
                 <div>
+                    <div class="jb-guide__img"><img src="{{ asset('images/site/gold-rings-wide.webp') }}" alt="" loading="lazy"></div>
+                    <div class="jb-guide__body">
+                    <span class="jb-guide__step">Step 1 · Purity</span>
                     <h3>24K, 22K or 18K?</h3>
                     <p>24K is 99.9% gold and is what coins and bars are made of. 22K (91.6%) is the usual standard for jewellery, and 18K (75%) is harder, so it holds stones well. The price follows the gold content.</p>
+                    </div>
                 </div>
                 <div>
+                    <div class="jb-guide__img"><img src="{{ asset('images/site/guide-hallmark.webp') }}" alt="" loading="lazy"></div>
+                    <div class="jb-guide__body">
+                    <span class="jb-guide__step">Step 2 · Hallmark</span>
                     <h3>Look for the hallmark</h3>
                     <p>Hallmarked gold in India carries the BIS mark, the purity grade and a six-character HUID code. You can check any HUID yourself in the government's BIS CARE app.</p>
+                    </div>
                 </div>
                 <div>
+                    <div class="jb-guide__img"><img src="{{ asset('images/site/gold-necklace-wide.webp') }}" alt="" loading="lazy"></div>
+                    <div class="jb-guide__body">
+                    <span class="jb-guide__step">Step 3 · Price</span>
                     <h3>How the final price is built</h3>
                     <p>Metal value at the day's rate for the weight and purity, plus making charges where they apply, plus 3% GST. The prices on this page are the metal value only.</p>
+                    </div>
                 </div>
                 <div>
+                    <div class="jb-guide__img"><img src="{{ asset('images/site/silver-jewellery-wide.webp') }}" alt="" loading="lazy"></div>
+                    <div class="jb-guide__body">
+                    <span class="jb-guide__step">Step 4 · Silver</span>
                     <h3>Silver, by the kilo</h3>
                     <p>Silver is quoted per kilogram. Bars and coins are usually 999 fine; 925 sterling is used for jewellery and articles. Small pieces carry higher making charges per gram.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
+
+    {{-- ─── Latest updates (Admin → Updates) ──────────────── --}}
+    @php $latestUpdates = \App\Models\Blog::active()->ordered()->take(3)->get(); @endphp
+    @if($latestUpdates->isNotEmpty())
+    <section class="jb-section jb-section--white" id="updates">
+        <div class="jb-wrap">
+            <div class="jb-section__head">
+                <div>
+                    <p class="jb-eyebrow">From our desk</p>
+                    <h2 class="jb-section__title">Latest updates</h2>
+                </div>
+                <a class="jb-link" href="{{ route('updates') }}">All updates →</a>
+            </div>
+            <div class="jb-news">
+                @foreach($latestUpdates as $update)
+                    <a class="jb-news__item" href="{{ route('updates.show', $update->slug) }}">
+                        <div class="jb-news__img">
+                            <img src="{{ $update->image ? asset('storage/' . $update->image) : asset('images/site/gold-bars-2-wide.webp') }}" alt="" loading="lazy">
+                        </div>
+                        <div class="jb-news__body">
+                            <span class="jb-guide__step">{{ $update->created_at?->format('j M Y') }}</span>
+                            <h3 style="margin-top: 6px;">{{ $update->title }}</h3>
+                            @if(filled($update->description))<p>{{ Str::limit(strip_tags($update->description), 110) }}</p>@endif
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
 
     {{-- ─── Contact band ───────────────────────────────── --}}
     <section class="jb-section">

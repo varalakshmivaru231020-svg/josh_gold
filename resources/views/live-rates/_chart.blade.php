@@ -1,13 +1,13 @@
 {{--
-    Gold / Silver rate chart in the style of bullions.co.in (amCharts stock chart), coloured for the dark theme.
+    Gold / Silver rate chart in the style of bullions.co.in (amCharts stock chart), on a white panel.
     Data: GET route('live-rates.history'); behaviour: public/js/rate-chart.js
     Expects: $key (gold|silver), $title, $purity, $unit, $line, $strip, $accent
 --}}
 @once
 @push('styles')
 <style>
-    /* Box around the chart (same layout as the reference, on a dark panel) */
-    .rc { position: relative; border: 1px solid var(--jb-line); border-radius: 14px; background: var(--jb-panel); padding: 0 0 10px; margin-top: 1.25rem; scroll-margin-top: calc(var(--jb-header-h) + 16px); }
+    /* Box around the chart (same layout as the reference, on a white panel) */
+    .rc { position: relative; border: 1px solid var(--jb-line); border-radius: 14px; background: #fff; box-shadow: var(--jb-shadow); padding: 0 0 10px; margin-top: 1.25rem; scroll-margin-top: calc(var(--jb-header-h) + 16px); }
     .rc-chart { width: 100%; height: 420px; font-size: 10px; }
     .rc .amChartsLegend { display: none; }
 
@@ -18,17 +18,17 @@
     .rc input.amChartsButtonSelected, .rc input[type="button"].amChartsButtonSelected, .rc .amChartsButtonSelected,
     .rc input[type="button"].amChartsButton, .rc .amChartsButton,
     .rc input.amChartsInputField, .rc .amChartsInputField {
-        font-size: 12px !important; background: var(--jb-panel-2) !important; color: var(--jb-text) !important; opacity: 1 !important;
+        font-size: 12px !important; background: #fff !important; color: var(--jb-text) !important; opacity: 1 !important;
         border: 1px solid var(--jb-line) !important; border-radius: 8px !important;
         margin: 1px !important; outline: none !important; box-sizing: border-box !important; padding: 2px 6px !important;
         font-family: var(--jb-sans) !important; cursor: pointer;
     }
-    .rc input[type="button"].amChartsButton:hover, .rc .amChartsButton:hover { border-color: rgba(255, 255, 255, .35) !important; color: var(--jb-white) !important; }
+    .rc input[type="button"].amChartsButton:hover, .rc .amChartsButton:hover { border-color: var(--jb-line-strong) !important; background: #fffaf0 !important; color: var(--jb-ink) !important; }
     .rc input.amChartsButtonSelected, .rc input[type="button"].amChartsButtonSelected, .rc .amChartsButtonSelected {
-        background-color: var(--jb-champagne) !important; border-color: var(--jb-champagne) !important; color: #111 !important; font-weight: 700 !important;
+        background: var(--jb-gold-band) !important; border-color: #b48b3c !important; color: #2a1d06 !important; font-weight: 700 !important;
     }
-    .rc input.amChartsInputField { color: var(--jb-white) !important; cursor: text; }
-    .rc input.amChartsInputField:focus { border-color: rgba(234, 215, 166, .55) !important; }
+    .rc input.amChartsInputField { color: var(--jb-ink) !important; cursor: text; }
+    .rc input.amChartsInputField:focus { border-color: var(--jb-gold) !important; box-shadow: 0 0 0 3px rgba(201, 163, 92, .18) !important; }
     .rc .amChartsInputField, .rc .amcharts-end-date-input, .rc .amcharts-start-date-input { width: 80px !important; max-width: 80px !important; }
 
     /* Loading / empty / error */
@@ -40,13 +40,13 @@
     .rc[data-state="error"] .rc-message--error { display: flex; }
     .rc-skeleton, .rc-message { height: 420px; align-items: center; justify-content: center; }
     .rc-skeleton { flex-direction: column; gap: 1.5rem; padding: 2rem; }
-    .rc-skeleton span { width: 100%; height: 1px; background: rgba(255, 255, 255, .07); }
-    .rc-skeleton::after { content: ''; position: absolute; inset: 1rem; background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, .04) 45%, transparent 70%); background-size: 200% 100%; animation: rc-shimmer 1.4s ease-in-out infinite; }
+    .rc-skeleton span { width: 100%; height: 1px; background: rgba(0, 0, 0, .06); }
+    .rc-skeleton::after { content: ''; position: absolute; inset: 1rem; background: linear-gradient(100deg, transparent 20%, rgba(214, 178, 95, .12) 45%, transparent 70%); background-size: 200% 100%; animation: rc-shimmer 1.4s ease-in-out infinite; }
     @keyframes rc-shimmer { from { background-position: 150% 0; } to { background-position: -50% 0; } }
     .rc-message { flex-direction: column; gap: .6rem; color: var(--jb-muted); text-align: center; padding: 0 1rem; }
     .rc-message p { margin: 0; font-size: .95rem; }
-    .rc-retry { border: 1px solid var(--jb-line); background: transparent; color: var(--jb-white); font-size: .85rem; font-weight: 700; padding: .4rem 1rem; border-radius: 10px; cursor: pointer; }
-    .rc-retry:hover { border-color: rgba(255, 255, 255, .7); background: rgba(255, 255, 255, .08); }
+    .rc-retry { border: 1px solid var(--jb-line-strong); background: #fff; color: var(--jb-ink); font-size: .85rem; font-weight: 700; padding: .4rem 1rem; border-radius: 10px; cursor: pointer; }
+    .rc-retry:hover { border-color: var(--jb-gold); background: #fffaf0; }
 
     @media (max-width: 575px) {
         .rc { padding-bottom: 32px; } /* the Zoom row wraps onto a second line on phones */

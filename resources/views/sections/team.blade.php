@@ -29,33 +29,16 @@
 </section>
 
 <style>
-.team-card {
-    background: white;
-    padding: 2.5rem 1.5rem;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
+/* CMS section: team (white-and-gold theme) */
+.team-section .section-heading { font-family: var(--jb-serif); font-size: clamp(28px, 4vw, 40px); font-weight: 600; color: var(--jb-ink); }
+.team-section .section-subheading { color: var(--jb-muted) !important; }
+.team-section .team-card {
+    padding: 2.2rem 1.4rem; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card);
+    background: linear-gradient(180deg, #fffaf0, #fff 50%); box-shadow: var(--jb-shadow); transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
 }
-.team-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-}
-.member-image img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border: 4px solid var(--cream-primary);
-}
-.member-name {
-    color: var(--navy-deep);
-    font-weight: 700;
-    margin-bottom: 0.25rem;
-}
-.text-gold {
-    color: var(--gold-primary);
-    font-weight: 600;
-}
-.member-bio {
-    line-height: 1.5;
-}
+@media (hover: hover) { .team-section .team-card:hover { transform: translateY(-6px); border-color: var(--jb-line-strong); box-shadow: var(--jb-shadow-lg); } }
+.team-section .member-image img { width: 150px; height: 150px; object-fit: cover; border: 4px solid #fff; box-shadow: 0 0 0 1px var(--jb-line-strong), var(--jb-shadow); background: var(--jb-panel-3); }
+.team-section .member-name { margin-bottom: .25rem; font-family: var(--jb-serif); font-weight: 600; color: var(--jb-ink); }
+.team-section .text-gold { color: var(--jb-gold-strong) !important; font-weight: 600; }
+.team-section .member-bio { color: var(--jb-muted) !important; line-height: 1.5; }
 </style>

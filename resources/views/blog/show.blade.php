@@ -1,209 +1,191 @@
 @extends('layouts.lawfirm')
 
-@section('title', $blog->title . ' | JOSHA GOLD AND DIAMOND JEWELLERY')
+@section('title', $blog->title . ' | Updates | Josha Gold and Diamond Jewellery')
+@section('meta_description', $blog->excerpt)
+
+{{-- $blog, $recentBlogs (sidebar), $relatedBlogs (end of the article), $previousBlog, $nextBlog --}}
+@php
+    $readTime = max(1, (int) ceil(str_word_count(strip_tags((string) $blog->description)) / 200));
+    $shareUrl = route('updates.show', $blog->slug);
+@endphp
 
 @section('content')
-@php
-    $readTime = max(1, ceil(str_word_count(strip_tags($blog->description)) / 200));
-@endphp
 @include('layouts.partials.page-head', [
-    'eyebrow' => 'News & Intelligence · ' . strtoupper($blog->created_at->format('M d, Y')),
+    'eyebrow' => 'Updates · ' . $blog->created_at->format('d M Y'),
     'title'   => $blog->title,
-    'sub'     => 'By Josha Gold and Diamond Jewellery · ' . $readTime . ' min read',
-    'crumbs'  => [['News', route('news')], [\Illuminate\Support\Str::limit($blog->title, 60)]],
+    'sub'     => 'Josha Gold and Diamond Jewellery · ' . $readTime . ' min read',
+    'crumbs'  => [['Updates', route('updates')], [\Illuminate\Support\Str::limit($blog->title, 60)]],
 ])
 
-<section class="blog-detail-page">
-    <div class="jb-wrap blog-detail-wrap">
-        <div class="row justify-content-center">
-            <div class="col-lg-12">
-                <div class="row">
-                    <div class="col-lg-8" data-aos="fade-up">
-                        <!-- Article Body -->
-                        <div class="blog-content-premium">
-                            @if($blog->image)
-                                <div class="blog-featured-inside mb-4" data-aos="fade-up">
-                                    <img src="{{ asset('storage/' . $blog->image) }}" alt="{{ $blog->title }}" class="img-fluid w-100 blog-featured-image">
-                                </div>
-                            @endif
+<section class="upd-page">
+    <div class="jb-wrap">
+        <div class="upd-layout">
+            <article class="upd-article" data-aos="fade-up">
+                @if($blog->image_url)
+                    <figure class="upd-article__cover">
+                        <img src="{{ $blog->image_url }}" alt="{{ $blog->title }}" decoding="async"
+                             onerror="this.closest('figure').remove();">
+                    </figure>
+                @endif
 
-                            <div class="rich-text-legal">
-                                {!! $blog->description !!}
-                            </div>
-
-                            <div class="blog-end-meta mt-5 pt-4 border-top">
-                                <div class="blog-tags mb-3">
-                                    <span class="tag-pill">Legal Insight</span>
-                                    <span class="tag-pill">News &amp; Intelligence</span>
-                                </div>
-
-                                <div class="blog-prev-next d-flex flex-column flex-md-row gap-3">
-                                    @if($previousBlog)
-                                        <a href="{{ route('blog.show', $previousBlog->slug) }}" class="blog-nav-card prev flex-fill">
-                                            <small class="nav-label">Previous</small>
-                                            <h5>{{ \Illuminate\Support\Str::limit($previousBlog->title, 60) }}</h5>
-                                        </a>
-                                    @endif
-
-                                    @if($nextBlog)
-                                        <a href="{{ route('blog.show', $nextBlog->slug) }}" class="blog-nav-card next flex-fill text-md-end">
-                                            <small class="nav-label">Next</small>
-                                            <h5>{{ \Illuminate\Support\Str::limit($nextBlog->title, 60) }}</h5>
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
-
-                            @if($relatedBlogs->count())
-                                <div class="related-articles-section mt-5 pt-4 border-top">
-                                    <h3 class="font-display text-navy mb-4">Related Articles</h3>
-                                    <div class="row g-4">
-                                        @foreach($relatedBlogs as $related)
-                                            <div class="col-md-4">
-                                                <a href="{{ route('blog.show', $related->slug) }}" class="related-article-card h-100 d-block">
-                                                    <div class="related-thumb">
-                                                        <img src="{{ $related->image ? asset('storage/' . $related->image) : asset('images/placeholder-intel.jpg') }}" alt="{{ $related->title }}">
-                                                    </div>
-                                                    <div class="related-body">
-                                                        <span class="small text-gold fw-bold d-block mb-1">{{ $related->created_at->format('M d, Y') }}</span>
-                                                        <h5>{{ \Illuminate\Support\Str::limit($related->title, 70) }}</h5>
-                                                        <p>{{ \Illuminate\Support\Str::limit(strip_tags($related->excerpt), 80) }}</p>
-                                                        <span class="related-read-more">Read More <i class="fas fa-arrow-right"></i></span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            @endif
-                            
-                            {{-- Share Section (hidden as requested)
-                            <div class="blog-share-wrap mt-5 pt-5 border-top">
-                                <h5 class="font-display text-navy mb-4">Share this Commentary</h5>
-                                <div class="share-flex">
-                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->url()) }}" target="_blank" class="share-btn fb"><i class="fab fa-facebook-f"></i></a>
-                                    <a href="https://twitter.com/intent/tweet?url={{ urlencode(request()->url()) }}&text={{ urlencode($blog->title) }}" target="_blank" class="share-btn tw"><i class="fab fa-twitter"></i></a>
-                                    <a href="https://wa.me/?text={{ urlencode($blog->title . ' - ' . request()->url()) }}" target="_blank" class="share-btn wa"><i class="fab fa-whatsapp"></i></a>
-                                    <a href="{{ route('blog.index') }}" class="btn-outline-navy ms-auto">
-                                        <i class="fas fa-arrow-left me-2"></i> Back to Archives
-                                    </a>
-                                </div>
-                            </div>
-                            --}}
-                        </div>
+                <div class="upd-article__body">
+                    <div class="upd-prose">
+                        {!! $blog->description !!}
                     </div>
 
-                    <div class="col-lg-4 mt-5 mt-lg-0" data-aos="fade-up" data-aos-delay="80">
-                        <div class="blog-sidebar">
-                            <h4 class="font-display text-navy mb-4 border-bottom pb-3">Recent Posts</h4>
-                            @foreach($recentBlogs as $recent)
-                                <a href="{{ route('blog.show', $recent->slug) }}" class="related-intel-card mb-4">
-                                    <div class="intel-thumb">
-                                        <img src="{{ $recent->image ? asset('storage/' . $recent->image) : asset('images/placeholder-intel.jpg') }}" alt="{{ $recent->title }}">
-                                    </div>
-                                    <div class="intel-info">
-                                        <span class="small text-gold fw-bold">{{ $recent->created_at->format('M d, Y') }}</span>
-                                        <h5>{{ \Illuminate\Support\Str::limit($recent->title, 50) }}</h5>
-                                    </div>
-                                </a>
-                            @endforeach
-
-                            {{-- <div class="newsletter-sidebar-card bg-navy p-4 rounded-4 text-white mt-5">
-                                <h4 class="font-display text-gold mb-3">Newsletter</h4>
-                                <p class="small opacity-75 mb-4">Receive weekly judicial summaries and publication releases.</p>
-                                <form action="#" class="sidebar-form">
-                                    <input type="email" placeholder="Your Email" class="form-control bg-transparent border-secondary text-white mb-3">
-                                    <button class="btn-primary-gold w-100">Subscribe</button>
-                                </form>
-                            </div> --}}
+                    <footer class="upd-article__foot">
+                        <time class="upd-date" datetime="{{ $blog->created_at->toDateString() }}">Posted {{ $blog->created_at->format('d M Y') }}</time>
+                        <div class="upd-article__actions">
+                            <a href="https://wa.me/?text={{ urlencode($blog->title . ' - ' . $shareUrl) }}" target="_blank" rel="noopener" class="jb-btn jb-btn--ghost jb-btn--sm">
+                                <i class="fab fa-whatsapp" aria-hidden="true"></i> Share
+                            </a>
+                            <a href="{{ route('updates') }}" class="jb-btn jb-btn--ghost jb-btn--sm">
+                                <i class="fas fa-arrow-left" aria-hidden="true"></i> All updates
+                            </a>
                         </div>
+                    </footer>
+                </div>
+
+                @if($previousBlog || $nextBlog)
+                    <nav class="upd-prevnext" aria-label="Previous and next update">
+                        @if($previousBlog)
+                            <a href="{{ route('updates.show', $previousBlog->slug) }}" class="upd-prevnext__link">
+                                <span class="upd-prevnext__label"><i class="fas fa-arrow-left" aria-hidden="true"></i> Previous</span>
+                                <span class="upd-prevnext__title">{{ \Illuminate\Support\Str::limit($previousBlog->title, 70) }}</span>
+                            </a>
+                        @endif
+                        @if($nextBlog)
+                            <a href="{{ route('updates.show', $nextBlog->slug) }}" class="upd-prevnext__link upd-prevnext__link--next">
+                                <span class="upd-prevnext__label">Next <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                                <span class="upd-prevnext__title">{{ \Illuminate\Support\Str::limit($nextBlog->title, 70) }}</span>
+                            </a>
+                        @endif
+                    </nav>
+                @endif
+            </article>
+
+            <aside class="upd-aside" data-aos="fade-up" data-aos-delay="80">
+                @if($recentBlogs->isNotEmpty())
+                    <div class="upd-aside__box">
+                        <h2 class="upd-aside__title">Recent updates</h2>
+                        <ul class="upd-recent">
+                            @foreach($recentBlogs as $recent)
+                                <li>
+                                    <a href="{{ route('updates.show', $recent->slug) }}" class="upd-recent__link">
+                                        @include('blog._cover', ['post' => $recent, 'size' => 'sm'])
+                                        <span class="upd-recent__text">
+                                            <time class="upd-recent__date" datetime="{{ $recent->created_at->toDateString() }}">{{ $recent->created_at->format('d M Y') }}</time>
+                                            <span class="upd-recent__title">{{ \Illuminate\Support\Str::limit($recent->title, 64) }}</span>
+                                        </span>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <div class="upd-aside__box upd-aside__box--glow">
+                    <p class="jb-eyebrow">Live rates</p>
+                    <h2 class="upd-aside__title">Today's gold rate</h2>
+                    <p class="upd-aside__text">Published every morning and evening, by purity and weight.</p>
+                    <div class="upd-aside__actions">
+                        <a href="{{ route('rates.gold') }}" class="jb-btn jb-btn--primary jb-btn--sm">See today's rate</a>
+                        <a href="{{ route('contact') }}" class="jb-btn jb-btn--ghost jb-btn--sm">Contact us</a>
                     </div>
                 </div>
-            </div>
+            </aside>
         </div>
+
+        @if($relatedBlogs->isNotEmpty())
+            <section class="upd-related" aria-labelledby="updRelated">
+                <div class="upd-head">
+                    <h2 id="updRelated">More updates</h2>
+                    <a href="{{ route('updates') }}" class="jb-link">View all <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+                <div class="upd-grid">
+                    @foreach($relatedBlogs as $post)
+                        <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 60 }}">
+                            @include('blog._card', ['post' => $post])
+                        </div>
+                    @endforeach
+                </div>
+            </section>
+        @endif
     </div>
 </section>
 @endsection
 
 @push('styles')
+@include('blog._styles')
 <style>
-    .blog-detail-page { padding-bottom: 56px; }
-    .blog-detail-wrap { padding-top: 32px; padding-bottom: 16px; }
-    @media (min-width: 768px) { .blog-detail-wrap { padding-top: 48px; } }
+    .upd-layout { display: grid; gap: 28px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+    @media (min-width: 992px) { .upd-layout { grid-template-columns: minmax(0, 1fr) 340px; gap: 40px; } }
 
     /* Article */
-    .blog-content-premium {
-        position: relative; padding: 40px;
-        border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel);
-    }
-    .blog-featured-image { max-height: 450px; width: 100%; object-fit: cover; border-radius: 14px; border: 1px solid var(--jb-line); }
+    .upd-article__cover { margin: 0 0 22px; overflow: hidden; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel-3); box-shadow: var(--jb-shadow); }
+    .upd-article__cover img { display: block; width: 100%; max-height: 520px; object-fit: cover; }
+    .upd-article__body { padding: 24px 20px; background: var(--jb-surface); border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); box-shadow: var(--jb-shadow); }
+    @media (min-width: 768px) { .upd-article__body { padding: 40px 44px; } }
 
-    .rich-text-legal { font-size: 16.5px; line-height: 1.8; color: var(--jb-text); overflow-wrap: break-word; }
-    .rich-text-legal p { margin-bottom: 24px; }
-    .rich-text-legal a { color: var(--jb-gold-light); }
-    .rich-text-legal a:hover { color: var(--jb-white); }
-    .rich-text-legal strong, .rich-text-legal b { color: var(--jb-white); }
-    .rich-text-legal img { max-width: 100%; height: auto; border-radius: 12px; }
-    .rich-text-legal h2, .rich-text-legal h3 { font-family: var(--jb-serif); color: var(--jb-white); font-weight: 600; margin: 36px 0 16px; }
-    .rich-text-legal blockquote {
-        margin: 32px 0; padding: 22px 28px;
-        border-left: 3px solid var(--jb-gold); border-radius: 0 14px 14px 0;
-        background: rgba(201, 163, 92, .07);
-        font-family: var(--jb-serif); font-style: italic; font-size: 1.2rem; color: var(--jb-white);
+    .upd-prose { color: var(--jb-text); font-size: 16px; line-height: 1.8; overflow-wrap: break-word; }
+    @media (min-width: 768px) { .upd-prose { font-size: 16.5px; } }
+    .upd-prose > :first-child { margin-top: 0; }
+    .upd-prose > :last-child { margin-bottom: 0; }
+    .upd-prose p { margin: 0 0 20px; }
+    .upd-prose a { color: var(--jb-gold-strong); text-decoration: underline; text-underline-offset: 3px; }
+    .upd-prose a:hover { color: var(--jb-gold-deep); }
+    .upd-prose strong, .upd-prose b { color: var(--jb-ink); }
+    .upd-prose h2, .upd-prose h3, .upd-prose h4 { margin: 32px 0 14px; font-family: var(--jb-serif); font-weight: 600; line-height: 1.3; color: var(--jb-ink); }
+    .upd-prose h2 { font-size: 24px; }
+    .upd-prose h3 { font-size: 20px; }
+    .upd-prose ul, .upd-prose ol { margin: 0 0 20px; padding-left: 1.3em; }
+    .upd-prose li { margin-bottom: 6px; }
+    .upd-prose li::marker { color: var(--jb-gold); }
+    .upd-prose img { max-width: 100%; height: auto; border-radius: 12px; }
+    .upd-prose blockquote {
+        margin: 28px 0; padding: 18px 24px; border-left: 3px solid var(--jb-gold); border-radius: 0 14px 14px 0; background: var(--jb-panel-2);
+        font-family: var(--jb-serif); font-style: italic; font-size: 1.12rem; color: var(--jb-ink);
     }
+    .upd-prose blockquote p:last-child { margin-bottom: 0; }
 
-    .blog-end-meta { margin-top: 40px; }
-    .blog-tags .tag-pill {
-        display: inline-block; margin: 0 8px 8px 0; padding: 5px 12px; border-radius: 999px;
-        border: 1px solid rgba(201, 163, 92, .4); background: rgba(201, 163, 92, .12);
-        color: var(--jb-gold-light); font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    .upd-article__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--jb-line-soft); }
+    .upd-article__actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .upd-article__actions .fa-whatsapp { color: #1fa855; font-size: 15px; }
+
+    /* Previous / next */
+    .upd-prevnext { display: grid; gap: 12px; margin-top: 22px; }
+    @media (min-width: 768px) { .upd-prevnext { grid-template-columns: 1fr 1fr; } }
+    .upd-prevnext__link {
+        display: flex; flex-direction: column; gap: 6px; padding: 16px 20px; text-decoration: none;
+        background: var(--jb-surface); border: 1px solid var(--jb-line); border-radius: 14px; transition: border-color .2s, transform .2s;
     }
-
-    .blog-prev-next { margin-top: 10px; }
-    .blog-nav-card {
-        display: block; padding: 16px 20px; text-decoration: none;
-        border: 1px solid var(--jb-line); border-radius: 14px; background: var(--jb-panel-2); color: var(--jb-white);
-        transition: border-color .2s, transform .2s;
-    }
-    .blog-nav-card:hover { border-color: var(--jb-line-strong); color: var(--jb-white); transform: translateY(-2px); }
-    .blog-nav-card .nav-label { text-transform: uppercase; letter-spacing: .14em; font-size: 11px; font-weight: 700; color: var(--jb-gold); }
-    .blog-nav-card h5 { font-family: var(--jb-serif); font-size: 16px; font-weight: 600; margin: 6px 0 0; color: var(--jb-white); }
-
-    .related-articles-section h3 { font-size: 22px; font-weight: 600; }
-    .related-article-card {
-        overflow: hidden; text-decoration: none; color: inherit;
-        border: 1px solid var(--jb-line); border-radius: 14px; background: var(--jb-panel-2);
-        transition: border-color .2s, transform .2s;
-    }
-    .related-article-card:hover { border-color: var(--jb-line-strong); transform: translateY(-3px); }
-    .related-thumb { aspect-ratio: 16 / 10; overflow: hidden; background: var(--jb-panel-3); }
-    .related-thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .related-body { padding: 14px 16px 16px; }
-    .related-body h5 { font-family: var(--jb-serif); font-size: 16px; font-weight: 600; margin-bottom: 6px; color: var(--jb-white); }
-    .related-body p { font-size: 13.5px; color: var(--jb-muted); margin-bottom: 10px; }
-    .related-read-more { color: var(--jb-gold-light); font-size: 13px; font-weight: 700; }
-
-    .share-flex { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
-    .share-btn { width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: white; transition: 0.3s; text-decoration: none; }
-    .share-btn:hover { transform: translateY(-5px); opacity: 0.9; }
-    .share-btn.fb { background: #1877f2; }
-    .share-btn.tw { background: #000000; border: 1px solid var(--jb-line); }
-    .share-btn.wa { background: #25d366; }
+    .upd-prevnext__link--next { text-align: right; align-items: flex-end; }
+    @media (min-width: 768px) { .upd-prevnext__link--next:only-child { grid-column: 2; } }
+    .upd-prevnext__link:hover { border-color: var(--jb-line-strong); transform: translateY(-2px); }
+    .upd-prevnext__label { display: inline-flex; align-items: center; gap: 6px; color: var(--jb-gold); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .upd-prevnext__title { color: var(--jb-ink); font-family: var(--jb-serif); font-size: 16px; font-weight: 600; line-height: 1.35; }
 
     /* Sidebar */
-    .blog-sidebar { padding: 24px; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel); }
-    .blog-sidebar > h4 { font-size: 20px; font-weight: 600; border-color: var(--jb-line-soft) !important; }
-    .related-intel-card { display: flex; gap: 14px; align-items: center; text-decoration: none; transition: transform .2s; }
-    .related-intel-card:last-child { margin-bottom: 0 !important; }
-    .related-intel-card:hover { transform: translateX(4px); }
-    .intel-thumb { width: 72px; height: 72px; flex-shrink: 0; overflow: hidden; border-radius: 12px; border: 1px solid var(--jb-line); background: var(--jb-panel-3); }
-    .intel-thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .intel-info h5 { margin: 4px 0 0; font-family: var(--jb-serif); font-size: 15px; font-weight: 600; line-height: 1.35; color: var(--jb-white); }
-    .related-intel-card:hover .intel-info h5 { color: var(--jb-gold-light); }
+    .upd-aside { display: grid; gap: 20px; }
+    @media (min-width: 992px) { .upd-aside { position: sticky; top: calc(var(--jb-header-h) + 20px); } }
+    .upd-aside__box { padding: 22px; background: var(--jb-surface); border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); box-shadow: var(--jb-shadow); }
+    .upd-aside__box--glow { background: radial-gradient(360px 180px at 100% 0%, rgba(214, 178, 95, .2), transparent 70%), linear-gradient(180deg, #fffaf0, #fff 70%); }
+    .upd-aside__title { margin: 0 0 16px !important; padding-bottom: 14px; border-bottom: 1px solid var(--jb-line-soft); font-size: 19px; font-weight: 600; color: var(--jb-ink); }
+    .upd-aside__box--glow .upd-aside__title { margin: 6px 0 8px !important; padding: 0; border: 0; }
+    .upd-aside__text { margin: 0 0 16px !important; color: var(--jb-text); font-size: 14px; line-height: 1.6; }
+    .upd-aside__actions { display: flex; flex-wrap: wrap; gap: 8px; }
 
-    @media (max-width: 767px) {
-        .blog-content-premium { padding: 22px; }
-        .rich-text-legal { font-size: 15.5px; }
-    }
+    .upd-recent { margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; }
+    .upd-recent__link { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+    .upd-recent__text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+    .upd-recent__date { color: var(--jb-gold); font-size: 10.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .upd-recent__title { color: var(--jb-ink); font-family: var(--jb-serif); font-size: 15px; font-weight: 600; line-height: 1.35; transition: color .15s; }
+    .upd-recent__link:hover .upd-recent__title { color: var(--jb-gold-strong); }
+
+    /* More updates */
+    .upd-related { margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--jb-line); }
+    @media (min-width: 768px) { .upd-related { margin-top: 72px; } }
+    .upd-related .upd-head { align-items: center; }
+    .upd-related .jb-link i { font-size: 11px; margin-left: 4px; }
 </style>
 @endpush

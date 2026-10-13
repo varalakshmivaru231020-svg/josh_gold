@@ -40,7 +40,7 @@
                 <div class="contact-card-premium">
                     <h3 class="card-heading-navy mb-4">{{ $quoteItem !== '' ? 'Request a quote' : 'Send us a Message' }}</h3>
                     @if($quoteItem !== '')
-                        <p class="jb-muted mb-4">You're asking about <strong class="text-white">{{ $quoteItem }}</strong>. Add your details and we'll reply with today's price.</p>
+                        <p class="jb-muted mb-4">You're asking about <strong class="text-navy">{{ $quoteItem }}</strong>. Add your details and we'll reply with today's price.</p>
                     @endif
 
                     @if(session('success'))
@@ -188,7 +188,7 @@
 </section>
 
 {{-- Sitemap: every page of the site --}}
-<section class="jb-section" id="sitemap" style="border-top: 1px solid var(--jb-line-soft);">
+<section class="jb-section jb-section--white" id="sitemap" style="border-top: 1px solid var(--jb-line-soft);">
     <div class="jb-wrap">
         <div class="jb-section__head">
             <div>
@@ -204,7 +204,7 @@
 
 @push('styles')
 <style>
-    /* ── CONTACT PAGE (dark bullion theme) ── */
+    /* ── CONTACT PAGE (white and gold theme) ── */
     .contact-luxury-page { padding-bottom: 56px; }
     .contact-content-container { padding-top: 32px; padding-bottom: 16px; }
     @media (min-width: 768px) { .contact-content-container { padding-top: 48px; } }
@@ -213,91 +213,89 @@
     .contact-card-premium {
         position: relative; height: 100%; padding: 36px;
         border: 1px solid var(--jb-line); border-radius: var(--jb-r-card);
-        background: linear-gradient(180deg, rgba(201, 163, 92, .05), transparent 50%), var(--jb-panel);
+        background: linear-gradient(180deg, #fffaf0, #fff 40%); box-shadow: var(--jb-shadow-lg);
     }
     .contact-card-premium::before {
-        content: ''; position: absolute; top: -1px; left: 18%; right: 18%; height: 1px;
-        background: linear-gradient(90deg, transparent, var(--jb-gold-deep), transparent);
+        content: ''; position: absolute; top: -1px; left: 18%; right: 18%; height: 2px;
+        background: linear-gradient(90deg, transparent, var(--jb-gold), transparent);
     }
-    .card-heading-navy { font-family: var(--jb-serif); color: var(--jb-white); font-size: 24px; font-weight: 600; }
+    .card-heading-navy { font-family: var(--jb-serif); color: var(--jb-ink); font-size: 24px; font-weight: 600; }
 
     .label-gold-sm {
         display: block; margin-bottom: 8px;
-        color: var(--jb-gold); font-size: 10.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+        color: var(--jb-gold-strong); font-size: 10.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
     }
     .form-luxury {
         width: 100%; padding: 12px 16px;
-        background: var(--jb-black); border: 1px solid var(--jb-line); border-radius: var(--jb-r-ctl);
-        color: var(--jb-white); font: 15px/1.5 var(--jb-sans);
+        background: #fff; border: 1px solid var(--jb-line-strong); border-radius: var(--jb-r-ctl);
+        color: var(--jb-ink); font: 15px/1.5 var(--jb-sans);
         transition: border-color .15s, background-color .15s, box-shadow .15s;
     }
-    .form-luxury::placeholder { color: #7d7d7d; }
+    .form-luxury::placeholder { color: #a99d86; }
     .form-luxury:focus {
-        outline: none; background: var(--jb-panel-2);
-        border-color: rgba(234, 215, 166, .55); box-shadow: 0 0 0 .2rem rgba(234, 215, 166, .15);
+        outline: none; background: #fff;
+        border-color: var(--jb-gold); box-shadow: 0 0 0 .2rem rgba(201, 163, 92, .2);
     }
     .form-luxury.is-invalid { border-color: var(--jb-down); }
 
     .btn-gold-action {
         display: inline-flex; align-items: center; justify-content: center;
-        background: var(--jb-champagne); color: #111; border: 1px solid var(--jb-champagne);
+        background: var(--jb-gold-band); color: #2a1d06; border: 1px solid #b48b3c;
         border-radius: var(--jb-r-btn); font: 700 14.5px/1 var(--jb-sans); letter-spacing: .01em;
-        box-shadow: 0 10px 28px -12px rgba(234, 215, 166, .45);
-        transition: background-color .15s, transform .15s;
+        box-shadow: 0 10px 24px -14px rgba(138, 101, 22, .8), inset 0 1px 0 rgba(255, 255, 255, .45);
+        transition: filter .15s, transform .15s;
     }
-    .btn-gold-action:hover { background: #fff8ea; color: #111; }
-    .btn-gold-action:active { background: var(--jb-champagne-down); transform: translateY(1px); }
+    .btn-gold-action:hover { filter: brightness(1.06); color: #2a1d06; }
+    .btn-gold-action:active { transform: translateY(1px); }
 
     /* Sidebar */
     .contact-sidebar-luxury {
         position: relative; height: 100%; padding: 36px; overflow: hidden;
         border: 1px solid var(--jb-line); border-radius: var(--jb-r-card);
-        background: radial-gradient(420px 220px at 100% 0%, rgba(201, 163, 92, .12), transparent 65%), linear-gradient(180deg, #111114, #0a0a0b);
+        background: radial-gradient(420px 220px at 100% 0%, rgba(214, 178, 95, .26), transparent 65%), linear-gradient(180deg, #fffaf0, #fbf1da); box-shadow: var(--jb-shadow-lg);
         color: var(--jb-text);
     }
-    .sidebar-heading { font-family: var(--jb-serif); font-size: 22px; font-weight: 600; color: var(--jb-white); }
+    .sidebar-heading { font-family: var(--jb-serif); font-size: 22px; font-weight: 600; color: var(--jb-ink); }
 
     .contact-info-block {
         display: flex; align-items: flex-start; gap: 16px;
-        padding-bottom: 20px; border-bottom: 1px solid var(--jb-line-soft);
+        padding-bottom: 20px; border-bottom: 1px solid var(--jb-line);
     }
     .contact-info-block:last-child { border-bottom: none; padding-bottom: 0; }
 
     .cib-icon {
         width: 44px; height: 44px; flex-shrink: 0;
         display: flex; align-items: center; justify-content: center;
-        background: #0a0a0b; border: 1px solid var(--jb-line); border-radius: 12px;
-        color: var(--jb-gold-light); font-size: 1.05rem;
+        background: #fff; border: 1px solid #ecd49c; border-radius: 12px;
+        color: var(--jb-gold-strong); font-size: 1.05rem; box-shadow: var(--jb-shadow);
         transition: background-color .2s, color .2s, border-color .2s;
     }
-    .contact-info-block:hover .cib-icon { background: var(--jb-champagne); border-color: var(--jb-champagne); color: #111; }
-    .cib-whatsapp { color: var(--jb-whatsapp); }
-    .contact-info-block:hover .cib-whatsapp { background: var(--jb-whatsapp); border-color: var(--jb-whatsapp); color: #062b14; }
+    .contact-info-block:hover .cib-icon { background: var(--jb-gold-band); border-color: #b48b3c; color: #2a1d06; }
+    .cib-whatsapp { color: #1fa855; }
+    .contact-info-block:hover .cib-whatsapp { background: var(--jb-whatsapp); border-color: var(--jb-whatsapp); color: #fff; }
 
     .cib-label {
         display: block; margin-bottom: 4px;
         color: var(--jb-muted); font-size: 10.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
     }
     .cib-text { margin: 0; color: var(--jb-text); font-size: 14.5px; line-height: 1.7; }
-    .cib-link { color: var(--jb-gold-light); text-decoration: none; font-size: 15px; font-weight: 600; word-break: break-word; transition: color .15s; }
-    .cib-link:hover { color: var(--jb-white); }
-    .cib-wa-link { color: var(--jb-whatsapp); }
-    .cib-wa-link:hover { color: #7fffb0; }
+    .cib-link { color: var(--jb-gold-strong); text-decoration: none; font-size: 15px; font-weight: 600; word-break: break-word; transition: color .15s; }
+    .cib-link:hover { color: var(--jb-gold-deep); }
+    .cib-wa-link { color: #138a43; }
+    .cib-wa-link:hover { color: #0b6b31; }
 
     /* Map */
     .map-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 1.25rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
-    .map-title { font-family: var(--jb-serif); font-size: 26px; font-weight: 600; color: var(--jb-white); margin: .2rem 0 .4rem; }
+    .map-title { font-family: var(--jb-serif); font-size: 26px; font-weight: 600; color: var(--jb-ink); margin: .2rem 0 .4rem; }
     .map-address { margin: 0; color: var(--jb-muted); max-width: 640px; }
-    .map-address i { color: var(--jb-gold); }
+    .map-address i { color: var(--jb-gold-strong); }
     .map-directions { width: auto !important; min-height: 46px; padding: 0 20px; text-decoration: none; white-space: nowrap; }
     .map-premium-card {
         height: 400px; overflow: hidden;
-        border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel);
+        border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel-3); box-shadow: var(--jb-shadow-lg);
     }
     .map-inner { width: 100%; height: 100%; position: relative; }
     .map-inner iframe { width: 100% !important; height: 100% !important; border: none; }
-    /* Google's embed has no dark style: invert it so the map sits in the dark page */
-    .map-inner iframe[src*="google.com/maps"] { filter: invert(.9) hue-rotate(180deg) brightness(.95) contrast(.9); }
 
     /* Responsive */
     @media (max-width: 991px) {

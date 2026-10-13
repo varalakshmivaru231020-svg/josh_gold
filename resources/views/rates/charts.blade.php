@@ -35,7 +35,7 @@
     </div>
 </section>
 
-<section class="jb-section" id="gold-chart">
+<section class="jb-section jb-section--white" id="gold-chart">
     <div class="jb-wrap">
         <p class="jb-eyebrow">Gold</p>
         <h2 class="jb-section__title" style="margin-bottom: 14px;">24K gold, per 10 grams</h2>
@@ -61,7 +61,7 @@
 <section class="jb-section"><div class="jb-wrap"><div class="jb-panel"><p class="jb-muted mb-0">Charts will appear here once rates are published.</p></div></div></section>
 @endif
 
-<section class="jb-section">
+<section class="jb-section jb-section--white">
     <div class="jb-wrap">
         <p class="jb-eyebrow">Good to know</p>
         <h2 class="jb-section__title">About these charts</h2>

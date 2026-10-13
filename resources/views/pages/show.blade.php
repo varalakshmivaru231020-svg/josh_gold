@@ -3,7 +3,7 @@
 @section('title', $page->title . ' | JOSHA GOLD AND DIAMOND JEWELLERY')
 
 @section('content')
-{{-- The banner image chosen in admin sits behind the heading, darkened --}}
+{{-- The banner image chosen in admin sits behind the heading, darkened, with white text --}}
 <div class="cms-head{{ $page->banner_image ? ' cms-head--image' : '' }}" @if($page->banner_image) style="--cms-banner: url('{{ asset('storage/' . $page->banner_image) }}');" @endif>
     @include('layouts.partials.page-head', [
         'title'  => $page->banner_title ?? $page->title,
@@ -40,8 +40,14 @@
 @push('styles')
 <style>
     .cms-head--image .jb-pagehead {
-        background: linear-gradient(rgba(0, 0, 0, .78), rgba(0, 0, 0, .9)), var(--cms-banner) center / cover no-repeat, var(--jb-black);
+        background: linear-gradient(rgba(20, 14, 4, .62), rgba(20, 14, 4, .8)), var(--cms-banner) center / cover no-repeat, var(--jb-panel-3);
+        border-bottom: 3px solid var(--jb-gold);
     }
+    /* Text on the photo stays white */
+    .cms-head--image .jb-pagehead__title, .cms-head--image .jb-pagehead__sub { color: #fff; }
+    .cms-head--image .jb-pagehead__crumbs { color: rgba(255, 255, 255, .78); }
+    .cms-head--image .jb-pagehead__crumbs a { color: #f0d79b; }
+    .cms-head--image .jb-pagehead__crumbs a:hover { color: #fff; }
     @media (min-width: 768px) { .cms-head--image .jb-pagehead { padding: 80px 0 72px; } }
 
     .cms-luxury-page { padding-bottom: 56px; }
@@ -51,24 +57,24 @@
     .cms-content-card {
         position: relative; padding: 48px;
         border: 1px solid var(--jb-line); border-radius: var(--jb-r-card);
-        background: linear-gradient(180deg, rgba(201, 163, 92, .05), transparent 40%), var(--jb-panel);
+        background: linear-gradient(180deg, #fffaf0, #fff 30%); box-shadow: var(--jb-shadow-lg);
     }
     .cms-content-card::before {
-        content: ''; position: absolute; top: -1px; left: 18%; right: 18%; height: 1px;
-        background: linear-gradient(90deg, transparent, var(--jb-gold-deep), transparent);
+        content: ''; position: absolute; top: -1px; left: 18%; right: 18%; height: 2px;
+        background: linear-gradient(90deg, transparent, var(--jb-gold), transparent);
     }
 
     .rich-text-legal { font-size: 16.5px; line-height: 1.85; color: var(--jb-text); overflow-wrap: break-word; }
     .rich-text-legal h2 {
         margin-top: 40px; margin-bottom: 20px; padding-bottom: 16px;
-        border-bottom: 1px solid var(--jb-line-soft);
-        font-family: var(--jb-serif); color: var(--jb-white); font-size: 30px; font-weight: 600;
+        border-bottom: 1px solid var(--jb-line);
+        font-family: var(--jb-serif); color: var(--jb-ink); font-size: 30px; font-weight: 600;
     }
-    .rich-text-legal h3, .rich-text-legal h4 { font-family: var(--jb-serif); color: var(--jb-white); font-weight: 600; }
+    .rich-text-legal h3, .rich-text-legal h4 { font-family: var(--jb-serif); color: var(--jb-ink); font-weight: 600; }
     .rich-text-legal p { margin-bottom: 24px; }
-    .rich-text-legal a { color: var(--jb-gold-light); }
-    .rich-text-legal a:hover { color: var(--jb-white); }
-    .rich-text-legal strong, .rich-text-legal b { color: var(--jb-white); }
+    .rich-text-legal a { color: var(--jb-gold-strong); }
+    .rich-text-legal a:hover { color: var(--jb-gold-deep); }
+    .rich-text-legal strong, .rich-text-legal b { color: var(--jb-ink); }
     .rich-text-legal img { max-width: 100%; height: auto; border-radius: 12px; }
     .rich-text-legal ul { margin-bottom: 24px; padding-left: 28px; }
     .rich-text-legal li { margin-bottom: 12px; position: relative; list-style: none; }

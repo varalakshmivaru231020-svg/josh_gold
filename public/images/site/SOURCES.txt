@@ -12,3 +12,10 @@ silver-jewellery: Unsplash photo-1606760227091-3dd870d97f1d (Unsplash License)
 silver-coins: Pexels photo 7111543, Tara Winstead (Pexels License)
 gold-coins: Wikimedia Commons "Branch Mint Sovereigns.jpg" by Snd3054 (CC0)
 silver-bar: Wikimedia Commons "Johnson Matthey 500 grammes silver bullion.jpg" (public domain)
+gold-biscuits-wide: Wikimedia Commons "Gold bullion bars.jpg" by Stevebidmead (CC0)
+
+Service images (stored in storage/app/public/services/, set in Admin -> Services):
+refining: Wikimedia Commons "Pouring gold.jpg" by Allen Drebert (public domain)
+wholesale: Pexels photo 19693228, William Warby (Pexels License)
+audits: Wikimedia Commons "Poinçon or.JPG" by Chatsam (public domain)
+guide-hallmark: crop of Wikimedia Commons "Poinçon or.JPG" by Chatsam (public domain)

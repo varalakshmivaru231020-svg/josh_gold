@@ -19,11 +19,13 @@
         'Website' => [
             ['route' => 'admin.site-content.about',        'label' => 'About',     'icon' => 'fa-circle-info',  'active' => Route::is('admin.site-content.about*')],
             ['route' => 'admin.site-content.services',     'label' => 'Services',  'icon' => 'fa-gem',          'active' => Route::is('admin.site-content.services*')],
+            // Collections (category pages) appears once its admin module is installed
+            ...(Route::has('admin.collections.index') ? [
+                ['route' => 'admin.collections.index',     'label' => 'Collections', 'icon' => 'fa-layer-group', 'active' => Route::is('admin.collections.*')],
+            ] : []),
             ['route' => 'admin.site-content.offices',      'label' => 'Offices',   'icon' => 'fa-building',     'active' => $officesActive],
             ['route' => 'admin.site-content.gallery',      'label' => 'Gallery',   'icon' => 'fa-images',       'active' => Route::is('admin.site-content.gallery*')],
-            ['route' => 'admin.site-content.testimonials', 'label' => 'Videos',    'icon' => 'fa-circle-play',  'active' => Route::is('admin.site-content.testimonials*')],
-            ['route' => 'admin.site-content.blogs',        'label' => 'News',      'icon' => 'fa-newspaper',    'active' => Route::is('admin.site-content.blogs*')],
-            ['route' => 'admin.knowledge.index',           'label' => 'Knowledge', 'icon' => 'fa-book-open',    'active' => Route::is('admin.knowledge.*')],
+            ['route' => 'admin.site-content.blogs',        'label' => 'Updates',   'icon' => 'fa-newspaper',    'active' => Route::is('admin.site-content.blogs*')],
             ['route' => 'admin.pages.index',               'label' => 'Pages',     'icon' => 'fa-file-lines',   'active' => Route::is('admin.pages.*', 'admin.pages.sections.*')],
         ],
         'Enquiries' => [

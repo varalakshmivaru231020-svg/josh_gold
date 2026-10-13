@@ -14,7 +14,7 @@ class Slider extends Model
         'services'     => 'Services',
         'bank-details' => 'Bank Details',
         'gallery'      => 'Gallery',
-        'news'         => 'News & Updates',
+        'updates'      => 'Updates',
         'contact-us'   => 'Contact Us',
     ];
 
@@ -44,7 +44,7 @@ class Slider extends Model
             request()->routeIs('services.index')      => 'services',
             request()->routeIs('bank-details')        => 'bank-details',
             request()->routeIs('gallery')             => 'gallery',
-            request()->routeIs('news', 'blog.*')      => 'news',
+            request()->routeIs('updates', 'updates.*') => 'updates',
             request()->routeIs('contact')             => 'contact-us',
             default                                   => null,
         };

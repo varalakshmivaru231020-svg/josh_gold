@@ -49,77 +49,29 @@
 </section>
 
 <style>
-.achievement-card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    padding: 3rem 2rem;
-    border-radius: 24px;
-    border: 1px solid rgba(201, 162, 39, 0.1);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    text-align: center;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
+/* CMS section: counters (white-and-gold theme) */
+.counters-section .section-heading { font-family: var(--jb-serif); font-size: clamp(28px, 4vw, 40px); font-weight: 600; color: var(--jb-ink); }
+.counters-section .section-subheading { color: var(--jb-muted) !important; }
+.counters-section .achievement-card {
+    position: relative; overflow: hidden; height: 100%; padding: 2.4rem 1.4rem; text-align: center;
+    background: linear-gradient(180deg, #fffaf0, #fff 55%); border: 1px solid var(--jb-line); border-radius: var(--jb-r-card);
+    box-shadow: var(--jb-shadow); transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
 }
-.achievement-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: var(--gold-primary);
-    transform: scaleX(0);
-    transition: transform 0.4s ease;
+.counters-section .achievement-card::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+    background: var(--jb-gold-band); transform: scaleX(0); transition: transform .4s ease;
 }
-.achievement-card:hover::before {
-    transform: scaleX(1);
+@media (hover: hover) {
+    .counters-section .achievement-card:hover { transform: translateY(-6px); border-color: var(--jb-line-strong); box-shadow: var(--jb-shadow-lg); }
+    .counters-section .achievement-card:hover::before { transform: scaleX(1); }
 }
-.achievement-card:hover {
-    transform: translateY(-15px);
-    background: white;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-}
-.achievement-icon-wrapper {
-    font-size: 2.8rem;
-    color: var(--gold-primary);
-    transition: all 0.4s ease;
-}
-.achievement-card:hover .achievement-icon-wrapper {
-    transform: scale(1.2);
-    color: var(--navy-primary);
-}
-.achievement-number-box {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    margin-bottom: 0.5rem;
-}
-.achievement-number {
-    font-size: 3rem;
-    font-weight: 800;
-    color: var(--navy-primary);
-    font-family: 'Inter', sans-serif;
-}
-.plus-sign {
-    font-size: 2rem;
-    color: var(--gold-primary);
-    font-weight: 700;
-}
-.achievement-title {
-    font-size: 1.1rem;
-    color: #666;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-.section-heading {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3.5rem;
-    font-weight: 700;
-    color: #0a1628;
-}
+.counters-section .achievement-icon-wrapper { font-size: 2.2rem; color: var(--jb-gold); transition: color .3s ease; }
+.counters-section .achievement-card:hover .achievement-icon-wrapper { color: var(--jb-gold-strong); }
+.counters-section .achievement-number-box { display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: .5rem; }
+.counters-section .achievement-number { margin: 0; font-family: var(--jb-serif); font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 600; color: var(--jb-ink); font-variant-numeric: tabular-nums; }
+.counters-section .plus-sign { font-family: var(--jb-serif); font-size: 1.8rem; font-weight: 600; color: var(--jb-gold-strong); }
+.counters-section .achievement-title { margin: 0; color: var(--jb-muted); font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+@media (max-width: 575px) { .counters-section .achievement-card { padding: 1.8rem 1rem; } }
 </style>
 
 <script>

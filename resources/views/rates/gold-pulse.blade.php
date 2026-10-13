@@ -101,7 +101,7 @@
 <section class="jb-section"><div class="jb-wrap"><div class="jb-panel"><p class="jb-muted mb-0">The board will fill in as soon as rates are published.</p></div></div></section>
 @endif
 
-<section class="jb-section">
+<section class="jb-section jb-section--white">
     <div class="jb-wrap">
         <div class="jb-receipt">
             <p class="jb-eyebrow">How to read this board</p>

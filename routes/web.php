@@ -18,16 +18,14 @@ Route::get('/login', function() {
 Route::get('/live-rates', [LiveRatesController::class, 'index'])->name('live-rates');
 Route::get('/live-rates/history', [LiveRatesController::class, 'history'])->middleware('throttle:120,1')->name('live-rates.history');
 
-// Main-menu rate pages (gold, silver, charts, Gold Pulse, knowledge, cities)
+// Main-menu rate pages (gold, silver, charts, Gold Pulse, cities)
 Route::get('/gold-rate-today', [RatePagesController::class, 'gold'])->name('rates.gold');
 Route::get('/silver-rate-today', [RatePagesController::class, 'silver'])->name('rates.silver');
 Route::get('/charts', [RatePagesController::class, 'charts'])->name('rates.charts');
 Route::get('/gold-pulse', [RatePagesController::class, 'pulse'])->name('rates.pulse');
-Route::get('/knowledge', [RatePagesController::class, 'knowledge'])->name('knowledge');
 Route::get('/gold-rate', [RatePagesController::class, 'cities'])->name('rates.cities');
 Route::get('/gold-rate/{state}/{city}', [RatePagesController::class, 'city'])
     ->where(['state' => '[a-z0-9-]+', 'city' => '[a-z0-9-]+'])->name('rates.city');
-Route::get('/videos', [HomeController::class, 'testimonials'])->name('videos');
 
 // Practice & Offices Pages
 Route::get('/about-us', [HomeController::class, 'aboutUs'])->name('about-us');
@@ -39,11 +37,10 @@ Route::get('/offices', [HomeController::class, 'offices'])->name('offices.index'
 // Bank Details (public, managed from admin)
 Route::get('/bank-details', [HomeController::class, 'bankDetails'])->name('bank-details');
 
-// News & Updates (public, managed from admin under News & Updates)
-Route::get('/news', [HomeController::class, 'blogIndex'])->name('news');
-
-// Testimonials Page
-Route::get('/testimonials', [HomeController::class, 'testimonials'])->name('testimonials');
+// Old news addresses now live at /updates (see the Updates routes below)
+Route::redirect('/news', '/updates', 301);
+Route::redirect('/blog', '/updates', 301);
+Route::redirect('/blog/{slug}', '/updates/{slug}', 301);
 
 // Photo Gallery Page
 Route::get('/gallery', [HomeController::class, 'gallery'])->name('gallery');
@@ -97,14 +94,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/about', [App\Http\Controllers\Admin\SiteContentController::class, 'aboutSection'])->name('about');
             Route::put('/about', [App\Http\Controllers\Admin\SiteContentController::class, 'updateAboutSection'])->name('about.update');
 
-            // Testimonial Videos
-            Route::get('/testimonials', [App\Http\Controllers\Admin\SiteContentController::class, 'testimonialVideos'])->name('testimonials');
-            Route::get('/testimonials/create', [App\Http\Controllers\Admin\SiteContentController::class, 'createTestimonialVideo'])->name('testimonials.create');
-            Route::post('/testimonials', [App\Http\Controllers\Admin\SiteContentController::class, 'storeTestimonialVideo'])->name('testimonials.store');
-            Route::get('/testimonials/{id}/edit', [App\Http\Controllers\Admin\SiteContentController::class, 'editTestimonialVideo'])->name('testimonials.edit');
-            Route::put('/testimonials/{id}', [App\Http\Controllers\Admin\SiteContentController::class, 'updateTestimonialVideo'])->name('testimonials.update');
-            Route::delete('/testimonials/{id}', [App\Http\Controllers\Admin\SiteContentController::class, 'deleteTestimonialVideo'])->name('testimonials.delete');
-
             // Call To Action banner (above the footer)
             Route::get('/cta', [App\Http\Controllers\Admin\CtaController::class, 'edit'])->name('cta');
             Route::put('/cta', [App\Http\Controllers\Admin\CtaController::class, 'update'])->name('cta.update');
@@ -113,7 +102,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/settings', [App\Http\Controllers\Admin\SiteContentController::class, 'siteSettings'])->name('settings');
             Route::put('/settings', [App\Http\Controllers\Admin\SiteContentController::class, 'updateSiteSettings'])->name('settings.update');
 
-            // Blogs
+            // Updates (news posts on /updates; stored in the blogs table)
             Route::get('/blogs', [App\Http\Controllers\Admin\SiteContentController::class, 'blogs'])->name('blogs');
             Route::get('/blogs/create', [App\Http\Controllers\Admin\SiteContentController::class, 'createBlog'])->name('blogs.create');
             Route::post('/blogs', [App\Http\Controllers\Admin\SiteContentController::class, 'storeBlog'])->name('blogs.store');
@@ -175,14 +164,21 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('/metal-rates-sample', [App\Http\Controllers\Admin\MetalRateController::class, 'clearSample'])
             ->name('metal-rates.clear-sample');
 
-        // Knowledge articles, cities and footer
+        // Cities and footer
         require __DIR__ . '/admin-content.php';
+
+        // Collections (category pages)
+        require __DIR__ . '/admin-collections.php';
     });
 });
 
-// Blog Routes
-Route::get('/blog', [HomeController::class, 'blogIndex'])->name('blog.index');
-Route::get('/blog/{slug}', [HomeController::class, 'blogShow'])->name('blog.show');
+// Collections: one page per category (gold coins, gold bars, jewellery…), managed in Admin → Collections
+Route::get('/collections/{slug}', [App\Http\Controllers\CollectionController::class, 'show'])
+    ->where('slug', '[a-z0-9-]+')->name('collections.show');
+
+// Updates (news managed in Admin → Updates)
+Route::get('/updates', [HomeController::class, 'blogIndex'])->name('updates');
+Route::get('/updates/{slug}', [HomeController::class, 'blogShow'])->name('updates.show');
 
 // Contact Page
 Route::get('/contact-us', [HomeController::class, 'contactPage'])->name('contact');

@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // Offices and pages managed in admin, shown in the site footer
-        \Illuminate\Support\Facades\View::composer(['layouts.partials.footer', 'layouts.partials.jb-footer'], function ($view) {
+        \Illuminate\Support\Facades\View::composer(['layouts.partials.jb-footer'], function ($view) {
             $view->with('footerOffices', \App\Models\Office::active()->ordered()->get());
             $view->with('footerPages', \App\Models\Page::forFooter()->get(['id', 'title', 'slug']));
         });

@@ -51,77 +51,32 @@
 </section>
 
 <style>
-.visionary-section {
-    padding: 60px 0;
+/* CMS section: visionary timeline (white-and-gold theme) */
+.visionary-section { padding: 60px 0; }
+.visionary-section .section-container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 16px; }
+@media (min-width: 768px) { .visionary-section .section-container { padding: 0 24px; } }
+.visionary-section .section-heading { font-family: var(--jb-serif); font-size: clamp(26px, 3.6vw, 36px); font-weight: 600; color: var(--jb-ink); }
+.visionary-section .section-subheading { max-width: 800px; margin-left: auto; margin-right: auto; color: var(--jb-muted) !important; font-size: 1.05rem; }
+.visionary-section .section-main-content { color: var(--jb-text); line-height: 1.8; }
+.visionary-section .vision-connection-line {
+    position: absolute; top: 50%; left: 10%; right: 10%; height: 2px; z-index: 0; transform: translateY(-50%);
+    background: linear-gradient(90deg, transparent, var(--jb-line-strong) 20%, var(--jb-line-strong) 80%, transparent);
 }
-.section-heading {
-    color: var(--navy-deep);
-    font-size: 2.5rem;
-    font-weight: 700;
+.visionary-section .vision-timeline-wrapper .glass-card { position: relative; z-index: 1; }
+.visionary-section .text-gold { color: var(--jb-gold) !important; }
+.visionary-section .glass-card {
+    padding: 2.2rem; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card);
+    background: linear-gradient(180deg, #fffaf0, #fff 50%); box-shadow: var(--jb-shadow);
+    transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
 }
-.section-subheading {
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 1.1rem;
+@media (hover: hover) { .visionary-section .glass-card:hover { transform: translateY(-6px); border-color: var(--jb-line-strong); box-shadow: var(--jb-shadow-lg); } }
+.visionary-section .card-icon {
+    width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.6rem;
+    border-radius: 16px; background: #fbf1da; border: 1px solid #ecd49c; color: var(--jb-gold-strong); font-size: 1.5rem;
+    transition: background-color .3s ease, color .3s ease;
 }
-.vision-connection-line {
-    position: absolute;
-    top: 50%;
-    left: 10%;
-    right: 10%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.3) 20%, rgba(201, 162, 39, 0.3) 80%, transparent);
-    z-index: 0;
-    transform: translateY(-50%);
-}
-.vision-timeline-wrapper .glass-card {
-    position: relative;
-    z-index: 1;
-}
-.text-gold { color: var(--gold-primary); }
-.glass-card {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 24px;
-    padding: 2.5rem;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-}
-.glass-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    background: white;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
-    border-color: var(--gold-primary);
-}
-.card-icon {
-    width: 65px;
-    height: 65px;
-    background: var(--navy-primary);
-    color: var(--gold-primary);
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.65rem;
-    margin-bottom: 2rem;
-    transition: all 0.3s ease;
-}
-.glass-card:hover .card-icon {
-    background: var(--gold-primary);
-    color: white;
-    transform: rotate(360deg);
-}
-.card-title {
-    color: var(--navy-primary);
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin-bottom: 1.25rem;
-}
-.card-text {
-    color: var(--text-muted);
-    line-height: 1.6;
-}
+.visionary-section .glass-card:hover .card-icon { background: var(--jb-gold-band); border-color: #b48b3c; color: #2a1d06; }
+.visionary-section .card-title { margin-bottom: 1rem; font-family: var(--jb-serif); font-size: 1.35rem; font-weight: 600; color: var(--jb-ink); }
+.visionary-section .card-text { color: var(--jb-text); line-height: 1.65; }
+@media (max-width: 575px) { .visionary-section { padding: 40px 0; } .visionary-section .glass-card { padding: 1.6rem; } }
 </style>

@@ -54,7 +54,7 @@
     </div>
 </section>
 
-<section class="jb-section">
+<section class="jb-section jb-section--white">
     <div class="jb-wrap">
         <div class="jb-section__head">
             <div>
@@ -82,7 +82,7 @@
 <section class="jb-section"><div class="jb-wrap"><div class="jb-panel"><p class="jb-muted mb-0">Rates for {{ $cityName }} will appear here as soon as they are published.</p></div></div></section>
 @endif
 
-<section class="jb-section">
+<section class="jb-section jb-section--white">
     <div class="jb-wrap">
         <p class="jb-eyebrow">Good to know</p>
         <h2 class="jb-section__title">Gold rate in {{ $cityName }}: questions</h2>

@@ -38,43 +38,15 @@
 </section>
 
 <style>
-.about-main-heading {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 3rem;
-    font-weight: 700;
-    color: #0a1628;
-}
-.intro-side-heading {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 2.25rem;
-    font-weight: 700;
-    color: #0a1628;
-    position: relative;
-    padding-bottom: 15px;
-}
-.intro-side-heading::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 60px;
-    height: 3px;
-    background: var(--gold-primary);
-}
-.intro-description {
-    font-size: 1.15rem;
-    line-height: 1.8;
-}
-.intro-img {
-    border: 1px solid rgba(201, 162, 39, 0.2);
-    transition: transform 0.5s ease;
-}
-.intro-img:hover {
-    transform: scale(1.02);
-}
-.gold-divider {
-    width: 100px;
-    height: 4px;
-    background: var(--gold-primary);
-}
+/* CMS section: introduction (white-and-gold theme) */
+.about-intro-section .about-main-heading { font-family: var(--jb-serif); font-size: clamp(28px, 4vw, 40px); font-weight: 600; color: var(--jb-ink); }
+.about-intro-section .intro-side-heading { position: relative; padding-bottom: 15px; font-family: var(--jb-serif); font-size: clamp(22px, 3vw, 30px); font-weight: 600; color: var(--jb-ink); }
+.about-intro-section .intro-side-heading::after { content: ''; position: absolute; bottom: 0; left: 0; width: 60px; height: 3px; background: var(--jb-gold-band); border-radius: 2px; }
+.about-intro-section .intro-description { color: var(--jb-text) !important; font-size: 1.05rem; line-height: 1.8; }
+.about-intro-section .intro-description strong, .about-intro-section .intro-description b { color: var(--jb-ink); }
+.about-intro-section .intro-description a { color: var(--jb-gold-strong); }
+.about-intro-section .about-intro-img { width: 100%; border: 4px solid #fff; outline: 1px solid var(--jb-line); box-shadow: var(--jb-shadow-lg) !important; transition: transform .5s ease; }
+@media (hover: hover) { .about-intro-section .about-intro-img:hover { transform: scale(1.02); } }
+.about-intro-section .gold-divider { width: 100px; height: 3px; background: var(--jb-gold-band); border-radius: 2px; }
+@media (max-width: 991px) { .about-intro-section .intro-text-content { margin-top: 28px; } }
 </style>

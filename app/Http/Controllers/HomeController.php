@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\AboutSection;
-use App\Models\TestimonialVideo;
 use App\Models\Blog;
 use App\Models\Service;
 use App\Models\Office;
@@ -26,12 +25,6 @@ class HomeController extends Controller
         $rate = MetalRate::currentRate();
 
         return view('home', compact('rate', 'services', 'offices'));
-    }
-
-    public function testimonials()
-    {
-        $testimonialVideos = TestimonialVideo::active()->ordered()->paginate(12);
-        return view('testimonials', compact('testimonialVideos'));
     }
 
     public function gallery()
@@ -64,9 +57,10 @@ class HomeController extends Controller
         return view('offices.index', compact('offices'));
     }
 
+    // Updates page (/updates): a wide lead card plus a grid of three columns, so 10 a page fills the grid
     public function blogIndex()
     {
-        $blogs = Blog::active()->ordered()->paginate(9);
+        $blogs = Blog::active()->ordered()->paginate(10);
         return view('blog.index', compact('blogs'));
     }
 

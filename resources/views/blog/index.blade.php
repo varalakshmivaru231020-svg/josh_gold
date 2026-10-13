@@ -1,143 +1,131 @@
 @extends('layouts.lawfirm')
 
-@section('title', 'News & Updates | Josha Gold and Diamond Jewellery')
+@section('title', 'Updates | Josha Gold and Diamond Jewellery')
+@section('meta_description', 'News, new arrivals, offers and announcements from Josha Gold and Diamond Jewellery.')
+
+{{-- $blogs: paginated active posts (Admin → Updates). The first post of each page leads in a wide card. --}}
+@php
+    $lead    = $blogs->first();
+    $rest    = $blogs->slice(1);
+    $isFirst = $blogs->onFirstPage();
+@endphp
 
 @section('content')
 @include('layouts.partials.page-head', [
-    'eyebrow' => 'Latest news',
-    'title'   => 'News &',
-    'accent'  => 'Updates',
-    'sub'     => 'Stay informed with our latest announcements, market updates and company news',
-    'crumbs'  => [['News & Updates']],
+    'eyebrow' => 'Updates',
+    'title'   => 'The latest from',
+    'accent'  => 'Josha Gold',
+    'sub'     => 'News, new arrivals, offers and announcements from our showroom.',
+    'crumbs'  => [['Updates']],
 ])
 
-<section class="blog-luxury-page">
-    <div class="jb-wrap blog-list-wrap">
-        <div class="row g-4">
-            @forelse($blogs as $blog)
-            <div class="col-lg-4 col-md-6" data-aos="fade-up">
-                <a href="{{ route('blog.show', $blog->slug) }}" class="news-luxury-card h-100">
-                    <div class="news-img-wrap">
-                        <img src="{{ $blog->image ? asset('storage/' . $blog->image) : asset('blr.jpg') }}" alt="{{ $blog->title }}">
-                        <div class="news-metadata">{{ $blog->created_at->format('M d, Y') }}</div>
+<section class="upd-page">
+    <div class="jb-wrap">
+        @if($lead)
+            {{-- Lead post: the newest update on the first page --}}
+            <a href="{{ route('updates.show', $lead->slug) }}" class="upd-feature" data-aos="fade-up">
+                @include('blog._cover', ['post' => $lead, 'eager' => true])
+                <div class="upd-feature__body">
+                    <div class="upd-feature__meta">
+                        @if($isFirst)<span class="upd-flag">Latest</span>@endif
+                        <time class="upd-date" datetime="{{ $lead->created_at->toDateString() }}">{{ $lead->created_at->format('d M Y') }}</time>
                     </div>
-                    <div class="news-body">
-                        <h3>{{ $blog->title }}</h3>
-                        <p>{{ \Illuminate\Support\Str::limit($blog->excerpt, 120) }}</p>
-                        <span class="read-analysis">Read More <i class="fas fa-arrow-right"></i></span>
-                    </div>
-                </a>
-            </div>
-            @empty
-            <div class="col-12" data-aos="fade-up">
-                <div class="empty-intelligence text-center">
-                    <i class="fas fa-scroll fa-4x text-gold mb-4"></i>
-                    <h3 class="text-navy">No News Yet</h3>
-                    <p class="text-muted">New updates are on the way. Please check back shortly.</p>
-                    <a href="{{ route('home') }}" class="jb-btn jb-btn--primary mt-4">Return Home</a>
+                    <h2 class="upd-feature__title">{{ $lead->title }}</h2>
+                    @if(filled($lead->excerpt))
+                        <p class="upd-feature__excerpt">{{ $lead->excerpt }}</p>
+                    @endif
+                    <span class="jb-btn jb-btn--primary upd-feature__cta">Read update <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+                </div>
+            </a>
+
+            @if($rest->isNotEmpty())
+                <div class="upd-head">
+                    <h2>{{ $isFirst ? 'More updates' : 'Earlier updates' }}</h2>
+                    <span class="upd-head__count">{{ $blogs->total() }} {{ \Illuminate\Support\Str::plural('update', $blogs->total()) }}</span>
+                </div>
+
+                <div class="upd-grid">
+                    @foreach($rest as $post)
+                        <div data-aos="fade-up" data-aos-delay="{{ ($loop->index % 3) * 60 }}">
+                            @include('blog._card', ['post' => $post])
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+
+            @if($blogs->hasPages())
+                <nav class="upd-pagination" aria-label="More updates">
+                    {{ $blogs->links() }}
+                </nav>
+            @endif
+        @else
+            <div class="upd-empty" data-aos="fade-up">
+                <span class="upd-empty__icon" aria-hidden="true"><i class="fas fa-newspaper"></i></span>
+                <h2>No updates yet</h2>
+                <p>News, new arrivals and offers will appear here. Please check back soon.</p>
+                <div class="upd-empty__actions">
+                    <a href="{{ route('rates.gold') }}" class="jb-btn jb-btn--primary">Today's gold rate</a>
+                    <a href="{{ route('contact') }}" class="jb-btn jb-btn--ghost">Contact us</a>
                 </div>
             </div>
-            @endforelse
-        </div>
-
-        @if($blogs->hasPages())
-        <div class="pagination-premium mt-5" data-aos="fade-up">
-            {{ $blogs->links() }}
-        </div>
         @endif
-
-        {{-- Newsletter Subscription Section --}}
-        {{-- <div class="newsletter-section mt-5 py-5 bg-white rounded-4 shadow-sm border" data-aos="fade-up">
-            <div class="text-center mb-4">
-                <h3 class="font-display text-navy mb-3">Newsletter</h3>
-                <p class="text-muted">Receive weekly judicial summaries and publication releases.</p>
-            </div>
-            <form id="newsletter-form" class="row justify-content-center">
-                <div class="col-md-6 mb-3">
-                    <input type="email" name="email" class="form-control form-control-lg" placeholder="Your Email" required>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <button type="submit" class="btn btn-primary-gold w-100 btn-lg">Subscribe</button>
-                </div>
-            </form>
-            <div id="newsletter-message" class="mt-3"></div>
-        </div> --}}
     </div>
 </section>
 @endsection
 
 @push('styles')
+@include('blog._styles')
 <style>
-    .blog-luxury-page { padding-bottom: 56px; }
-    .blog-list-wrap { padding-top: 32px; padding-bottom: 16px; }
-    @media (min-width: 768px) { .blog-list-wrap { padding-top: 48px; } }
-
-    /* News cards (home-page news style) */
-    .news-luxury-card {
-        display: flex; flex-direction: column; overflow: hidden; text-decoration: none;
-        border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel);
-        transition: border-color .2s, transform .2s, box-shadow .2s;
+    /* Lead post */
+    .upd-feature {
+        display: grid; grid-template-columns: 1fr; overflow: hidden; margin-bottom: 48px; text-decoration: none; color: inherit;
+        background: var(--jb-surface); border: 1px solid var(--jb-line); border-radius: 22px; box-shadow: var(--jb-shadow-lg);
+        transition: border-color .25s, box-shadow .25s;
+    }
+    .upd-feature:hover { color: inherit; }
+    .upd-feature .upd-cover { aspect-ratio: 16 / 10; }
+    .upd-feature__body {
+        position: relative; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 24px 22px 26px;
+        background: radial-gradient(520px 260px at 100% 0%, rgba(214, 178, 95, .16), transparent 70%), var(--jb-surface);
+    }
+    .upd-feature__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+    .upd-flag {
+        display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 999px;
+        background: var(--jb-gold-band); color: #2a1d06; border: 1px solid #b48b3c;
+        font-size: 10.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+    }
+    .upd-feature__title { margin: 14px 0 10px !important; font-family: var(--jb-serif); font-size: clamp(23px, 2.7vw, 34px); font-weight: 600; line-height: 1.2; color: var(--jb-ink); }
+    .upd-feature__excerpt {
+        margin: 0 0 22px !important; color: var(--jb-text); font-size: 15.5px; line-height: 1.7;
+        display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .upd-feature__cta i { font-size: 11px; transition: transform .2s; }
+    @media (min-width: 992px) {
+        .upd-feature { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); margin-bottom: 64px; }
+        .upd-feature .upd-cover { aspect-ratio: auto; height: 100%; min-height: 420px; }
+        .upd-feature__body { padding: 48px 52px; }
     }
     @media (hover: hover) {
-        .news-luxury-card:hover { transform: translateY(-3px); border-color: var(--jb-line-strong); box-shadow: 0 16px 36px -12px rgba(0, 0, 0, .9); }
-        .news-luxury-card:hover .news-img-wrap img { transform: scale(1.04); }
+        .upd-feature:hover { border-color: var(--jb-line-strong); }
+        .upd-feature:hover .upd-cover img { transform: scale(1.04); }
+        .upd-feature:hover .upd-feature__cta i { transform: translateX(4px); }
     }
+    .upd-feature:focus-visible { outline: 2px solid var(--jb-gold); outline-offset: 3px; }
 
-    .news-img-wrap { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: var(--jb-panel-3); }
-    .news-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform .45s; }
+    .upd-pagination { margin-top: 48px; }
+    .upd-pagination .pagination { justify-content: center; flex-wrap: wrap; gap: 6px; }
+    .upd-pagination .page-link { border-radius: 10px !important; padding: 9px 15px; font-weight: 600; }
 
-    .news-metadata {
-        position: absolute; right: 12px; bottom: 12px; padding: 5px 12px;
-        border: 1px solid rgba(255, 255, 255, .14); border-radius: 999px;
-        background: rgba(0, 0, 0, .6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-        color: var(--jb-gold-light); font-size: 12px; font-weight: 700;
+    /* No posts yet */
+    .upd-empty {
+        max-width: 640px; margin: 0 auto; padding: 48px 24px; text-align: center;
+        background: radial-gradient(420px 200px at 50% 0%, rgba(214, 178, 95, .16), transparent 70%), var(--jb-surface);
+        border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); box-shadow: var(--jb-shadow);
     }
-
-    .news-body { flex: 1; display: flex; flex-direction: column; padding: 20px; }
-    .news-body h3 { margin: 0 0 10px; font-family: var(--jb-serif); font-size: 19px; font-weight: 600; line-height: 1.35; color: var(--jb-white); }
-    .news-body p {
-        margin: 0 0 18px; color: var(--jb-muted); font-size: 14px; line-height: 1.65;
-        display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
-    }
-    .read-analysis { margin-top: auto; display: inline-flex; align-items: center; gap: 8px; color: var(--jb-gold-light); font-size: 13.5px; font-weight: 700; transition: color .15s, gap .15s; }
-    .news-luxury-card:hover .read-analysis { color: var(--jb-white); gap: 12px; }
-
-    .empty-intelligence { padding: 56px 24px; border: 1px dashed var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel); }
-    @media (min-width: 768px) { .empty-intelligence { padding: 80px 40px; } }
-
-    .pagination-premium .pagination { justify-content: center; flex-wrap: wrap; gap: 8px; }
-    .pagination-premium .page-link { border-radius: 10px !important; padding: 10px 16px; font-weight: 600; }
-
-    /* Newsletter Section (markup is commented out for now) */
-    .newsletter-section { max-width: 800px; margin: 40px auto 0; }
-    .newsletter-section .form-control { padding: 14px 18px; font-size: 1rem; }
+    @media (min-width: 768px) { .upd-empty { padding: 64px 48px; } }
+    .upd-empty__icon { display: inline-grid; place-items: center; width: 64px; height: 64px; margin-bottom: 18px; border-radius: 50%; background: #fbf1da; border: 1px solid #ecd49c; color: var(--jb-gold-strong); font-size: 24px; }
+    .upd-empty h2 { margin: 0 0 8px !important; font-size: 26px; font-weight: 600; }
+    .upd-empty p { margin: 0 auto 24px !important; max-width: 420px; color: var(--jb-muted); font-size: 15px; line-height: 1.65; }
+    .upd-empty__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
 </style>
-@endpush
-
-@push('scripts')
-<script>
-// The newsletter form is currently commented out of the page, so only wire it up when it exists
-const newsletterForm = document.getElementById('newsletter-form');
-if (newsletterForm) newsletterForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const email = this.email.value;
-    const messageDiv = document.getElementById('newsletter-message');
-    
-    // Simple client-side validation
-    if (!email || !email.includes('@')) {
-        messageDiv.innerHTML = '<div class="alert alert-danger">Please enter a valid email address.</div>';
-        return;
-    }
-    
-    // Simulate subscription (since we removed the backend functionality)
-    messageDiv.innerHTML = '<div class="alert alert-success">Thank you for subscribing to our newsletter!</div>';
-    this.reset();
-    
-    // Hide message after 5 seconds
-    setTimeout(() => {
-        messageDiv.innerHTML = '';
-    }, 5000);
-});
-</script>
 @endpush

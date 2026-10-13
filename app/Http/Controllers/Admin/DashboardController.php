@@ -9,7 +9,6 @@ use App\Models\GalleryPhoto;
 use App\Models\MetalRate;
 use App\Models\Service;
 use App\Models\SiteSetting;
-use App\Models\TestimonialVideo;
 use App\Support\RateBook;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -161,12 +160,12 @@ class DashboardController extends Controller
         ];
 
         $content = [
-            ['News posts',         Blog::class,             'blogs',              'fa-newspaper',   'admin.site-content.blogs'],
-            ['Videos',             TestimonialVideo::class, 'testimonial_videos', 'fa-circle-play', 'admin.site-content.testimonials'],
-            ['Gallery photos',     GalleryPhoto::class,     'gallery_photos',     'fa-images',      'admin.site-content.gallery'],
-            ['Services',           Service::class,          'services',           'fa-gem',         'admin.site-content.services'],
-            ['Knowledge articles', 'App\\Models\\KnowledgeArticle', 'knowledge_articles', 'fa-book-open', 'admin.knowledge.index'],
-            ['Cities',             'App\\Models\\City',     'cities',             'fa-city',        'admin.cities.index'],
+            ['Updates',        Blog::class,                'blogs',          'fa-newspaper',   'admin.site-content.blogs'],
+            // Collections (category pages) is counted once its table exists
+            ['Collections',    'App\\Models\\Collection',  'collections',    'fa-layer-group', 'admin.collections.index'],
+            ['Gallery photos', GalleryPhoto::class,        'gallery_photos', 'fa-images',      'admin.site-content.gallery'],
+            ['Services',       Service::class,             'services',       'fa-gem',         'admin.site-content.services'],
+            ['Cities',         'App\\Models\\City',        'cities',         'fa-city',        'admin.cities.index'],
         ];
 
         foreach ($content as [$label, $model, $table, $icon, $route]) {
@@ -199,8 +198,7 @@ class DashboardController extends Controller
         $actions = [
             ['Add today\'s rate', 'Publish gold & silver', 'fa-plus',             'admin.metal-rates.create',           false],
             ['View enquiries',    'Contact form messages', 'fa-envelope-open',    'admin.site-content.contact-messages', false],
-            ['Add news',          'Post an update',        'fa-newspaper',        'admin.site-content.blogs.create',    false],
-            ['Add video',         'YouTube video',         'fa-circle-play',      'admin.site-content.testimonials.create', false],
+            ['Add update',        'Post news with a photo', 'fa-newspaper',       'admin.site-content.blogs.create',    false],
             ['Edit footer',       'Links & details',       'fa-table-columns',    'admin.footer.index',                 false],
             ['View website',      'Opens in a new tab',    'fa-up-right-from-square', 'home',                           true],
         ];

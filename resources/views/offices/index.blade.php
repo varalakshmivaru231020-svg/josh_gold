@@ -110,33 +110,34 @@
     /* ── Office cards ── */
     .office-card-lux {
         display: flex; flex-direction: column; overflow: hidden;
-        background: var(--jb-panel);
+        background: #fff;
         border: 1px solid var(--jb-line);
         border-radius: var(--jb-r-card);
+        box-shadow: var(--jb-shadow);
         transition: transform .2s, border-color .2s, box-shadow .2s;
     }
     @media (hover: hover) {
-        .office-card-lux:hover { transform: translateY(-3px); border-color: var(--jb-line-strong); box-shadow: 0 16px 36px -14px rgba(0, 0, 0, .9); }
+        .office-card-lux:hover { transform: translateY(-3px); border-color: var(--jb-line-strong); box-shadow: var(--jb-shadow-lg); }
     }
     .ocl-header {
         padding: 22px 26px;
         display: flex;
         align-items: center;
         gap: 16px;
-        color: var(--jb-white);
+        color: var(--jb-ink);
         border-bottom: 1px solid var(--jb-line);
-        background: linear-gradient(180deg, var(--jb-panel-2), var(--jb-panel));
+        background: linear-gradient(180deg, #fffaf0, #fff);
         /* The card's accent colour shows as a soft glow in the corner */
         background:
-            radial-gradient(420px 180px at 0% 0%, color-mix(in srgb, var(--ocl-accent, #1a2e5e) 38%, transparent), transparent 70%),
-            radial-gradient(420px 180px at 100% 0%, rgba(201, 163, 92, .10), transparent 70%),
-            linear-gradient(180deg, var(--jb-panel-2), var(--jb-panel));
+            radial-gradient(420px 180px at 0% 0%, color-mix(in srgb, var(--ocl-accent, #1a2e5e) 10%, transparent), transparent 70%),
+            radial-gradient(420px 180px at 100% 0%, rgba(214, 178, 95, .22), transparent 70%),
+            linear-gradient(180deg, #fffaf0, #fff);
     }
     .ocl-icon-box {
         width: 48px;
         height: 48px;
-        background: #0a0a0b;
-        border: 1px solid var(--jb-line);
+        background: #fbf1da;
+        border: 1px solid #ecd49c;
         border-radius: 14px;
         display: flex;
         align-items: center;
@@ -154,13 +155,13 @@
         font-family: var(--jb-serif);
         font-size: 1.3rem;
         font-weight: 600;
-        color: var(--jb-white);
+        color: var(--jb-ink);
         margin: 0;
         line-height: 1.25;
     }
     .ocl-subtitle {
         margin: 5px 0 0;
-        color: var(--jb-gold);
+        color: var(--jb-gold-strong);
         font-size: 10.5px;
         font-weight: 700;
         letter-spacing: .16em;
@@ -189,11 +190,11 @@
         margin-top: 3px;
         text-align: center;
         flex-shrink: 0;
-        color: var(--jb-gold-light);
+        color: var(--jb-gold-strong);
     }
 
     .ocl-header-icon-white,
-    .ocl-header-icon-blue { color: var(--jb-gold-light) !important; }
+    .ocl-header-icon-blue { color: var(--jb-gold-strong) !important; }
 
     .ocl-link {
         color: var(--jb-text);
@@ -202,13 +203,13 @@
         overflow-wrap: anywhere;
     }
     .ocl-link:hover {
-        color: var(--jb-gold-light);
+        color: var(--jb-gold-strong);
     }
 
     .office-map-mini { height: 260px; border: 1px solid var(--jb-line); border-radius: 14px; background: var(--jb-panel-2); }
-    .office-map-mini iframe { display: block; width: 100% !important; height: 100% !important; border: 0; filter: grayscale(1) contrast(1.1); }
+    .office-map-mini iframe { display: block; width: 100% !important; height: 100% !important; border: 0; }
 
-    .offices-empty { padding: 56px 24px; border: 1px dashed var(--jb-line-strong); border-radius: var(--jb-r-card); background: var(--jb-panel); color: var(--jb-muted); }
+    .offices-empty { padding: 56px 24px; border: 1px dashed var(--jb-line-strong); border-radius: var(--jb-r-card); background: #fff; box-shadow: var(--jb-shadow); color: var(--jb-muted); }
 
     @media (max-width: 575px) {
         .ocl-header { padding: 18px; gap: 14px; }

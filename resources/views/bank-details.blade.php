@@ -94,21 +94,21 @@
     .bank-card {
         position: relative; overflow: hidden; padding: 28px 26px;
         border: 1px solid var(--jb-line); border-radius: var(--jb-r-card);
-        background: linear-gradient(180deg, rgba(201, 163, 92, .05), transparent 45%), var(--jb-panel);
+        background: linear-gradient(180deg, #fffaf0, #fff 40%); box-shadow: var(--jb-shadow);
         transition: border-color .2s, box-shadow .2s;
     }
     .bank-card::before {
-        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-        background: linear-gradient(90deg, var(--jb-gold-deep), transparent 70%);
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+        background: var(--jb-gold-band);
     }
-    .bank-card:hover { border-color: var(--jb-line-strong); box-shadow: 0 16px 36px -14px rgba(0, 0, 0, .9); }
+    .bank-card:hover { border-color: var(--jb-line-strong); box-shadow: var(--jb-shadow-lg); }
     .bank-card-head { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
     .bank-card-head i {
         width: 44px; height: 44px; flex: none; display: grid; place-items: center;
-        border: 1px solid var(--jb-line); border-radius: 12px; background: #0a0a0b;
-        color: var(--jb-gold-light); font-size: 1.1rem;
+        border: 1px solid #ecd49c; border-radius: 12px; background: #fbf1da;
+        color: var(--jb-gold-strong); font-size: 1.1rem;
     }
-    .bank-card-head h3 { margin: 0; font-family: var(--jb-serif); font-size: 21px; font-weight: 600; color: var(--jb-white); }
+    .bank-card-head h3 { margin: 0; font-family: var(--jb-serif); font-size: 21px; font-weight: 600; color: var(--jb-ink); }
     .bank-rows { margin: 0; }
     .bank-row {
         display: flex; justify-content: space-between; align-items: center; gap: 16px;
@@ -116,16 +116,16 @@
     }
     .bank-row:last-child { border-bottom: 0; }
     .bank-row dt { margin: 0; color: var(--jb-muted); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
-    .bank-row dd { margin: 0; color: var(--jb-white); font-weight: 600; text-align: right; word-break: break-word; font-variant-numeric: tabular-nums; }
+    .bank-row dd { margin: 0; color: var(--jb-ink); font-weight: 600; text-align: right; word-break: break-word; font-variant-numeric: tabular-nums; }
     .bank-copy {
         margin-left: 8px; padding: 2px 6px; border: 0; border-radius: 6px;
-        background: none; color: var(--jb-gold-light); cursor: pointer; transition: background-color .2s, color .2s;
+        background: none; color: var(--jb-gold-strong); cursor: pointer; transition: background-color .2s, color .2s;
     }
-    .bank-copy:hover { background: rgba(201, 163, 92, .15); color: var(--jb-white); }
+    .bank-copy:hover { background: #fbf1da; color: var(--jb-gold-deep); }
     .bank-copy.copied { color: var(--jb-up); }
     .bank-qr { margin-top: 22px; padding-top: 22px; border-top: 1px dashed var(--jb-line); text-align: center; }
     /* QR codes need a light background to scan */
-    .bank-qr img { width: 100%; max-width: 180px; padding: 8px; border-radius: 12px; background: #fff; }
+    .bank-qr img { width: 100%; max-width: 180px; padding: 8px; border: 1px solid var(--jb-line); border-radius: 12px; background: #fff; box-shadow: var(--jb-shadow); }
     .bank-qr small { display: block; margin-top: 8px; color: var(--jb-muted); }
     @media (max-width: 420px) {
         .bank-card { padding: 22px 18px; }

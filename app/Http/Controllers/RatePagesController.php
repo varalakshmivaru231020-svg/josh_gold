@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\KnowledgeArticle;
 use App\Support\RateBook;
 
-// Public rate pages behind the main menu: gold rate, silver rate, charts, Gold Pulse,
-// knowledge, and the city pages. All figures come from our own published rates.
+// Public rate pages behind the main menu: gold rate, silver rate, charts, Gold Pulse
+// and the city pages. All figures come from our own published rates.
 class RatePagesController extends Controller
 {
     public function gold()
@@ -30,13 +29,6 @@ class RatePagesController extends Controller
         $data['past'] = $data['rate'] ? RateBook::pastCloses($data['rate']) : [];
 
         return view('rates.gold-pulse', $data);
-    }
-
-    public function knowledge()
-    {
-        return view('rates.knowledge', [
-            'articles' => KnowledgeArticle::active()->ordered()->get(),
-        ]);
     }
 
     public function cities()

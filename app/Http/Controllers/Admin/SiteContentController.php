@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Slider;
 use App\Models\AboutSection;
-use App\Models\TestimonialVideo;
 use App\Models\SiteSetting;
 use App\Models\Blog;
 use App\Models\ContactMessage;
@@ -185,90 +184,6 @@ class SiteContentController extends Controller implements HasMiddleware
             ->with('success', 'About section updated successfully.');
     }
 
-    // ==================== TESTIMONIAL VIDEOS ====================
-    public function testimonialVideos()
-    {
-        $videos = TestimonialVideo::ordered()->paginate(10);
-        return view('admin.site-content.testimonials.index', compact('videos'));
-    }
-
-    public function createTestimonialVideo()
-    {
-        return view('admin.site-content.testimonials.create');
-    }
-
-    public function storeTestimonialVideo(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'youtube_url' => 'required|url',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'author_name' => 'nullable|string|max:255',
-            'author_designation' => 'nullable|string|max:255',
-            'sort_order' => 'nullable|integer',
-        ]);
-
-        $data = $request->except('thumbnail');
-        $data['is_active'] = $request->has('is_active');
-        $data['is_featured'] = $request->has('is_featured');
-
-        if ($request->hasFile('thumbnail')) {
-            $data['thumbnail'] = $request->file('thumbnail')->store('testimonials', 'public');
-        }
-
-        TestimonialVideo::create($data);
-
-        return redirect()->route('admin.site-content.testimonials')
-            ->with('success', 'Testimonial video added successfully.');
-    }
-
-    public function editTestimonialVideo($id)
-    {
-        $video = TestimonialVideo::findOrFail($id);
-        return view('admin.site-content.testimonials.edit', compact('video'));
-    }
-
-    public function updateTestimonialVideo(Request $request, $id)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'youtube_url' => 'required|url',
-            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'author_name' => 'nullable|string|max:255',
-            'author_designation' => 'nullable|string|max:255',
-            'sort_order' => 'nullable|integer',
-        ]);
-
-        $video = TestimonialVideo::findOrFail($id);
-        $data = $request->except('thumbnail');
-        $data['is_active'] = $request->has('is_active');
-        $data['is_featured'] = $request->has('is_featured');
-
-        if ($request->hasFile('thumbnail')) {
-            if ($video->thumbnail) {
-                Storage::disk('public')->delete($video->thumbnail);
-            }
-            $data['thumbnail'] = $request->file('thumbnail')->store('testimonials', 'public');
-        }
-
-        $video->update($data);
-
-        return redirect()->route('admin.site-content.testimonials')
-            ->with('success', 'Testimonial video updated successfully.');
-    }
-
-    public function deleteTestimonialVideo($id)
-    {
-        $video = TestimonialVideo::findOrFail($id);
-        if ($video->thumbnail) {
-            Storage::disk('public')->delete($video->thumbnail);
-        }
-        $video->delete();
-
-        return redirect()->route('admin.site-content.testimonials')
-            ->with('success', 'Testimonial video deleted successfully.');
-    }
-
     // ==================== SITE SETTINGS ====================
     /** One Site Settings page with three tabs: General (logo), Contact and Offices. */
     public function siteSettings(Request $request)
@@ -344,7 +259,10 @@ class SiteContentController extends Controller implements HasMiddleware
         return $transparent >= 5;
     }
 
-    // ==================== BLOGS ====================
+    // ==================== UPDATES (news posts on /updates, stored in the blogs table) ====================
+    /** Field names used in validation messages on the Updates form. */
+    private const UPDATE_FIELDS = ['image' => 'cover image', 'description' => 'content'];
+
     public function blogs()
     {
         $blogs = Blog::orderByDesc('created_at')->paginate(10);
@@ -363,7 +281,7 @@ class SiteContentController extends Controller implements HasMiddleware
             'description' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'sort_order' => 'nullable|integer',
-        ]);
+        ], [], self::UPDATE_FIELDS);
 
         $data = $request->except('image');
         $data['is_active'] = $request->has('is_active');
@@ -375,7 +293,7 @@ class SiteContentController extends Controller implements HasMiddleware
         Blog::create($data);
 
         return redirect()->route('admin.site-content.blogs')
-            ->with('success', 'Blog post created successfully.');
+            ->with('success', 'Update created successfully.');
     }
 
     public function editBlog($id)
@@ -391,7 +309,7 @@ class SiteContentController extends Controller implements HasMiddleware
             'description' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'sort_order' => 'nullable|integer',
-        ]);
+        ], [], self::UPDATE_FIELDS);
 
         $blog = Blog::findOrFail($id);
         $data = $request->except('image');
@@ -407,7 +325,7 @@ class SiteContentController extends Controller implements HasMiddleware
         $blog->update($data);
 
         return redirect()->route('admin.site-content.blogs')
-            ->with('success', 'Blog post updated successfully.');
+            ->with('success', 'Update saved successfully.');
     }
 
     public function deleteBlog($id)
@@ -419,7 +337,7 @@ class SiteContentController extends Controller implements HasMiddleware
         $blog->delete();
 
         return redirect()->route('admin.site-content.blogs')
-            ->with('success', 'Blog post deleted successfully.');
+            ->with('success', 'Update deleted successfully.');
     }
 
     // ==================== CONTACT SETTINGS ====================

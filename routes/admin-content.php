@@ -1,19 +1,12 @@
 <?php
 
-// Admin routes for knowledge articles, cities and the footer.
+// Admin routes for cities and the footer.
 // Included from routes/web.php inside the admin group: names are prefixed "admin."
 // and every route requires an admin login.
 
 use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\FooterController;
-use App\Http\Controllers\Admin\KnowledgeController;
 use Illuminate\Support\Facades\Route;
-
-// Knowledge articles (/knowledge): admin.knowledge.index|create|store|edit|update|destroy
-Route::resource('knowledge', KnowledgeController::class)
-    ->except(['show'])
-    ->parameters(['knowledge' => 'article'])
-    ->whereNumber('article');
 
 // Cities with a gold rate page: admin.cities.index|create|store|edit|update|destroy
 Route::resource('cities', CityController::class)

@@ -31,14 +31,16 @@ class SiteMap
             $company[] = ['Contact us', route('contact')];
         }
 
+        // The Updates page and its latest posts (Admin → Updates)
+        $updates = [['All updates', route('updates')]];
+        foreach (Blog::active()->ordered()->take(10)->get(['title', 'slug']) as $post) {
+            $updates[] = [$post->title, route('updates.show', $post->slug)];
+        }
+
         $groups = [
             FooterLink::heading('rates') => $column('rates'),
             'Cities' => $cities,
-            'Learn' => [
-                ['Knowledge', route('knowledge')],
-                ['News & updates', route('news')],
-                ['Videos', route('videos')],
-            ],
+            'Updates' => $updates,
             FooterLink::heading('company') => $company,
             FooterLink::heading('notices') => $column('notices'),
         ];
@@ -51,7 +53,7 @@ class SiteMap
         return array_filter($groups);
     }
 
-    // Every URL on this site for sitemap.xml: the grouped pages plus each news article
+    // Every URL on this site for sitemap.xml: the grouped pages plus every published update
     public static function urls(): array
     {
         $base = rtrim(url('/'), '/');
@@ -62,7 +64,7 @@ class SiteMap
             }
         }
         foreach (Blog::active()->get(['slug']) as $blog) {
-            $urls[] = route('blog.show', $blog->slug);
+            $urls[] = route('updates.show', $blog->slug);
         }
 
         // External links an admin may add to the footer do not belong in this site's sitemap

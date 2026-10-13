@@ -44,15 +44,16 @@
         return rows;
     }
 
-    // Colours for the dark panel the chart sits on (resources/views/live-rates/_chart.blade.php).
+    // Colours for the white panel the chart sits on (resources/views/live-rates/_chart.blade.php).
     // Line colours still come from the markup (data-line / data-strip).
-    var DARK = {
-        text: '#c9c9c9',      // axis labels, "JS chart by amCharts"
-        title: '#e6e6e6',     // title inside the graph
-        grid: '#ffffff',      // drawn at a low alpha
-        gridAlpha: 0.07,
-        strip: '#141417',     // mini graph background
-        balloon: '#0d0d10'    // rate box fill (its border takes the line colour)
+    var THEME = {
+        text: '#5c5343',      // axis labels, "JS chart by amCharts"
+        title: '#1f1a12',     // title inside the graph
+        grid: '#000000',      // drawn at a low alpha
+        gridAlpha: 0.06,
+        strip: '#f5efe2',     // mini graph background
+        balloon: '#ffffff',   // rate box fill (its border takes the line colour)
+        balloonText: '#1f1a12'
     };
 
     function init(root) {
@@ -72,8 +73,8 @@
                 pathToImages: root.dataset.images,
                 numberFormatter: { precision: 0, decimalSeparator: '.', thousandsSeparator: ',' },
 
-                // Rate box: dark fill, white text, border in the line colour
-                balloon: { fillColor: DARK.balloon, fillAlpha: 0.95, color: '#ffffff' },
+                // Rate box: white fill, dark text, border in the line colour
+                balloon: { fillColor: THEME.balloon, fillAlpha: 0.97, color: THEME.balloonText },
 
                 categoryAxesSettings: {
                     minPeriod: 'DD',
@@ -81,10 +82,10 @@
                     groupToPeriods: ['DD'], // exact daily points, no averaging
                     dashLength: 1,
                     minorGridEnabled: true,
-                    color: DARK.text,
-                    gridColor: DARK.grid,
-                    gridAlpha: DARK.gridAlpha,
-                    minorGridAlpha: 0.035
+                    color: THEME.text,
+                    gridColor: THEME.grid,
+                    gridAlpha: THEME.gridAlpha,
+                    minorGridAlpha: 0.03
                 },
 
                 dataSets: [{
@@ -98,7 +99,7 @@
                     showCategoryAxis: true,
                     title: '',
                     eraseAll: false,
-                    allLabels: [{ x: 60, y: 20, text: root.dataset.title, size: 12, bold: true, color: DARK.title }],
+                    allLabels: [{ x: 60, y: 20, text: root.dataset.title, size: 12, bold: true, color: THEME.title }],
                     stockGraphs: [{ id: 'g1', valueField: 'value', lineThickness: 2, useDataSetColors: true, precision: 0 }],
                     stockLegend: { valueTextRegular: '', markerType: 'none' }
                 }],
@@ -107,22 +108,22 @@
                 chartScrollbarSettings: {
                     graph: 'g1',
                     enabled: true,
-                    backgroundColor: DARK.strip,
+                    backgroundColor: THEME.strip,
                     selectedBackgroundColor: root.dataset.strip,
                     graphFillColor: root.dataset.line,
                     selectedGraphFillColor: root.dataset.line,
-                    selectedBackgroundAlpha: 0.16,
+                    selectedBackgroundAlpha: 0.22,
                     backgroundAlpha: 1,
-                    graphFillAlpha: 0.45,
-                    selectedGraphFillAlpha: 0.9,
-                    color: DARK.text,
-                    gridColor: DARK.grid,
-                    gridAlpha: 0.06,
+                    graphFillAlpha: 0.35,
+                    selectedGraphFillAlpha: 0.8,
+                    color: THEME.text,
+                    gridColor: THEME.grid,
+                    gridAlpha: 0.05,
                     hideResizeGrips: false
                 },
 
                 // 0, 50,000, 100,000 ... labels inside the chart, like the reference
-                valueAxesSettings: { inside: true, autoGridCount: false, gridCount: 4, color: DARK.text, gridColor: DARK.grid, gridAlpha: DARK.gridAlpha },
+                valueAxesSettings: { inside: true, autoGridCount: false, gridCount: 4, color: THEME.text, gridColor: THEME.grid, gridAlpha: THEME.gridAlpha },
 
                 // Red cursor line + red date label + rate box
                 chartCursorSettings: {
@@ -136,7 +137,7 @@
                 // "Zoom:" buttons and the From / To date boxes
                 periodSelector: { position: 'bottom', periods: periods() },
 
-                panelsSettings: { usePrefixes: false, color: DARK.text },
+                panelsSettings: { usePrefixes: false, color: THEME.text },
                 export: { enabled: false }
             });
         }
