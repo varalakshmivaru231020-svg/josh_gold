@@ -4,15 +4,13 @@
 
 @section('content')
 <section class="auth-section">
-    <div class="container py-5">
+    <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-10 col-lg-8 col-xl-7">
                 <div class="auth-card">
                     <div class="auth-header">
-                        <h4 class="mb-0">
-                            <i class="fas fa-user-plus me-2"></i>
-                            Distributor Registration
-                        </h4>
+                        <span class="auth-icon" aria-hidden="true"><i class="fas fa-user-plus"></i></span>
+                        <h1 class="auth-title">Distributor Registration</h1>
                     </div>
 
                     <div class="auth-body">
@@ -153,156 +151,77 @@
 
 @push('styles')
 <style>
+/* Centred dark card on the black page, with a soft gold glow behind it */
 .auth-section {
-    margin-top: 85px;
-    min-height: calc(100vh - 85px);
-    background: var(--cream);
-    padding: 60px 0;
     display: flex;
     align-items: center;
+    min-height: calc(100vh - var(--jb-header-h));
+    padding: 48px 0 64px;
+    background:
+        radial-gradient(640px 460px at 50% 40%, rgba(201, 163, 92, .17), transparent 70%),
+        radial-gradient(700px 420px at 100% 0%, rgba(141, 107, 34, .08), transparent 65%),
+        var(--jb-ground);
 }
+.auth-section > .container { width: 100%; }
 
 .auth-card {
-    background: var(--white);
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
     overflow: hidden;
-    border: 1px solid rgba(201, 168, 76, 0.1);
+    border: 1px solid var(--jb-line);
+    border-radius: var(--jb-r-card);
+    background: linear-gradient(180deg, rgba(201, 163, 92, .07), transparent 140px), var(--jb-panel);
+    box-shadow: 0 28px 60px -32px rgba(0, 0, 0, .9);
 }
 
-.auth-header {
-    background: var(--navy);
-    color: var(--gold);
-    padding: 2.5rem 2rem;
-    border-bottom: 2px solid var(--gold);
+.auth-header { position: relative; padding: 32px 28px 22px; text-align: center; }
+.auth-header::after {
+    content: ""; position: absolute; left: 14%; right: 14%; bottom: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--jb-gold-deep), transparent);
+}
+.auth-icon {
+    width: 46px; height: 46px; margin: 0 auto 14px; display: grid; place-items: center;
+    border: 1px solid var(--jb-line); border-radius: 13px; background: #0a0a0b;
+    color: var(--jb-gold-light); font-size: 18px;
+}
+.auth-title { margin: 0; color: var(--jb-white); font: 600 clamp(24px, 3vw, 28px)/1.2 var(--jb-serif); letter-spacing: -.01em; }
+
+.auth-body { padding: 26px 32px 30px; }
+.auth-body .form-label { margin-bottom: 6px; color: var(--jb-text); font-size: 13px; font-weight: 600; letter-spacing: .02em; }
+.auth-body .form-control { min-height: 48px; padding: .7rem 1rem; font-size: 15px; background-color: var(--jb-ground); border-color: var(--jb-line-strong); color: var(--jb-white); }
+.auth-body .form-control:focus { background-color: #000; border-color: rgba(234, 215, 166, .6); box-shadow: 0 0 0 .2rem rgba(234, 215, 166, .14); }
+.auth-body .form-control.is-invalid { border-color: var(--bs-form-invalid-border-color); }
+.auth-body .form-control.is-invalid:focus { box-shadow: 0 0 0 .2rem rgba(255, 112, 112, .18); }
+.auth-body .input-group-text { min-width: 56px; justify-content: center; background: var(--jb-panel-2); border-color: var(--jb-line-strong); color: var(--jb-gold-light); font-weight: 600; }
+.auth-body .input-group > .btn { border-radius: var(--jb-r-ctl); }
+.auth-body .btn-primary { min-height: 50px; font-size: 15px; box-shadow: 0 10px 28px -12px rgba(234, 215, 166, .45); }
+
+.auth-body a:not(.btn) { color: var(--jb-gold-light); font-weight: 600; text-decoration: none; }
+.auth-body a:not(.btn):hover { color: var(--jb-white); text-decoration: underline; text-underline-offset: 3px; }
+
+/* Send OTP, inside the mobile field */
+.auth-body #sendOtpBtn {
+    min-width: 112px; padding: 0 14px; font-size: 13px; white-space: nowrap;
+    --bs-btn-bg: rgba(201, 163, 92, .14); --bs-btn-color: var(--jb-gold-light); --bs-btn-border-color: var(--jb-line-strong);
+    --bs-btn-hover-bg: rgba(201, 163, 92, .26); --bs-btn-hover-color: #fff; --bs-btn-hover-border-color: rgba(234, 215, 166, .5);
+    --bs-btn-active-bg: rgba(201, 163, 92, .3); --bs-btn-active-color: #fff; --bs-btn-active-border-color: rgba(234, 215, 166, .5);
+    --bs-btn-disabled-bg: rgba(201, 163, 92, .1); --bs-btn-disabled-color: var(--jb-gold-light); --bs-btn-disabled-border-color: var(--jb-line-strong); --bs-btn-disabled-opacity: .8;
 }
 
-.auth-header h4 {
-    color: var(--gold);
-    font-family: var(--font-display);
-    font-weight: 700;
-    letter-spacing: 1px;
-}
+/* Terms checkbox */
+.auth-body .form-check-input { width: 1.15em; height: 1.15em; margin-top: .2em; background-color: var(--jb-ground); border-color: #6b5f48; }
+.auth-body .form-check-input:focus { border-color: rgba(234, 215, 166, .6); box-shadow: 0 0 0 .2rem rgba(234, 215, 166, .14); }
+.auth-body .form-check-input:checked { --bs-form-check-bg-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23111' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e"); }
+.auth-body .form-check-label { color: var(--jb-text); font-size: 14px; line-height: 1.55; }
 
-.auth-body {
-    padding: 3rem;
-}
+/* "Already have an account? Login" */
+.auth-body .d-grid .btn-outline-primary { min-height: 46px; font-size: 15px; display: inline-flex; align-items: center; justify-content: center; --bs-btn-border-color: var(--jb-line-strong); }
 
-.auth-body .form-label {
-    color: var(--navy);
-    font-weight: 600;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.auth-body .form-control {
-    border: 1.5px solid rgba(12, 20, 40, 0.1);
-    border-radius: 10px;
-    padding: 0.9rem 1.2rem;
-    font-family: var(--font-body);
-    font-size: 1rem;
-    background: var(--cream);
-    transition: all 0.3s;
-}
-
-.auth-body .form-control:focus {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 4px rgba(201, 168, 76, 0.1);
-    background: var(--white);
-}
-
-.auth-body .input-group-text {
-    background: var(--cream-dark);
-    border: 1.5px solid rgba(12, 20, 40, 0.1);
-    border-right: none;
-    color: var(--navy);
-    font-weight: 600;
-}
-
-.auth-body .input-group .form-control {
-    border-left: none;
-}
-
-.auth-body .input-group .btn-outline-primary {
-    background: var(--gold);
-    border: 1.5px solid var(--gold);
-    color: var(--navy);
-    font-weight: 700;
-    padding: 0 20px;
-    text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 0.5px;
-}
-
-.auth-body .input-group .btn-outline-primary:hover {
-    background: var(--gold-dark);
-    border-color: var(--gold-dark);
-}
-
-.auth-body .btn-primary {
-    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
-    border: none;
-    color: var(--navy);
-    font-weight: 700;
-    padding: 1rem 1.5rem;
-    border-radius: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 10px 20px rgba(201, 168, 76, 0.2);
-    transition: all 0.3s;
-}
-
-.auth-body .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 30px rgba(201, 168, 76, 0.3);
-    filter: brightness(1.1);
-}
-
-.auth-body .btn-outline-primary {
-    border: 2px solid var(--gold);
-    color: var(--navy);
-    font-weight: 700;
-    border-radius: 10px;
-    padding: 0.8rem;
-    transition: all 0.3s;
-}
-
-.auth-body .btn-outline-primary:hover {
-    background: var(--gold);
-    color: var(--navy);
-    transform: translateY(-2px);
-}
-
-.auth-body a {
-    color: var(--gold-dark);
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.auth-body a:hover {
-    color: var(--gold);
-    text-decoration: underline;
-}
-
-.auth-body .form-check-input:checked {
-    background-color: var(--gold);
-    border-color: var(--gold);
-}
-
-@media (max-width: 767px) {
+@media (max-width: 575.98px) {
     .auth-section {
-        margin-top: 70px;
-        padding: 40px 15px;
+        align-items: flex-start; padding: 28px 0 44px;
+        background: radial-gradient(420px 380px at 50% 170px, rgba(201, 163, 92, .15), transparent 70%), var(--jb-ground);
     }
-
-    .auth-body {
-        padding: 2.5rem 1.5rem;
-    }
-
-    .auth-header {
-        padding: 2rem 1.5rem;
-    }
+    .auth-header { padding: 26px 20px 18px; }
+    .auth-body { padding: 22px 20px 24px; }
 }
 </style>
 @endpush

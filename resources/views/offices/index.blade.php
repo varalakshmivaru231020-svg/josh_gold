@@ -4,38 +4,30 @@
 
 @section('content')
 <section class="offices-luxury-page">
-    <div class="office-hero-header">
-        <div class="office-hero-deco" aria-hidden="true"><i class="fas fa-landmark-dome"></i></div>
-        <div class="container text-center" data-aos="fade-up">
-            <div class="label-gold">OUR PRESENCE</div>
-            <h1 class="heading-premium text-white">Chamber Locations</h1>
-            <div class="accent-line-gold mx-auto"></div>
-            <p class="hero-subheader text-white opacity-90 italic mt-3">Strategically located for state and national advocacy.</p>
-        </div>
-    </div>
+    @include('layouts.partials.page-head', [
+        'eyebrow' => 'Our presence',
+        'title'   => 'Chamber',
+        'accent'  => 'Locations',
+        'sub'     => 'Strategically located for state and national advocacy.',
+        'crumbs'  => [['Chambers']],
+    ])
 
-    <div class="container offices-content-container">
-        <div class="breadcrumb-luxury mb-5" data-aos="fade-up">
-            <a href="{{ route('home') }}">Home</a>
-            <span class="sep">/</span>
-            <span class="curr">Chambers</span>
-        </div>
-
-        <div class="row g-5">
+    <div class="jb-wrap offices-content-container">
+        <div class="row g-3 g-md-4">
             @forelse($offices as $index => $office)
                 @php
                     $isBlr = str_contains(strtolower($office->title), 'bengaluru');
                     $isDelhi = str_contains(strtolower($office->title), 'delhi');
-                    
-                    // Same colors as home page
+
+                    // Card accent colour (Admin → Offices → Card Accent Color)
                     $cCol = $isDelhi ? '#8b1a24' : ($isBlr ? '#1a2e5e' : ($office->color ?? '#1a2e5e'));
-                    
+
                     $hIcon = $isBlr ? 'fa-solid fa-city' : ($isDelhi ? 'fa-solid fa-landmark' : 'fa-solid fa-building');
                     $hIconClass = $isBlr ? 'ocl-header-icon-blue' : 'ocl-header-icon-white';
                 @endphp
                 <div class="col-lg-6" data-aos="fade-up" data-aos-delay="{{ $index * 150 }}">
                     <div class="office-card-lux h-100">
-                        <div class="ocl-header" style="background: {{ $cCol }};">
+                        <div class="ocl-header" style="--ocl-accent: {{ $cCol }};">
                             <div class="ocl-icon-box">
                                 <i class="{{ $hIcon }} {{ $hIconClass }}"></i>
                             </div>
@@ -87,7 +79,7 @@
                             @endif
 
                             @if($office->map_embed)
-                            <div class="office-map-mini rounded-4 overflow-hidden mt-4 border border-navy border-opacity-10">
+                            <div class="office-map-mini overflow-hidden mt-3">
                                 {!! $office->map_embed !!}
                             </div>
                             @endif
@@ -95,9 +87,11 @@
                     </div>
                 </div>
             @empty
-            <div class="col-12 text-center py-5">
-                <h3 class="text-navy">Chamber Information Updating</h3>
-                <p>Please contact our principal office for immediate assistance.</p>
+            <div class="col-12">
+                <div class="offices-empty text-center">
+                    <h3 class="text-navy">Chamber Information Updating</h3>
+                    <p class="mb-0">Please contact our principal office for immediate assistance.</p>
+                </div>
             </div>
             @endforelse
         </div>
@@ -107,148 +101,119 @@
 
 @push('styles')
 <style>
-    .offices-luxury-page { background: var(--cream); min-height: 80vh; padding-bottom: 120px; }
-    
-    /* Hero */
-    .office-hero-header { 
-        background: 
-            linear-gradient(rgba(8,14,28,0.82) 0%, rgba(10,18,36,0.85) 100%),
-            url('/images/contact-banner.jpg') center center / cover no-repeat;
-        padding: 160px 0 100px;
-        position: relative;
-        overflow: hidden;
-        z-index: 0;
-    }
-    .office-hero-header::before {
-        content: ''; position: absolute; inset: 0; z-index: 0;
-        background-image: 
-            linear-gradient(rgba(201, 168, 76, 0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(201, 168, 76, 0.05) 1px, transparent 1px);
-        background-size: 55px 55px;
-    }
-    .office-hero-header::after { 
-        content:''; position:absolute; inset:0; z-index: 0;
-        background: radial-gradient(ellipse at 50% 110%, rgba(201,168,76,0.22) 0%, transparent 50%); 
-    }
-    .office-hero-deco {
-        position: absolute; right: 8%; top: 50%; transform: translateY(-50%);
-        font-size: 14rem; color: rgba(201,168,76,0.065);
-        pointer-events: none; z-index: 0; line-height: 1;
-    }
-    
-    .hero-subheader { max-width: 700px; margin: 0 auto; font-family: var(--font-display); font-size: 1.4rem; font-style: italic; position: relative; z-index: 2; }
+    .offices-luxury-page { background: var(--jb-ground); }
 
-    /* ── OFFICE CARDS LUX (MATCH SCREENSHOT) ── */
+    /* Content below the heading */
+    .offices-content-container { padding-top: 40px; padding-bottom: 64px; }
+    @media (max-width: 767px) { .offices-content-container { padding-top: 28px; padding-bottom: 44px; } }
+
+    /* ── Office cards ── */
     .office-card-lux {
-        background: #ffffff;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 15px 45px rgba(0,0,0,0.08);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        border: 1px solid rgba(0,0,0,0.05);
+        display: flex; flex-direction: column; overflow: hidden;
+        background: var(--jb-panel);
+        border: 1px solid var(--jb-line);
+        border-radius: var(--jb-r-card);
+        transition: transform .2s, border-color .2s, box-shadow .2s;
     }
-    .office-card-lux:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 25px 60px rgba(0,0,0,0.12);
+    @media (hover: hover) {
+        .office-card-lux:hover { transform: translateY(-3px); border-color: var(--jb-line-strong); box-shadow: 0 16px 36px -14px rgba(0, 0, 0, .9); }
     }
     .ocl-header {
-        padding: 25px 30px;
+        padding: 22px 26px;
         display: flex;
         align-items: center;
-        gap: 20px;
-        color: #ffffff;
+        gap: 16px;
+        color: var(--jb-white);
+        border-bottom: 1px solid var(--jb-line);
+        background: linear-gradient(180deg, var(--jb-panel-2), var(--jb-panel));
+        /* The card's accent colour shows as a soft glow in the corner */
+        background:
+            radial-gradient(420px 180px at 0% 0%, color-mix(in srgb, var(--ocl-accent, #1a2e5e) 38%, transparent), transparent 70%),
+            radial-gradient(420px 180px at 100% 0%, rgba(201, 163, 92, .10), transparent 70%),
+            linear-gradient(180deg, var(--jb-panel-2), var(--jb-panel));
     }
     .ocl-icon-box {
-        width: 52px;
-        height: 52px;
-        background: rgba(255,255,255,0.12);
-        border: 1px solid rgba(255,255,255,0.15);
+        width: 48px;
+        height: 48px;
+        background: #0a0a0b;
+        border: 1px solid var(--jb-line);
         border-radius: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.5rem;
+        font-size: 1.25rem;
         flex-shrink: 0;
-        backdrop-filter: blur(8px);
-        box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
     }
     .ocl-header-text {
         display: flex;
         flex-direction: column;
         text-align: left;
+        min-width: 0;
     }
     .ocl-title {
-        font-family: var(--font-display);
-        font-size: 1.5rem;
-        font-weight: 700;
+        font-family: var(--jb-serif);
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--jb-white);
         margin: 0;
-        line-height: 1.2;
+        line-height: 1.25;
     }
     .ocl-subtitle {
-        font-size: 0.65rem;
-        letter-spacing: 1.5px;
-        text-transform: uppercase;
+        margin: 5px 0 0;
+        color: var(--jb-gold);
+        font-size: 10.5px;
         font-weight: 700;
-        opacity: 0.8;
-        margin-top: 5px;
+        letter-spacing: .16em;
+        text-transform: uppercase;
     }
     .ocl-body {
-        padding: 30px;
+        flex: 1;
+        padding: 22px 26px 26px;
         display: flex;
         flex-direction: column;
-        gap: 15px;
+        gap: 14px;
         text-align: left;
     }
     .ocl-row {
         display: flex;
         align-items: flex-start;
-        gap: 15px;
-        color: #444;
-        font-size: 0.95rem;
-        line-height: 1.5;
+        gap: 14px;
+        color: var(--jb-text);
+        font-size: 14.5px;
+        line-height: 1.55;
     }
+    .ocl-row + .ocl-row { padding-top: 14px; border-top: 1px solid var(--jb-line-soft); }
     .ocl-icon {
         width: 18px;
         font-size: 1rem;
         margin-top: 3px;
         text-align: center;
         flex-shrink: 0;
+        color: var(--jb-gold-light);
     }
-    
-    /* Icon Colors from Reference - EXACT SHADES */
-    .ocl-pin { color: #ff4d4d; }    /* Vibrant Red/Pink */
-    .ocl-phone { color: #8b1a24; }  /* Deep Maroon */
-    .ocl-mobile { color: #8b1a24; } /* Deep Maroon */
-    .ocl-email { color: #6f42c1; }  /* Purple */
-    .ocl-web { color: #007bff; }    /* Bright Blue */
 
-    .ocl-header-icon-white { color: #ffffff !important; }
-    .ocl-header-icon-blue { color: #60c0ff !important; } /* Electric Blue for Bengaluru */
+    .ocl-header-icon-white,
+    .ocl-header-icon-blue { color: var(--jb-gold-light) !important; }
 
     .ocl-link {
-        color: inherit;
+        color: var(--jb-text);
         text-decoration: none;
-        transition: 0.3s;
-        word-break: break-all;
+        transition: color .15s;
+        overflow-wrap: anywhere;
     }
     .ocl-link:hover {
-        color: var(--gold-dark);
+        color: var(--jb-gold-light);
     }
 
-    .office-map-mini { height: 260px; }
-    .office-map-mini iframe { width: 100% !important; height: 100% !important; filter: grayscale(1) contrast(1.1); }
+    .office-map-mini { height: 260px; border: 1px solid var(--jb-line); border-radius: 14px; background: var(--jb-panel-2); }
+    .office-map-mini iframe { display: block; width: 100% !important; height: 100% !important; border: 0; filter: grayscale(1) contrast(1.1); }
 
-    /* Content sits below banner with proper spacing */
-    .offices-content-container { padding-top: 60px; padding-bottom: 60px; }
+    .offices-empty { padding: 56px 24px; border: 1px dashed var(--jb-line-strong); border-radius: var(--jb-r-card); background: var(--jb-panel); color: var(--jb-muted); }
 
-    .breadcrumb-luxury { display:flex; align-items:center; gap:12px; font-size:0.85rem; letter-spacing:2px; text-transform:uppercase; font-weight: 700; }
-    .breadcrumb-luxury a { color: var(--gold-dark, #8b6914); text-decoration:none; }
-    .breadcrumb-luxury .sep { opacity: 0.3; }
-
-    .accent-line-gold { width: 80px; height: 3px; background: var(--gold, #c9a84c); margin-top: 25px; position: relative; z-index: 1; border-radius: 2px; }
-
-    @media (max-width: 768px) {
-        .office-card-lux { flex-direction: column; padding: 30px; }
+    @media (max-width: 575px) {
+        .ocl-header { padding: 18px; gap: 14px; }
+        .ocl-body { padding: 18px 18px 22px; }
+        .ocl-title { font-size: 1.15rem; }
     }
 </style>
 @endpush

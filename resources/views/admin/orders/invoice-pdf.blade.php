@@ -1,6 +1,6 @@
 @php
     $siteLogo = \App\Models\SiteSetting::get('site_logo');
-    $logoPath = $siteLogo ? storage_path('app/public/' . $siteLogo) : public_path('blr.jpg');
+    $logoPath = $siteLogo ? storage_path('app/public/' . $siteLogo) : public_path('images/brand/josha-logo.png');
 @endphp
 <!DOCTYPE html>
 <html>
@@ -90,30 +90,39 @@
         </div>
     </div>
 
-    <!-- Company -->
-    <h3><strong>Bengaluru Law House Publications</strong></h3>
+    <!-- Company (config/company.php; WhatsApp and email from Admin → Contact Settings) -->
+    @php
+        $companyWhatsapp = preg_replace('/\D+/', '', (string) \App\Models\SiteSetting::get('contact_whatsapp'));
+        $companyEmail    = trim((string) \App\Models\SiteSetting::get('contact_email'));
+    @endphp
+    <h3><strong>{{ config('company.name') }}</strong></h3>
     <p style="margin:5px 0;">
-        Sahakar Nagar, Bengaluru, Karnataka - 560092 <br><br>
+        {!! nl2br(e(config('company.billing_address'))) !!}<br>
+        GSTIN: {{ config('company.gstin') }} &nbsp;|&nbsp; PAN: {{ config('company.pan') }}<br><br>
     </p>
 
     <!-- Contacts -->
     <div class="contact">
 
-        <!-- WhatsApp -->
-        <a href="https://wa.me/919632527961" target="_blank">
-            <img src="{{ public_path('whatsa.png') }}" height="17">
-            <span>9632527961</span>
+        <!-- Mobile -->
+        <a href="tel:+91{{ config('company.mobile') }}">
+            Mobile: <span>{{ config('company.mobile') }}</span>
         </a>
 
-        <!-- Website -->
-        <a href="https://blrlawhouse.com" target="_blank">
-            Web: <span>https://blrlawhouse.com</span>
+        <!-- WhatsApp -->
+        @if($companyWhatsapp !== '')
+        <a href="https://wa.me/{{ $companyWhatsapp }}" target="_blank">
+            <img src="{{ public_path('whatsa.png') }}" height="17">
+            <span>{{ substr($companyWhatsapp, -10) }}</span>
         </a>
+        @endif
 
         <!-- Email -->
-        <a href="mailto:bengalurulawhouse@gmail.com">
-            Email: <span>bengalurulawhouse@gmail.com</span>
+        @if($companyEmail !== '')
+        <a href="mailto:{{ $companyEmail }}">
+            Email: <span>{{ $companyEmail }}</span>
         </a>
+        @endif
     </div>
 
     <hr>

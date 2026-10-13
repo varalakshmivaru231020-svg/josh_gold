@@ -5,27 +5,16 @@
 @section('content')
 <section class="gallery-luxury-page">
 
-    {{-- Hero Header --}}
-    <div class="gallery-hero-header">
-        {{-- decorative background icon --}}
-        <div class="gallery-hero-deco" aria-hidden="true"><i class="fas fa-images"></i></div>
-        <div class="container text-center" data-aos="fade-up">
-            <div class="label-gold">PHOTO GALLERY</div>
-            <h1 class="heading-premium text-white">Moments Across Courtrooms, Culture &amp; Community</h1>
-            <div class="accent-line-gold mx-auto"></div>
-            <p class="gallery-subheader text-white mt-3">A visual chronicle of legal milestones, cultural pursuits, and community engagement by Advocate Veerendrababu Nanjegowda.</p>
-        </div>
-    </div>
+    @include('layouts.partials.page-head', [
+        'eyebrow' => 'Photo gallery',
+        'title'   => 'Moments Across Courtrooms,',
+        'accent'  => 'Culture & Community',
+        'sub'     => 'A visual chronicle of legal milestones, cultural pursuits, and community engagement by Advocate Veerendrababu Nanjegowda.',
+        'crumbs'  => [['Gallery']],
+    ])
 
     {{-- Gallery Grid --}}
-    <div class="container gallery-content-container">
-
-        {{-- Breadcrumb --}}
-        <div class="breadcrumb-luxury mb-5" data-aos="fade-up">
-            <a href="{{ route('home') }}">Home</a>
-            <span class="sep">/</span>
-            <span class="curr">Gallery</span>
-        </div>
+    <div class="jb-wrap gallery-content-container">
 
         @if($galleryPhotos && $galleryPhotos->count() > 0)
 
@@ -74,10 +63,10 @@
         @else
         {{-- Empty State --}}
         <div class="gallery-empty-state text-center" data-aos="fade-up">
-            <i class="fas fa-images fa-4x mb-4" style="color: var(--gold); opacity: 0.4;"></i>
-            <h3 style="color: var(--navy);">Gallery Coming Soon</h3>
+            <i class="fas fa-images fa-3x mb-4 gallery-empty-icon"></i>
+            <h3>Gallery Coming Soon</h3>
             <p class="text-muted">We are curating our photo gallery. Please check back soon.</p>
-            <a href="{{ route('home') }}" class="btn-outline-navy mt-4">Back to Home</a>
+            <a href="{{ route('home') }}" class="jb-btn jb-btn--ghost mt-4">Back to Home</a>
         </div>
         @endif
     </div>
@@ -104,73 +93,26 @@
 @push('styles')
 <style>
     /* ── GALLERY PAGE ── */
-    .gallery-luxury-page { background: var(--cream, #f8f5ef); min-height: 80vh; padding-bottom: 120px; }
-
-    /* Hero */
-    .gallery-hero-header {
-        background:
-            linear-gradient(rgba(8,14,28,0.78) 0%, rgba(10,18,36,0.82) 100%),
-            url('/images/gallery-banner.jpg') center center / cover no-repeat;
-        padding: 160px 0 100px;
-        position: relative;
-        overflow: hidden;
-        z-index: 0;
-    }
-    /* Subtle gold grid overlay on top of image */
-    .gallery-hero-header::before {
-        content: ''; position: absolute; inset: 0; z-index: 0;
-        background-image:
-            linear-gradient(rgba(201,168,76,0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(201,168,76,0.05) 1px, transparent 1px);
-        background-size: 55px 55px;
-    }
-    /* Bottom warm glow */
-    .gallery-hero-header::after {
-        content: ''; position: absolute; inset: 0; z-index: 0;
-        background:
-            radial-gradient(ellipse at 50% 110%, rgba(201,168,76,0.22) 0%, transparent 50%);
-    }
-    .gallery-hero-header .container { position: relative; z-index: 1; }
-    .gallery-hero-header .label-gold { display: block; margin-bottom: 14px; }
-    .gallery-hero-header .heading-premium { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; }
-    .gallery-hero-header .accent-line-gold { width: 60px; height: 3px; background: var(--gold, #c9a84c); margin: 18px auto 0; border-radius: 2px; }
-    .gallery-subheader { max-width: 650px; margin: 0 auto; font-family: var(--font-display); font-size: 1.1rem; font-style: italic; opacity: 0.85; }
-
-    /* Decorative background icon */
-    .gallery-hero-deco {
-        position: absolute; right: 7%; top: 50%; transform: translateY(-50%);
-        font-size: 14rem; color: rgba(201,168,76,0.08);
-        pointer-events: none; z-index: 0; line-height: 1;
-    }
+    .gallery-luxury-page { background: var(--jb-ground); }
 
     /* Content Container */
-    .gallery-content-container { padding-top: 60px; }
+    .gallery-content-container { padding-top: 40px; padding-bottom: 64px; }
+    @media (max-width: 767px) { .gallery-content-container { padding-top: 28px; padding-bottom: 44px; } }
 
-    /* Breadcrumb */
-    .breadcrumb-luxury { display:flex; align-items:center; gap:12px; font-size:0.85rem; letter-spacing:2px; text-transform:uppercase; font-weight: 700; color: var(--navy); }
-    .breadcrumb-luxury a { color: var(--gold-dark, #8b6914); text-decoration:none; transition: 0.3s; }
-    .breadcrumb-luxury a:hover { color: var(--navy); }
-    .breadcrumb-luxury .sep { opacity: 0.3; }
-
-    /* Filter Bar */
+    /* Filter Bar (same look as the home page pills) */
     .gallery-filter-bar {
-        display: flex; flex-wrap: wrap; gap: 12px;
-        margin-bottom: 40px;
-        justify-content: center;
+        display: flex; flex-wrap: wrap; gap: 8px;
+        margin-bottom: 24px;
     }
     .gallery-filter-btn {
-        padding: 8px 22px; border-radius: 50px;
-        border: 2px solid rgba(201,168,76,0.3);
-        background: white; color: var(--navy, #0c1428);
-        font-size: 0.8rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
-        cursor: pointer; transition: all 0.3s;
+        display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px;
+        border: 1px solid var(--jb-line); border-radius: var(--jb-r-ctl);
+        background: var(--jb-panel); color: var(--jb-text);
+        font: 600 13px/1 var(--jb-sans); white-space: nowrap;
+        cursor: pointer; transition: border-color .15s, background-color .15s, color .15s;
     }
-    .gallery-filter-btn:hover,
-    .gallery-filter-btn.active {
-        background: var(--navy, #0c1428);
-        color: var(--gold, #c9a84c);
-        border-color: var(--navy, #0c1428);
-    }
+    .gallery-filter-btn:hover { color: var(--jb-white); border-color: rgba(255, 255, 255, .35); }
+    .gallery-filter-btn.active { color: var(--jb-white); border-color: rgba(255, 255, 255, .7); background: rgba(255, 255, 255, .08); }
 
     /* Mosaic Grid */
     .gallery-mosaic-grid {
@@ -180,10 +122,13 @@
     .gallery-mosaic-item {
         break-inside: avoid;
         margin-bottom: 16px;
-        border-radius: 16px;
+        border: 1px solid var(--jb-line);
+        border-radius: var(--jb-r-card);
         overflow: hidden;
         position: relative;
         cursor: pointer;
+        background: radial-gradient(circle at 50% 42%, #15151a 0%, #08080a 95%);
+        transition: border-color .2s, box-shadow .2s;
     }
     .gallery-mosaic-item a {
         display: block;
@@ -195,42 +140,31 @@
         height: auto;
         display: block;
         transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
-        border-radius: 16px;
     }
-    .gallery-mosaic-item:hover img { transform: scale(1.06); }
-
-    /* Tall items */
-    .gallery-tall img { /* let images define their height */ }
+    @media (hover: hover) {
+        .gallery-mosaic-item:hover { border-color: var(--jb-line-strong); box-shadow: 0 16px 36px -14px rgba(0, 0, 0, .9); }
+        .gallery-mosaic-item:hover img { transform: scale(1.04); }
+    }
 
     /* Overlay */
     .gallery-item-overlay {
         position: absolute; inset: 0;
-        background: linear-gradient(to top, rgba(12,20,40,0.85) 0%, transparent 60%);
+        background: linear-gradient(to top, rgba(0, 0, 0, .88) 0%, transparent 60%);
         opacity: 0;
         transition: opacity 0.4s;
-        border-radius: 16px;
         display: flex; align-items: flex-end; justify-content: center;
         padding: 20px;
     }
-    .gallery-mosaic-item:hover .gallery-item-overlay { opacity: 1; }
-    .gallery-overlay-inner { text-align: center; color: white; }
-    .gallery-zoom-icon { font-size: 1.6rem; color: var(--gold, #c9a84c); margin-bottom: 8px; display: block; }
-    .gallery-item-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; margin: 0 0 4px; }
-    .gallery-item-caption { font-size: 0.85rem; opacity: 0.8; margin: 0; }
+    .gallery-mosaic-item:hover .gallery-item-overlay,
+    .gallery-lightbox-link:focus-visible .gallery-item-overlay { opacity: 1; }
+    .gallery-overlay-inner { text-align: center; color: var(--jb-white); }
+    .gallery-zoom-icon { font-size: 1.4rem; color: var(--jb-gold-light); margin-bottom: 8px; display: block; }
+    .gallery-item-title { font-family: var(--jb-serif); font-size: 1rem; font-weight: 600; color: var(--jb-white); margin: 0 0 4px; }
+    .gallery-item-caption { font-size: 0.85rem; color: var(--jb-text); margin: 0; }
 
     /* Empty */
-    .gallery-empty-state { background: white; padding: 80px 40px; border-radius: 30px; border: 2px dashed rgba(201,168,76,0.3); }
-
-    /* CTA btn */
-    .btn-outline-navy {
-        display: inline-flex; align-items: center;
-        padding: 14px 36px; border-radius: 50px;
-        border: 2px solid var(--navy, #0c1428);
-        color: var(--navy, #0c1428); font-weight: 700;
-        text-decoration: none; font-size: 0.9rem; letter-spacing: 1px;
-        transition: all 0.3s;
-    }
-    .btn-outline-navy:hover { background: var(--navy, #0c1428); color: var(--gold, #c9a84c); }
+    .gallery-empty-state { background: var(--jb-panel); padding: 64px 24px; border-radius: var(--jb-r-card); border: 1px dashed var(--jb-line-strong); color: var(--jb-muted); }
+    .gallery-empty-icon { color: var(--jb-gold); opacity: .5; }
 
     /* ── LIGHTBOX ── */
     .gallery-lightbox-modal {
@@ -238,7 +172,7 @@
         align-items: center; justify-content: center;
     }
     .gallery-lightbox-modal.open { display: flex; }
-    .glb-overlay { position: absolute; inset: 0; background: rgba(6,12,24,0.97); backdrop-filter: blur(8px); }
+    .glb-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, .94); backdrop-filter: blur(8px); }
     .glb-container {
         position: relative; z-index: 2;
         max-width: 90vw; max-height: 90vh;
@@ -247,34 +181,40 @@
     .glb-img-wrap { max-height: 80vh; display: flex; align-items: center; justify-content: center; }
     .glb-img-wrap img {
         max-width: 90vw; max-height: 80vh;
-        object-fit: contain; border-radius: 12px;
-        box-shadow: 0 0 80px rgba(0,0,0,0.8);
-        border: 1px solid rgba(201,168,76,0.2);
+        object-fit: contain; border-radius: 14px;
+        box-shadow: 0 30px 70px -20px rgba(0, 0, 0, .9);
+        border: 1px solid var(--jb-line);
     }
     .glb-close {
-        position: fixed; top: 24px; right: 32px;
-        background: none; border: none; color: white;
-        font-size: 1.8rem; cursor: pointer; z-index: 3;
-        transition: color 0.3s;
+        position: fixed; top: 20px; right: 20px;
+        width: 44px; height: 44px; display: grid; place-items: center;
+        background: var(--jb-panel); border: 1px solid var(--jb-line); border-radius: 12px; color: var(--jb-white);
+        font-size: 1.1rem; cursor: pointer; z-index: 3;
+        transition: border-color .15s, color .15s;
     }
-    .glb-close:hover { color: var(--gold, #c9a84c); }
+    .glb-close:hover { color: var(--jb-gold-light); border-color: rgba(255, 255, 255, .5); }
     .glb-prev, .glb-next {
         position: fixed; top: 50%; transform: translateY(-50%);
-        background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.3);
-        color: white; width: 50px; height: 50px; border-radius: 50%;
+        background: var(--jb-panel); border: 1px solid var(--jb-line);
+        color: var(--jb-white); width: 48px; height: 48px; border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
-        cursor: pointer; z-index: 3; font-size: 1.1rem; transition: all 0.3s;
+        cursor: pointer; z-index: 3; font-size: 1rem; transition: background-color .15s, color .15s, border-color .15s;
     }
-    .glb-prev { left: 24px; }
-    .glb-next { right: 24px; }
-    .glb-prev:hover, .glb-next:hover { background: var(--gold, #c9a84c); color: var(--navy, #0c1428); }
-    .glb-caption-bar { text-align: center; margin-top: 16px; color: white; }
-    .glb-title { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--gold, #c9a84c); margin: 0 0 4px; }
-    .glb-caption { font-size: 0.9rem; opacity: 0.7; margin: 0; }
+    .glb-prev { left: 20px; }
+    .glb-next { right: 20px; }
+    .glb-prev:hover, .glb-next:hover { background: var(--jb-champagne); border-color: var(--jb-champagne); color: #111; }
+    .glb-caption-bar { text-align: center; margin-top: 16px; color: var(--jb-text); }
+    .glb-title { font-family: var(--jb-serif); font-size: 1.1rem; font-weight: 600; color: var(--jb-gold-light); margin: 0 0 4px; }
+    .glb-caption { font-size: 0.9rem; color: var(--jb-muted); margin: 0; }
+    @media (max-width: 575px) {
+        .glb-prev, .glb-next { width: 40px; height: 40px; }
+        .glb-prev { left: 8px; }
+        .glb-next { right: 8px; }
+    }
 
     /* Responsive */
     @media (max-width: 1200px) { .gallery-mosaic-grid { columns: 3; } }
-    @media (max-width: 768px)  { .gallery-mosaic-grid { columns: 2; } }
+    @media (max-width: 768px)  { .gallery-mosaic-grid { columns: 2; column-gap: 12px; } .gallery-mosaic-item { margin-bottom: 12px; } }
     @media (max-width: 480px)  { .gallery-mosaic-grid { columns: 1; } }
 </style>
 @endpush

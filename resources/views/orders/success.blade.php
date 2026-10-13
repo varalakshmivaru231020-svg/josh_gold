@@ -1,19 +1,19 @@
 @extends('layouts.lawfirm')
 
-@section('title', 'Order Confirmation - Bengaluru Law House')
+@section('title', 'Order Confirmation - JOSHA GOLD AND DIAMOND JEWELLERY')
 
 @section('content')
 <section class="success-section">
-    <div class="container py-5">
+    <div class="jb-wrap">
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <!-- Success Card -->
                 <div class="success-card">
                     <div class="success-header">
                         <div class="d-flex align-items-center">
-                            <i class="fas fa-check-circle fa-2x me-3"></i>
+                            <span class="success-header__icon"><i class="fas fa-check-circle"></i></span>
                             <div>
-                                <h4 class="mb-0">Order Confirmed!</h4>
+                                <h1 class="success-title">Order Confirmed!</h1>
                                 <p class="mb-0">Thank you for your purchase</p>
                             </div>
                         </div>
@@ -35,7 +35,7 @@
                                     <h6 class="mb-0"><i class="fas fa-receipt me-2"></i>Order Details</h6>
                                 </div>
                                 <div class="card-body">
-                                    <table class="table table-sm">
+                                    <table class="table table-sm order-table">
                                         <tr>
                                             <td>Order Number:</td>
                                             <td><strong>{{ $order->order_number }}</strong></td>
@@ -47,13 +47,13 @@
                                         <tr>
                                             <td>Order Status:</td>
                                             <td>
-                                                <span class="badge bg-success">{{ ucfirst($order->order_status) }}</span>
+                                                <span class="badge success-chip">{{ ucfirst($order->order_status) }}</span>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>Payment Status:</td>
                                             <td>
-                                                <span class="badge bg-success">{{ ucfirst($order->payment_status) }}</span>
+                                                <span class="badge success-chip">{{ ucfirst($order->payment_status) }}</span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -117,7 +117,7 @@
                                     <h5 class="mb-1">{{ $order->product->name }}</h5>
                                     <p class="text-muted mb-2">{{ $order->quantity }} × ₹{{ number_format($order->unit_price, 2) }}</p>
                                     
-                                    <div class="d-flex justify-content-between">
+                                    <div class="d-flex justify-content-between success-totals">
                                         <div>
                                             <span class="text-muted">Subtotal:</span>
                                             <span class="ms-2">₹{{ number_format($order->subtotal, 2) }}</span>
@@ -197,101 +197,53 @@
 
 @push('styles')
 <style>
-.success-section {
-    margin-top: 80px;
-    min-height: calc(100vh - 80px);
-    background: var(--cream-primary);
-    padding: 40px 0;
-}
+.success-section { background: var(--jb-ground); padding: 40px 0 56px; }
 
-.success-card {
-    background: var(--white);
-    border-radius: 12px;
-    box-shadow: var(--shadow-medium);
-    overflow: hidden;
-}
+.success-card { overflow: hidden; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel); box-shadow: 0 16px 36px -14px rgba(0, 0, 0, .9); }
 
-.success-header {
-    background: linear-gradient(135deg, #28a745 0%, #218838 100%);
-    color: white;
-    padding: 1.5rem 2rem;
-    border-bottom: 3px solid var(--gold-primary);
-}
+/* Compact heading, in the page-head style */
+.success-header { padding: 22px 28px; border-bottom: 1px solid var(--jb-line); background:
+    radial-gradient(600px 220px at 100% 0%, rgba(201, 163, 92, .16), transparent 65%), var(--jb-black); }
+.success-header__icon { width: 46px; height: 46px; flex: none; display: grid; place-items: center; margin-right: 14px; border: 1px solid rgba(92, 227, 168, .35); border-radius: 13px; background: rgba(92, 227, 168, .08); color: var(--jb-up); font-size: 1.35rem; }
+.success-title { margin: 0; color: var(--jb-white); font: 600 clamp(21px, 2.6vw, 26px)/1.25 var(--jb-serif); }
+.success-header p { color: var(--jb-muted); }
 
-.success-header h4,
-.success-header p {
-    color: white;
-}
+.success-body { padding: 28px; }
 
-.success-header h4 {
-    font-family: var(--font-heading);
-}
+.success-body .display-1.text-success { color: var(--jb-up) !important; font-size: 4rem; }
+.success-body h2 { color: var(--jb-white); font: 600 clamp(24px, 3vw, 30px)/1.25 var(--jb-serif); }
+.success-body .lead { color: var(--jb-muted); font-size: 1.05rem; }
 
-.success-body {
-    padding: 2rem;
-}
+/* Inner cards */
+.success-body .card { --bs-card-bg: var(--jb-panel-2); border: 1px solid var(--jb-line); border-radius: 14px; overflow: hidden; }
+.success-body .card-header { padding: .8rem 1rem; border-bottom: 1px solid var(--jb-line); background: rgba(0, 0, 0, .35); }
+.success-body .card-header h6 { color: var(--jb-white); font: 700 12px/1.3 var(--jb-sans); letter-spacing: .12em; text-transform: uppercase; }
+.success-body .card-header h6 i { color: var(--jb-gold-light); }
+.success-body .card-body { color: var(--jb-text); }
+.success-body .card-body strong { color: var(--jb-white); }
+.success-body h5 { color: var(--jb-white); font: 600 17px/1.3 var(--jb-serif); }
+.success-body hr { border-color: var(--jb-line); opacity: 1; }
 
-.success-body .display-1.text-success {
-    color: #28a745 !important;
-}
+.order-table { margin-bottom: 0; }
+.order-table td { padding: .45rem 0; border-color: var(--jb-line-soft); vertical-align: middle; }
+.order-table tr:last-child td { border-bottom: 0; }
+.order-table td:first-child { padding-right: 12px; color: var(--jb-muted); white-space: nowrap; }
+.order-table td:last-child { word-break: break-word; }
 
-.success-body h2 {
-    color: var(--navy-deep);
-}
+.success-body .badge.success-chip { padding: .38em .7em; border: 1px solid rgba(201, 163, 92, .4); border-radius: 7px; background: rgba(201, 163, 92, .16); color: var(--jb-gold-light); font-weight: 700; }
 
-.success-body .lead {
-    color: var(--text-muted);
-}
+.success-body .text-success { color: var(--jb-up) !important; }
+.success-body .text-primary { color: var(--jb-white) !important; }
+.success-body :is(.text-success, .text-primary) strong { color: inherit; }
 
-.success-body .card {
-    border: 1px solid rgba(201, 162, 39, 0.2);
-    border-radius: 8px;
-}
+.success-totals { flex-wrap: wrap; gap: 4px 16px; }
 
-.success-body .card-header {
-    background: rgba(26, 35, 50, 0.03);
-    border-bottom: 2px solid var(--gold-primary);
-    color: var(--navy-deep);
-}
-
-.success-body .card-header h6 {
-    color: var(--navy-deep);
-}
-
-.success-body .badge.bg-success {
-    background: var(--gold-primary) !important;
-    color: var(--navy-deep);
-}
-
-.success-body .text-success {
-    color: #28a745 !important;
-}
-
-.success-body .text-primary {
-    color: var(--navy-deep) !important;
-}
-
-.success-body .btn-primary {
-    background: var(--gold-primary);
-    border-color: var(--gold-primary);
-    color: var(--navy-deep);
-    font-weight: 600;
-}
-
-.success-body .btn-primary:hover {
-    background: var(--gold-dark);
-    border-color: var(--gold-dark);
-}
+.success-body .btn-primary { min-height: 50px; display: inline-flex; align-items: center; justify-content: center; margin-top: 8px; font-weight: 700; }
 
 @media (max-width: 767px) {
-    .success-section {
-        margin-top: 70px;
-        padding: 20px 0;
-    }
-
-    .success-body {
-        padding: 1.5rem;
-    }
+    .success-section { padding: 24px 0 40px; }
+    .success-header { padding: 18px 20px; }
+    .success-body { padding: 20px; }
 }
 </style>
 @endpush

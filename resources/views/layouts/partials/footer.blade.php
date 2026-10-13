@@ -92,13 +92,13 @@
                 <a href="{{ route('home') }}" class="sf-brand">
                     <span class="sf-brand-mark">
                         @if($siteLogo)
-                            <img src="{{ $logoUrl }}" alt="JOSHA INFINITY INC SERVICE" loading="lazy">
+                            <img src="{{ $logoUrl }}" alt="JOSHA GOLD AND DIAMOND JEWELLERY" loading="lazy">
                         @else
                             <i class="fas fa-infinity"></i>
                         @endif
                     </span>
                     <span>
-                        <span class="sf-brand-name d-block">JOSHA INFINITY<br>INC SERVICE&reg;</span>
+                        <span class="sf-brand-name d-block">JOSHA GOLD AND<br>DIAMOND JEWELLERY</span>
                         <span class="sf-brand-sub d-block">Gold &amp; Silver Solutions</span>
                     </span>
                 </a>
@@ -187,7 +187,7 @@
         </nav>
         @endif
         <div class="container sf-bottom-inner">
-            <div>&copy; {{ date('Y') }} JOSHA INFINITY INC SERVICE&reg;. All Rights Reserved.</div>
+            <div>&copy; {{ date('Y') }} {{ config('company.name') }}. All Rights Reserved. &nbsp;·&nbsp; GSTIN {{ config('company.gstin') }}</div>
         </div>
     </div>
 </footer>

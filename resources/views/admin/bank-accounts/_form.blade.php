@@ -10,7 +10,7 @@
 
         <div class="mb-3">
             <label for="account_holder" class="form-label fw-semibold">Account Holder Name</label>
-            <input type="text" class="form-control @error('account_holder') is-invalid @enderror" id="account_holder" name="account_holder" value="{{ old('account_holder', $account?->account_holder) }}" placeholder="e.g. JOSHA INFINITY INC SERVICE" required>
+            <input type="text" class="form-control @error('account_holder') is-invalid @enderror" id="account_holder" name="account_holder" value="{{ old('account_holder', $account?->account_holder) }}" placeholder="e.g. JOSHA GOLD AND DIAMOND JEWELLERY" required>
             @error('account_holder') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
 

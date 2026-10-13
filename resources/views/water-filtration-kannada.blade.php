@@ -3,78 +3,68 @@
 @section('title', 'Water Filtration Project Kannada | Bengaluru Law House')
 
 @section('content')
-<section class="water-project-shell">
-    <a href="{{ asset('water-filtration-project-kannada.html') }}" class="floating-contact-btn water-download-btn" target="_blank" rel="noopener" aria-label="Download document" title="Download document">
-        <i class="fas fa-download"></i>
-    </a>
+<div class="jb-doc">
+    @include('layouts.partials.page-head', [
+        'eyebrow' => 'Project proposal',
+        'title'   => 'Water Filtration (Kannada)',
+        'crumbs'  => [['Notices & letters'], ['Water Filtration (Kannada)']],
+    ])
 
-    <iframe
-        src="{{ asset('water-filtration-project-kannada.html') }}"
-        title="Water Filtration Project Kannada"
-        class="water-project-frame"
-        loading="lazy"></iframe>
-</section>
+    <section class="water-project-shell">
+        <a href="{{ asset('water-filtration-project-kannada.html') }}" class="floating-contact-btn water-download-btn" target="_blank" rel="noopener" aria-label="Download document" title="Download document">
+            <i class="fas fa-download"></i>
+        </a>
+
+        <div class="jb-wrap">
+            <iframe
+                src="{{ asset('water-filtration-project-kannada.html') }}"
+                title="Water Filtration Project Kannada"
+                class="water-project-frame jb-paper"
+                loading="lazy"></iframe>
+        </div>
+    </section>
+</div>
 @endsection
 
 @push('styles')
 <style>
-    .water-project-shell {
-        position: relative;
-        background: #081324;
-        padding: calc(var(--nav-height) + 8px) 0 36px;
-        min-height: calc(100vh - var(--announcement-offset));
-    }
+    /* Document viewer: the letter sits on the dark page as a white sheet (.jb-paper) */
+    .jb-doc .jb-wrap { max-width: 1048px; }
+    .jb-doc .jb-pagehead { padding: 26px 0 22px; }
+    .jb-doc .jb-pagehead__crumbs { margin-bottom: 12px; }
+    .jb-doc .jb-pagehead__title { font-size: clamp(24px, 3.2vw, 34px); }
 
+    .water-project-shell { padding: 24px 0 40px; }
+
+    /* Once scrolled to, the sheet fills the screen below the sticky header */
     .water-project-frame {
         display: block;
         width: 100%;
-        height: calc(100vh - var(--nav-height) - var(--announcement-offset) - 44px);
-        min-height: 880px;
+        height: calc(100vh - var(--jb-header-h) - 32px);
+        height: calc(100dvh - var(--jb-header-h) - 32px);
+        min-height: 520px;
         border: 0;
-        background: #ffffff;
-        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
     }
 
-    .water-download-btn {
-        position: fixed;
-        right: 25px;
-        bottom: 175px;
-        z-index: 981;
-        background: linear-gradient(135deg, #c9a84c, #4fc3f7);
-        color: #081324;
+    /* Champagne round button, stacked above the WhatsApp button (54px at right 18px, bottom 18px) */
+    .jb-inner .water-download-btn {
+        right: 18px;
+        bottom: 84px;
+        border: 1px solid rgba(255, 255, 255, .55);
+        background: var(--jb-champagne);
+        color: #111;
+        font-size: 1.15rem;
     }
 
-    .water-download-btn:hover {
-        background: linear-gradient(135deg, #4fc3f7, #c9a84c);
-        color: #081324;
+    .jb-inner .water-download-btn:hover,
+    .jb-inner .water-download-btn:focus-visible {
+        background: #fff8ea;
+        color: #111;
     }
 
-    .water-download-btn .contact-btn-label {
-        background: rgba(12, 20, 40, 0.88);
-    }
-
-    @media (max-width: 991px) {
-        .water-project-frame {
-            height: calc(100vh - var(--nav-height) - var(--announcement-offset) - 36px);
-            min-height: 760px;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .water-project-shell {
-            padding-top: calc(var(--nav-height) + 4px);
-            padding-bottom: 82px;
-        }
-
-        .water-project-frame {
-            height: calc(100vh - var(--nav-height) - var(--announcement-offset) - 86px);
-            min-height: 680px;
-        }
-
-        .water-download-btn {
-            right: 20px;
-            bottom: 160px;
-        }
+    @media (min-width: 768px) {
+        .jb-doc .jb-pagehead { padding: 34px 0 28px; }
+        .water-project-shell { padding: 32px 0 56px; }
     }
 </style>
 @endpush

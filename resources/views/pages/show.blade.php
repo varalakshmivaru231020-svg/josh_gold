@@ -1,22 +1,18 @@
 @extends('layouts.lawfirm')
 
-@section('title', $page->title . ' | Bengaluru Law House')
+@section('title', $page->title . ' | JOSHA GOLD AND DIAMOND JEWELLERY')
 
 @section('content')
-<section class="cms-luxury-page">
-    <div class="cms-hero-header" @if($page->banner_image) style="background-image: linear-gradient(rgba(12,20,40,0.85), rgba(12,20,40,0.85)), url('{{ asset('storage/' . $page->banner_image) }}');" @endif>
-        <div class="container text-center" data-aos="fade-up">
-            <nav class="cms-breadcrumb mb-4">
-                <a href="{{ url('/') }}">Home</a>
-                <span class="sep">/</span>
-                <span class="curr">{{ $page->title }}</span>
-            </nav>
-            <h1 class="heading-premium text-white">{{ $page->banner_title ?? $page->title }}</h1>
-            <div class="accent-line-gold mx-auto"></div>
-        </div>
-    </div>
+{{-- The banner image chosen in admin sits behind the heading, darkened --}}
+<div class="cms-head{{ $page->banner_image ? ' cms-head--image' : '' }}" @if($page->banner_image) style="--cms-banner: url('{{ asset('storage/' . $page->banner_image) }}');" @endif>
+    @include('layouts.partials.page-head', [
+        'title'  => $page->banner_title ?? $page->title,
+        'crumbs' => [[$page->title]],
+    ])
+</div>
 
-    <div class="container py-5 mt-n5">
+<section class="cms-luxury-page">
+    <div class="jb-wrap cms-body">
         @php
             $hasContent = $page->content && trim(strip_tags($page->content)) !== '';
         @endphp
@@ -43,51 +39,49 @@
 
 @push('styles')
 <style>
-    .cms-luxury-page { background: var(--cream); min-height: 80vh; padding-bottom: 120px; }
-    
-    .cms-hero-header { 
-        background: var(--navy); 
-        padding: 180px 0 140px; 
-        position:relative; 
-        overflow:hidden; 
-        background-size: cover; 
-        background-position: center; 
+    .cms-head--image .jb-pagehead {
+        background: linear-gradient(rgba(0, 0, 0, .78), rgba(0, 0, 0, .9)), var(--cms-banner) center / cover no-repeat, var(--jb-black);
     }
-    .cms-hero-header::before {
-        content: ''; position: absolute; inset: 0;
-        background-image: 
-            linear-gradient(rgba(201, 168, 76, 0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(201, 168, 76, 0.04) 1px, transparent 1px);
-        background-size: 50px 50px;
+    @media (min-width: 768px) { .cms-head--image .jb-pagehead { padding: 80px 0 72px; } }
+
+    .cms-luxury-page { padding-bottom: 56px; }
+    .cms-body { padding-top: 32px; padding-bottom: 16px; }
+    @media (min-width: 768px) { .cms-body { padding-top: 48px; } }
+
+    .cms-content-card {
+        position: relative; padding: 48px;
+        border: 1px solid var(--jb-line); border-radius: var(--jb-r-card);
+        background: linear-gradient(180deg, rgba(201, 163, 92, .05), transparent 40%), var(--jb-panel);
     }
-    .cms-hero-header::after { 
-        content:''; position:absolute; inset:0; 
-        background: radial-gradient(circle at 50% 120%, rgba(201,168,76,0.15) 0%, transparent 60%); 
+    .cms-content-card::before {
+        content: ''; position: absolute; top: -1px; left: 18%; right: 18%; height: 1px;
+        background: linear-gradient(90deg, transparent, var(--jb-gold-deep), transparent);
     }
-    
-    .cms-breadcrumb { display:flex; align-items:center; justify-content:center; gap:10px; font-size:0.85rem; letter-spacing:2px; text-transform:uppercase; z-index:2; position:relative; font-weight: 700; }
-    .cms-breadcrumb a { color: var(--gold); text-decoration:none; transition: all 0.3s; }
-    .cms-breadcrumb a:hover { color: white; }
-    .cms-breadcrumb .sep { color: rgba(255,255,255,0.3); }
-    .cms-breadcrumb .curr { color: white; opacity:0.8; }
 
-    .cms-content-card { background: white; padding: 80px; border-radius: 40px; box-shadow: 0 40px 100px rgba(0,0,0,0.06); border: 1px solid rgba(201,168,76,0.1); position:relative; }
-    .cms-content-card::before { content:''; position:absolute; top:0; left:50px; right:50px; height:5px; background:linear-gradient(90deg, var(--gold), var(--gold-dark)); border-radius:0 0 10px 10px; }
-
-    .rich-text-legal { font-size: 1.15rem; line-height: 1.9; color: var(--text-muted); }
-    .rich-text-legal h2 { font-family: var(--font-display); color: var(--navy); font-size: 2.5rem; margin-top: 50px; margin-bottom: 25px; font-weight: 700; border-bottom: 1px solid var(--cream-dark); padding-bottom: 20px; }
-    .rich-text-legal p { margin-bottom: 30px; }
-    .rich-text-legal ul { margin-bottom: 30px; padding-left: 25px; }
-    .rich-text-legal li { margin-bottom: 15px; position:relative; list-style: none; }
-    .rich-text-legal li::before { content: '◈'; position:absolute; left:-35px; color: var(--gold-dark); font-size: 0.9rem; }
-
-    .mt-n5 { margin-top: -100px !important; }
-
-    .accent-line-gold { width: 80px; height: 3px; background: var(--gold); margin-top: 25px; z-index: 2; position: relative; }
+    .rich-text-legal { font-size: 16.5px; line-height: 1.85; color: var(--jb-text); overflow-wrap: break-word; }
+    .rich-text-legal h2 {
+        margin-top: 40px; margin-bottom: 20px; padding-bottom: 16px;
+        border-bottom: 1px solid var(--jb-line-soft);
+        font-family: var(--jb-serif); color: var(--jb-white); font-size: 30px; font-weight: 600;
+    }
+    .rich-text-legal h3, .rich-text-legal h4 { font-family: var(--jb-serif); color: var(--jb-white); font-weight: 600; }
+    .rich-text-legal p { margin-bottom: 24px; }
+    .rich-text-legal a { color: var(--jb-gold-light); }
+    .rich-text-legal a:hover { color: var(--jb-white); }
+    .rich-text-legal strong, .rich-text-legal b { color: var(--jb-white); }
+    .rich-text-legal img { max-width: 100%; height: auto; border-radius: 12px; }
+    .rich-text-legal ul { margin-bottom: 24px; padding-left: 28px; }
+    .rich-text-legal li { margin-bottom: 12px; position: relative; list-style: none; }
+    .rich-text-legal li::before { content: '◈'; position: absolute; left: -26px; color: var(--jb-gold); font-size: 0.9rem; }
 
     @media (max-width: 991px) {
-        .cms-content-card { padding: 40px; }
-        .rich-text-legal h2 { font-size: 2rem; }
+        .cms-content-card { padding: 32px; }
+        .rich-text-legal h2 { font-size: 26px; }
+    }
+    @media (max-width: 575px) {
+        .cms-content-card { padding: 22px; }
+        .rich-text-legal { font-size: 15.5px; }
+        .rich-text-legal h2 { font-size: 22px; }
     }
 </style>
 @endpush

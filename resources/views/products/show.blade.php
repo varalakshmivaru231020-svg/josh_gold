@@ -1,33 +1,22 @@
 @extends('layouts.lawfirm')
 
-@section('title', $product->name . ' | Bengaluru Law House')
+@section('title', $product->name . ' | JOSHA GOLD AND DIAMOND JEWELLERY')
 
 @section('content')
+@include('layouts.partials.page-head', [
+    'eyebrow' => 'Legal Publication',
+    'title'   => $product->name,
+    'crumbs'  => [['Publications', route('products.index')], [Str::limit($product->name, 40)]],
+])
+
 <section class="product-detail-page">
 
-    {{-- Hero Banner --}}
-    <div class="product-hero-header">
-        <div class="product-hero-deco" aria-hidden="true"><i class="fas fa-book-open"></i></div>
-        <div class="container" data-aos="fade-up">
-            <nav class="product-breadcrumb mb-3">
-                <a href="{{ route('home') }}">Home</a>
-                <span class="sep">/</span>
-                <a href="{{ route('products.index') }}">Publications</a>
-                <span class="sep">/</span>
-                <span class="curr">{{ Str::limit($product->name, 40) }}</span>
-            </nav>
-            <div class="label-gold mb-2">Legal Publication</div>
-            <h1 class="heading-premium text-white">{{ $product->name }}</h1>
-            <div class="accent-line-gold"></div>
-        </div>
-    </div>
-
-    <div class="container product-content-container">
+    <div class="jb-wrap product-content-container">
         <div class="product-main-card" data-aos="fade-up">
             <div class="row g-0">
                 <!-- Product Gallery -->
                 <div class="col-lg-6">
-                    <div class="product-gallery-premium p-5 border-end">
+                    <div class="product-gallery-premium p-5">
                         @if($product->images && count($product->images) > 0)
                             <div class="glide product-main-slider">
                                 <div class="glide__track" data-glide-el="track">
@@ -60,8 +49,8 @@
                             @endif
                         @else
                             <div class="product-no-image">
-                                <i class="fas fa-book-open fa-5x opacity-25"></i>
-                                <span class="d-block mt-3 opacity-50">Visual Archive Pending</span>
+                                <i class="fas fa-book-open fa-5x"></i>
+                                <span class="d-block mt-3">Visual Archive Pending</span>
                             </div>
                         @endif
                     </div>
@@ -71,7 +60,7 @@
                 <div class="col-lg-6">
                     <div class="product-details-premium p-5">
                         <div class="label-gold mb-3">Legal Publication @if($product->edition)| {{ $product->edition }} @endif</div>
-                        <h2 class="font-display text-navy mb-4 h1 fw-bold">{{ $product->name }}</h2>
+                        <h2 class="product-title mb-4">{{ $product->name }}</h2>
                         
                         <div class="price-box-premium mb-4">
                             <span class="currency">₹</span>
@@ -85,14 +74,14 @@
                         </div>
 
                         <div class="description-premium mb-5">
-                            <h5 class="text-navy font-display fw-bold mb-3 border-bottom pb-2">Description</h5>
-                            <div class="abstract-content text-muted line-height-18">
+                            <h5 class="description-title">Description</h5>
+                            <div class="abstract-content">
                                 {!! $product->description !!}
                             </div>
                         </div>
 
                         @if($product->stock > 0)
-                            <div class="purchase-box-premium bg-cream rounded-4 p-4 shadow-sm border border-gold-light">
+                            <div class="purchase-box-premium p-4">
                                 <form id="purchaseForm" action="{{ route('checkout', $product) }}" method="GET">
                                     <div class="row align-items-center mb-4">
                                         <div class="col-sm-6">
@@ -122,9 +111,9 @@
                                             <span>Referral Discount</span>
                                             <span>-₹<span id="discountAmount">0.00</span></span>
                                         </div>
-                                        <div class="summary-line total pt-2 border-top">
+                                        <div class="summary-line total">
                                             <span>Total Amount</span>
-                                            <span class="text-navy fw-bold h4 mb-0">₹<span id="totalAmountFinal">{{ number_format($product->price, 2) }}</span></span>
+                                            <span class="total-value">₹<span id="totalAmountFinal">{{ number_format($product->price, 2) }}</span></span>
                                         </div>
                                     </div>
 
@@ -144,16 +133,16 @@
                                         </div>
                                     @endif
 
-                                    <button type="submit" class="btn-primary-gold w-100 py-3 shadow-lg border-0 d-flex align-items-center justify-content-center gap-2">
+                                    <button type="submit" class="btn-primary-gold w-100 d-flex align-items-center justify-content-center gap-2">
                                         <i class="fas fa-shopping-cart"></i> Proceed to Checkout
                                     </button>
                                 </form>
                             </div>
                         @else
                             <div class="out-of-stock-premium">
-                                <i class="fas fa-archive fa-2x mb-3 text-gold"></i>
+                                <i class="fas fa-archive fa-2x mb-3"></i>
                                 <h4>Edition Currently Unavailable</h4>
-                                <p class="mb-0 opacity-75">This prestigious publication is temporarily out of vault. Please contact our chambers for replenishment updates.</p>
+                                <p class="mb-0">This prestigious publication is temporarily out of vault. Please contact our chambers for replenishment updates.</p>
                             </div>
                         @endif
 
@@ -168,10 +157,10 @@
         </div>
 
         @if($relatedProducts->count() > 0)
-            <div class="related-section-lux mt-5 pt-5">
+            <div class="related-section-lux">
                 <div class="section-header mb-4" data-aos="fade-up">
                     <span class="label-gold">Curated Collection</span>
-                    <h2 class="title-premium text-navy">Related Treatises</h2>
+                    <h2 class="title-premium">Related Treatises</h2>
                 </div>
                 <div class="row g-4">
                     @foreach($relatedProducts as $relatedProduct)
@@ -188,8 +177,8 @@
                                 </div>
                                 <div class="treatise-body">
                                     <h5 class="treatise-name font-display">{{ Str::limit($relatedProduct->name, 50) }}</h5>
-                                    <div class="h5 text-gold fw-bold mb-3">₹{{ number_format($relatedProduct->price, 0) }}</div>
-                                    <a href="{{ route('products.show', $relatedProduct) }}" class="btn-royal-sm w-100">View Detail</a>
+                                    <div class="treatise-price">₹{{ number_format($relatedProduct->price, 0) }}</div>
+                                    <a href="{{ route('products.show', $relatedProduct) }}" class="btn-royal-sm jb-btn jb-btn--primary w-100">View Detail</a>
                                 </div>
                             </div>
                         </div>
@@ -203,111 +192,120 @@
 
 @push('styles')
 <style>
-    .product-detail-page { background: var(--cream, #f8f5ef); min-height: 80vh; padding-bottom: 120px; }
+    .product-detail-page { background: var(--jb-ground); padding: 32px 0 48px; }
+    @media (min-width: 768px) { .product-detail-page { padding: 48px 0 64px; } }
 
-    .product-hero-header {
-        background: 
-            linear-gradient(rgba(8,14,28,0.82) 0%, rgba(10,18,36,0.85) 100%),
-            url('/images/publications-banner.jpg') center center / cover no-repeat;
-        padding: 140px 0 80px;
-        position: relative;
-        overflow: hidden;
-        z-index: 0;
+    /* Main card */
+    .product-main-card { overflow: hidden; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel); box-shadow: 0 16px 36px -14px rgba(0, 0, 0, .9); }
+
+    /* Gallery */
+    .product-gallery-premium { position: relative; height: 100%; border-right: 1px solid var(--jb-line); background: radial-gradient(circle at 50% 42%, #17171b 0%, #08080a 90%); }
+    .product-main-slider { position: relative; }
+    .main-image-wrap { height: 460px; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .main-image-wrap img { max-height: 100%; max-width: 100%; object-fit: contain; border-radius: 12px; filter: drop-shadow(0 18px 30px rgba(0, 0, 0, .7)); transition: transform .5s; }
+    @media (hover: hover) { .main-image-wrap img:hover { transform: scale(1.03); } }
+
+    .glide-nav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center;
+        border: 1px solid var(--jb-line); border-radius: 50%; background: rgba(0, 0, 0, .6); backdrop-filter: blur(8px); color: var(--jb-white); cursor: pointer; transition: background-color .15s, border-color .15s, color .15s; }
+    .glide-nav:hover { background: var(--jb-champagne); border-color: var(--jb-champagne); color: #111; }
+    .glide-nav.prev { left: 6px; }
+    .glide-nav.next { right: 6px; }
+
+    .thumb-nav-flex { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .thumb-nav-item { width: 72px; height: 72px; padding: 6px; border: 1px solid var(--jb-line); border-radius: var(--jb-r-ctl); background: var(--jb-panel-2); cursor: pointer; transition: border-color .15s, background-color .15s; }
+    .thumb-nav-item.active, .thumb-nav-item:hover { border-color: var(--jb-gold-light); background: var(--jb-panel-3); }
+    .thumb-nav-item img { width: 100%; height: 100%; object-fit: contain; border-radius: 6px; }
+
+    .product-no-image { height: 460px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--jb-muted); }
+    .product-no-image i { color: var(--jb-gold); opacity: .35; }
+
+    /* Details */
+    .product-details-premium .label-gold { color: var(--jb-gold); font-size: 10.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+    .product-title { color: var(--jb-white); font: 600 clamp(26px, 3vw, 34px)/1.2 var(--jb-serif); }
+
+    .price-box-premium { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; }
+    .price-box-premium .currency { color: var(--jb-gold-light); font: 600 1.8rem/1 var(--jb-serif); }
+    .price-box-premium .amount { color: var(--jb-gold-light); font: 600 clamp(2.1rem, 4vw, 2.6rem)/1 var(--jb-serif); font-variant-numeric: tabular-nums; }
+    .price-box-premium .tax-tag { margin-left: 4px; color: var(--jb-muted); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
+
+    .product-meta-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+    .meta-pill { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; padding: 0 12px; border: 1px solid var(--jb-line); border-radius: var(--jb-r-ctl); background: var(--jb-panel-2); color: var(--jb-text); font-size: 12.5px; font-weight: 600; }
+    .meta-pill i { color: var(--jb-gold-light); }
+
+    .description-title { margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--jb-line-soft); color: var(--jb-white); font: 600 18px/1.3 var(--jb-serif); }
+    .abstract-content { color: var(--jb-muted); font-size: 14.5px; line-height: 1.75; }
+    .abstract-content :where(p, ul, ol):last-child { margin-bottom: 0; }
+    .abstract-content :where(strong, b, h1, h2, h3, h4, h5, h6) { color: var(--jb-white); }
+    .abstract-content a { color: var(--jb-gold-light); }
+
+    /* Purchase box */
+    .purchase-box-premium { border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: linear-gradient(180deg, rgba(201, 163, 92, .06), transparent 60%), var(--jb-panel-2); }
+    .label-gold-sm { color: var(--jb-gold); font-size: 10.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+
+    .qty-selector-lux { display: flex; align-items: center; max-width: 140px; overflow: hidden; border: 1px solid var(--jb-line); border-radius: var(--jb-r-ctl); background: var(--jb-panel); }
+    .qty-btn-lux { padding: 10px 15px; border: 0; background: transparent; color: var(--jb-white); cursor: pointer; transition: background-color .15s, color .15s; }
+    .qty-btn-lux:hover { background: rgba(255, 255, 255, .08); color: var(--jb-gold-light); }
+    .qty-selector-lux input { width: 40px; border: 0; background: transparent; color: var(--jb-white); font-weight: 700; text-align: center; -moz-appearance: textfield; appearance: textfield; }
+    .qty-selector-lux input::-webkit-outer-spin-button, .qty-selector-lux input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .qty-selector-lux input:focus { outline: none; }
+
+    .referral-flex { display: flex; gap: 8px; }
+    .form-luxury-sm { width: 100%; min-width: 0; padding: 10px 14px; border: 1px solid var(--jb-line); border-radius: var(--jb-r-ctl); background: var(--jb-panel); color: var(--jb-white); font-size: 0.9rem; transition: border-color .15s, box-shadow .15s; }
+    .form-luxury-sm::placeholder { color: #7d7d7d; }
+    .form-luxury-sm:focus { outline: none; border-color: rgba(234, 215, 166, .55); box-shadow: 0 0 0 .2rem rgba(234, 215, 166, .15); background: var(--jb-panel-2); }
+    .btn-apply-lux { padding: 0 16px; border: 1px solid var(--jb-line); border-radius: var(--jb-r-ctl); background: transparent; color: var(--jb-white); font-size: 12.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; cursor: pointer; transition: background-color .15s, border-color .15s; }
+    .btn-apply-lux:hover { background: rgba(255, 255, 255, .08); border-color: rgba(255, 255, 255, .7); }
+    .btn-apply-lux:disabled { opacity: .7; cursor: default; }
+    .referral-msg.text-success { color: var(--jb-up) !important; }
+    .referral-msg.text-danger { color: var(--jb-down) !important; }
+
+    .summary-box-lux .summary-line { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; color: var(--jb-muted); font-size: 0.95rem; font-weight: 600; }
+    .summary-box-lux .summary-line.discount { color: var(--jb-up); }
+    .summary-box-lux .summary-line.total { margin: 12px 0 0; padding-top: 12px; border-top: 1px solid var(--jb-line); color: var(--jb-text); }
+    .summary-box-lux .total-value { color: var(--jb-white); font: 600 1.4rem/1.2 var(--jb-serif); font-variant-numeric: tabular-nums; }
+
+    .btn-primary-gold { min-height: 50px; border: 0; border-radius: var(--jb-r-btn); background: var(--jb-champagne); color: #111; font-weight: 700; font-size: 15px; cursor: pointer; box-shadow: 0 10px 28px -12px rgba(234, 215, 166, .45); transition: background-color .15s, transform .15s; }
+    .btn-primary-gold:hover { background: #fff8ea; }
+    .btn-primary-gold:active { background: var(--jb-champagne-down); transform: translateY(1px); }
+
+    .out-of-stock-premium { padding: 32px 24px; border: 1px dashed var(--jb-line-strong); border-radius: var(--jb-r-card); background: rgba(201, 163, 92, .05); text-align: center; color: var(--jb-muted); }
+    .out-of-stock-premium i { color: var(--jb-gold); }
+    .out-of-stock-premium h4 { color: var(--jb-white); font-size: 20px; }
+
+    .trust-flex-premium { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px 24px; padding-top: 20px; border-top: 1px solid var(--jb-line-soft); }
+    .trust-item { display: flex; align-items: center; gap: 8px; color: var(--jb-muted); font-size: 13px; font-weight: 700; }
+    .trust-item i { color: var(--jb-gold-light); font-size: 1.05rem; }
+
+    /* Related */
+    .related-section-lux { margin-top: 40px; padding-top: 36px; border-top: 1px solid var(--jb-line-soft); }
+    .related-section-lux .label-gold { display: block; color: var(--jb-gold); font-size: 10.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+    .related-section-lux .title-premium { margin: 6px 0 0; font-size: 20px; font-weight: 600; line-height: 1.25; }
+    @media (min-width: 768px) { .related-section-lux .title-premium { font-size: 26px; } }
+
+    .treatise-premium-card { position: relative; display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-black); box-shadow: 0 4px 10px rgba(0, 0, 0, .8); transition: transform .2s, border-color .2s, box-shadow .2s; }
+    .treatise-premium-card::after { content: ""; position: absolute; left: 18%; right: 18%; bottom: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--jb-gold-deep), transparent); opacity: .8; }
+    @media (hover: hover) {
+        .treatise-premium-card:hover { transform: translateY(-3px); border-color: var(--jb-line-strong); box-shadow: 0 16px 36px -12px rgba(0, 0, 0, .9); }
+        .treatise-premium-card:hover .treatise-img-box img { transform: scale(1.04); }
     }
-
-    .product-hero-header::before {
-        content: ''; position: absolute; inset: 0; z-index: 0;
-        background-image:
-            linear-gradient(rgba(201, 168, 76, 0.055) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(201, 168, 76, 0.055) 1px, transparent 1px);
-        background-size: 55px 55px;
-    }
-
-    .product-hero-header::after {
-        content:''; position: absolute; inset:0; z-index: 0;
-        background:
-            radial-gradient(ellipse at 10% 50%, rgba(201,168,76,0.12) 0%, transparent 50%),
-            radial-gradient(ellipse at 90% 50%, rgba(201,168,76,0.08) 0%, transparent 50%),
-            radial-gradient(ellipse at 50% 110%, rgba(201,168,76,0.18) 0%, transparent 45%),
-            linear-gradient(120deg, rgba(20,35,70,0.85) 0%, rgba(8,14,28,0.6) 50%, rgba(15,28,55,0.9) 100%);
-    }
-
-    .product-hero-deco {
-        position: absolute; right: 7%; top: 50%; transform: translateY(-50%);
-        font-size: 14rem; color: rgba(201,168,76,0.06);
-        pointer-events: none; z-index: 0; line-height: 1;
-    }
-
-    .product-hero-header .container { position: relative; z-index: 1; }
-    .product-hero-header .label-gold { display: block; }
-    .product-hero-header .heading-premium { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; }
-    .accent-line-gold { width: 80px; height: 3px; background: var(--gold, #c9a84c); margin-top: 25px; border-radius: 2px; position: relative; z-index: 2; }
-
-    .product-breadcrumb { display: flex; align-items: center; gap: 10px; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; position: relative; z-index: 2; }
-    .product-breadcrumb a { color: var(--gold, #c9a84c); text-decoration:none; transition: 0.3s; }
-    .product-breadcrumb a:hover { color: white; }
-    .product-breadcrumb .sep { color: rgba(255,255,255,0.3); }
-    .product-breadcrumb .curr { color: white; opacity: 0.7; }
-
-    .product-content-container { padding-top: 60px; padding-bottom: 60px; }
-    .product-main-card { background: white; border-radius: 40px; overflow: hidden; box-shadow: 0 40px 100px rgba(0,0,0,0.08); border: 1px solid rgba(201,168,76,0.12); }
-
-    .main-image-wrap { height: 500px; display: flex; align-items: center; justify-content: center; padding: 40px; }
-    .main-image-wrap img { max-height: 100%; max-width: 100%; object-fit: contain; filter: drop-shadow(15px 15px 30px rgba(0,0,0,0.2)); transition: 0.5s; }
-    .main-image-wrap img:hover { transform: scale(1.03); }
-
-    .glide-nav { position:absolute; top:50%; transform:translateY(-50%); width:45px; height:45px; background:white; border:1px solid var(--gold); border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--navy); cursor:pointer; transition:0.3s; z-index:2; }
-    .glide-nav:hover { background:var(--gold); color:white; }
-    .glide-nav.prev { left: 15px; }
-    .glide-nav.next { right: 15px; }
-
-    .thumb-nav-flex { display: flex; gap: 15px; justify-content: center; }
-    .thumb-nav-item { width: 80px; height: 80px; border-radius: 12px; border: 2px solid transparent; cursor: pointer; padding: 8px; background: var(--cream); transition: 0.3s; }
-    .thumb-nav-item.active, .thumb-nav-item:hover { border-color: var(--gold); background: white; }
-    .thumb-nav-item img { width: 100%; height: 100%; object-fit: contain; }
-
-    .price-box-premium { display: flex; flex-direction: row; align-items: baseline; gap: 8px; flex-wrap: nowrap; }
-    .price-box-premium .currency { display: inline-block; font-size: 2.2rem; color: var(--navy, #0c1428); font-weight: 800; line-height: 1; }
-    .price-box-premium .amount { display: inline-block; font-size: 3rem; color: var(--navy, #0c1428); font-weight: 800; font-family: var(--font-display); line-height: 1; }
-    .price-box-premium .tax-tag { display: inline-block; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
-
-    .meta-pill { display: inline-flex; align-items: center; gap: 8px; background: var(--cream); color: var(--navy); padding: 6px 16px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(201,168,76,0.15); margin-right: 10px; }
-    .meta-pill i { color: var(--gold); }
-
-    .qty-selector-lux { display: flex; align-items: center; background: white; border: 1px solid rgba(201,168,76,0.3); border-radius: 12px; overflow: hidden; max-width: 140px; }
-    .qty-btn-lux { border: none; background: transparent; padding: 10px 15px; color: var(--navy); cursor: pointer; transition: 0.3s; }
-    .qty-btn-lux:hover { background: var(--gold); color: white; }
-    .qty-selector-lux input { width: 40px; text-align: center; border: none; font-weight: 700; color: var(--navy); background: transparent; }
-
-    .referral-flex { display: flex; gap: 10px; }
-    .form-luxury-sm { border: 1px solid rgba(201,168,76,0.3); background: white; padding: 10px 15px; border-radius: 12px; width: 100%; font-size: 0.9rem; color: var(--navy); }
-    .btn-apply-lux { background: var(--navy); color: white; border: none; padding: 0 20px; border-radius: 12px; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; transition: 0.3s; white-space: nowrap; cursor: pointer; }
-    .btn-apply-lux:hover { background: var(--gold); color: var(--navy); }
-
-    .summary-box-lux .summary-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; color: var(--text-muted); font-weight: 600; }
-    .summary-box-lux .summary-line.discount { color: #25d366; }
-
-    .trust-flex-premium { display: flex; flex-wrap: wrap; gap: 25px; align-items: center; justify-content: center; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 20px; margin-top: 20px; }
-    .trust-item { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
-    .trust-item i { color: var(--gold); font-size: 1.1rem; }
-
-    .out-of-stock-premium { background: rgba(201,168,76,0.05); padding: 40px; border-radius: 24px; border: 2px dashed var(--gold); text-align: center; color: var(--navy); }
-    .btn-outline-gold { background: transparent; color: var(--gold); border: 2px solid var(--gold); border-radius: 12px; font-weight: 700; transition: 0.3s; }
-    .btn-outline-gold:hover { background: var(--gold); color: white; }
-    .btn-primary-gold { background: var(--gold); color: white; border-radius: 12px; font-weight: 700; transition: 0.3s; border: none; cursor: pointer; }
-    .btn-primary-gold:hover { background: var(--gold-dark); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-    
-    .product-no-image { height: 500px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--cream); }
+    .treatise-img-box { position: relative; aspect-ratio: 1; overflow: hidden; background: radial-gradient(circle at 50% 42%, #15151a 0%, #08080a 95%); }
+    .treatise-img-box img { width: 100%; height: 100%; object-fit: cover; transition: transform .45s; }
+    .treatise-placeholder { height: 100%; display: grid; place-items: center; color: var(--jb-gold); font-size: 2.6rem; opacity: .4; }
+    .treatise-body { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 12px 14px; text-align: center; }
+    .treatise-name { margin: 0; min-height: 2.6em; color: var(--jb-white); font: 500 15px/1.3 var(--jb-serif); }
+    .treatise-price { color: var(--jb-gold-light); font: 600 16.5px/1.2 var(--jb-serif); font-variant-numeric: tabular-nums; }
+    .btn-royal-sm { min-height: 38px; margin-top: 10px; font-size: 13px; }
 
     @media (max-width: 991px) {
-        .product-gallery-premium { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .product-main-card { border-radius: 24px; }
-        .main-image-wrap { height: 350px; }
+        .product-gallery-premium { height: auto; border-right: 0; border-bottom: 1px solid var(--jb-line); }
+        .main-image-wrap, .product-no-image { height: 340px; }
     }
     @media (max-width: 576px) {
-        .product-content-container { padding-top: 40px; }
-        .product-details-premium { padding: 28px !important; }
-        .product-gallery-premium { padding: 28px !important; }
+        .product-details-premium { padding: 22px !important; }
+        .product-gallery-premium { padding: 20px !important; }
+        .purchase-box-premium { padding: 18px !important; }
+        .main-image-wrap, .product-no-image { height: 280px; }
+        .main-image-wrap { padding: 12px; }
     }
 </style>
 @endpush

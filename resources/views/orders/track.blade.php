@@ -1,18 +1,20 @@
 @extends('layouts.lawfirm')
 
-@section('title', 'Track Your Order - Bengaluru Law House')
+@section('title', 'Track Your Order - JOSHA GOLD AND DIAMOND JEWELLERY')
 
 @section('content')
+@include('layouts.partials.page-head', [
+    'title'  => 'Track Your',
+    'accent' => 'Order',
+    'crumbs' => [['Track Your Order']],
+])
+
 <section class="track-order-wrapper">
-    <div class="container py-5">
+    <div class="jb-wrap">
         <div class="row justify-content-center">
-            <div class="col-lg-8">
+            <div class="col-lg-9 col-xl-8">
                 <!-- Track Card -->
                 <div class="premium-track-card">
-                    <div class="track-card-header">
-                        <h4 class="mb-0"><i class="fas fa-truck-moving me-2"></i>Track Your Order</h4>
-                    </div>
-                    
                     <div class="track-card-body">
                         <!-- Search Form -->
                         <div class="search-container mb-5">
@@ -24,7 +26,7 @@
                                            value="{{ request('tracking_id') }}"
                                            placeholder="Enter your Order Number or Tracking ID"
                                            required>
-                                    <button class="btn btn-track" type="submit">
+                                    <button class="btn-track" type="submit">
                                         <i class="fas fa-search me-1"></i> Track
                                     </button>
                                 </div>
@@ -119,7 +121,7 @@
 
                                 @if($order->tracking_url)
                                     <div class="text-center mt-3">
-                                        <a href="{{ $order->tracking_url }}" target="_blank" class="btn btn-track-link">
+                                        <a href="{{ $order->tracking_url }}" target="_blank" class="jb-btn jb-btn--ghost btn-track-link">
                                             Track on Carrier Website <i class="fas fa-external-link-alt ms-2"></i>
                                         </a>
                                     </div>
@@ -129,16 +131,16 @@
                             <!-- Not Found -->
                             <div class="not-found-state py-5 text-center fadeIn">
                                 <div class="not-found-icon mb-4">
-                                    <i class="fas fa-search-minus fa-4x text-muted"></i>
+                                    <i class="fas fa-search-minus fa-4x"></i>
                                 </div>
-                                <h4 class="text-dark">Order Not Found</h4>
+                                <h4 class="not-found-title">Order Not Found</h4>
                                 <p class="text-muted px-lg-5">We couldn't find any order with the provided ID. Please double check your order number and try again.</p>
                             </div>
                         @else
                             <!-- Default Landing State -->
                             <div class="landing-state py-4 text-center">
                                 <div class="main-illustration mb-4">
-                                    <i class="fas fa-truck fa-5x text-gold"></i>
+                                    <i class="fas fa-truck fa-4x"></i>
                                 </div>
                                 <h4 class="track-title mb-4">Track Your Order</h4>
                                 <p class="text-muted mb-5">Enter your order number or tracking ID above to check the status of your order.</p>
@@ -177,7 +179,7 @@
                     </div>
                     
                     <div class="track-card-footer">
-                        <p class="mb-0 small text-muted">Need help finding your order? <a href="{{ route('contact') }}" class="text-gold">Contact Support</a></p>
+                        <p class="mb-0 small text-muted">Need help finding your order? <a href="{{ route('contact') }}" class="jb-link">Contact Support</a></p>
                     </div>
                 </div>
             </div>
@@ -187,276 +189,89 @@
 
 @push('styles')
 <style>
-    :root {
-        --navy-dark: #1A2332;
-        --gold-primary: #C9A227;
-        --gold-light: #E5C158;
-        --cream-bg: #FCF9F2;
-        --text-dark: #333333;
-    }
+    .track-order-wrapper { background: var(--jb-ground); padding: 32px 0 48px; }
+    @media (min-width: 768px) { .track-order-wrapper { padding: 48px 0 64px; } }
 
-    .track-order-wrapper {
-        background-color: var(--cream-bg);
-        min-height: 80vh;
-        padding-top: 100px;
-    }
+    .premium-track-card { overflow: hidden; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: linear-gradient(180deg, rgba(201, 163, 92, .05), transparent 220px), var(--jb-panel); box-shadow: 0 16px 36px -14px rgba(0, 0, 0, .9); }
+    .track-card-body { padding: 22px; }
+    @media (min-width: 768px) { .track-card-body { padding: 36px; } }
 
-    .premium-track-card {
-        background: #ffffff;
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        overflow: hidden;
-        border: 1px solid rgba(0,0,0,0.05);
-    }
+    /* Search */
+    .search-container .input-group { flex-wrap: nowrap; gap: 6px; padding: 6px; border: 1px solid var(--jb-line); border-radius: var(--jb-r-btn); background: var(--jb-black); transition: border-color .15s, box-shadow .15s; }
+    .search-container .input-group:focus-within { border-color: rgba(234, 215, 166, .55); box-shadow: 0 0 0 .2rem rgba(234, 215, 166, .12); }
+    .search-container .form-control { min-width: 0; padding: 10px 12px; border: 0; border-radius: 10px !important; background: transparent; color: var(--jb-white); font-size: 15px; }
+    .search-container .form-control:focus { background: transparent; box-shadow: none; }
+    .btn-track { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 0 22px; border: 0; border-radius: 10px !important; background: var(--jb-champagne); color: #111; font-weight: 700; font-size: 14px; cursor: pointer; transition: background-color .15s; }
+    .btn-track:hover { background: #fff8ea; }
+    .search-hint { color: var(--jb-muted); font-size: 12.5px; line-height: 1.55; }
 
-    .track-card-header {
-        background-color: var(--navy-dark);
-        color: #fff;
-        padding: 20px 30px;
-        border-bottom: 4px solid var(--gold-primary);
-    }
+    /* Landing state */
+    .main-illustration i { color: var(--jb-gold); opacity: .9; }
+    .track-title { color: var(--jb-white); font: 600 clamp(22px, 3vw, 26px)/1.25 var(--jb-serif); }
+    .landing-state > .text-muted { max-width: 520px; margin-left: auto; margin-right: auto; }
 
-    .track-card-header h4 {
-        font-weight: 700;
-        letter-spacing: 0.5px;
-    }
+    .feature-card { height: 100%; padding: 20px 16px; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel-2); transition: transform .2s, border-color .2s; }
+    @media (hover: hover) { .feature-card:hover { transform: translateY(-3px); border-color: var(--jb-line-strong); } }
+    .feature-icon { width: 46px; height: 46px; display: grid; place-items: center; margin: 0 auto 14px; border: 1px solid var(--jb-line); border-radius: 13px; background: #0a0a0b; color: var(--jb-gold-light); font-size: 1.1rem; }
+    .feature-card h5 { margin-bottom: 6px; color: var(--jb-white); font: 600 16px/1.3 var(--jb-serif); }
 
-    .track-card-body {
-        padding: 40px;
-    }
+    /* Not found */
+    .not-found-icon i { color: var(--jb-muted); opacity: .6; }
+    .not-found-title { color: var(--jb-white); font: 600 22px/1.3 var(--jb-serif); }
 
-    /* Search Input Styling */
-    .search-container .input-group {
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        overflow: hidden;
-        background: #fff;
-    }
+    /* Result summary */
+    .status-summary { padding-bottom: 18px; border-bottom: 1px solid var(--jb-line-soft); }
+    .order-id { margin-bottom: 4px; color: var(--jb-white); font: 600 20px/1.3 var(--jb-serif); word-break: break-word; }
 
-    .search-container .form-control {
-        border: none;
-        padding: 15px 20px;
-        font-size: 1.05rem;
-    }
+    .status-badge { display: inline-flex; align-items: center; min-height: 28px; margin-top: 10px; padding: 0 14px; border: 1px solid var(--jb-line); border-radius: 999px; background: var(--jb-panel-2); color: var(--jb-text); font-size: 12.5px; font-weight: 700; letter-spacing: .02em; }
+    @media (min-width: 768px) { .status-badge { margin-top: 0; } }
+    .status-badge.pending { color: #ffd59a; background: rgba(255, 170, 60, .12); border-color: rgba(255, 170, 60, .4); }
+    .status-badge.confirmed, .status-badge.processing { color: var(--jb-gold-light); background: rgba(201, 163, 92, .16); border-color: rgba(201, 163, 92, .4); }
+    .status-badge.shipped, .status-badge.delivered { color: var(--jb-up); background: rgba(92, 227, 168, .1); border-color: rgba(92, 227, 168, .35); }
+    .status-badge.cancelled { color: var(--jb-down); background: rgba(255, 112, 112, .1); border-color: rgba(255, 112, 112, .35); }
 
-    .search-container .form-control:focus {
-        box-shadow: none;
-    }
+    /* Timeline: gold = done, muted = still to come */
+    .tracking-timeline { padding: 20px 0; }
+    .timeline-steps { position: relative; display: flex; justify-content: space-between; }
+    .timeline-steps::before { content: ""; position: absolute; z-index: 1; top: 22px; left: 10%; right: 10%; height: 2px; background: var(--jb-line); }
+    .timeline-step { position: relative; z-index: 2; flex: 1; text-align: center; }
+    .step-icon { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; border: 2px solid var(--jb-line); border-radius: 50%; background: var(--jb-panel-2); color: #6b6b6b; transition: all .3s ease; }
+    .timeline-step.completed .step-icon { border-color: var(--jb-gold); background: #120f0a; color: var(--jb-gold-light); }
+    .timeline-step.active .step-icon { border-color: var(--jb-champagne); background: var(--jb-champagne); color: #111; box-shadow: 0 0 0 5px rgba(234, 215, 166, .12), 0 0 18px rgba(201, 163, 92, .35); }
+    .step-label { color: var(--jb-muted); font-size: 12.5px; font-weight: 600; }
+    .timeline-step.completed .step-label { color: var(--jb-gold-light); }
+    .timeline-step.active .step-label { color: var(--jb-white); }
 
-    .btn-track {
-        background-color: var(--gold-primary);
-        color: var(--navy-dark);
-        border: none;
-        padding: 0 30px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        transition: all 0.3s ease;
-    }
+    /* Info boxes */
+    .info-box { height: 100%; padding: 18px; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel-2); }
+    .info-box h6 { margin-bottom: 0; color: var(--jb-white); font: 700 12px/1.3 var(--jb-sans); letter-spacing: .12em; text-transform: uppercase; }
+    .info-box .fw-bold { color: var(--jb-white); }
+    .info-box h6 .text-gold { color: var(--jb-gold-light) !important; }
+    .info-box div.text-gold { color: var(--jb-gold-light) !important; font-family: var(--jb-serif); font-size: 1.05rem; }
+    .product-mini-img { width: 60px; height: 60px; flex: none; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid var(--jb-line); border-radius: var(--jb-r-ctl); background: var(--jb-panel-3); color: var(--jb-muted); }
+    .product-mini-img img { width: 100%; height: 100%; object-fit: cover; }
 
-    .btn-track:hover {
-        background-color: #b08e21;
-        color: #fff;
-    }
+    .btn-track-link { min-height: 44px; }
 
-    .search-hint {
-        color: #888;
-        font-size: 0.85rem;
-    }
+    .track-card-footer { padding: 15px 18px; border-top: 1px solid var(--jb-line-soft); background: rgba(0, 0, 0, .35); text-align: center; }
 
-    /* Main Illustration */
-    .text-gold {
-        color: var(--gold-primary) !important;
-    }
-
-    .track-title {
-        color: var(--navy-dark);
-        font-weight: 800;
-        font-size: 1.75rem;
-    }
-
-    /* Feature Cards */
-    .feature-card {
-        padding: 20px;
-        border: 1px solid #f0f0f0;
-        border-radius: 12px;
-        transition: transform 0.3s ease;
-    }
-
-    .feature-card:hover {
-        transform: translateY(-5px);
-        border-color: var(--gold-primary);
-    }
-
-    .feature-icon {
-        width: 50px;
-        height: 50px;
-        background: rgba(201, 162, 39, 0.1);
-        color: var(--gold-primary);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        margin: 0 auto 15px;
-        font-size: 1.25rem;
-    }
-
-    .feature-card h5 {
-        font-size: 1.1rem;
-        font-weight: 700;
-        margin-bottom: 8px;
-        color: var(--navy-dark);
-    }
-
-    /* Timeline Styling */
-    .tracking-timeline {
-        padding: 20px 0;
-    }
-
-    .timeline-steps {
-        display: flex;
-        justify-content: space-between;
-        position: relative;
-    }
-
-    .timeline-steps::before {
-        content: "";
-        position: absolute;
-        top: 25px;
-        left: 50px;
-        right: 50px;
-        height: 3px;
-        background: #eee;
-        z-index: 1;
-    }
-
-    .timeline-step {
-        position: relative;
-        z-index: 2;
-        text-align: center;
-        flex: 1;
-    }
-
-    .step-icon {
-        width: 50px;
-        height: 50px;
-        background: #fff;
-        border: 3px solid #eee;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 10px;
-        color: #ccc;
-        transition: all 0.3s ease;
-    }
-
-    .timeline-step.completed .step-icon {
-        border-color: var(--gold-primary);
-        color: var(--gold-primary);
-    }
-
-    .timeline-step.active .step-icon {
-        background: var(--gold-primary);
-        color: #fff;
-        border-color: var(--gold-primary);
-        box-shadow: 0 0 15px rgba(201, 162, 39, 0.4);
-    }
-
-    .step-label {
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: #999;
-    }
-
-    .timeline-step.completed .step-label,
-    .timeline-step.active .step-label {
-        color: var(--navy-dark);
-    }
-
-    /* Info Boxes */
-    .info-box {
-        background: #fbfbfb;
-        padding: 20px;
-        border-radius: 12px;
-        height: 100%;
-        border-left: 4px solid var(--gold-primary);
-    }
-
-    .info-box h6 {
-        font-weight: 700;
-        color: var(--navy-dark);
-        margin-bottom: 0;
-    }
-
-    .product-mini-img {
-        width: 60px;
-        height: 60px;
-        background: #eee;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-    }
-
-    .product-mini-img img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .status-badge {
-        padding: 6px 16px;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        font-weight: 700;
-    }
-
-    .status-badge.pending { background: #fff3cd; color: #856404; }
-    .status-badge.processing { background: #cce5ff; color: #004085; }
-    .status-badge.shipped { background: #d4edda; color: #155724; }
-    .status-badge.delivered { background: #d1ecf1; color: #0c5460; }
-    .status-badge.cancelled { background: #f8d7da; color: #721c24; }
-
-    .track-card-footer {
-        background-color: #f9f9f9;
-        padding: 15px;
-        text-align: center;
-        border-top: 1px solid #eee;
-    }
-
-    .fadeIn {
-        animation: fadeIn 0.5s ease;
-    }
-
+    .fadeIn { animation: fadeIn 0.5s ease; }
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
-    @media (max-width: 768px) {
-        .timeline-steps {
-            flex-direction: column;
-            align-items: flex-start;
-            padding-left: 30px;
-        }
-        .timeline-steps::before {
-            top: 0;
-            bottom: 0;
-            left: 55px;
-            width: 3px;
-            height: auto;
-        }
-        .timeline-step {
-            display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-            text-align: left;
-        }
-        .step-icon {
-            margin: 0 15px 0 0;
-        }
+    @media (max-width: 767px) {
+        .timeline-steps { flex-direction: column; align-items: flex-start; padding-left: 8px; }
+        .timeline-steps::before { top: 22px; bottom: 22px; left: 29px; right: auto; width: 2px; height: auto; }
+        .timeline-step { display: flex; align-items: center; margin-bottom: 18px; text-align: left; }
+        .timeline-step:last-child { margin-bottom: 0; }
+        .step-icon { margin: 0 14px 0 0; }
+        .step-label { font-size: 14px; }
+    }
+    @media (max-width: 420px) {
+        .btn-track { padding: 0 14px; }
+        .search-container .form-control { font-size: 14px; padding: 10px 8px; }
     }
 </style>
 @endpush

@@ -1,22 +1,21 @@
 @extends('layouts.lawfirm')
 
-@section('title', 'News & Updates | Josha Infinity Inc Service')
+@section('title', 'News & Updates | Josha Gold and Diamond Jewellery')
 
 @section('content')
-<section class="blog-luxury-page">
-    <div class="blog-hero-header">
-        <div class="container text-center" data-aos="fade-up">
-            <div class="label-gold">LATEST NEWS</div>
-            <h1 class="heading-premium text-white">News &amp; Updates</h1>
-            <div class="accent-line-gold mx-auto"></div>
-            <p class="hero-subheader text-white opacity-75">Stay informed with our latest announcements, market updates and company news</p>
-        </div>
-    </div>
+@include('layouts.partials.page-head', [
+    'eyebrow' => 'Latest news',
+    'title'   => 'News &',
+    'accent'  => 'Updates',
+    'sub'     => 'Stay informed with our latest announcements, market updates and company news',
+    'crumbs'  => [['News & Updates']],
+])
 
-    <div class="container py-5">
+<section class="blog-luxury-page">
+    <div class="jb-wrap blog-list-wrap">
         <div class="row g-4">
             @forelse($blogs as $blog)
-            <div class="col-lg-4 col-md-6 mb-4" data-aos="fade-up">
+            <div class="col-lg-4 col-md-6" data-aos="fade-up">
                 <a href="{{ route('blog.show', $blog->slug) }}" class="news-luxury-card h-100">
                     <div class="news-img-wrap">
                         <img src="{{ $blog->image ? asset('storage/' . $blog->image) : asset('blr.jpg') }}" alt="{{ $blog->title }}">
@@ -35,7 +34,7 @@
                     <i class="fas fa-scroll fa-4x text-gold mb-4"></i>
                     <h3 class="text-navy">No News Yet</h3>
                     <p class="text-muted">New updates are on the way. Please check back shortly.</p>
-                    <a href="{{ route('home') }}" class="btn-gold-action mt-4">Return Home</a>
+                    <a href="{{ route('home') }}" class="jb-btn jb-btn--primary mt-4">Return Home</a>
                 </div>
             </div>
             @endforelse
@@ -69,73 +68,49 @@
 
 @push('styles')
 <style>
-    .blog-luxury-page { background: var(--cream); min-height: 80vh; padding-bottom: 120px; position: relative; overflow: visible; }
-    
-    .blog-hero-header { 
-        background: 
-            linear-gradient(rgba(12,20,40,0.85) 0%, rgba(12,20,40,0.9) 100%),
-            url('/images/publications-banner.jpg') center center / cover no-repeat;
-        padding: 160px 0 96px; 
-        position:relative; 
-        overflow:hidden; 
-    }
-    @media (min-width: 768px) {
-        .blog-hero-header { padding: 160px 0 128px; }
-    }
-    .blog-hero-header::before {
-        content: ''; position: absolute; inset: 0;
-        background-image: 
-            linear-gradient(rgba(201, 168, 76, 0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(201, 168, 76, 0.04) 1px, transparent 1px);
-        background-size: 50px 50px;
-    }
-    .blog-hero-header::after { 
-        content:''; position:absolute; inset:0; 
-        background: radial-gradient(circle at 50% 120%, rgba(201,168,76,0.15) 0%, transparent 60%); 
-    }
-    
-    .hero-subheader { max-width: 700px; margin: 0 auto; font-family: var(--font-display); font-size: 1.4rem; font-style: italic; position: relative; z-index: 2; }
-    
-    .news-luxury-card { display:block; text-decoration:none; background:white; border-radius:24px; overflow:hidden; border: 1px solid rgba(0,0,0,0.05); transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); border-bottom: 4px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.05); position: relative; z-index: 10; }
-    .news-luxury-card:hover { transform: translateY(-12px); box-shadow: 0 30px 60px rgba(0,0,0,0.12); }
-    
-    .news-img-wrap { position:relative; height:260px; overflow:hidden; }
-    .news-img-wrap img { width:100%; height:100%; object-fit:cover; transition: all 0.5s ease; }
-    .news-luxury-card:hover .news-img-wrap img { transform: scale(1.1); }
-    
-    .news-metadata { position:absolute; bottom:15px; right:15px; background:white; color:var(--navy); padding:6px 20px; border-radius:50px; font-size:0.8rem; font-weight:700; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-    
-    .news-body { padding: 35px; }
-    .news-body h3 { font-family: var(--font-display); font-size: 1.7rem; color: var(--navy); margin-bottom: 15px; font-weight: 700; line-height: 1.3; }
-    .news-body p { color: var(--text-muted); font-size: 1rem; line-height: 1.7; margin-bottom: 25px; height: 5.1em; overflow: hidden; }
-    
-    .read-analysis { color: var(--gold-dark); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; display: inline-flex; align-items: center; gap: 10px; transition: all 0.3s; }
-    .news-luxury-card:hover .read-analysis { color: var(--navy); transform: translateX(5px); }
+    .blog-luxury-page { padding-bottom: 56px; }
+    .blog-list-wrap { padding-top: 32px; padding-bottom: 16px; }
+    @media (min-width: 768px) { .blog-list-wrap { padding-top: 48px; } }
 
-    .empty-intelligence { background: white; padding: 100px; border-radius: 40px; border: 2px dashed rgba(201,168,76,0.3); }
-    
-    .pagination-premium .pagination { justify-content: center; gap: 12px; }
-    .pagination-premium .page-link { background: var(--white); border: 1px solid rgba(201,168,76,0.2); color: var(--navy); border-radius: 10px; padding: 12px 22px; font-weight: 600; }
-    .pagination-premium .page-item.active .page-link { background: var(--gold); border-color: var(--gold); color: var(--navy); box-shadow: 0 5px 15px rgba(201,168,76,0.3); }
-    
-    /* Removed negative overlap utility for cleaner separation between banner and cards */
-    
-    /* Newsletter Section */
-    .newsletter-section {
-        max-width: 800px;
-        margin: 40px auto 0;
+    /* News cards (home-page news style) */
+    .news-luxury-card {
+        display: flex; flex-direction: column; overflow: hidden; text-decoration: none;
+        border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel);
+        transition: border-color .2s, transform .2s, box-shadow .2s;
     }
-    
-    .newsletter-section .form-control {
-        border: 2px solid #e9ecef;
-        padding: 15px 20px;
-        font-size: 1.1rem;
+    @media (hover: hover) {
+        .news-luxury-card:hover { transform: translateY(-3px); border-color: var(--jb-line-strong); box-shadow: 0 16px 36px -12px rgba(0, 0, 0, .9); }
+        .news-luxury-card:hover .news-img-wrap img { transform: scale(1.04); }
     }
-    
-    .newsletter-section .form-control:focus {
-        border-color: var(--gold);
-        box-shadow: 0 0 0 0.25rem rgba(201, 168, 76, 0.25);
+
+    .news-img-wrap { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: var(--jb-panel-3); }
+    .news-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform .45s; }
+
+    .news-metadata {
+        position: absolute; right: 12px; bottom: 12px; padding: 5px 12px;
+        border: 1px solid rgba(255, 255, 255, .14); border-radius: 999px;
+        background: rgba(0, 0, 0, .6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        color: var(--jb-gold-light); font-size: 12px; font-weight: 700;
     }
+
+    .news-body { flex: 1; display: flex; flex-direction: column; padding: 20px; }
+    .news-body h3 { margin: 0 0 10px; font-family: var(--jb-serif); font-size: 19px; font-weight: 600; line-height: 1.35; color: var(--jb-white); }
+    .news-body p {
+        margin: 0 0 18px; color: var(--jb-muted); font-size: 14px; line-height: 1.65;
+        display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .read-analysis { margin-top: auto; display: inline-flex; align-items: center; gap: 8px; color: var(--jb-gold-light); font-size: 13.5px; font-weight: 700; transition: color .15s, gap .15s; }
+    .news-luxury-card:hover .read-analysis { color: var(--jb-white); gap: 12px; }
+
+    .empty-intelligence { padding: 56px 24px; border: 1px dashed var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel); }
+    @media (min-width: 768px) { .empty-intelligence { padding: 80px 40px; } }
+
+    .pagination-premium .pagination { justify-content: center; flex-wrap: wrap; gap: 8px; }
+    .pagination-premium .page-link { border-radius: 10px !important; padding: 10px 16px; font-weight: 600; }
+
+    /* Newsletter Section (markup is commented out for now) */
+    .newsletter-section { max-width: 800px; margin: 40px auto 0; }
+    .newsletter-section .form-control { padding: 14px 18px; font-size: 1rem; }
 </style>
 @endpush
 

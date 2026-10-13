@@ -32,7 +32,7 @@
 
                     <div class="mb-3">
                         <label for="address" class="form-label fw-semibold">Full Address</label>
-                        <textarea class="form-control" id="address" name="address" rows="3" placeholder="e.g. No.194 1st Floor, AMR Complex, Horamavu Agara, Bangalore 560043">{{ old('address') }}</textarea>
+                        <textarea class="form-control" id="address" name="address" rows="3" placeholder="e.g. No 73, 2nd Floor, Nagavarapalya Main Road, C V Raman Nagar Road, Bangalore 560093">{{ old('address') }}</textarea>
                     </div>
 
                     <div class="row">

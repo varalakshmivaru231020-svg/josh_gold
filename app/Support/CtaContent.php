@@ -16,7 +16,7 @@ class CtaContent
     public const DEFAULTS = [
         'cta_enabled'       => '1',
         'cta_heading'       => "Today's gold & silver rates, published twice daily",
-        'cta_subtext'       => 'Morning and evening rates with price history, straight from Josha Infinity.',
+        'cta_subtext'       => 'Morning and evening rates with price history, straight from Josha Gold and Diamond Jewellery.',
         'cta_button1_label' => 'View Live Rates',
         'cta_button1_url'   => '',   // blank = the Live Rates page
         'cta_button2_label' => 'WhatsApp Us',

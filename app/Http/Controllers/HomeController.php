@@ -18,6 +18,7 @@ use App\Models\SiteSetting;
 use App\Models\ContactMessage;
 use App\Models\GalleryPhoto;
 use App\Models\BankAccount;
+use App\Models\MetalRate;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -38,7 +39,11 @@ class HomeController extends Controller
         $galleryPhotos = GalleryPhoto::active()->ordered()->get();
         $latestBlogs = Blog::active()->ordered()->take(3)->get();
 
+        // Latest published rate, for the rate strip and the price-by-weight cards
+        $rate = MetalRate::currentRate();
+
         return view('home', compact(
+            'rate',
             'sliders',
             'about',
             'featuredBook',

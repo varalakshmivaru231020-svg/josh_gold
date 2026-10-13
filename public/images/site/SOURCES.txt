@@ -1,0 +1,14 @@
+Photos used on the site. All are free for commercial use without attribution.
+Replace them with your own product photos when you have them.
+
+gold-necklace: Unsplash photo-1601121141461-9d6647bca1ed (Unsplash License)
+gold-bars: Unsplash photo-1610375461369-d613b564f4c4 (Unsplash License)
+gold-bars-2: Unsplash photo-1610375461246-83df859d849d (Unsplash License)
+diamond-ring: Unsplash photo-1605100804763-247f67b3557e (Unsplash License)
+diamond-necklace: Unsplash photo-1618403088890-3d9ff6f4c8b1 (Unsplash License)
+gold-rings: Unsplash photo-1543294001-f7cd5d7fb516 (Unsplash License)
+gold-bracelet: Unsplash photo-1602173574767-37ac01994b2a (Unsplash License)
+silver-jewellery: Unsplash photo-1606760227091-3dd870d97f1d (Unsplash License)
+silver-coins: Pexels photo 7111543, Tara Winstead (Pexels License)
+gold-coins: Wikimedia Commons "Branch Mint Sovereigns.jpg" by Snd3054 (CC0)
+silver-bar: Wikimedia Commons "Johnson Matthey 500 grammes silver bullion.jpg" (public domain)

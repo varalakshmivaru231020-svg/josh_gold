@@ -6,6 +6,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\LiveRatesController;
+use App\Http\Controllers\RatePagesController;
 
 // ------------------------
 // Public Routes   routes/web.php
@@ -33,6 +34,17 @@ Route::get('/track-order', [ProductController::class, 'trackOrder'])->name('trac
 // Live Metal Rates (public)
 Route::get('/live-rates', [LiveRatesController::class, 'index'])->name('live-rates');
 Route::get('/live-rates/history', [LiveRatesController::class, 'history'])->middleware('throttle:120,1')->name('live-rates.history');
+
+// Main-menu rate pages (gold, silver, charts, Gold Pulse, knowledge, cities)
+Route::get('/gold-rate-today', [RatePagesController::class, 'gold'])->name('rates.gold');
+Route::get('/silver-rate-today', [RatePagesController::class, 'silver'])->name('rates.silver');
+Route::get('/charts', [RatePagesController::class, 'charts'])->name('rates.charts');
+Route::get('/gold-pulse', [RatePagesController::class, 'pulse'])->name('rates.pulse');
+Route::get('/knowledge', [RatePagesController::class, 'knowledge'])->name('knowledge');
+Route::get('/gold-rate', [RatePagesController::class, 'cities'])->name('rates.cities');
+Route::get('/gold-rate/{state}/{city}', [RatePagesController::class, 'city'])
+    ->where(['state' => '[a-z-]+', 'city' => '[a-z-]+'])->name('rates.city');
+Route::get('/videos', [HomeController::class, 'testimonials'])->name('videos');
 
 // Practice & Offices Pages
 Route::get('/about-us', [HomeController::class, 'aboutUs'])->name('about-us');

@@ -30,10 +30,10 @@ class FooterContentSeeder extends Seeder
         }
 
         $settings = [
-            'contact_phone'         => '+91 8714634801',
+            'contact_phone'         => '+91 8792136049',
             'contact_email'         => 'Josha.infinity777@gmail.com',
             'contact_whatsapp'      => '919632527961',
-            'contact_address'       => "No.194 1st Floor, AMR Complex,\nHoramavu Agara, Main Road,\nBangalore 560043",
+            'contact_address'       => "No 73, 2nd Floor, Nagavarapalya Main Road,\nC V Raman Nagar Road,\nBangalore 560093",
             'contact_working_hours' => 'Mon – Sat: 9:00 AM – 6:00 PM',
         ];
 

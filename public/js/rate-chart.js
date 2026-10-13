@@ -44,6 +44,17 @@
         return rows;
     }
 
+    // Colours for the dark panel the chart sits on (resources/views/live-rates/_chart.blade.php).
+    // Line colours still come from the markup (data-line / data-strip).
+    var DARK = {
+        text: '#c9c9c9',      // axis labels, "JS chart by amCharts"
+        title: '#e6e6e6',     // title inside the graph
+        grid: '#ffffff',      // drawn at a low alpha
+        gridAlpha: 0.07,
+        strip: '#141417',     // mini graph background
+        balloon: '#0d0d10'    // rate box fill (its border takes the line colour)
+    };
+
     function init(root) {
         var chartEl = root.querySelector('.rc-chart');
         var retry = root.querySelector('.rc-retry');
@@ -61,12 +72,19 @@
                 pathToImages: root.dataset.images,
                 numberFormatter: { precision: 0, decimalSeparator: '.', thousandsSeparator: ',' },
 
+                // Rate box: dark fill, white text, border in the line colour
+                balloon: { fillColor: DARK.balloon, fillAlpha: 0.95, color: '#ffffff' },
+
                 categoryAxesSettings: {
                     minPeriod: 'DD',
                     parseDates: true,
                     groupToPeriods: ['DD'], // exact daily points, no averaging
                     dashLength: 1,
-                    minorGridEnabled: true
+                    minorGridEnabled: true,
+                    color: DARK.text,
+                    gridColor: DARK.grid,
+                    gridAlpha: DARK.gridAlpha,
+                    minorGridAlpha: 0.035
                 },
 
                 dataSets: [{
@@ -80,7 +98,7 @@
                     showCategoryAxis: true,
                     title: '',
                     eraseAll: false,
-                    allLabels: [{ x: 60, y: 20, text: root.dataset.title, size: 12, bold: true, color: '#777777' }],
+                    allLabels: [{ x: 60, y: 20, text: root.dataset.title, size: 12, bold: true, color: DARK.title }],
                     stockGraphs: [{ id: 'g1', valueField: 'value', lineThickness: 2, useDataSetColors: true, precision: 0 }],
                     stockLegend: { valueTextRegular: '', markerType: 'none' }
                 }],
@@ -89,17 +107,22 @@
                 chartScrollbarSettings: {
                     graph: 'g1',
                     enabled: true,
-                    backgroundColor: root.dataset.strip,
+                    backgroundColor: DARK.strip,
                     selectedBackgroundColor: root.dataset.strip,
                     graphFillColor: root.dataset.line,
                     selectedGraphFillColor: root.dataset.line,
-                    selectedBackgroundAlpha: 1,
-                    backgroundAlpha: 0.7,
+                    selectedBackgroundAlpha: 0.16,
+                    backgroundAlpha: 1,
+                    graphFillAlpha: 0.45,
+                    selectedGraphFillAlpha: 0.9,
+                    color: DARK.text,
+                    gridColor: DARK.grid,
+                    gridAlpha: 0.06,
                     hideResizeGrips: false
                 },
 
                 // 0, 50,000, 100,000 ... labels inside the chart, like the reference
-                valueAxesSettings: { inside: true, autoGridCount: false, gridCount: 4 },
+                valueAxesSettings: { inside: true, autoGridCount: false, gridCount: 4, color: DARK.text, gridColor: DARK.grid, gridAlpha: DARK.gridAlpha },
 
                 // Red cursor line + red date label + rate box
                 chartCursorSettings: {
@@ -113,7 +136,7 @@
                 // "Zoom:" buttons and the From / To date boxes
                 periodSelector: { position: 'bottom', periods: periods() },
 
-                panelsSettings: { usePrefixes: false },
+                panelsSettings: { usePrefixes: false, color: DARK.text },
                 export: { enabled: false }
             });
         }

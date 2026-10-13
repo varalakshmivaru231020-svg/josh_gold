@@ -1,21 +1,18 @@
 @extends('layouts.lawfirm')
 
-@section('title', 'Authoritative Legal Publications | Bengaluru Law House')
+@section('title', 'Authoritative Legal Publications | JOSHA GOLD AND DIAMOND JEWELLERY')
 
 @section('content')
-<section class="publications-luxury-page">
-    <div class="pub-hero-header">
-        {{-- decorative background icon --}}
-        <div class="pub-hero-deco" aria-hidden="true"><i class="fas fa-book-journal-whills"></i></div>
-        <div class="container text-center" data-aos="fade-up">
-            <div class="label-gold">PUBLICATIONS &amp; BOOKS</div>
-            <h1 class="heading-premium text-white">Our Publications</h1>
-            <div class="accent-line-gold mx-auto"></div>
-            <p class="pub-subheader text-white opacity-75">Landmark legal guides, celebrated Kannada novels and academic resources authored by Advocate Veerendrababu</p>
-        </div>
-    </div>
+@include('layouts.partials.page-head', [
+    'eyebrow' => 'Publications & Books',
+    'title'   => 'Our',
+    'accent'  => 'Publications',
+    'sub'     => 'Landmark legal guides, celebrated Kannada novels and academic resources authored by Advocate Veerendrababu',
+    'crumbs'  => [['Publications']],
+])
 
-    <div class="container pub-products-container">
+<section class="publications-luxury-page">
+    <div class="jb-wrap pub-products-container">
         <div class="pub-cards-grid">
             {{-- Static Books as per request --}}
             <div class="pub-card" data-aos="fade-up" data-aos-delay="0">
@@ -46,7 +43,7 @@
                     @php
                         $thanksAppaProduct = \App\Models\Product::where('name', 'like', '%Thanks Appa%')->first();
                     @endphp
-                    <a href="{{ $thanksAppaProduct ? route('products.show', $thanksAppaProduct) : route('products.index') }}" class="pub-buy-btn mt-auto">Buy Book</a>
+                    <a href="{{ $thanksAppaProduct ? route('products.show', $thanksAppaProduct) : route('products.index') }}" class="pub-buy-btn jb-btn jb-btn--primary mt-auto">Buy Book</a>
                 </div>
             </div>
 
@@ -98,135 +95,61 @@
 
 @push('styles')
 <style>
-    /* ── PUBLICATIONS PAGE ── */
-    .publications-luxury-page { background: var(--cream, #f9f5ed); min-height: 80vh; padding-bottom: 120px; }
+    /* ── PUBLICATIONS PAGE (dark bullion cards, after the home page .jb-card) ── */
+    .publications-luxury-page { background: var(--jb-ground); padding: 32px 0 48px; }
+    @media (min-width: 768px) { .publications-luxury-page { padding: 48px 0 64px; } }
 
-    /* Banner / Hero Header */
-    .pub-hero-header { 
-        background: 
-            linear-gradient(rgba(8,14,28,0.85) 0%, rgba(10,18,36,0.9) 100%),
-            url('/images/publications-banner.jpg') center center / cover no-repeat;
-        padding: 160px 0 100px;
-        position: relative;
-        overflow: hidden;
-        z-index: 1;
-    }
-    .pub-hero-header > * { position: relative; z-index: 2; }
-    .pub-hero-header .label-gold { display: block; margin-bottom: 16px; color: var(--gold); font-weight: 700; letter-spacing: 2px; }
-    .pub-hero-header .heading-premium { font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 700; color: white; margin-bottom: 20px; }
-    .pub-hero-header .accent-line-gold { width: 60px; height: 3px; background: var(--gold, #c9a84c); margin: 18px auto 22px; border-radius: 2px; }
-    .pub-subheader { max-width: 750px; margin: 0 auto; font-family: var(--font-display); font-size: 1.25rem; font-style: italic; color: rgba(255,255,255,0.8); line-height: 1.6; }
-
-    /* Cards Grid */
-    .pub-products-container { padding-top: 80px; }
-    .pub-cards-grid {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 24px;
-        margin-bottom: 50px;
-        overflow-x: auto;
-        padding: 10px 0;
-    }
+    /* Cards grid */
+    .pub-cards-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+    @media (min-width: 576px) { .pub-cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; } }
+    @media (min-width: 992px) { .pub-cards-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; } }
+    @media (min-width: 1200px) { .pub-cards-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 
     .pub-card {
-        background: #fff;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.06);
-        border: 1px solid rgba(201,168,76,0.1);
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        height: 100%;
+        position: relative; display: flex; flex-direction: column; height: 100%; overflow: hidden;
+        border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-black);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, .8); transition: transform .2s, border-color .2s, box-shadow .2s;
     }
-    .pub-card:hover {
-        transform: translateY(-12px);
-        box-shadow: 0 30px 70px rgba(0,0,0,0.12);
-        border-color: rgba(201,168,76,0.3);
+    .pub-card::after { content: ""; position: absolute; left: 18%; right: 18%; bottom: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--jb-gold-deep), transparent); opacity: .8; }
+    @media (hover: hover) {
+        .pub-card:hover { transform: translateY(-3px); border-color: var(--jb-line-strong); box-shadow: 0 16px 36px -12px rgba(0, 0, 0, .9); }
     }
 
-    /* Year Badge */
+    /* Year badge (as .jb-chip--gold) */
     .pub-badge {
-        position: absolute; top: 18px; right: 18px;
-        background: var(--gold, #c9a84c);
-        color: var(--navy, #0c1428);
-        font-size: 0.65rem; font-weight: 800; letter-spacing: 1.5px;
-        padding: 5px 12px; border-radius: 50px; text-transform: uppercase; z-index: 2;
+        position: absolute; top: 10px; left: 10px; z-index: 2;
+        display: inline-flex; align-items: center; height: 21px; padding: 0 8px; border-radius: 7px;
+        color: var(--jb-gold-light); background: rgba(201, 163, 92, .16); border: 1px solid rgba(201, 163, 92, .4);
+        backdrop-filter: blur(8px); font-size: 11px; font-weight: 700; letter-spacing: .02em; white-space: nowrap;
     }
 
     .pub-cover {
-        background: linear-gradient(160deg, var(--navy, #0c1428), #1e3060);
-        padding: 50px 24px 40px;
-        text-align: center;
-        position: relative;
-        min-height: 220px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        min-height: 200px; padding: 44px 18px 22px; text-align: center;
+        background: radial-gradient(circle at 50% 40%, #1a1a1f 0%, #08080a 90%);
+        border-bottom: 1px solid var(--jb-line-soft);
     }
-    .pub-icon-bg { margin-bottom: 20px; }
-    .pub-emoji { font-size: 3.8rem; display: block; filter: drop-shadow(0 4px 15px rgba(0,0,0,0.4)); }
-    .pub-book-title {
-        font-family: var(--font-display); font-size: 1.25rem; color: #fff;
-        font-weight: 700; line-height: 1.3; margin: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.4);
-    }
+    .pub-icon-bg { margin-bottom: 14px; }
+    .pub-emoji { display: block; font-size: 3rem; line-height: 1; filter: drop-shadow(0 6px 16px rgba(0, 0, 0, .6)); }
+    .pub-book-title { margin: 0; color: var(--jb-white); font: 600 17px/1.3 var(--jb-serif); }
 
     /* Category tag */
     .pub-category-tag {
-        background: rgba(201,168,76,0.08);
-        border-bottom: 1px solid rgba(201,168,76,0.1);
-        color: var(--gold-dark, #b8913a);
-        font-size: 0.65rem; font-weight: 800; letter-spacing: 2px;
-        text-transform: uppercase; padding: 10px 18px; text-align: center;
+        padding: 10px 16px; text-align: center; color: var(--jb-gold);
+        background: rgba(201, 163, 92, .05); border-bottom: 1px solid var(--jb-line-soft);
+        font-size: 10.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
     }
 
     /* Card body */
-    .pub-card-body { padding: 30px; flex: 1; display: flex; flex-direction: column; }
-    .pub-desc { font-size: 0.95rem; color: #555; line-height: 1.75; margin: 0; }
+    .pub-card-body { flex: 1; display: flex; flex-direction: column; gap: 16px; padding: 16px 16px 20px; }
+    .pub-desc { margin: 0; color: var(--jb-muted); font-size: 13.5px; line-height: 1.65; }
 
-    /* Buy Button */
-    .pub-buy-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        align-self: center;
-        background: linear-gradient(135deg, var(--gold), #b39441);
-        color: var(--navy) !important;
-        padding: 12px 28px;
-        border-radius: 50px;
-        font-weight: 700;
-        font-size: 0.85rem;
-        letter-spacing: 1.2px;
-        text-transform: uppercase;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        box-shadow: 0 8px 20px rgba(201,168,76,0.25);
-        border: none;
-        cursor: pointer;
-        text-align: center;
-    }
-    .pub-buy-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 30px rgba(201,168,76,0.35);
-        filter: brightness(1.1);
-        color: var(--navy) !important;
-    }
+    /* Buy button (champagne, as .jb-btn--primary) */
+    .pub-buy-btn { width: 100%; min-height: 40px; }
 
-    @media (max-width: 1400px) {
-        .pub-cards-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-    }
-    @media (max-width: 1200px) {
-        .pub-cards-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    }
-    @media (max-width: 768px) {
-        .pub-hero-header { padding: 120px 0 80px; }
-        .pub-cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-        .pub-card-body { padding: 20px; }
-    }
-    @media (max-width: 576px) {
-        .pub-cards-grid { grid-template-columns: 1fr; }
+    @media (max-width: 575px) {
+        .pub-cover { min-height: 170px; padding-top: 40px; }
+        .pub-card-body { padding: 14px 16px 18px; }
     }
 </style>
 @endpush

@@ -1,12 +1,16 @@
 @extends('layouts.lawfirm')
 
-@section('title', 'Purchase Books | Bengaluru Law House')
+@section('title', 'Purchase Books | JOSHA GOLD AND DIAMOND JEWELLERY')
 
 @section('content')
+@include('layouts.partials.page-head', [
+    'title'  => 'Purchase',
+    'accent' => 'Books',
+    'crumbs' => [['Purchase Books']],
+])
+
 <section class="purchase-section">
-    <div class="container" style="padding-top: 80px; padding-bottom: 100px;">
-        <h1 class="text-center mb-5" style="font-size: 2.5rem; font-weight: 700; color: #0c1428;">Purchase Books</h1>
-        
+    <div class="jb-wrap">
         @php
             // Define available books for purchase
             $books = [
@@ -56,140 +60,58 @@
                     'description' => 'A comprehensive and practical reference book for law graduates preparing for the All India Bar Examination. Covers all 19 core law subjects, landmark judgments, latest BNS, BNSS, BSA 2023 updates, practice MCQs, and exam strategies.'
                 ]
             ];
-            
+
             // Get the requested book or show all
             $requestedBook = request()->query('book');
-            $displayBooks = $requestedBook && isset($books[$requestedBook]) ? 
-                [$requestedBook => $books[$requestedBook]] : 
+            $displayBooks = $requestedBook && isset($books[$requestedBook]) ?
+                [$requestedBook => $books[$requestedBook]] :
                 $books;
         @endphp
 
-        <div class="row">
+        <div class="row g-4 justify-content-center">
             @foreach($displayBooks as $bookId => $book)
-            <div class="col-lg-6 col-md-8 mx-auto mb-5" data-aos="fade-up">
-                <div class="purchase-card" style="
-                    background: white;
-                    border-radius: 20px;
-                    overflow: hidden;
-                    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-                    border: 1px solid rgba(201,168,76,0.2);
-                    transition: all 0.4s ease;
-                ">
+            <div class="col-lg-6 col-md-8" data-aos="fade-up">
+                <div class="purchase-card">
                     <!-- Book Cover Section -->
-                    <div style="
-                        background: linear-gradient(160deg, #0c1428, #1e3060);
-                        padding: 60px 30px;
-                        text-align: center;
-                        color: white;
-                    ">
-                        <div style="font-size: 4rem; margin-bottom: 20px;">{{ $book['emoji'] }}</div>
-                        <h2 style="font-weight: 700; font-size: 1.8rem; margin: 0; margin-bottom: 10px;">{{ $book['name'] }}</h2>
-                        <div style="
-                            background: rgba(201,168,76,0.2);
-                            color: #c9a84c;
-                            padding: 8px 16px;
-                            border-radius: 50px;
-                            display: inline-block;
-                            font-size: 0.75rem;
-                            font-weight: 700;
-                            letter-spacing: 1.5px;
-                            text-transform: uppercase;
-                        ">{{ $book['category'] }}</div>
+                    <div class="purchase-cover">
+                        <div class="purchase-emoji">{{ $book['emoji'] }}</div>
+                        <h2 class="purchase-name">{{ $book['name'] }}</h2>
+                        <div class="purchase-category">{{ $book['category'] }}</div>
                     </div>
 
                     <!-- Details Section -->
-                    <div style="padding: 40px; background: white;">
-                        <div style="
-                            background: rgba(201,168,76,0.05);
-                            padding: 20px;
-                            border-radius: 12px;
-                            margin-bottom: 30px;
-                            border-left: 4px solid #c9a84c;
-                        ">
-                            <p style="margin: 0; font-size: 0.9rem; color: #555; line-height: 1.8;">
+                    <div class="purchase-body">
+                        <div class="purchase-desc">
+                            <p>
                                 {{ $book['description'] }}
                             </p>
                         </div>
 
                         <!-- Price Section -->
-                        <div style="
-                            background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.05));
-                            padding: 25px;
-                            border-radius: 12px;
-                            margin-bottom: 30px;
-                            text-align: center;
-                        ">
-                            <div style="font-size: 0.85rem; color: #999; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Price</div>
-                            <div style="font-size: 2.5rem; font-weight: 700; color: #c9a84c; margin: 0;">
+                        <div class="purchase-price">
+                            <div class="purchase-price__label">Price</div>
+                            <div class="purchase-price__value">
                                 ₹{{ number_format($book['price']) }}
                             </div>
-                            <div style="font-size: 0.8rem; color: #999; margin-top: 8px;">Available Now</div>
+                            <div class="purchase-price__note">Available Now</div>
                         </div>
 
                         <!-- Year Badge -->
-                        <div style="
-                            text-align: center;
-                            margin-bottom: 30px;
-                            padding-bottom: 20px;
-                            border-bottom: 1px solid rgba(201,168,76,0.1);
-                        ">
-                            <span style="
-                                background: #c9a84c;
-                                color: #0c1428;
-                                padding: 8px 20px;
-                                border-radius: 50px;
-                                font-weight: 700;
-                                font-size: 0.8rem;
-                                display: inline-block;
-                            ">Published {{ $book['year'] }}</span>
+                        <div class="purchase-year">
+                            <span>Published {{ $book['year'] }}</span>
                         </div>
 
                         <!-- CTA Buttons -->
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                            <a href="{{ route('products.index') }}" style="
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                padding: 14px 24px;
-                                border: 2px solid #c9a84c;
-                                color: #c9a84c;
-                                text-decoration: none;
-                                border-radius: 50px;
-                                font-weight: 700;
-                                font-size: 0.85rem;
-                                transition: all 0.3s ease;
-                                text-transform: uppercase;
-                                letter-spacing: 1px;
-                            " onmouseover="this.style.background='rgba(201,168,76,0.1)'" onmouseout="this.style.background='transparent'">
+                        <div class="purchase-actions">
+                            <a href="{{ route('products.index') }}" class="jb-btn jb-btn--ghost jb-btn--lg">
                                 ← Back
                             </a>
-                            <a href="{{ route('products.index') }}" style="
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                padding: 14px 24px;
-                                background: linear-gradient(135deg, #c9a84c, #b39441);
-                                color: #0c1428;
-                                text-decoration: none;
-                                border-radius: 50px;
-                                font-weight: 700;
-                                font-size: 0.85rem;
-                                transition: all 0.3s ease;
-                                text-transform: uppercase;
-                                letter-spacing: 1px;
-                                box-shadow: 0 8px 20px rgba(201,168,76,0.25);
-                            " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 30px rgba(201,168,76,0.35)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 20px rgba(201,168,76,0.25)'">
+                            <a href="{{ route('products.index') }}" class="jb-btn jb-btn--primary jb-btn--lg">
                                 Proceed to Buy
                             </a>
                         </div>
 
-                        <p style="
-                            text-align: center;
-                            font-size: 0.8rem;
-                            color: #999;
-                            margin-top: 15px;
-                            margin-bottom: 0;
-                        ">Secure checkout • Free shipping on orders above ₹500</p>
+                        <p class="purchase-note">Secure checkout • Free shipping on orders above ₹500</p>
                     </div>
                 </div>
             </div>
@@ -197,18 +119,51 @@
         </div>
 
         @if(!$requestedBook || !isset($books[$requestedBook]))
-        <hr style="margin-top: 60px;">
-        <p style="text-align: center; color: #999; font-size: 0.9rem; margin-top: 40px;">
-            Don't find what you're looking for? <a href="{{ route('products.index') }}" style="color: #c9a84c; text-decoration: none; font-weight: 700;">View all publications</a>
+        <hr class="purchase-rule">
+        <p class="purchase-more">
+            Don't find what you're looking for? <a href="{{ route('products.index') }}" class="jb-link">View all publications</a>
         </p>
         @endif
     </div>
 </section>
 
 <style>
-    .purchase-section {
-        background: linear-gradient(135deg, #f9f5ed 0%, #fff 100%);
-        min-height: 80vh;
-    }
+    .purchase-section { background: var(--jb-ground); padding: 32px 0 48px; }
+    @media (min-width: 768px) { .purchase-section { padding: 48px 0 64px; } }
+
+    .purchase-card { position: relative; height: 100%; overflow: hidden; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel); box-shadow: 0 4px 10px rgba(0, 0, 0, .8); transition: border-color .2s, box-shadow .2s; }
+    .purchase-card::after { content: ""; position: absolute; left: 18%; right: 18%; bottom: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--jb-gold-deep), transparent); opacity: .8; }
+    @media (hover: hover) { .purchase-card:hover { border-color: var(--jb-line-strong); box-shadow: 0 16px 36px -12px rgba(0, 0, 0, .9); } }
+
+    /* Cover */
+    .purchase-cover { padding: 40px 24px 32px; text-align: center; border-bottom: 1px solid var(--jb-line-soft);
+        background: radial-gradient(600px 240px at 50% 0%, rgba(201, 163, 92, .12), transparent 65%), radial-gradient(circle at 50% 40%, #1a1a1f 0%, #08080a 90%); }
+    .purchase-emoji { margin-bottom: 16px; font-size: 3.4rem; line-height: 1; filter: drop-shadow(0 6px 16px rgba(0, 0, 0, .6)); }
+    .purchase-name { margin: 0 0 12px; color: var(--jb-white); font: 600 clamp(22px, 3vw, 26px)/1.25 var(--jb-serif); }
+    .purchase-category { display: inline-flex; align-items: center; min-height: 26px; padding: 0 12px; border: 1px solid rgba(201, 163, 92, .4); border-radius: 8px; background: rgba(201, 163, 92, .16); color: var(--jb-gold-light); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+
+    /* Details */
+    .purchase-body { padding: 24px; }
+    @media (min-width: 768px) { .purchase-body { padding: 28px; } }
+    .purchase-desc { margin-bottom: 20px; padding: 16px 18px; border: 1px solid var(--jb-line-soft); border-left: 2px solid var(--jb-gold); border-radius: var(--jb-r-ctl); background: rgba(201, 163, 92, .04); }
+    .purchase-desc p { margin: 0; color: var(--jb-text); font-size: 14px; line-height: 1.75; }
+
+    .purchase-price { margin-bottom: 20px; padding: 20px; border: 1px solid var(--jb-line); border-radius: var(--jb-r-ctl); text-align: center;
+        background: linear-gradient(180deg, rgba(201, 163, 92, .08), transparent 70%), var(--jb-panel-2); }
+    .purchase-price__label { margin-bottom: 8px; color: var(--jb-muted); font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+    .purchase-price__value { margin: 0; color: var(--jb-gold-light); font: 600 2.4rem/1.1 var(--jb-serif); font-variant-numeric: tabular-nums; }
+    .purchase-price__note { margin-top: 8px; color: var(--jb-muted); font-size: 12.5px; }
+
+    .purchase-year { margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--jb-line-soft); text-align: center; }
+    .purchase-year span { display: inline-flex; align-items: center; min-height: 28px; padding: 0 14px; border: 1px solid rgba(201, 163, 92, .4); border-radius: 999px; background: rgba(201, 163, 92, .16); color: var(--jb-gold-light); font-size: 12.5px; font-weight: 700; }
+
+    .purchase-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .purchase-actions .jb-btn { width: 100%; }
+    @media (max-width: 359px) { .purchase-actions { grid-template-columns: 1fr; } }
+
+    .purchase-note { margin: 14px 0 0; color: var(--jb-muted); font-size: 12.5px; text-align: center; }
+
+    .purchase-rule { margin: 48px 0 0; border: 0; border-top: 1px solid var(--jb-line-soft); opacity: 1; }
+    .purchase-more { margin: 28px 0 0; color: var(--jb-muted); font-size: 14px; text-align: center; }
 </style>
 @endsection

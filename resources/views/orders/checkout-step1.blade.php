@@ -1,15 +1,15 @@
 @extends('layouts.lawfirm')
 
-@section('title', 'Checkout - Bengaluru Law House')
+@section('title', 'Checkout - JOSHA GOLD AND DIAMOND JEWELLERY')
 
 @section('content')
 <section class="checkout-section">
-    <div class="container py-5">
+    <div class="jb-wrap">
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="checkout-card">
                     <div class="checkout-header">
-                        <h4 class="mb-0"><i class="fas fa-credit-card me-2"></i>Complete Your Payment</h4>
+                        <h1 class="checkout-title"><i class="fas fa-credit-card me-2"></i>Complete Your Payment</h1>
                     </div>
 
                     <div class="checkout-body">
@@ -65,92 +65,45 @@
 
 @push('styles')
 <style>
-    .checkout-section {
-        margin-top: 80px;
-        min-height: calc(100vh - 80px);
-        background: var(--cream-primary);
-        padding: 40px 0;
-    }
+    .checkout-section { background: var(--jb-ground); padding: 40px 0 56px; }
 
-    .checkout-card {
-        background: var(--white);
-        border-radius: 12px;
-        box-shadow: var(--shadow-medium);
-        overflow: hidden;
-    }
+    .checkout-card { overflow: hidden; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel); box-shadow: 0 16px 36px -14px rgba(0, 0, 0, .9); }
 
-    .checkout-header {
-        background: var(--navy-deep);
-        color: var(--cream-primary);
-        padding: 1.5rem 2rem;
-        border-bottom: 3px solid var(--gold-primary);
-    }
+    /* Compact heading, in the page-head style */
+    .checkout-header { padding: 22px 28px; border-bottom: 1px solid var(--jb-line); background:
+        radial-gradient(600px 220px at 100% 0%, rgba(201, 163, 92, .16), transparent 65%), var(--jb-black); }
+    .checkout-title { margin: 0; color: var(--jb-white); font: 600 clamp(21px, 2.6vw, 26px)/1.25 var(--jb-serif); }
+    .checkout-title i { color: var(--jb-gold-light); font-size: .8em; }
 
-    .checkout-header h4 {
-        color: var(--cream-primary);
-        font-family: var(--font-heading);
-    }
+    .checkout-body { padding: 28px; }
 
-    .checkout-body {
-        padding: 2rem;
-    }
+    .order-summary { padding: 20px 22px; border: 1px solid var(--jb-line); border-radius: 14px; background: linear-gradient(180deg, rgba(201, 163, 92, .06), transparent 70%), var(--jb-panel-2); }
+    .summary-title { margin-bottom: 1rem; padding-bottom: .75rem; border-bottom: 1px solid var(--jb-line); color: var(--jb-white); font: 600 18px/1.3 var(--jb-serif); }
+    .summary-title i { color: var(--jb-gold-light); font-size: .85em; }
+    .order-summary p { margin-bottom: .5rem; color: var(--jb-text); }
+    .order-summary p strong { color: var(--jb-muted); font-weight: 600; }
+    .order-summary .text-success, .order-summary .text-success strong { color: var(--jb-up) !important; }
 
-    .order-summary {
-        background: var(--cream-primary);
-        padding: 1.5rem;
-        border-radius: 8px;
-        border: 1px solid rgba(201, 162, 39, 0.2);
-    }
+    .total-amount { margin: .75rem 0 0; color: var(--jb-gold-light); font: 600 1.5rem/1.2 var(--jb-serif); font-variant-numeric: tabular-nums; }
 
-    .summary-title {
-        color: var(--navy-deep);
-        margin-bottom: 1rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 2px solid var(--gold-primary);
-    }
+    .spinner-border.text-gold { width: 3rem; height: 3rem; color: var(--jb-gold) !important; }
 
-    .total-amount {
-        color: var(--navy-deep);
-        font-weight: 700;
-        margin-top: 0.5rem;
-    }
+    .alert-info-custom { padding: 1rem 1.25rem; border: 1px solid var(--jb-line); border-radius: var(--jb-r-ctl); background: rgba(201, 163, 92, .06); color: var(--jb-text); }
+    .alert-info-custom i { color: var(--jb-gold-light); }
 
-    .text-gold {
-        color: var(--gold-primary) !important;
-    }
+    .btn-primary-law { display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: var(--jb-r-btn); background: var(--jb-champagne); color: #111; font-weight: 700; cursor: pointer; box-shadow: 0 10px 28px -12px rgba(234, 215, 166, .45); transition: background-color .15s, transform .15s; }
+    .btn-primary-law:hover { background: #fff8ea; }
+    .btn-primary-law:active { background: var(--jb-champagne-down); transform: translateY(1px); }
+    .btn-primary-law.btn-lg { min-height: 52px; padding: 0 2rem; font-size: 1.05rem; }
 
-    .spinner-border.text-gold {
-        color: var(--gold-primary);
-        width: 3rem;
-        height: 3rem;
-    }
-
-    .alert-info-custom {
-        background: rgba(26, 35, 50, 0.05);
-        border: 1px solid rgba(26, 35, 50, 0.1);
-        border-radius: 8px;
-        color: var(--navy-deep);
-        padding: 1rem 1.25rem;
-    }
-
-    .btn-primary-law.btn-lg {
-        padding: 1rem 2.5rem;
-        font-size: 1.1rem;
-    }
-
-    #payment-status .alert {
-        border-radius: 8px;
-    }
+    #payment-status .alert { border-radius: var(--jb-r-ctl); }
 
     @media (max-width: 767px) {
-        .checkout-section {
-            margin-top: 70px;
-            padding: 20px 0;
-        }
-
-        .checkout-body {
-            padding: 1.5rem;
-        }
+        .checkout-section { padding: 24px 0 40px; }
+        .checkout-header { padding: 18px 20px; }
+        .checkout-body { padding: 20px; }
+        .order-summary { padding: 16px 18px; }
+        .btn-primary-law.btn-lg { width: 100%; padding: 0 1rem; }
     }
 </style>
 @endpush
