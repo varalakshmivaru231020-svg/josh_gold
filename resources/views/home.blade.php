@@ -38,12 +38,15 @@
 
     // Price-by-weight catalogue: [metal, form, grams]
     $pieces = [
-        ['gold', 'coin', 1], ['gold', 'coin', 2], ['gold', 'coin', 5], ['gold', 'coin', 8], ['gold', 'coin', 10],
-        ['gold', 'bar', 10], ['gold', 'bar', 20], ['gold', 'bar', 50], ['gold', 'bar', 100], ['gold', 'bar', 1000],
+        ['gold', 'coin', 0.5], ['gold', 'coin', 1], ['gold', 'coin', 2], ['gold', 'coin', 5], ['gold', 'coin', 8], ['gold', 'coin', 10],
+        ['gold', 'bar', 10], ['gold', 'bar', 20], ['gold', 'bar', 50], ['gold', 'bar', 100],
         ['silver', 'coin', 5], ['silver', 'coin', 10], ['silver', 'coin', 20], ['silver', 'coin', 50], ['silver', 'coin', 100],
         ['silver', 'bar', 100], ['silver', 'bar', 250], ['silver', 'bar', 500], ['silver', 'bar', 1000], ['silver', 'bar', 5000],
     ];
-    $weightLabel = fn (int $g) => $g >= 1000 ? ($g / 1000) . ' kg' : $g . ' g';
+    // 0.5 → "0.5 g", 10 → "10 g", 1000 → "1 kg"
+    $weightLabel = fn (float $g) => $g >= 1000
+        ? rtrim(rtrim(number_format($g / 1000, 3, '.', ''), '0'), '.') . ' kg'
+        : rtrim(rtrim(number_format($g, 3, '.', ''), '0'), '.') . ' g';
 
     $cardPhotos = [
         'gold-coin'   => 'gold-coins-card.webp',
@@ -550,7 +553,7 @@
                 var metal = card.getAttribute('data-metal');
                 var form = card.getAttribute('data-form');
                 var visible = metal === state.metal && (state.form === 'all' || state.form === form)
-                    && (state.grams === null || Number(card.getAttribute('data-grams')) === state.grams);
+                    && (state.grams === null || Math.abs(Number(card.getAttribute('data-grams')) - state.grams) < 0.001);
                 card.hidden = !visible;
                 if (!visible) return;
                 shown++;
@@ -598,7 +601,7 @@
             var s = q.match(/\b(999|925)\b/);
             if (s) state.purity.silver = s[1];
             var w = q.replace(/\b(24|22|18)\s*k\b|\b(999|925)\b/g, '').match(/(\d+(?:\.\d+)?)\s*(kg|kilo|g|gm|gram|grams)?\b/);
-            state.grams = w ? Math.round(Number(w[1]) * (/^k/.test(w[2] || '') ? 1000 : 1)) : null;
+            state.grams = w ? Number(w[1]) * (/^k/.test(w[2] || '') ? 1000 : 1) : null;
             render();
         }
         document.querySelectorAll('[data-search-form]').forEach(function (form) {
