@@ -1,0 +1,164 @@
+/*
+ * Cookie banner, cookie settings dialog and consent-gated embeds (.jb-embed).
+ * Markup: resources/views/layouts/partials/consent.blade.php. Behaviour: public/js/consent.js.
+ * Uses the tokens from bullion-theme.css (fallbacks given so it also stands on its own).
+ */
+
+.jbc-visually-hidden {
+    position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; margin: -1px !important;
+    overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important;
+}
+
+/* Choice buttons: the three options carry equal weight, in the banner and in the dialog */
+.jbc-choice {
+    flex: 1 1 0; min-width: 0; min-height: 44px; padding: 0 16px;
+    border: 1.5px solid var(--jb-gold-strong, #8a6516); border-radius: 12px;
+    background: #fff; color: var(--jb-ink, #1f1a12) !important;
+    font: 700 13.5px/1.2 var(--jb-sans, system-ui, sans-serif); white-space: normal; text-align: center;
+}
+.jbc-choice:hover { background: #fbf1da; border-color: var(--jb-gold-deep, #6e5112); }
+.jbc-choice:active { transform: translateY(1px); }
+.jbc-choice:focus-visible { outline: 2px solid var(--jb-gold-strong, #8a6516); outline-offset: 3px; }
+
+/* ── Banner (fixed to the bottom, never blocks the page) ── */
+.jbc-banner {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 55;
+    padding: 12px 12px calc(12px + env(safe-area-inset-bottom, 0px));
+    pointer-events: none;
+}
+.jbc-banner[hidden] { display: none !important; }
+.jbc-banner__inner {
+    pointer-events: auto;
+    max-width: 1080px; margin: 0 auto; padding: 16px 16px 14px;
+    display: grid; gap: 14px; align-items: center;
+    border: 1px solid var(--jb-line-strong, #d6bd85); border-top: 3px solid transparent; border-radius: 16px;
+    background:
+        linear-gradient(#fffdf8, #fffdf8) padding-box,
+        var(--jb-gold-band, linear-gradient(180deg, #e6c983, #b48b3c)) border-box;
+    box-shadow: 0 -6px 40px -12px rgba(110, 81, 18, .35), 0 18px 40px -18px rgba(31, 26, 18, .45);
+    color: var(--jb-text, #4b4436);
+    animation: jbc-rise .28s ease-out;
+}
+@media (min-width: 900px) {
+    .jbc-banner { padding: 18px 24px; }
+    .jbc-banner__inner { grid-template-columns: minmax(0, 1fr) auto; gap: 24px; padding: 18px 22px; }
+}
+.jbc-banner__title { margin: 0 0 4px !important; color: var(--jb-ink, #1f1a12); font: 600 16px/1.3 var(--jb-serif, Georgia, serif); }
+.jbc-banner__text p { margin: 0 !important; font-size: 13px; line-height: 1.55; }
+.jbc-banner a, .jbc-dialog a { color: var(--jb-gold-strong, #8a6516) !important; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.jbc-banner a:hover, .jbc-dialog a:hover { color: var(--jb-gold-deep, #6e5112) !important; }
+.jbc-banner__actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.jbc-banner__actions .jbc-choice { flex-basis: 30%; }
+@media (min-width: 900px) {
+    .jbc-banner__actions { flex-wrap: nowrap; }
+    .jbc-banner__actions .jbc-choice { flex: 0 0 auto; min-width: 150px; }
+}
+@media (max-width: 420px) {
+    .jbc-banner__text p { font-size: 12.5px; }
+    .jbc-banner__actions .jbc-choice { padding: 0 8px; font-size: 12.5px; }
+}
+
+/* While the banner shows, keep the floating WhatsApp button and the page end clear of it */
+html.jbc-has-banner .jb-wa-float { bottom: calc(var(--jbc-banner-h, 0px) + 10px); }
+html.jbc-has-banner body { padding-bottom: var(--jbc-banner-h, 0px); }
+
+/* ── Dialog ─────────────────────────────────────────── */
+html.jbc-locked body { overflow: hidden; }
+body:focus { outline: none; }
+.jbc-dialog { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; padding: 16px; }
+.jbc-dialog[hidden] { display: none !important; }
+.jbc-dialog__backdrop { position: absolute; inset: 0; background: rgba(31, 26, 18, .5); backdrop-filter: blur(3px); animation: jbc-fade .2s ease-out; }
+.jbc-dialog__panel {
+    position: relative; width: 100%; max-width: 540px; max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); overflow-y: auto;
+    padding: 22px 20px 20px; border: 1px solid var(--jb-line-strong, #d6bd85); border-top: 4px solid transparent; border-radius: 20px;
+    background:
+        linear-gradient(#fff, #fff) padding-box,
+        var(--jb-gold-band, linear-gradient(180deg, #e6c983, #b48b3c)) border-box;
+    box-shadow: 0 30px 70px -20px rgba(31, 26, 18, .55);
+    color: var(--jb-text, #4b4436); font-family: var(--jb-sans, system-ui, sans-serif); font-size: 14px; line-height: 1.55;
+    animation: jbc-pop .22s ease-out;
+}
+@media (min-width: 600px) { .jbc-dialog__panel { padding: 28px 28px 24px; } }
+.jbc-dialog__panel:focus { outline: none; }
+.jbc-dialog__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.jbc-dialog__title { margin: 0 !important; color: var(--jb-ink, #1f1a12); font: 600 21px/1.25 var(--jb-serif, Georgia, serif); }
+.jbc-dialog__close {
+    flex: none; width: 40px; height: 40px; display: grid; place-items: center; margin: -6px -6px 0 0;
+    border: 1px solid var(--jb-line-strong, #d6bd85); border-radius: 12px; background: #fff; color: var(--jb-ink, #1f1a12); cursor: pointer;
+}
+.jbc-dialog__close:hover { background: #fbf1da; }
+.jbc-dialog__close:focus-visible { outline: 2px solid var(--jb-gold-strong, #8a6516); outline-offset: 3px; }
+.jbc-dialog__close svg { width: 18px; height: 18px; }
+.jbc-dialog__intro { margin: 10px 0 18px !important; color: var(--jb-text, #4b4436); }
+.jbc-dialog__more { margin: 14px 0 0 !important; font-size: 13px; }
+.jbc-dialog__actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--jb-line-soft, #f1e8d4); }
+.jbc-dialog__actions .jbc-choice { flex: 1 1 auto; white-space: nowrap; }
+
+.jbc-cat { padding: 14px 16px; border: 1px solid var(--jb-line, #ebdfc4); border-radius: 14px; background: var(--jb-panel-2, #fdf9f0); }
+.jbc-cat + .jbc-cat { margin-top: 10px; }
+.jbc-cat__head { display: flex; align-items: center; gap: 12px; }
+.jbc-cat__name { flex: 1; margin: 0; color: var(--jb-ink, #1f1a12); font: 600 15.5px/1.3 var(--jb-serif, Georgia, serif); cursor: pointer; }
+.jbc-cat__state { color: var(--jb-gold-deep, #6e5112); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.jbc-cat__desc { margin: 8px 0 0 !important; color: var(--jb-text, #4b4436); font-size: 13px; line-height: 1.6; }
+
+/* On/off switch: a native checkbox with role="switch" */
+.jbc-switch {
+    -webkit-appearance: none; appearance: none; flex: none; position: relative; width: 48px; height: 28px; margin: 0;
+    border: 1.5px solid #9c8a66; border-radius: 999px; background: #efe7d6; cursor: pointer;
+    transition: background-color .18s, border-color .18s;
+}
+.jbc-switch::after {
+    content: ""; position: absolute; top: 3px; left: 3px; width: 19px; height: 19px; border-radius: 50%;
+    background: #fff; box-shadow: 0 1px 3px rgba(31, 26, 18, .35); transition: transform .18s;
+}
+.jbc-switch:checked { background: var(--jb-gold-strong, #8a6516); border-color: var(--jb-gold-strong, #8a6516); }
+.jbc-switch:checked::after { transform: translateX(20px); }
+.jbc-switch:focus-visible { outline: 2px solid var(--jb-gold-strong, #8a6516); outline-offset: 3px; }
+.jbc-switch:disabled { cursor: not-allowed; opacity: .6; }
+
+/* ── Footer link that reopens the dialog ───────────── */
+.jb-footer__cookie {
+    padding: 0; border: 0; background: none; color: var(--jb-text, #4b4436);
+    font: inherit; cursor: pointer; text-align: left;
+}
+.jb-footer__cookie:hover { color: var(--jb-gold-strong, #8a6516); }
+
+/* ── Consent-gated embeds ──────────────────────────── */
+.jb-embed {
+    position: relative; display: block; width: 100%; overflow: hidden;
+    border: 1px solid var(--jb-line-strong, #d6bd85); border-radius: var(--jb-r-card, 18px);
+    background:
+        radial-gradient(480px 220px at 50% 0%, rgba(214, 178, 95, .22), transparent 70%),
+        linear-gradient(180deg, #fffaf0, #fbf3e1);
+    box-shadow: var(--jb-shadow, 0 10px 30px -18px rgba(110, 81, 18, .35));
+}
+.jb-embed:not(.is-loaded) { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 28px 20px; text-align: center; }
+.jb-embed.is-loaded { background: #fff; border-color: var(--jb-line, #ebdfc4); }
+.jb-embed iframe { display: block; }
+.jb-embed__placeholder { display: flex; flex-direction: column; align-items: center; gap: 10px; max-width: 440px; }
+.jb-embed__icon { width: 46px; height: 46px; display: grid; place-items: center; border: 1.5px solid #d9c49a; border-radius: 50%; background: #fff; color: var(--jb-gold-strong, #8a6516); box-shadow: inset 0 0 0 4px #fbf5e6; }
+.jb-embed__icon svg { width: 20px; height: 20px; }
+.jb-embed__title { margin: 0 !important; color: var(--jb-ink, #1f1a12); font: 600 16px/1.3 var(--jb-serif, Georgia, serif); }
+.jb-embed:not(.is-loaded) p { margin: 0 !important; max-width: 46ch; color: var(--jb-text, #4b4436); font-size: 13.5px; line-height: 1.55; }
+.jb-embed [data-embed-load]:not(.jb-btn) {
+    min-height: 40px; padding: 0 18px; border: 1px solid #b48b3c; border-radius: 12px; cursor: pointer;
+    background: var(--jb-gold-band, #c9a35c); color: #2a1d06; font: 700 13.5px/1 var(--jb-sans, system-ui, sans-serif);
+}
+.jb-embed .jb-embed__always { margin-top: 2px !important; }
+.jb-embed [data-embed-always] {
+    padding: 2px 4px; border: 0; background: none; cursor: pointer;
+    color: var(--jb-gold-strong, #8a6516); font: 600 12.5px/1.4 var(--jb-sans, system-ui, sans-serif);
+    text-decoration: underline; text-underline-offset: 3px;
+}
+.jb-embed [data-embed-always]:hover { color: var(--jb-gold-deep, #6e5112); }
+.jb-embed :focus-visible { outline: 2px solid var(--jb-gold-strong, #8a6516); outline-offset: 3px; }
+.jb-embed:focus-visible { outline: 2px solid var(--jb-gold-strong, #8a6516); outline-offset: 3px; }
+
+@keyframes jbc-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@keyframes jbc-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes jbc-pop { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+    .jbc-banner__inner, .jbc-dialog__backdrop, .jbc-dialog__panel { animation: none; }
+    .jbc-switch, .jbc-switch::after, .jbc-choice { transition: none; }
+}

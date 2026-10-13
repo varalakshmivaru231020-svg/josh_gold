@@ -45,10 +45,11 @@ class SiteMap
             FooterLink::heading('notices') => $column('notices'),
         ];
 
-        $pages = Page::where('is_published', true)->orderBy('title')->get(['title', 'slug']);
-        if ($pages->isNotEmpty()) {
-            $groups['More'] = $pages->map(fn ($p) => [$p->title, route('pages.show', ['page' => $p->slug])])->all();
-        }
+        // Policy pages and other published pages (Admin → Pages), plus the privacy request form
+        $legal = Page::where('is_published', true)->orderBy('title')->get(['title', 'slug'])
+            ->map(fn ($p) => [$p->title, route('pages.show', ['page' => $p->slug])])->all();
+        $legal[] = ['Data access, correction or deletion request', route('privacy.request')];
+        $groups['Legal & privacy'] = $legal;
 
         return array_filter($groups);
     }

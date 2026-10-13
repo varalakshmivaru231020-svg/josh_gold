@@ -17,9 +17,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide/dist/css/glide.core.min.css">
     @include('layouts.partials.jb-head')
     <link rel="stylesheet" href="{{ asset('css/bullion-pages.css') }}?v={{ filemtime(public_path('css/bullion-pages.css')) }}">
     @stack('styles')
@@ -42,12 +40,15 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             try {
                 if (typeof AOS !== 'undefined') {
-                    AOS.init({ duration: 700, easing: 'ease-out', once: true, offset: 80 });
+                    AOS.init({
+                        duration: 700, easing: 'ease-out', once: true, offset: 80,
+                        // No scroll animations for visitors who ask for reduced motion
+                        disable: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+                    });
                 }
             } catch (e) {
                 console.warn('AOS failed to initialize:', e);

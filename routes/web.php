@@ -180,9 +180,14 @@ Route::get('/collections/{slug}', [App\Http\Controllers\CollectionController::cl
 Route::get('/updates', [HomeController::class, 'blogIndex'])->name('updates');
 Route::get('/updates/{slug}', [HomeController::class, 'blogShow'])->name('updates.show');
 
-// Contact Page
+// Contact Page (5 messages a minute per visitor; the third throttle value gives this form its own counter)
 Route::get('/contact-us', [HomeController::class, 'contactPage'])->name('contact');
-Route::post('/contact-us', [HomeController::class, 'submitContact'])->name('contact.submit');
+Route::post('/contact-us', [HomeController::class, 'submitContact'])->middleware('throttle:5,1,contact-form')->name('contact.submit');
+
+// Privacy: requests to see, correct or delete personal data, or withdraw consent (saved as enquiries)
+Route::get('/privacy/request', [App\Http\Controllers\PrivacyRequestController::class, 'create'])->name('privacy.request');
+Route::post('/privacy/request', [App\Http\Controllers\PrivacyRequestController::class, 'store'])
+    ->middleware('throttle:5,1,privacy-request')->name('privacy.request.submit');
 
 // Sitemap: a page for visitors and an XML file for search engines
 Route::get('/sitemap', [App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');

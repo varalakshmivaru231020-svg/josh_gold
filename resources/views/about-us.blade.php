@@ -45,7 +45,10 @@
         <div class="row g-4 g-lg-5 align-items-center">
             <div class="col-lg-5" data-aos="fade-right">
                 <figure class="ld-portrait mb-0">
-                    <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=700" alt="Mr. Prasad Ashok, Founder &amp; CEO of JOSHA GOLD AND DIAMOND JEWELLERY">
+                    {{-- Monogram placeholder: no photo of the founder has been supplied yet. To use a real photo,
+                         save it as e.g. public/images/team/prasad-ashok.webp and replace this div with:
+                         <img src="{{ asset('images/team/prasad-ashok.webp') }}" alt="Mr. Prasad Ashok, Founder &amp; CEO of JOSHA GOLD AND DIAMOND JEWELLERY"> --}}
+                    <div class="ld-monogram" aria-hidden="true"><span>PA</span></div>
                     <figcaption class="ld-badge">Founder &amp; CEO</figcaption>
                 </figure>
             </div>
@@ -279,9 +282,22 @@
         content: ''; position: absolute; inset: 20px -20px -20px 20px; z-index: 0;
         border: 1px solid var(--jb-line-strong); border-radius: 22px; background: linear-gradient(160deg, #fbf1da, #fff 70%);
     }
-    .ld-portrait img {
+    .ld-portrait img, .ld-monogram {
         position: relative; z-index: 1; display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover;
         border-radius: 22px; border: 4px solid #fff; box-shadow: var(--jb-shadow-lg);
+    }
+    /* Initials in a gold circle, shown until a real photo is added */
+    .ld-monogram {
+        display: grid; place-items: center;
+        background:
+            radial-gradient(320px 260px at 50% 30%, rgba(214, 178, 95, .28), transparent 70%),
+            linear-gradient(160deg, #fffaf0, #f6eedb);
+    }
+    .ld-monogram span {
+        display: grid; place-items: center; width: 56%; aspect-ratio: 1; border-radius: 50%;
+        background: var(--jb-gold-band); border: 1px solid #b48b3c;
+        box-shadow: 0 0 0 8px #fff, 0 0 0 9px var(--jb-line-strong), 0 18px 40px -18px rgba(138, 101, 22, .75), inset 0 1px 0 rgba(255, 255, 255, .5);
+        color: #2a1d06; font-family: var(--jb-serif); font-size: clamp(48px, 7vw, 76px); font-weight: 600; letter-spacing: .04em; line-height: 1;
     }
     .ld-badge {
         position: absolute; z-index: 2; left: 50%; bottom: -18px; transform: translateX(-50%);

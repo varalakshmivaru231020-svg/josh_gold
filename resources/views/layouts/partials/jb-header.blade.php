@@ -14,7 +14,7 @@
     $jbHours    = trim((string) SiteSetting::get('contact_working_hours'));
     $jbPhone    = trim((string) SiteSetting::get('contact_phone'));
     $jbEmail    = trim((string) SiteSetting::get('contact_email'));
-    $jbWhatsapp = preg_replace('/\D+/', '', (string) SiteSetting::get('contact_whatsapp')) ?: '919632527961';
+    $jbWhatsapp = preg_replace('/\D+/', '', (string) SiteSetting::get('contact_whatsapp')) ?: '918035565332';
 
     $jbCityUrl = function (string $key) {
         [$state, $city] = explode('/', $key);
@@ -76,7 +76,7 @@
         </div>
 
         <button type="button" class="jb-menu-btn jb-menu-btn--open" id="jbMenuOpen" aria-controls="jbDrawer" aria-expanded="false" aria-label="Open menu">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>
     </div>
 </header>
@@ -102,10 +102,10 @@
     <aside class="jb-drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
         <div class="jb-drawer__head">
             <a href="{{ route('home') }}">
-                <img class="jb-brand__logo" src="{{ $jbLogo }}" alt="{{ config('company.name') }}" width="65" height="54">
+                <img class="jb-brand__logo" src="{{ $jbLogo }}" alt="{{ config('company.name') }}, home" width="65" height="54">
             </a>
             <button type="button" class="jb-menu-btn" data-drawer-close aria-label="Close menu">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
             </button>
         </div>
         <nav class="jb-drawer__nav" aria-label="Mobile">

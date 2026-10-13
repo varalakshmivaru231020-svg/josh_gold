@@ -10,6 +10,7 @@
     .rc { position: relative; border: 1px solid var(--jb-line); border-radius: 14px; background: #fff; box-shadow: var(--jb-shadow); padding: 0 0 10px; margin-top: 1.25rem; scroll-margin-top: calc(var(--jb-header-h) + 16px); }
     .rc-chart { width: 100%; height: 420px; font-size: 10px; }
     .rc .amChartsLegend { display: none; }
+    .rc-sample-note { margin: 8px 2px 0; color: #9a4a00; font-size: 12.5px; }
 
     /* Zoom buttons + From / To boxes */
     .rc .amcharts-period-selector-div { margin-left: 10px; margin-right: 10px; }
@@ -80,3 +81,7 @@
         <button type="button" class="rc-retry">Try again</button>
     </div>
 </div>
+{{-- Demo history must never pass as real market prices --}}
+@if(\App\Models\MetalRate::where('is_sample', true)->exists())
+    <p class="rc-sample-note">This chart includes demo (sample) prices for preview only. They are not market rates.</p>
+@endif

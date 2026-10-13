@@ -17,7 +17,7 @@
         return ($value < 0 ? '−' : '') . '₹' . $out;
     };
 
-    $whatsapp = preg_replace('/\D+/', '', (string) SiteSetting::get('contact_whatsapp')) ?: '919632527961';
+    $whatsapp = preg_replace('/\D+/', '', (string) SiteSetting::get('contact_whatsapp')) ?: '918035565332';
     $phone    = trim((string) SiteSetting::get('contact_phone'));
     $email    = trim((string) SiteSetting::get('contact_email'));
     $hours    = trim((string) SiteSetting::get('contact_working_hours'));

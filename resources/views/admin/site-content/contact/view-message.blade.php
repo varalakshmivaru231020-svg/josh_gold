@@ -24,7 +24,7 @@
                 @endif
             </div>
             <div class="card-body">
-                <div class="message-content p-3 bg-light rounded">
+                <div class="message-content p-3 bg-light rounded" style="white-space: pre-line;">
                     {{ $message->message }}
                 </div>
             </div>
