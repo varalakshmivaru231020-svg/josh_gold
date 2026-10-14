@@ -136,7 +136,7 @@
         </nav>
 
         <a class="jb-brand" href="{{ route('home') }}">
-            <img class="jb-brand__logo" src="{{ $jbLogo }}" alt="{{ config('company.name') }}, home" width="121" height="100" fetchpriority="high">
+            <img class="jb-brand__logo" src="{{ $jbLogo }}" alt="{{ config('company.name') }}, home" width="136" height="112" fetchpriority="high">
         </a>
 
         <nav class="jb-lux__nav jb-lux__nav--right" aria-label="Company">
@@ -158,7 +158,7 @@
     <aside class="jb-drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
         <div class="jb-drawer__head">
             <a href="{{ route('home') }}">
-                <img class="jb-brand__logo" src="{{ $jbLogo }}" alt="{{ config('company.name') }}, home" width="63" height="52">
+                <img class="jb-brand__logo" src="{{ $jbLogo }}" alt="{{ config('company.name') }}, home" width="78" height="64">
             </a>
             <button type="button" class="jb-menu-btn" data-drawer-close aria-label="Close menu">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg>
