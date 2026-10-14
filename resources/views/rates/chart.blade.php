@@ -8,20 +8,18 @@
     $spot = \Illuminate\Support\Facades\Cache::get('spot.prices.last', []);
     $spotTime = isset($spot['updated_at']) ? \Carbon\Carbon::parse($spot['updated_at'])->setTimezone(\App\Models\MetalRate::TIMEZONE)->format('g:i:s A') : '—';
 @endphp
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#0b0a08">
-    <title>{{ $chart['name'] }} Live Chart ({{ strtok($chart['sub'], ' ·') }}) | {{ config('company.name') }}</title>
-    <meta name="description" content="Live {{ strtolower($chart['name']) }} chart ({{ $chart['sub'] }}) with live spot prices and our published gold and silver rates.">
-    @include('layouts.partials.jb-head')
-    <link rel="stylesheet" href="{{ asset('css/live-charts.css') }}?v={{ filemtime(public_path('css/live-charts.css')) }}">
-</head>
-<body class="lc">
-    <header class="lc-bar">
-        <a class="lc-brand" href="{{ route('home') }}"><img src="{{ versioned_asset('images/brand/josha-logo-header.webp') }}" alt="{{ config('company.name') }}, home" width="68" height="56"></a>
+@extends('layouts.bullion')
+
+@section('title', $chart['name'] . ' Live Chart (' . strtok($chart['sub'], ' ·') . ') | ' . config('company.name'))
+@section('description', 'Live ' . strtolower($chart['name']) . ' chart (' . $chart['sub'] . ') with live spot prices and our published gold and silver rates.')
+
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/live-charts.css') }}?v={{ filemtime(public_path('css/live-charts.css')) }}">
+@endpush
+
+@section('content')
+<div class="lc lc-page" id="lcPage">
+    <div class="lc-bar">
         <label class="jb-sr" for="lcSymbol">Chart</label>
         <select class="lc-select" id="lcSymbol" onchange="location.href = this.value">
             @foreach(LiveCharts::CHARTS as $key => $c)
@@ -34,9 +32,9 @@
         <button type="button" class="lc-btn lc-btn--light" id="lcRefresh">Refresh</button>
         <button type="button" class="lc-btn" id="lcToggleDetails" aria-pressed="false">Hide details</button>
         <button type="button" class="lc-btn lc-hide-sm" id="lcFullscreen">Full</button>
-    </header>
+    </div>
 
-    <main class="lc-main" id="main-content">
+    <div class="lc-main">
         <section class="lc-one" aria-label="{{ $chart['name'] }} live chart">
             <article class="lc-chart">
                 <div class="lc-chart__head">
@@ -50,28 +48,30 @@
         </section>
 
         @include('rates._live-panel')
-    </main>
+    </div>
+</div>
+@endsection
 
+@push('scripts')
     <script>
     (function () {
-        var body = document.body;
+        var page = document.getElementById('lcPage');
 
         var details = document.getElementById('lcToggleDetails');
         details.addEventListener('click', function () {
-            var hidden = body.classList.toggle('lc--nodetails');
+            var hidden = page.classList.toggle('lc--nodetails');
             details.textContent = hidden ? 'Show details' : 'Hide details';
             details.setAttribute('aria-pressed', hidden);
         });
 
         var fs = document.getElementById('lcFullscreen');
-        if (!document.documentElement.requestFullscreen) { fs.hidden = true; }
+        if (!page.requestFullscreen) { fs.hidden = true; }
         fs.addEventListener('click', function () {
-            if (document.fullscreenElement) { document.exitFullscreen(); } else { document.documentElement.requestFullscreen(); }
+            if (document.fullscreenElement) { document.exitFullscreen(); } else { page.requestFullscreen(); }
         });
         document.addEventListener('fullscreenchange', function () { fs.textContent = document.fullscreenElement ? 'Exit full' : 'Full'; });
 
         document.getElementById('lcRefresh').addEventListener('click', function () { location.reload(); });
     })();
     </script>
-</body>
-</html>
+@endpush
