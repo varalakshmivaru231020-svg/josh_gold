@@ -1,15 +1,15 @@
 @extends('layouts.lawfirm')
 
-@section('title', 'Photo Gallery | Advocate Veerendrababu Nanjegowda')
+@section('title', 'Photo Gallery | ' . config('company.name'))
 
 @section('content')
 <section class="gallery-luxury-page">
 
     @include('layouts.partials.page-head', [
         'eyebrow' => 'Photo gallery',
-        'title'   => 'Moments Across Courtrooms,',
-        'accent'  => 'Culture & Community',
-        'sub'     => 'A visual chronicle of legal milestones, cultural pursuits, and community engagement by Advocate Veerendrababu Nanjegowda.',
+        'title'   => 'Our store, our pieces,',
+        'accent'  => 'our people',
+        'sub'     => 'Photos from Josha Gold & Diamond Jewellery: our showroom, jewellery, bullion and events.',
         'crumbs'  => [['Gallery']],
     ])
 

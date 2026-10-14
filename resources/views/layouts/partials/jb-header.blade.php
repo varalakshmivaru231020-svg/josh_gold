@@ -52,6 +52,7 @@
     $jbRight = [
         ['About us',   route('about-us'),       request()->routeIs('about-us'), null],
         ['Services',   route('services.index'), request()->routeIs('services.index'), null],
+        ['Gallery',    route('gallery'),        request()->routeIs('gallery'), null],
         ['Updates',    route('updates'),        request()->routeIs('updates', 'updates.*'), null],
         ['Contact us', route('contact'),        request()->routeIs('contact'), null],
     ];
