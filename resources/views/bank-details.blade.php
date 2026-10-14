@@ -66,7 +66,7 @@
 
                     @if($account->qr_image)
                     <div class="bank-qr">
-                        <img src="{{ asset('storage/' . $account->qr_image) }}" alt="Payment QR for {{ $account->bank_name }}" loading="lazy">
+                        <img src="{{ versioned_asset('storage/' . $account->qr_image) }}" alt="Payment QR for {{ $account->bank_name }}" loading="lazy">
                         <small>Scan to pay</small>
                     </div>
                     @endif

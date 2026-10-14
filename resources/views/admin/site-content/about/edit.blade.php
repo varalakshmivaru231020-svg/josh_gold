@@ -55,7 +55,7 @@
                 <div class="card-body">
                     <label class="form-label fw-semibold">{{ $label }} <span class="text-muted fw-normal">(optional)</span></label>
                     <div class="border rounded-3 overflow-hidden bg-light mb-2 d-flex align-items-center justify-content-center" style="{{ $ratio }}">
-                        <img id="{{ $field }}Preview" src="{{ !empty($about->$field) ? asset('storage/' . $about->$field) : '' }}" alt="" class="w-100 h-100 {{ !empty($about->$field) ? '' : 'd-none' }}" style="object-fit: cover;">
+                        <img id="{{ $field }}Preview" src="{{ !empty($about->$field) ? versioned_asset('storage/' . $about->$field) : '' }}" alt="" class="w-100 h-100 {{ !empty($about->$field) ? '' : 'd-none' }}" style="object-fit: cover;">
                         <span id="{{ $field }}Placeholder" class="text-muted small {{ !empty($about->$field) ? 'd-none' : '' }}"><i class="fas fa-image me-1"></i>No image yet</span>
                     </div>
                     <input type="file" class="form-control @error($field) is-invalid @enderror" id="{{ $field }}" name="{{ $field }}" accept="image/jpeg,image/png,image/webp" data-preview="{{ $field }}">

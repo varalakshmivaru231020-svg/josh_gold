@@ -79,7 +79,7 @@
                 <div class="card-body">
                     <label class="form-label fw-semibold">Background photo <span class="text-muted fw-normal">(optional)</span></label>
                     <div class="border rounded-3 overflow-hidden bg-light mb-3 d-flex align-items-center justify-content-center" style="aspect-ratio: 16 / 9;">
-                        <img id="ctaPreview" src="{{ $cta['cta_image'] ? asset('storage/' . $cta['cta_image']) : '' }}" alt="" class="w-100 h-100 {{ $cta['cta_image'] ? '' : 'd-none' }}" style="object-fit: cover;">
+                        <img id="ctaPreview" src="{{ $cta['cta_image'] ? versioned_asset('storage/' . $cta['cta_image']) : '' }}" alt="" class="w-100 h-100 {{ $cta['cta_image'] ? '' : 'd-none' }}" style="object-fit: cover;">
                         <span id="ctaPlaceholder" class="text-muted small {{ $cta['cta_image'] ? 'd-none' : '' }}"><i class="fas fa-image me-1"></i>No photo &mdash; a navy and gold background is used</span>
                     </div>
 

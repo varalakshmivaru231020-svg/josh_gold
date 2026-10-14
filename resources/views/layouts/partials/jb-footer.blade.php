@@ -54,7 +54,7 @@
         <div class="jb-footer__grid">
             <div class="jb-footer__brand">
                 <a href="{{ route('home') }}" class="jb-footer__logo">
-                    <img src="{{ asset('images/brand/josha-logo.webp') }}" alt="{{ config('company.name') }}" width="200" height="165" loading="lazy">
+                    <img src="{{ versioned_asset('images/brand/josha-logo.webp') }}" alt="{{ config('company.name') }}" width="200" height="165" loading="lazy">
                 </a>
                 @if($jfAbout !== '')<p class="jb-footer__about">{{ $jfAbout }}</p>@endif
                 @if($socialLinks->isNotEmpty())

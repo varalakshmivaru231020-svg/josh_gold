@@ -29,7 +29,7 @@
             <label for="image" class="form-label">Cover image @if($isNew)<span class="text-danger">*</span>@endif</label>
             <div class="cover-preview mb-2" id="coverPreview">
                 @if($blog->image)
-                    <img src="{{ asset('storage/' . $blog->image) }}" alt="Current cover image">
+                    <img src="{{ versioned_asset('storage/' . $blog->image) }}" alt="Current cover image">
                 @else
                     <span class="cover-preview-empty"><i class="fas fa-image" aria-hidden="true"></i>No cover image yet</span>
                 @endif

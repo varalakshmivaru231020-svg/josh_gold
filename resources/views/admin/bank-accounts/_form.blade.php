@@ -57,7 +57,7 @@
             <label class="form-label fw-semibold">UPI / Payment QR <span class="text-muted fw-normal">(optional)</span></label>
             @if($account?->qr_image)
             <div class="mb-2">
-                <img src="{{ asset('storage/' . $account->qr_image) }}" alt="QR" class="img-fluid rounded border" style="max-height:180px;">
+                <img src="{{ versioned_asset('storage/' . $account->qr_image) }}" alt="QR" class="img-fluid rounded border" style="max-height:180px;">
             </div>
             <div class="form-check mb-2">
                 <input class="form-check-input" type="checkbox" id="remove_qr_image" name="remove_qr_image" value="1">

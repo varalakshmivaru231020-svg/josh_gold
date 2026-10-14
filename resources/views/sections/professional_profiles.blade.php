@@ -23,7 +23,7 @@
                             <div class="profile-item d-flex align-items-start mb-5 pb-4">
                                 <div class="profile-circular-icon me-4 flex-shrink-0">
                                     @if(isset($profile['image']))
-                                        <img src="{{ asset('storage/' . $profile['image']) }}" alt="{{ $profile['type'] ?? '' }}" class="w-100 h-100 rounded-circle object-fit-cover">
+                                        <img src="{{ versioned_asset('storage/' . $profile['image']) }}" alt="{{ $profile['type'] ?? '' }}" class="w-100 h-100 rounded-circle object-fit-cover">
                                     @else
                                         <i class="{{ $profile['icon'] ?? 'fas fa-user-tie' }}"></i>
                                     @endif

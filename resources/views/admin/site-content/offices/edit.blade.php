@@ -65,7 +65,7 @@
                     @if($office->image)
                     <div class="mb-2" id="currentOfficeImageWrap">
                         <label class="form-label fw-semibold">Current Photo</label>
-                        <img src="{{ asset('storage/' . $office->image) }}" class="img-fluid rounded" style="max-height:160px; object-fit:cover; width:100%;">
+                        <img src="{{ versioned_asset('storage/' . $office->image) }}" class="img-fluid rounded" style="max-height:160px; object-fit:cover; width:100%;">
                     </div>
                     @endif
 

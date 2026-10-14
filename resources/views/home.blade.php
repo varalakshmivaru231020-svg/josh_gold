@@ -71,14 +71,14 @@
 @endphp
 
 @push('head')
-<link rel="preload" as="image" href="{{ asset('images/site/hero-bullion.webp') }}" imagesrcset="{{ asset('images/site/hero-bullion-1200.webp') }} 1200w, {{ asset('images/site/hero-bullion.webp') }} 2400w" imagesizes="100vw" fetchpriority="high">
+<link rel="preload" as="image" href="{{ versioned_asset('images/site/hero-bullion.webp') }}" imagesrcset="{{ versioned_asset('images/site/hero-bullion-1200.webp') }} 1200w, {{ versioned_asset('images/site/hero-bullion.webp') }} 2400w" imagesizes="100vw" fetchpriority="high">
 <script type="application/ld+json">{!! json_encode(array_filter([
     '@context'  => 'https://schema.org',
     '@type'     => 'JewelryStore',
     'name'      => config('company.name'),
     'url'       => route('home'),
-    'logo'      => asset('images/brand/josha-logo.png'),
-    'image'     => asset('images/site/hero-bullion-1200.webp'),
+    'logo'      => versioned_asset('images/brand/josha-logo.png'),
+    'image'     => versioned_asset('images/site/hero-bullion-1200.webp'),
     'telephone' => $phone !== '' ? $phone : null,
     'email'     => $email !== '' ? $email : null,
     'address'   => $address !== '' ? [
@@ -96,8 +96,8 @@
     {{-- ─── Hero ───────────────────────────────────────── --}}
     <section class="jb-hero" aria-labelledby="hero-title">
         <div class="jb-hero__bg" data-parallax="0.12">
-            <img src="{{ asset('images/site/hero-bullion.webp') }}"
-                 srcset="{{ asset('images/site/hero-bullion-1200.webp') }} 1200w, {{ asset('images/site/hero-bullion.webp') }} 2400w" sizes="100vw"
+            <img src="{{ versioned_asset('images/site/hero-bullion.webp') }}"
+                 srcset="{{ versioned_asset('images/site/hero-bullion-1200.webp') }} 1200w, {{ versioned_asset('images/site/hero-bullion.webp') }} 2400w" sizes="100vw"
                  alt="Gold bullion bars and coins under warm studio light" width="2400" height="1350" fetchpriority="high">
         </div>
         <div class="jb-dust" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
@@ -137,11 +137,11 @@
             <div class="jb-hero__art">
                 <span class="jb-hero__ring" aria-hidden="true"></span>
                 <a class="jb-hero__frame jb-hero__frame--a" href="{{ $collectionUrl('gold-jewellery', route('contact')) }}" data-parallax="-0.05" aria-label="Explore Gold jewellery collection">
-                    <img src="{{ asset('images/site/hero-necklace.webp') }}" alt="Gold jewellery" width="720" height="900" fetchpriority="high">
+                    <img src="{{ versioned_asset('images/site/hero-necklace.webp') }}" alt="Gold jewellery" width="720" height="900" fetchpriority="high">
                     <span class="jb-hero__caption">Gold jewellery <span class="jb-hero__caption-arrow" aria-hidden="true">→</span></span>
                 </a>
                 <a class="jb-hero__frame jb-hero__frame--b" href="{{ $collectionUrl('diamond-jewellery', route('contact')) }}" data-parallax="0.04" aria-label="Explore Diamonds collection">
-                    <img src="{{ asset('images/site/hero-diamond.webp') }}" alt="Diamonds" width="720" height="720">
+                    <img src="{{ versioned_asset('images/site/hero-diamond.webp') }}" alt="Diamonds" width="720" height="720">
                     <span class="jb-hero__caption">Diamonds <span class="jb-hero__caption-arrow" aria-hidden="true">→</span></span>
                 </a>
             </div>
@@ -243,7 +243,7 @@
                         @endphp
                         <article class="jb-card" data-metal="{{ $metal }}" data-form="{{ $form }}" data-grams="{{ $grams }}" @if($metal !== 'gold') hidden @endif>
                             <a class="jb-card__media" href="{{ route('live-rates') . ($metal === 'gold' ? '#gold-rate' : '#silver-rate') }}" tabindex="-1" aria-hidden="true">
-                                <img src="{{ asset('images/site/' . $cardPhotos[$metal . '-' . $form]) }}" alt="" width="400" height="400" loading="lazy" decoding="async">
+                                <img src="{{ versioned_asset('images/site/' . $cardPhotos[$metal . '-' . $form]) }}" alt="" width="400" height="400" loading="lazy" decoding="async">
                                 <span class="jb-card__badge jb-chip jb-chip--gold" data-purity-label>{{ $purity }}</span>
                                 <span class="jb-card__weight">{{ $weight }}</span>
                             </a>
@@ -279,7 +279,7 @@
                 @foreach($services->take(3) as $service)
                     <article class="jb-service" data-reveal style="--jb-delay: {{ $loop->index * 0.1 }}s">
                         <div class="jb-service__img">
-                            @if($service->image)<img src="{{ asset('storage/' . $service->image) }}" alt="" width="800" height="550" loading="lazy" decoding="async">@endif
+                            @if($service->image)<img src="{{ versioned_asset('storage/' . $service->image) }}" alt="" width="800" height="550" loading="lazy" decoding="async">@endif
                             <span class="jb-service__num" aria-hidden="true">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                         </div>
                         <div class="jb-service__body">
@@ -373,7 +373,7 @@
             <div class="jb-guide">
                 @foreach($guide as [$img, $step, $heading, $text, $href, $more])
                     <a class="jb-guide__card" href="{{ $href }}" data-reveal style="--jb-delay: {{ $loop->index * 0.08 }}s">
-                        <div class="jb-guide__img"><img src="{{ asset('images/site/' . $img) }}" alt="" width="600" height="413" loading="lazy" decoding="async"></div>
+                        <div class="jb-guide__img"><img src="{{ versioned_asset('images/site/' . $img) }}" alt="" width="600" height="413" loading="lazy" decoding="async"></div>
                         <div class="jb-guide__body">
                             <span class="jb-guide__step">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }} · {{ $step }}</span>
                             <h3>{{ $heading }}</h3>
@@ -402,7 +402,7 @@
                 @foreach($latestUpdates as $update)
                     <a class="jb-news__item" href="{{ route('updates.show', $update->slug) }}" data-reveal style="--jb-delay: {{ $loop->index * 0.08 }}s">
                         <div class="jb-news__img">
-                            <img src="{{ $update->image ? asset('storage/' . $update->image) : asset('images/site/gold-bars-2-wide.webp') }}" alt="" width="600" height="400" loading="lazy" decoding="async">
+                            <img src="{{ $update->image ? versioned_asset('storage/' . $update->image) : versioned_asset('images/site/gold-bars-2-wide.webp') }}" alt="" width="600" height="400" loading="lazy" decoding="async">
                         </div>
                         <div class="jb-news__body">
                             @if($update->created_at)<time class="jb-news__date" datetime="{{ $update->created_at->toDateString() }}">{{ $update->created_at->format('j M Y') }}</time>@endif

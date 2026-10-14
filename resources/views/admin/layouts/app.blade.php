@@ -1,6 +1,6 @@
 @php
     $siteLogo = \App\Models\SiteSetting::get('site_logo');
-    $logoUrl = $siteLogo ? asset('storage/' . $siteLogo) : asset('images/brand/josha-logo.png');
+    $logoUrl = $siteLogo ? versioned_asset('storage/' . $siteLogo) : versioned_asset('images/brand/josha-logo.png');
     $adminUser = Auth::guard('admin')->user();
     $adminInitials = collect(preg_split('/\s+/', trim($adminUser->name ?? 'A')))
         ->filter()->take(2)->map(fn ($part) => mb_strtoupper(mb_substr($part, 0, 1)))->implode('');
@@ -13,7 +13,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="robots" content="noindex, nofollow">
     <title>@yield('title', 'Admin Panel') - {{ config('app.name') }}</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/brand/favicon-32.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ versioned_asset('images/brand/favicon-32.png') }}">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">

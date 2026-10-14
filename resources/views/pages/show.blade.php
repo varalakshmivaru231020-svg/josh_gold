@@ -4,7 +4,7 @@
 
 @section('content')
 {{-- The banner image chosen in admin sits behind the heading, darkened, with white text --}}
-<div class="cms-head{{ $page->banner_image ? ' cms-head--image' : '' }}" @if($page->banner_image) style="--cms-banner: url('{{ asset('storage/' . $page->banner_image) }}');" @endif>
+<div class="cms-head{{ $page->banner_image ? ' cms-head--image' : '' }}" @if($page->banner_image) style="--cms-banner: url('{{ versioned_asset('storage/' . $page->banner_image) }}');" @endif>
     @include('layouts.partials.page-head', [
         'title'  => $page->banner_title ?? $page->title,
         'crumbs' => [[$page->title]],

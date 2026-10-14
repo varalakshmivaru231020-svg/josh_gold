@@ -25,7 +25,7 @@
             <div class="col-lg-3 col-md-4 col-sm-6">
                 <div class="card h-100 border shadow-sm">
                     <div style="height:200px; overflow:hidden; background:#f8f9fa;">
-                        <img src="{{ asset('storage/' . $photo->image) }}" alt="{{ $photo->title }}" style="width:100%; height:100%; object-fit:cover;">
+                        <img src="{{ versioned_asset('storage/' . $photo->image) }}" alt="{{ $photo->title }}" style="width:100%; height:100%; object-fit:cover;">
                     </div>
                     <div class="card-body p-3">
                         <div class="d-flex justify-content-between align-items-start mb-2">

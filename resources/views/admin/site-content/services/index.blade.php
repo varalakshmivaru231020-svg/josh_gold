@@ -29,7 +29,7 @@
                     <tr>
                         <td>
                             @if($service->image)
-                            <img src="{{ asset('storage/' . $service->image) }}" alt="" class="rounded border" style="width: 84px; height: 54px; object-fit: cover;">
+                            <img src="{{ versioned_asset('storage/' . $service->image) }}" alt="" class="rounded border" style="width: 84px; height: 54px; object-fit: cover;">
                             @else
                             <span class="d-inline-flex align-items-center justify-content-center rounded border bg-light text-muted" style="width: 84px; height: 54px;"><i class="fas fa-image"></i></span>
                             @endif

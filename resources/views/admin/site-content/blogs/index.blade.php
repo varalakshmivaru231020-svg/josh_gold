@@ -32,7 +32,7 @@
                     <tr>
                         <td>
                             @if($blog->image)
-                            <img src="{{ asset('storage/' . $blog->image) }}" alt="" class="rounded" style="width: 72px; height: 45px; object-fit: cover;">
+                            <img src="{{ versioned_asset('storage/' . $blog->image) }}" alt="" class="rounded" style="width: 72px; height: 45px; object-fit: cover;">
                             @else
                             <span class="badge bg-warning text-dark" title="Add a cover image so this update looks its best">No cover</span>
                             @endif

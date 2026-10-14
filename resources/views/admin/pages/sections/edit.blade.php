@@ -23,7 +23,7 @@
                                 <label class="form-label font-weight-bold card-text text-primary"><i class="fas fa-image me-2"></i> Section Image</label>
                                 @if(isset($section->cards[0]['image']))
                                     <div class="mb-3">
-                                        <img src="{{ asset('storage/' . $section->cards[0]['image']) }}" alt="Current Image" style="max-width: 200px;" class="img-thumbnail d-block">
+                                        <img src="{{ versioned_asset('storage/' . $section->cards[0]['image']) }}" alt="Current Image" style="max-width: 200px;" class="img-thumbnail d-block">
                                         <small class="text-muted">Current image</small>
                                     </div>
                                 @endif
@@ -84,7 +84,7 @@
                                                     <label class="form-label">Profile Image</label>
                                                     @if(isset($profile['image']))
                                                         <div class="mb-2">
-                                                            <img src="{{ asset('storage/' . $profile['image']) }}" class="img-thumbnail" style="height: 60px;">
+                                                            <img src="{{ versioned_asset('storage/' . $profile['image']) }}" class="img-thumbnail" style="height: 60px;">
                                                         </div>
                                                     @endif
                                                     <input type="file" name="profile_images[{{$i}}]" class="form-control">

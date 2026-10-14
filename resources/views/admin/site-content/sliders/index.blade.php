@@ -39,7 +39,7 @@
                     <tr>
                         <td>
                             @if($slider->image)
-                            <img src="{{ asset('storage/' . $slider->image) }}" alt="{{ $slider->title }}" class="rounded" style="width: 60px; height: 40px; object-fit: cover;">
+                            <img src="{{ versioned_asset('storage/' . $slider->image) }}" alt="{{ $slider->title }}" class="rounded" style="width: 60px; height: 40px; object-fit: cover;">
                             @else
                             <span class="text-muted">No Image</span>
                             @endif

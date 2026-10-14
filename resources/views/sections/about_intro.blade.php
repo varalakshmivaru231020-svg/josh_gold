@@ -13,8 +13,8 @@
                     @php
                         $aboutMain = \App\Models\AboutSection::first();
                         $introImage = isset($section->cards[0]['image']) 
-                            ? asset('storage/' . $section->cards[0]['image']) 
-                            : ($aboutMain && $aboutMain->image ? asset('storage/' . $aboutMain->image) : asset('about_intro_main.jpg'));
+                            ? versioned_asset('storage/' . $section->cards[0]['image']) 
+                            : ($aboutMain && $aboutMain->image ? versioned_asset('storage/' . $aboutMain->image) : asset('about_intro_main.jpg'));
                         
                         $displaySubheading = $section->subheading ?: ($aboutMain->subtitle ?? 'Introduction');
                         $displayContent = $section->content ?: ($aboutMain->content ?? '');

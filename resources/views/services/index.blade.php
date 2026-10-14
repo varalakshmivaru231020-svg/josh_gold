@@ -21,7 +21,7 @@
                 <figure class="pas-figure">
                     <div class="pas-media">
                         @if($service->image)
-                            <img src="{{ asset('storage/' . $service->image) }}" alt="{{ $service->title }}" loading="lazy">
+                            <img src="{{ versioned_asset('storage/' . $service->image) }}" alt="{{ $service->title }}" loading="lazy">
                         @else
                             {{-- No photo yet: a gold panel with the service icon --}}
                             <div class="pas-media__ph" aria-hidden="true">

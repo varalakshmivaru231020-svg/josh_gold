@@ -60,7 +60,7 @@
 <section class="cta-wrap" aria-label="Get in touch">
     <div class="container">
         <div class="cta-card {{ $cta['cta_image'] ? 'has-photo' : '' }}"
-             @if($cta['cta_image']) style="background-image: url('{{ asset('storage/' . $cta['cta_image']) }}');" @endif>
+             @if($cta['cta_image']) style="background-image: url('{{ versioned_asset('storage/' . $cta['cta_image']) }}');" @endif>
             <div class="cta-content">
                 @if($heading !== '')<h2 class="cta-heading">{{ $heading }}</h2>@endif
                 @if($subtext !== '')<p class="cta-text">{{ $subtext }}</p>@endif

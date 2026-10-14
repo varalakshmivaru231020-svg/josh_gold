@@ -49,7 +49,7 @@
                             <label class="form-label">Banner Image</label>
                             @if($page->banner_image)
                             <div class="mb-2">
-                                <img src="{{ asset('storage/' . $page->banner_image) }}" alt="Banner" class="img-fluid rounded" style="max-height: 150px;">
+                                <img src="{{ versioned_asset('storage/' . $page->banner_image) }}" alt="Banner" class="img-fluid rounded" style="max-height: 150px;">
                             </div>
                             @endif
                             <input type="file" name="banner_image" class="form-control" accept="image/*">

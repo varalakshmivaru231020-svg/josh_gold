@@ -18,9 +18,9 @@
                             <div class="col-auto">
                                 <div class="logo-preview-box" style="width: 160px; height: 120px; border: 2px dashed #c9a35c; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #050505; padding: 8px;" title="Preview on the website header colour">
                                     @if($logo)
-                                        <img src="{{ asset('storage/' . $logo) }}" alt="Current Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;" id="logoPreview">
+                                        <img src="{{ versioned_asset('storage/' . $logo) }}" alt="Current Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;" id="logoPreview">
                                     @else
-                                        <img src="{{ asset('images/brand/josha-logo.png') }}" alt="Default Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;" id="logoPreview">
+                                        <img src="{{ versioned_asset('images/brand/josha-logo.png') }}" alt="Default Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;" id="logoPreview">
                                     @endif
                                 </div>
                             </div>

@@ -80,7 +80,7 @@
                         <label for="image" class="form-label">Slider Image</label>
                         @if($slider->image)
                         <div class="mb-2">
-                            <img src="{{ asset('storage/' . $slider->image) }}" alt="{{ $slider->title }}" class="img-fluid rounded" style="max-height: 150px;">
+                            <img src="{{ versioned_asset('storage/' . $slider->image) }}" alt="{{ $slider->title }}" class="img-fluid rounded" style="max-height: 150px;">
                         </div>
                         @endif
                         <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image" accept="image/*">

@@ -37,11 +37,11 @@
             <div class="gallery-mosaic-item {{ $index % 5 === 0 ? 'gallery-tall' : '' }} {{ $photo->category ? 'filter-' . Str::slug($photo->category) : '' }}"
                  data-aos="zoom-in"
                  data-aos-delay="{{ min($index * 50, 500) }}">
-                <a href="{{ asset('storage/' . $photo->image) }}"
+                <a href="{{ versioned_asset('storage/' . $photo->image) }}"
                    class="gallery-lightbox-link"
                    data-title="{{ $photo->title ?? '' }}"
                    data-caption="{{ $photo->caption ?? '' }}">
-                    <img src="{{ asset('storage/' . $photo->image) }}"
+                    <img src="{{ versioned_asset('storage/' . $photo->image) }}"
                          alt="{{ $photo->title ?? 'Gallery Photo ' . ($index + 1) }}"
                          loading="lazy">
                     <div class="gallery-item-overlay">

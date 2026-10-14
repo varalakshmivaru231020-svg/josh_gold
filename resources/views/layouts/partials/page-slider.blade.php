@@ -91,7 +91,7 @@
             @endphp
             <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
                 <div class="ps-slide {{ $hasCopy ? '' : 'ps-slide--plain' }} {{ $slide->image ? '' : 'ps-slide--noimg' }}"
-                     @if($slide->image) style="background-image: url('{{ asset('storage/' . $slide->image) }}');" @endif>
+                     @if($slide->image) style="background-image: url('{{ versioned_asset('storage/' . $slide->image) }}');" @endif>
                     @if($hasCopy)
                     <div class="container ps-inner">
                         <div class="ps-copy">

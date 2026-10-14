@@ -64,6 +64,6 @@ class Blog extends Model
     // Public URL of the cover image, or null when the post has none
     public function getImageUrlAttribute(): ?string
     {
-        return $this->image ? asset('storage/' . $this->image) : null;
+        return $this->image ? versioned_asset('storage/' . $this->image) : null;
     }
 }

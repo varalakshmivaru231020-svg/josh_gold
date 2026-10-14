@@ -15,7 +15,7 @@
             'center'  => true,
         ])
         @if($about && $about->hero_image)
-            <div class="about-hero-photo" style="background-image: url('{{ asset('storage/' . $about->hero_image) }}');" aria-hidden="true"></div>
+            <div class="about-hero-photo" style="background-image: url('{{ versioned_asset('storage/' . $about->hero_image) }}');" aria-hidden="true"></div>
         @endif
     </div>
 
@@ -26,7 +26,7 @@
             @if($about->image)
             <div class="col-lg-5" data-aos="fade-right">
                 <figure class="about-story-media mb-0">
-                    <img src="{{ asset('storage/' . $about->image) }}" alt="{{ $about->title ?: 'About JOSHA GOLD AND DIAMOND JEWELLERY' }}" loading="lazy">
+                    <img src="{{ versioned_asset('storage/' . $about->image) }}" alt="{{ $about->title ?: 'About JOSHA GOLD AND DIAMOND JEWELLERY' }}" loading="lazy">
                 </figure>
             </div>
             @endif
@@ -46,7 +46,7 @@
             <div class="col-lg-5" data-aos="fade-right">
                 <figure class="ld-portrait mb-0">
                     {{-- Founder photo supplied by the client (public/images/team/prasad-ashok.webp, 800 × 1000) --}}
-                    <img src="{{ asset('images/team/prasad-ashok.webp') }}" alt="Mr. Prasad Ashok, Founder &amp; CEO of JOSHA GOLD AND DIAMOND JEWELLERY" width="800" height="1000" loading="lazy" decoding="async">
+                    <img src="{{ versioned_asset('images/team/prasad-ashok.webp') }}" alt="Mr. Prasad Ashok, Founder &amp; CEO of JOSHA GOLD AND DIAMOND JEWELLERY" width="800" height="1000" loading="lazy" decoding="async">
                     <figcaption class="ld-badge">Founder &amp; CEO</figcaption>
                 </figure>
             </div>
@@ -115,7 +115,7 @@
         <div class="row g-4 g-lg-5 align-items-center">
             <div class="col-lg-5 fade-up-scroll">
                 <div class="position-relative about-value-media">
-                    <img src="{{ asset('images/site/gold-rings-wide.webp') }}" class="img-fluid" alt="Value Addition" loading="lazy">
+                    <img src="{{ versioned_asset('images/site/gold-rings-wide.webp') }}" class="img-fluid" alt="Value Addition" loading="lazy">
                     <div class="floating-badge pulse-anim">
                         <span class="fs-4 fw-bold">100%</span>
                         <br>Commitment

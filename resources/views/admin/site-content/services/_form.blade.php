@@ -19,7 +19,7 @@
         <div class="mb-3">
             <label class="form-label fw-semibold">Service Image <span class="text-muted fw-normal">(optional)</span></label>
             <div class="border rounded-3 overflow-hidden bg-light mb-2 d-flex align-items-center justify-content-center" style="aspect-ratio: 16 / 10;">
-                <img id="serviceImagePreview" src="{{ $service?->image ? asset('storage/' . $service->image) : '' }}" alt="" class="w-100 h-100 {{ $service?->image ? '' : 'd-none' }}" style="object-fit: cover;">
+                <img id="serviceImagePreview" src="{{ $service?->image ? versioned_asset('storage/' . $service->image) : '' }}" alt="" class="w-100 h-100 {{ $service?->image ? '' : 'd-none' }}" style="object-fit: cover;">
                 <span id="serviceImagePlaceholder" class="text-muted small {{ $service?->image ? 'd-none' : '' }}"><i class="fas fa-image me-1"></i>No image yet</span>
             </div>
             <input type="file" name="image" id="service_image" class="form-control @error('image') is-invalid @enderror" accept="image/jpeg,image/png,image/webp">

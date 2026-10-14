@@ -117,7 +117,7 @@ class Collection extends Model
     // Main image URL; falls back to a stock photo for the metal and form when it is empty or its file is missing
     public function getImageUrlAttribute(): string
     {
-        return static::imageUrl($this->image) ?? asset($this->fallbackImage());
+        return static::imageUrl($this->image) ?? versioned_asset($this->fallbackImage());
     }
 
     // Gallery image URLs, skipping files that are missing
@@ -153,7 +153,7 @@ class Collection extends Model
             return is_file(public_path($path)) ? asset($path) : null;
         }
 
-        return Storage::disk('public')->exists($path) ? asset('storage/' . $path) : null;
+        return Storage::disk('public')->exists($path) ? versioned_asset('storage/' . $path) : null;
     }
 
     // True for paths of files shipped in public/ (not admin uploads)

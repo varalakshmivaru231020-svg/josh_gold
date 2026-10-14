@@ -13,7 +13,7 @@
     use App\Support\RateBook;
 
     $jbLogo = SiteSetting::get('site_logo');
-    $jbLogo = $jbLogo ? asset('storage/' . $jbLogo) : asset('images/brand/josha-logo-header.webp');
+    $jbLogo = $jbLogo ? versioned_asset('storage/' . $jbLogo) : versioned_asset('images/brand/josha-logo-header.webp');
 
     $jbHours    = trim((string) SiteSetting::get('contact_working_hours'));
     $jbPhone    = trim((string) SiteSetting::get('contact_phone'));

@@ -19,7 +19,7 @@
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">Current Photo</label>
                     <div class="mb-3">
-                        <img src="{{ asset('storage/' . $photo->image) }}" alt="{{ $photo->title }}" class="img-fluid rounded" style="max-height:250px; object-fit:cover; width:100%;">
+                        <img src="{{ versioned_asset('storage/' . $photo->image) }}" alt="{{ $photo->title }}" class="img-fluid rounded" style="max-height:250px; object-fit:cover; width:100%;">
                     </div>
                     <label class="form-label fw-semibold">Replace Photo <span class="text-muted">(optional)</span></label>
                     <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" accept="image/*" id="imageInput">
