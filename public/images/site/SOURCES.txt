@@ -19,3 +19,10 @@ refining: Wikimedia Commons "Pouring gold.jpg" by Allen Drebert (public domain)
 wholesale: Pexels photo 19693228, William Warby (Pexels License)
 audits: Wikimedia Commons "Poinçon or.JPG" by Chatsam (public domain)
 guide-hallmark: crop of Wikimedia Commons "Poinçon or.JPG" by Chatsam (public domain)
+
+Image upgrade (14 Oct 2026), all Unsplash License, re-exported from 2400 px sources:
+gold-coins-wide, gold-coins-card, services/wholesale: Unsplash photo-1624365169364-0640dd10e180
+gold-bracelet-wide (gold jewellery card): Unsplash photo-1622398925373-3f91b1e275f5
+gold-rings-wide: Unsplash photo-1608042314453-ae338d80c427
+services/audits: Unsplash photo-1602751584552-8ba73aad10e1
+guide-hallmark (now a gold chain image): Unsplash photo-1602173574767-37ac01994b2a

@@ -138,7 +138,7 @@
         });
         // Widening the window past the drawer breakpoint hides the menu button: close the drawer too
         if (window.matchMedia) {
-            var wide = window.matchMedia('(min-width: 1024px)');
+            var wide = window.matchMedia('(min-width: 1200px)');
             var onWide = function () { if (wide.matches && isOpen()) setOpen(false, false); };
             if (wide.addEventListener) wide.addEventListener('change', onWide); else if (wide.addListener) wide.addListener(onWide);
         }
