@@ -41,4 +41,9 @@ return [
         'token' => env('WHATSAPP_TOKEN'),
     ],
 
+    // Secret for POST /api/rates (morning/afternoon gold & silver rates)
+    'rates_api' => [
+        'token' => env('RATES_API_TOKEN'),
+    ],
+
 ];
