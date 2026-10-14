@@ -134,16 +134,16 @@
                 @endif
             </div>
 
-            <div class="jb-hero__art" aria-hidden="true">
-                <span class="jb-hero__ring"></span>
-                <figure class="jb-hero__frame jb-hero__frame--a" data-parallax="-0.05">
-                    <img src="{{ asset('images/site/hero-necklace.webp') }}" alt="" width="720" height="900" fetchpriority="high">
-                    <figcaption>Gold jewellery</figcaption>
-                </figure>
-                <figure class="jb-hero__frame jb-hero__frame--b" data-parallax="0.04">
-                    <img src="{{ asset('images/site/hero-diamond.webp') }}" alt="" width="720" height="720">
-                    <figcaption>Diamonds</figcaption>
-                </figure>
+            <div class="jb-hero__art">
+                <span class="jb-hero__ring" aria-hidden="true"></span>
+                <a class="jb-hero__frame jb-hero__frame--a" href="{{ $collectionUrl('gold-jewellery', route('contact')) }}" data-parallax="-0.05" aria-label="Explore Gold jewellery collection">
+                    <img src="{{ asset('images/site/hero-necklace.webp') }}" alt="Gold jewellery" width="720" height="900" fetchpriority="high">
+                    <span class="jb-hero__caption">Gold jewellery <span class="jb-hero__caption-arrow" aria-hidden="true">→</span></span>
+                </a>
+                <a class="jb-hero__frame jb-hero__frame--b" href="{{ $collectionUrl('diamond-jewellery', route('contact')) }}" data-parallax="0.04" aria-label="Explore Diamonds collection">
+                    <img src="{{ asset('images/site/hero-diamond.webp') }}" alt="Diamonds" width="720" height="720">
+                    <span class="jb-hero__caption">Diamonds <span class="jb-hero__caption-arrow" aria-hidden="true">→</span></span>
+                </a>
             </div>
         </div>
     </section>
