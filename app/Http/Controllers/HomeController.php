@@ -102,6 +102,7 @@ class HomeController extends Controller
             'address' => SiteSetting::get('contact_address'),
             'phone' => SiteSetting::get('contact_phone'),
             'email' => SiteSetting::get('contact_email'),
+            'email_2' => SiteSetting::get('contact_email_2'),
             'whatsapp' => SiteSetting::get('contact_whatsapp'),
             'map_embed' => SiteSetting::get('contact_map_embed'),
             'working_hours' => SiteSetting::get('contact_working_hours'),

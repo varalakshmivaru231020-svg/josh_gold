@@ -14,6 +14,7 @@
     $whatsapp = preg_replace('/\D+/', '', (string) SiteSetting::get('contact_whatsapp')) ?: '918035565332';
     $phone    = trim((string) SiteSetting::get('contact_phone'));
     $email    = trim((string) SiteSetting::get('contact_email'));
+    $email2   = trim((string) SiteSetting::get('contact_email_2'));
     $hours    = trim((string) SiteSetting::get('contact_working_hours'));
     $address  = trim((string) SiteSetting::get('contact_address')) ?: (string) $offices->first(fn ($o) => filled($o->address))?->address;
     $waLink   = fn (string $text) => 'https://wa.me/' . $whatsapp . '?text=' . rawurlencode($text);
@@ -448,7 +449,7 @@
                     @if($email !== '')
                     <div class="jb-band__row">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
-                        <div><strong>Email</strong><a href="mailto:{{ $email }}" style="word-break: break-all;">{{ $email }}</a></div>
+                        <div><strong>Email</strong><a href="mailto:{{ $email }}" style="word-break: break-all;">{{ $email }}</a>@if($email2 !== '')<br><a href="mailto:{{ $email2 }}" style="word-break: break-all;">{{ $email2 }}</a>@endif</div>
                     </div>
                     @endif
                     @if($hours !== '')

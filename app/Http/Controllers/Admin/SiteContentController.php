@@ -195,6 +195,7 @@ class SiteContentController extends Controller implements HasMiddleware
             'contact_address' => SiteSetting::get('contact_address'),
             'contact_phone' => SiteSetting::get('contact_phone'),
             'contact_email' => SiteSetting::get('contact_email'),
+            'contact_email_2' => SiteSetting::get('contact_email_2'),
             'contact_whatsapp' => SiteSetting::get('contact_whatsapp'),
             'contact_map_embed' => SiteSetting::get('contact_map_embed'),
             'contact_working_hours' => SiteSetting::get('contact_working_hours'),
@@ -353,6 +354,7 @@ class SiteContentController extends Controller implements HasMiddleware
             'contact_address' => 'nullable|string|max:500',
             'contact_phone' => 'nullable|string|max:50',
             'contact_email' => 'nullable|email|max:100',
+            'contact_email_2' => 'nullable|email|max:100',
             'contact_whatsapp' => 'nullable|string|max:20',
             'contact_map_embed' => 'nullable|string',
             'contact_working_hours' => 'nullable|string|max:255',
@@ -361,6 +363,7 @@ class SiteContentController extends Controller implements HasMiddleware
         SiteSetting::set('contact_address', $request->contact_address);
         SiteSetting::set('contact_phone', $request->contact_phone);
         SiteSetting::set('contact_email', $request->contact_email);
+        SiteSetting::set('contact_email_2', $request->contact_email_2);
         SiteSetting::set('contact_whatsapp', $request->contact_whatsapp);
         SiteSetting::set('contact_map_embed', $request->contact_map_embed);
         SiteSetting::set('contact_working_hours', $request->contact_working_hours);

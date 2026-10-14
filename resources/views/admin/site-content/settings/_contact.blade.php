@@ -32,6 +32,14 @@
                     </div>
 
                     <div class="mb-3">
+                        <label for="contact_email_2" class="form-label">Second Email Address <span class="text-muted">(optional)</span></label>
+                        <input type="email" class="form-control @error('contact_email_2') is-invalid @enderror" id="contact_email_2" name="contact_email_2" value="{{ old('contact_email_2', $contact['contact_email_2']) }}" placeholder="sales@example.com">
+                        @error('contact_email_2')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
                         <label for="contact_whatsapp" class="form-label">WhatsApp Number</label>
                         <input type="text" class="form-control @error('contact_whatsapp') is-invalid @enderror" id="contact_whatsapp" name="contact_whatsapp" value="{{ old('contact_whatsapp', $contact['contact_whatsapp']) }}" placeholder="919876543210">
                         <small class="text-muted">Enter number with country code without + sign (e.g., 919876543210)</small>

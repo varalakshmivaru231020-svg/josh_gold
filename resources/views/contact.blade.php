@@ -7,6 +7,7 @@
     $address  = trim((string) ($contact['address'] ?? ''));
     $phone    = trim((string) ($contact['phone'] ?? ''));
     $email    = trim((string) ($contact['email'] ?? ''));
+    $email2   = trim((string) ($contact['email_2'] ?? ''));
     $waNumber = preg_replace('/\D+/', '', (string) ($contact['whatsapp'] ?? ''));
     $hours    = trim((string) ($contact['working_hours'] ?? ''));
     $mapEmbed = trim((string) ($contact['map_embed'] ?? ''));
@@ -145,6 +146,7 @@
                         <div class="cib-content">
                             <span class="cib-label">Email</span>
                             <a href="mailto:{{ $email }}" class="cib-link">{{ $email }}</a>
+                            @if($email2 !== '')<br><a href="mailto:{{ $email2 }}" class="cib-link">{{ $email2 }}</a>@endif
                         </div>
                     </div>
                     @endif

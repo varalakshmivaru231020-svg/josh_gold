@@ -13,6 +13,7 @@
 
     $jfPhone    = trim((string) SiteSetting::get('contact_phone'));
     $jfEmail    = trim((string) SiteSetting::get('contact_email'));
+    $jfEmail2   = trim((string) SiteSetting::get('contact_email_2'));
     $jfWhatsapp = preg_replace('/\D+/', '', (string) SiteSetting::get('contact_whatsapp')) ?: '918035565332';
     $jfHours    = trim((string) SiteSetting::get('contact_working_hours'));
     $jfAddress  = trim((string) SiteSetting::get('contact_address'))
@@ -87,6 +88,7 @@
             @if($jfPhone !== '')<li><a href="tel:{{ preg_replace('/[^\d+]/', '', $jfPhone) }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 3.5 6.2 2 2 0 0 1 5.5 4h3l1.5 4-2 1.5a12 12 0 0 0 5.5 5.5l1.5-2 4 1.5Z"/></svg>{{ $jfPhone }}</a></li>@endif
             <li><a href="https://wa.me/{{ $jfWhatsapp }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91A9.85 9.85 0 0 0 12.04 2Z"/></svg>WhatsApp</a></li>
             @if($jfEmail !== '')<li><a href="mailto:{{ $jfEmail }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>{{ $jfEmail }}</a></li>@endif
+            @if($jfEmail2 !== '')<li><a href="mailto:{{ $jfEmail2 }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>{{ $jfEmail2 }}</a></li>@endif
             @if($jfHours !== '')<li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>{{ $jfHours }}</span></li>@endif
             @if($jfAddress !== '')<li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>{{ preg_replace('/\s*\n\s*/', ' ', $jfAddress) }}</span></li>@endif
         </ul>
