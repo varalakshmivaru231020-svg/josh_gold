@@ -10,7 +10,7 @@
 @endphp
 @extends('layouts.bullion')
 
-@section('title', $chart['name'] . ' Live Chart (' . strtok($chart['sub'], ' ·') . ') | ' . config('company.name'))
+@section('title', $chart['name'] . ' Live Chart (' . $chart['pair'] . ') | ' . config('company.name'))
 @section('description', 'Live ' . strtolower($chart['name']) . ' chart (' . $chart['sub'] . ') with live spot prices and our published gold and silver rates.')
 
 @push('styles')
@@ -23,7 +23,7 @@
         <label class="jb-sr" for="lcSymbol">Chart</label>
         <select class="lc-select" id="lcSymbol" onchange="location.href = this.value">
             @foreach(LiveCharts::CHARTS as $key => $c)
-                <option value="{{ route('rates.chart', $key) }}" @selected($key === $slug)>{{ $c['name'] }} · {{ strtok($c['sub'], ' ·') }}</option>
+                <option value="{{ route('rates.chart', $key) }}" @selected($key === $slug)>{{ $c['name'] }} · {{ $c['pair'] }}</option>
             @endforeach
         </select>
         <span class="lc-updated lc-hide-sm">Updated <b data-spot-time>{{ $spotTime }}</b></span>
@@ -36,15 +36,7 @@
 
     <div class="lc-main">
         <section class="lc-one" aria-label="{{ $chart['name'] }} live chart">
-            <article class="lc-chart">
-                <div class="lc-chart__head">
-                    <span class="lc-dot lc-dot--live" aria-hidden="true"></span>
-                    <h1 class="lc-chart__name">{{ $chart['name'] }}<span class="lc-chart__sub">{{ $chart['sub'] }} · live</span></h1>
-                </div>
-                <div class="lc-chart__frame">
-                    <iframe id="lcFrame" src="{{ LiveCharts::embedUrl($chart['symbol']) }}" title="{{ $chart['name'] }} live chart ({{ $chart['sub'] }})"></iframe>
-                </div>
-            </article>
+            @include('rates._chart-card', ['key' => $slug, 'c' => $chart, 'heading' => 'h1'])
         </section>
 
         @include('rates._live-panel')
@@ -53,6 +45,8 @@
 @endsection
 
 @push('scripts')
+<script src="{{ asset('js/vendor/echarts.min.js') }}"></script>
+<script src="{{ asset('js/live-charts.js') }}?v={{ filemtime(public_path('js/live-charts.js')) }}" defer></script>
     <script>
     (function () {
         var page = document.getElementById('lcPage');

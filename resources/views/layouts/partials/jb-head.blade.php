@@ -3,7 +3,7 @@
      (see the @font-face rules at the top of bullion-theme.css).
      Pages may set @section('og_image', url) for a sharing image; the description comes from
      the layout's meta description. --}}
-<script>document.documentElement.classList.add('jb-js');document.documentElement.setAttribute('data-spot-url', @json(route('live-rates.spot')));</script>
+<script>document.documentElement.classList.add('jb-js');document.documentElement.setAttribute('data-spot-url', @json(route('live-rates.spot')));document.documentElement.setAttribute('data-candles-url', @json(route('live-rates.candles')));</script>
 <link rel="icon" type="image/png" sizes="32x32" href="{{ versioned_asset('images/brand/favicon-32.png') }}">
 <link rel="icon" type="image/png" sizes="192x192" href="{{ versioned_asset('images/brand/favicon-192.png') }}">
 <link rel="apple-touch-icon" href="{{ versioned_asset('images/brand/apple-touch-icon.png') }}">

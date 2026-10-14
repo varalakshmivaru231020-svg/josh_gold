@@ -19,6 +19,7 @@ Route::get('/login', function() {
 Route::get('/live-rates', [LiveRatesController::class, 'index'])->name('live-rates');
 Route::get('/live-rates/history', [LiveRatesController::class, 'history'])->middleware('throttle:120,1')->name('live-rates.history');
 Route::get('/live-rates/spot', [SpotPriceController::class, 'show'])->middleware('throttle:60,1')->name('live-rates.spot');
+Route::get('/live-rates/candles', [SpotPriceController::class, 'candles'])->middleware('throttle:120,1')->name('live-rates.candles');
 
 // Main-menu rate pages (gold, silver, charts, Gold Pulse, cities)
 Route::get('/gold-rate-today', [RatePagesController::class, 'gold'])->name('rates.gold');

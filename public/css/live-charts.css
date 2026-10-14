@@ -117,3 +117,35 @@ body.lc { margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
 .lc-updated b { color: var(--lc-text); font-weight: 600; }
 .lc.lc--nodetails .lc-main { grid-template-columns: minmax(0, 1fr); }
 .lc.lc--nodetails .lc-rates { display: none; }
+
+/* Our own candle charts (public/js/live-charts.js) */
+.lc-chart__frame { position: relative; }
+.lc-canvas { position: absolute; inset: 0 4px 2px 6px; }
+.lc-empty { position: absolute; left: 50%; top: 50%; z-index: 1; width: min(340px, 86%); margin: 0; padding: 12px 14px; transform: translate(-50%, -50%);
+    border: 1px solid #3a352c; border-radius: 8px; background: rgba(11, 10, 8, .92); color: var(--lc-muted); font-size: 12.5px; line-height: 1.5; text-align: center; }
+.lc-ohlc { margin: -4px 12px 2px; color: var(--lc-muted); font: 500 12px/1.4 var(--jb-sans); font-variant-numeric: tabular-nums; min-height: 17px; }
+.lc-ohlc b { margin-right: 8px; color: var(--lc-text); font-weight: 600; }
+.lc-ohlc b.is-up { color: #22c55e; }
+.lc-ohlc b.is-down { color: #ef4444; }
+.lc-tfs { display: inline-flex; gap: 2px; padding: 2px; border: 1px solid #2c2820; border-radius: 6px; background: #0b0a08; }
+.lc-tf { min-width: 34px; min-height: 28px; padding: 0 7px; border: 0; border-radius: 4px; background: transparent; color: var(--lc-muted); font: 600 12px/1 var(--jb-sans); cursor: pointer; }
+.lc-tf:hover { color: var(--lc-text); }
+.lc-tf[aria-pressed="true"] { background: #2c2820; color: var(--lc-gold); }
+.lc-tf:focus-visible { outline: 2px solid var(--lc-gold); outline-offset: 1px; }
+.lc-chart__actions { display: inline-flex; gap: 8px; }
+
+/* Phones: title on its own line, then timeframe and buttons; charts a comfortable fixed height */
+@media (max-width: 760px) {
+    .lc-chart__head { flex-wrap: wrap; gap: 8px; padding: 10px 10px 8px; }
+    .lc-chart__name { flex: 1 1 auto; font-size: 14px; }
+    .lc-chart__head > .lc-spacer { display: none; }
+    .lc-tfs { order: 3; }
+    .lc-chart__actions { order: 4; margin-left: auto; }
+    .lc-chart__head .lc-btn { min-height: 30px; padding: 0 10px; font-size: 12.5px; }
+    .lc-grid, .lc-grid.is-focused { grid-auto-rows: 400px; }
+    .lc-one .lc-chart { min-height: 420px; }
+    .lc-ohlc { margin: 0 10px 2px; font-size: 11.5px; }
+    .lc-ohlc b { margin-right: 5px; }
+    .lc-bar { gap: 8px; }
+    .lc-title { font-size: 22px; }
+}

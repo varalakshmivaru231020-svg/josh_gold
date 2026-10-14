@@ -2,28 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\LiveCharts;
+use App\Support\SpotPrices;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
 
-// Live international spot prices for the ticker and the home page (gold-api.com, free, no key).
-// Fetched at most every 15 seconds for all visitors; the last good prices are kept if the source is down.
+// Live international spot prices (ticker, charts panel) and the candles for our own live charts.
 class SpotPriceController extends Controller
 {
-    private const SOURCE  = 'https://api.gold-api.com/price/';
-    private const OZ_GRAMS = 31.1034768;
-
     public function show(): JsonResponse
     {
-        $data = Cache::remember('spot.prices', 15, function () {
-            $fresh = $this->fetch();
-            if ($fresh) {
-                Cache::forever('spot.prices.last', $fresh);
-            }
-
-            return $fresh ?? Cache::get('spot.prices.last');
-        });
-
+        $data = SpotPrices::latest();
         if (! $data) {
             return response()->json(['message' => 'Live prices are unavailable right now.'], 503);
         }
@@ -31,30 +20,18 @@ class SpotPriceController extends Controller
         return response()->json($data)->header('Cache-Control', 'public, max-age=10');
     }
 
-    private function fetch(): ?array
+    // GET /live-rates/candles?chart=xauusd&tf=5
+    public function candles(Request $request): JsonResponse
     {
-        try {
-            $gold   = Http::timeout(5)->get(self::SOURCE . 'XAU/INR')->throw()->json();
-            $silver = Http::timeout(5)->get(self::SOURCE . 'XAG')->throw()->json();
-        } catch (\Throwable $e) {
-            report($e);
-            return null;
+        $chart = LiveCharts::CHARTS[(string) $request->query('chart')] ?? null;
+        $tf    = (int) $request->query('tf', 5);
+        if (! $chart || ! isset(SpotPrices::TIMEFRAMES[$tf])) {
+            return response()->json(['message' => 'Unknown chart or timeframe.'], 422);
         }
 
-        $usdInr = (float) ($gold['exchangeRate'] ?? 0);
-        $xauUsd = $usdInr > 0 ? (float) $gold['price'] / $usdInr : 0;
-        $xagUsd = (float) ($silver['price'] ?? 0);
-        if ($usdInr <= 0 || $xauUsd <= 0 || $xagUsd <= 0) {
-            return null;
-        }
+        SpotPrices::latest(); // keeps the history recording while people watch
 
-        return [
-            'xau_usd'       => round($xauUsd, 2),                                  // per troy ounce
-            'xag_usd'       => round($xagUsd, 3),                                  // per troy ounce
-            'usd_inr'       => round($usdInr, 3),
-            'gold_inr_10g'  => round($xauUsd * $usdInr / self::OZ_GRAMS * 10),     // spot, no duty or GST
-            'silver_inr_kg' => round($xagUsd * $usdInr / self::OZ_GRAMS * 1000),   // spot, no duty or GST
-            'updated_at'    => $gold['updatedAt'] ?? now()->toIso8601String(),
-        ];
+        return response()->json(['tf' => $tf, 'candles' => SpotPrices::candles($chart['series'], $tf)])
+            ->header('Cache-Control', 'public, max-age=10');
     }
 }

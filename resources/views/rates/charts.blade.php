@@ -1,7 +1,6 @@
 {{--
-    Live charts dashboard, laid out like allindiabullion.com/charts: four live candle charts (TradingView, international
-    spot prices) and a rates panel. The panel (rates/_live-panel) shows live spot prices and our own published rates
-    in badges that cycle gold / light green / light pink, with the real up/down direction marked separately.
+    Live charts dashboard, laid out like allindiabullion.com/charts: four live candle charts drawn on our own page
+    (rates/_chart-card, from the spot prices the server saves every minute) and a rates panel (rates/_live-panel).
     No buy/sell signals: we only show market prices and our own rates.
 --}}
 @php
@@ -24,7 +23,7 @@
         <span class="lc-spacer"></span>
         <button type="button" class="lc-btn lc-btn--light" id="lcToggleRates" aria-pressed="false">Hide rates</button>
         <button type="button" class="lc-btn lc-hide-sm" id="lcFullscreen">Full screen</button>
-        <span class="lc-btn lc-status lc-hide-sm" title="Live market charts from TradingView">
+        <span class="lc-btn lc-status lc-hide-sm" title="Live international spot prices, saved every minute">
             <span class="lc-dot lc-dot--live" aria-hidden="true"></span>Charts live
         </span>
         <button type="button" class="lc-btn lc-btn--gold" id="lcRefresh">Refresh</button>
@@ -32,18 +31,7 @@
     <div class="lc-main">
         <section class="lc-grid" id="lcGrid" aria-label="Live charts">
             @foreach(LiveCharts::CHARTS as $key => $c)
-                <article class="lc-chart" id="chart-{{ $key }}">
-                    <div class="lc-chart__head">
-                        <span class="lc-dot lc-dot--live" aria-hidden="true"></span>
-                        <h2 class="lc-chart__name">{{ $c['name'] }}<span class="lc-chart__sub">{{ $c['sub'] }}</span></h2>
-                        <span class="lc-spacer"></span>
-                        <button type="button" class="lc-btn" data-focus="chart-{{ $key }}" aria-pressed="false">Focus</button>
-                        <a class="lc-btn lc-btn--light" href="{{ route('rates.chart', $key) }}">Open full</a>
-                    </div>
-                    <div class="lc-chart__frame">
-                        <iframe src="{{ LiveCharts::embedUrl($c['symbol']) }}" title="{{ $c['name'] }} live chart ({{ $c['sub'] }})" loading="eager" allowtransparency="true"></iframe>
-                    </div>
-                </article>
+                @include('rates._chart-card', ['dashboard' => true])
             @endforeach
         </section>
 
@@ -53,6 +41,8 @@
 @endsection
 
 @push('scripts')
+<script src="{{ asset('js/vendor/echarts.min.js') }}"></script>
+<script src="{{ asset('js/live-charts.js') }}?v={{ filemtime(public_path('js/live-charts.js')) }}" defer></script>
 
     <script>
     (function () {

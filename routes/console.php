@@ -6,3 +6,19 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+// Save the live spot prices once a minute for the live charts.
+// Server cron (once): * * * * * cd /path/to/site && php artisan schedule:run >> /dev/null 2>&1
+Artisan::command('spot:record', function () {
+    $p = \App\Support\SpotPrices::fetch();
+    if (! $p) {
+        $this->error('Live prices are unavailable right now.');
+        return 1;
+    }
+    \Illuminate\Support\Facades\Cache::put('spot.prices.last', $p);
+    \App\Support\SpotPrices::record($p);
+    $pruned = \App\Support\SpotPrices::prune();
+    $this->info('Saved: gold $' . $p['xau_usd'] . ', silver $' . $p['xag_usd'] . ', USD/INR ' . $p['usd_inr'] . ($pruned ? " (removed $pruned old rows)" : ''));
+})->purpose('Save the live spot prices for the charts');
+
+\Illuminate\Support\Facades\Schedule::command('spot:record')->everyMinute()->withoutOverlapping();
