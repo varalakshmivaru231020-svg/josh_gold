@@ -699,16 +699,6 @@ body.jb-locked { overflow: hidden; }
 /* ── Live ticker: scrolling marquee; live spot prices flash green/red when they move ─────────── */
 .jb-ticker__live { flex: none; display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px; border-radius: 4px; background: #b3261e; color: #fff; font: 700 10px/1 var(--jb-sans); letter-spacing: .14em; text-transform: uppercase; }
 .jb-ticker__live .jb-live__dot { background: #fff; }
-.jb-ticker__items { overflow: hidden; display: block; }
-.jb-ticker__track { display: flex; width: max-content; animation: jb-marquee 60s linear infinite; }
-.jb-ticker__items:hover .jb-ticker__track, .jb-ticker__items:focus-within .jb-ticker__track { animation-play-state: paused; }
-.jb-ticker__group { display: flex; align-items: center; gap: 20px; padding-right: 20px; }
-@keyframes jb-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-@media (prefers-reduced-motion: reduce) {
-    .jb-ticker__track { animation: none; }
-    .jb-ticker__items { overflow-x: auto; scrollbar-width: none; }
-    .jb-ticker__group[aria-hidden="true"] { display: none; }
-}
 .jb-ticker__item--spot { padding: 3px 6px; margin: 0 -6px; border-radius: 4px; }
 .jb-spot-dir { font-size: 10px; color: #8f8674; }
 .jb-spot-dir--up { color: #3ddc84; }
@@ -719,3 +709,30 @@ body.jb-locked { overflow: hidden; }
 @keyframes jb-flash-down { 0%, 35% { background-color: rgba(239, 68, 68, .45); } 100% { background-color: transparent; } }
 .is-flash-up .jb-ticker__value, .is-flash-up [data-spot] { color: #3ddc84; transition: color 1.4s; }
 .is-flash-down .jb-ticker__value, .is-flash-down [data-spot] { color: #ff6b5f; transition: color 1.4s; }
+
+/* Ticker: every rate visible at once (no scrolling); figures blink gold → light green → light pink, staggered */
+.jb-ticker__row { flex-wrap: wrap; gap: 8px 18px; padding: 7px 0; }
+.jb-ticker__items { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 22px; overflow: visible; -webkit-mask-image: none; mask-image: none; }
+.jb-ticker__item { align-items: center; }
+.jb-ticker__label { color: #d9d0bd; }
+.jb-ticker__value { font-size: 14px; font-weight: 700; animation: jb-tick-colors 2.4s steps(1, end) infinite; }
+.jb-ticker__item:nth-child(3n+2) .jb-ticker__value { animation-delay: -.8s; }
+.jb-ticker__item:nth-child(3n) .jb-ticker__value { animation-delay: -1.6s; }
+@keyframes jb-tick-colors {
+    0%   { color: #f3c55a; }   /* gold */
+    33%  { color: #9ef3b8; }   /* light green */
+    66%  { color: #ffb8cf; }   /* light pink */
+}
+.jb-ticker__item:hover .jb-ticker__value { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .jb-ticker__value { animation: none; color: #f3c55a; } }
+/* Phones and tablets: a tidy grid, two rates per row */
+@media (max-width: 767px) {
+    .jb-ticker__row { padding: 8px 0; }
+    .jb-ticker__live { order: -1; }
+    .jb-ticker__items { flex-basis: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 12px; justify-content: stretch; }
+    .jb-ticker__item { justify-content: space-between; gap: 6px; padding: 5px 8px; border: 1px solid #2a261f; border-radius: 6px; background: #16140f; }
+    .jb-ticker__item--spot { margin: 0; }
+    .jb-ticker__label { font-size: 9.5px; letter-spacing: .05em; }
+    .jb-ticker__value { font-size: 13px; }
+    .jb-ticker__unit, .jb-ticker .jb-change, .jb-ticker .jb-spot-dir { display: none; }
+}

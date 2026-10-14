@@ -85,37 +85,29 @@
 <div class="jb-ticker" role="region" aria-label="Latest published rates">
     <div class="jb-wrap jb-ticker__row">
         <span class="jb-ticker__live" title="International spot prices, updated every few seconds"><span class="jb-live__dot" aria-hidden="true"></span>Live</span>
+        {{-- All rates stay in place; their figures blink gold / light green / light pink (bullion-theme.css) --}}
         <div class="jb-ticker__items">
-            <div class="jb-ticker__track">
-                @foreach([false, true] as $jbCopy)
-                    {{-- The second copy only makes the scroll seamless --}}
-                    <div class="jb-ticker__group" @if($jbCopy) aria-hidden="true" @endif>
-                        @foreach($jbSpotItems as [$label, $key, $fmt, $unit])
-                            <a class="jb-ticker__item jb-ticker__item--spot" href="{{ route('rates.charts') }}" data-spot-item @if($jbCopy) tabindex="-1" @endif>
-                                <span class="jb-ticker__label">{{ $label }}</span>
-                                <span class="jb-ticker__value" data-spot="{{ $key }}" data-format="{{ $fmt }}" data-value="{{ $jbSpot[$key] ?? '' }}">{{ $jbSpotFmt($jbSpot[$key] ?? null, $fmt) }}</span>
-                                @if($unit)<span class="jb-ticker__unit">{{ $unit }}</span>@endif
-                                <span class="jb-spot-dir" data-spot-dir aria-hidden="true">•</span>
-                            </a>
-                            <span class="jb-ticker__sep" aria-hidden="true"></span>
-                        @endforeach
-                        @foreach($jbTicker as [$label, $value, $unit, $change, $url])
-                            <a class="jb-ticker__item" href="{{ $url }}" @if($jbCopy) tabindex="-1" @endif>
-                                <span class="jb-ticker__label">{{ $label }}</span>
-                                <span class="jb-ticker__value">{{ RateBook::inr($value) }}</span>
-                                <span class="jb-ticker__unit">/ {{ $unit }}</span>
-                                @if($change !== null && abs($change) >= 0.005)
-                                    <span class="jb-change jb-change--{{ $change > 0 ? 'up' : 'down' }}">
-                                        <span aria-hidden="true">{{ $change > 0 ? '▲' : '▼' }}</span>
-                                        <span class="jb-sr">{{ $change > 0 ? 'up' : 'down' }}</span>{{ number_format(abs($change), 2) }}%<span class="jb-sr"> since our previous published rate</span>
-                                    </span>
-                                @endif
-                            </a>
-                            <span class="jb-ticker__sep" aria-hidden="true"></span>
-                        @endforeach
-                    </div>
-                @endforeach
-            </div>
+            @foreach($jbSpotItems as [$label, $key, $fmt, $unit])
+                <a class="jb-ticker__item jb-ticker__item--spot" href="{{ route('rates.charts') }}" data-spot-item>
+                    <span class="jb-ticker__label">{{ $label }}</span>
+                    <span class="jb-ticker__value" data-spot="{{ $key }}" data-format="{{ $fmt }}" data-value="{{ $jbSpot[$key] ?? '' }}">{{ $jbSpotFmt($jbSpot[$key] ?? null, $fmt) }}</span>
+                    @if($unit)<span class="jb-ticker__unit">{{ $unit }}</span>@endif
+                    <span class="jb-spot-dir" data-spot-dir aria-hidden="true">•</span>
+                </a>
+            @endforeach
+            @foreach($jbTicker as [$label, $value, $unit, $change, $url])
+                <a class="jb-ticker__item" href="{{ $url }}">
+                    <span class="jb-ticker__label">{{ $label }}</span>
+                    <span class="jb-ticker__value">{{ RateBook::inr($value) }}</span>
+                    <span class="jb-ticker__unit">/ {{ $unit }}</span>
+                    @if($change !== null && abs($change) >= 0.005)
+                        <span class="jb-change jb-change--{{ $change > 0 ? 'up' : 'down' }}">
+                            <span aria-hidden="true">{{ $change > 0 ? '▲' : '▼' }}</span>
+                            <span class="jb-sr">{{ $change > 0 ? 'up' : 'down' }}</span>{{ number_format(abs($change), 2) }}%<span class="jb-sr"> since our previous published rate</span>
+                        </span>
+                    @endif
+                </a>
+            @endforeach
         </div>
         @if($jbRate)
             <div class="jb-ticker__meta">
