@@ -150,7 +150,7 @@ class Collection extends Model
             return $path;
         }
         if (static::isPublicAsset($path)) {
-            return is_file(public_path($path)) ? asset($path) : null;
+            return is_file(public_path($path)) ? versioned_asset($path) : null;
         }
 
         return Storage::disk('public')->exists($path) ? versioned_asset('storage/' . $path) : null;
