@@ -130,7 +130,7 @@
                     <div class="jb-quote__foot">
                         <span class="jb-live" data-state="{{ $isStale ? 'stale' : 'live' }}"><span class="jb-live__dot" aria-hidden="true"></span> {{ ucfirst($rate->session) }} rate · {{ $published->format('j M Y, g:i A') }}</span>
                         @if($rate->is_sample)<span class="jb-chip jb-chip--warn">Sample data, not a live market rate</span>@endif
-                        <a class="jb-link" href="{{ route('rates.charts') }}">Charts &amp; history →</a>
+                        <a class="jb-link" href="{{ route('rates.charts') }}">Live charts →</a>
                     </div>
                 @endif
             </div>
