@@ -66,43 +66,41 @@ body.lc { margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
     .lc-main { padding: 10px; }
 }
 
-/* Rates panel. Badges stay in place; their backgrounds blink gold → light green → light pink like the top ticker (0.8 s each,
-   staggered so neighbours differ). That cycle is decoration only: the real direction is the ▲/▼ mark and the badge
-   border (green up, red down, none when unchanged). A moved live price gets one soft glow. */
+/* Rates panel. Badges stay in place; their colour fades in and out (dark → colour → dark, 2 s), blue or red only:
+   blue = the price went up, red = it went down (live spot: against the previous live price; our products: against
+   our previous published rate). Unchanged badges alternate blue / red. A moved live price gets one soft glow. */
 .lp-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .lp-tiles--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .lp-tile { min-width: 0; padding: 8px 9px 9px; border: 1px solid #2c2820; border-radius: 8px; background: #0f0e0b; }
 .lp-tile__label { display: flex; align-items: center; justify-content: space-between; gap: 4px; color: #ece5d5; font: 800 11.5px/1.2 var(--jb-sans); letter-spacing: .02em; text-transform: uppercase; white-space: nowrap; }
 .lp-tile .jb-spot-dir { flex: none; font-size: 11px; color: #8f8674; }
-.lp-tile .jb-spot-dir--up { color: #22c55e; }
-.lp-tile .jb-spot-dir--down { color: #ef4444; }
-.lp-tile__value { display: block; margin-top: 7px; padding: 7px 4px; border-radius: 5px; background: #f2c45a; color: #1a1408; font: 800 18px/1.1 var(--jb-sans);
+.lp-tile .jb-spot-dir--up { color: #5b7cff; }
+.lp-tile .jb-spot-dir--down { color: #ff4d4d; }
+.lp-tile__value { display: block; margin-top: 7px; padding: 7px 4px; border-radius: 5px; background: #0b0a08; color: #fff; font: 800 18px/1.1 var(--jb-sans);
     font-variant-numeric: tabular-nums; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    box-shadow: inset 0 0 0 2px transparent; animation: lp-cycle 2.4s steps(1, end) infinite; }
+    animation: lp-pulse-blue 2s ease-in-out infinite; }
 .lp-tiles--3 .lp-tile__value { font-size: 16px; }
-.lp-tile:nth-child(3n+2) .lp-tile__value { animation-delay: -.8s; }
-.lp-tile:nth-child(3n) .lp-tile__value { animation-delay: -1.6s; }
-@keyframes lp-cycle {
-    0%       { background-color: #f2c45a; }   /* premium gold */
-    33%      { background-color: #b8f2c8; }   /* light green */
-    66%      { background-color: #ffc6d6; }   /* light pink */
-}
-/* Real direction: up = green border, down = red border (state stays until the next move) */
-.lp-tile.is-up .lp-tile__value, .lp-tile.is-flash-up .lp-tile__value { box-shadow: inset 0 0 0 2px #15a34a; }
-.lp-tile.is-down .lp-tile__value, .lp-tile.is-flash-down .lp-tile__value { box-shadow: inset 0 0 0 2px #dc2626; }
-.lp-tile.is-flash-up .lp-tile__value, .lp-tile.is-flash-down .lp-tile__value { color: #1a1408; }
+.lp-tile:nth-child(2n) .lp-tile__value { animation-name: lp-pulse-red; }
+.lp-tile:nth-child(4n+3) .lp-tile__value, .lp-tile:nth-child(4n+4) .lp-tile__value { animation-delay: -1s; }
+/* Real direction wins over the alternation */
+.lp-tile.is-up .lp-tile__value, .lp-tile.is-flash-up .lp-tile__value { animation-name: lp-pulse-blue; color: #fff; }
+.lp-tile.is-down .lp-tile__value, .lp-tile.is-flash-down .lp-tile__value { animation-name: lp-pulse-red; color: #fff; }
+@keyframes lp-pulse-blue { 0%, 100% { background-color: #0b0a08; } 50% { background-color: #1d3fd8; } }
+@keyframes lp-pulse-red  { 0%, 100% { background-color: #0b0a08; } 50% { background-color: #c8161d; } }
 /* Fresh update: one soft glow around the card (replaces the site-wide flash) */
 .lp-tile.is-flash-up { animation: lp-hit-up 1.6s ease-out 1; }
 .lp-tile.is-flash-down { animation: lp-hit-down 1.6s ease-out 1; }
-@keyframes lp-hit-up { 0% { border-color: #22c55e; box-shadow: 0 0 0 3px rgba(34, 197, 94, .45); } 100% { border-color: #2c2820; box-shadow: 0 0 0 3px transparent; } }
+@keyframes lp-hit-up { 0% { border-color: #3b5bff; box-shadow: 0 0 0 3px rgba(59, 91, 255, .45); } 100% { border-color: #2c2820; box-shadow: 0 0 0 3px transparent; } }
 @keyframes lp-hit-down { 0% { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239, 68, 68, .45); } 100% { border-color: #2c2820; box-shadow: 0 0 0 3px transparent; } }
 @media (prefers-reduced-motion: reduce) {
-    .lp-tile__value { animation: none; }
+    .lp-tile__value { animation: none; background-color: #1d3fd8; }
+    .lp-tile:nth-child(2n) .lp-tile__value, .lp-tile.is-down .lp-tile__value, .lp-tile.is-flash-down .lp-tile__value { background-color: #c8161d; }
+    .lp-tile.is-up .lp-tile__value, .lp-tile.is-flash-up .lp-tile__value { background-color: #1d3fd8; }
     .lp-tile.is-flash-up, .lp-tile.is-flash-down { animation: none; }
 }
 .lp-key { font-size: 11px; }
-.lp-key--up { color: #22c55e; }
-.lp-key--down { color: #ef4444; margin-left: 4px; }
+.lp-key--up { color: #5b7cff; }
+.lp-key--down { color: #ff4d4d; margin-left: 4px; }
 @media (max-width: 420px) {
     .lp-tiles--3 .lp-tile__value { font-size: 14px; }
     .lp-tile__value { font-size: 16px; }

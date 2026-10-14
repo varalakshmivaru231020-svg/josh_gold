@@ -1,7 +1,6 @@
 {{--
     Rates panel beside the live charts (/charts and /charts/{slug}), styled like allindiabullion.com.
-    Price badges stay in place and their backgrounds cycle gold / light green / light pink (a visual effect only).
-    The real direction is shown separately: green ▲ and a green border for up, red ▼ and a red border for down.
+    Price badges stay in place; their colour fades in and out, blue or red only: blue ▲ = up, red ▼ = down.
       - Spot products: live international prices (public/js/live-spot.js polls /live-rates/spot); a badge glows briefly on every move.
       - Gold and silver products: our published rate (Admin → Live Rates), marked by the change since our previous rate.
     Expects $rate (latest MetalRate or null).
