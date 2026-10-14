@@ -579,13 +579,12 @@ body.jb-locked { overflow: hidden; }
 .jb-pillbtn:focus-visible { outline: 2px solid var(--jb-obsidian); outline-offset: 3px; }
 @media (max-width: 480px) { .jb-quotecard__actions .jb-pillbtn { flex: 1 1 100%; } }
 
-/* ── Footer: a compact rounded panel ──────────────────── */
-.jb-footer { padding: 0 16px 16px; background: var(--jb-ground); font-size: 13.5px; }
-@media (min-width: 768px) { .jb-footer { padding: 0 32px 32px; } }
-.jb-footer__panel { position: relative; overflow: hidden; max-width: 1216px; margin: 0 auto; padding: 40px 22px 18px; border-radius: 28px; color: var(--jb-on-dark-muted);
+/* ── Footer: full width, square edges ───────────────── */
+.jb-footer { background: var(--jb-obsidian); font-size: 13.5px; }
+.jb-footer__panel { position: relative; overflow: hidden; padding: 40px max(16px, calc((100% - 1216px) / 2)) 18px; color: var(--jb-on-dark-muted);
     background: radial-gradient(50% 80% at 100% 0%, rgba(184, 138, 59, .14), transparent 70%), var(--jb-obsidian); }
-.jb-footer__panel::before { content: ""; position: absolute; left: 10%; right: 10%; top: 0; height: 1px; background: var(--jb-hairline); opacity: .7; }
-@media (min-width: 768px) { .jb-footer__panel { padding: 52px 48px 20px; border-radius: 32px; } }
+.jb-footer__panel::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--jb-hairline); opacity: .7; }
+@media (min-width: 768px) { .jb-footer__panel { padding: 52px max(32px, calc((100% - 1216px) / 2)) 20px; } }
 .jb-footer__grid { display: grid; gap: 32px; }
 @media (min-width: 1100px) { .jb-footer__grid { grid-template-columns: minmax(220px, 300px) 1fr; gap: 56px; } }
 .jb-footer__logo { display: inline-block; }
