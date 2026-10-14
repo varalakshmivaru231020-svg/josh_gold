@@ -3,7 +3,8 @@
  * Each [data-lc-chart] element loads candles from /live-rates/candles (built from the spot prices the server saves
  * every minute) and refreshes every 15 s. Green candle = price rose in that period, red = fell.
  * Markup: <div data-lc-chart="xauusd" data-dp="2" data-tf="5"> inside a .lc-chart card that may hold
- * [data-tf-btn="1|5|15|60"] buttons, a [data-lc-ohlc] line and a [data-lc-empty] message.
+ * [data-tf-btn="1|5|15|60"] buttons, a [data-lc-ohlc] line, a [data-lc-empty] message and a [data-lc-sample] tag
+ * (shown while flagged sample history is in view; see AppSupportSpotPrices::addSample).
  */
 (function () {
     if (!window.echarts) return;
@@ -29,6 +30,7 @@
         var card = el.closest('.lc-chart') || el.parentNode;
         var ohlc = card.querySelector('[data-lc-ohlc]');
         var empty = card.querySelector('[data-lc-empty]');
+        var sampleTag = card.querySelector('[data-lc-sample]');
         var fmt = function (v) { return Number(v).toLocaleString('en-US', { minimumFractionDigits: dp, maximumFractionDigits: dp }); };
         var chart = echarts.init(el, null, { renderer: 'canvas' });
         var shown = 0;
@@ -77,7 +79,8 @@
             };
         }
 
-        function render(candles) {
+        function render(candles, sample) {
+            if (sampleTag) sampleTag.hidden = !sample;
             if (empty) empty.hidden = candles.length >= 3;
             if (!candles.length) { chart.clear(); return; }
             var opt = option(candles);
@@ -95,7 +98,7 @@
             if (document.hidden) return;
             fetch(url + '?chart=' + encodeURIComponent(key) + '&tf=' + tf, { headers: { Accept: 'application/json' } })
                 .then(function (r) { return r.ok ? r.json() : null; })
-                .then(function (d) { if (d && d.candles) render(d.candles); })
+                .then(function (d) { if (d && d.candles) render(d.candles, !!d.sample); })
                 .catch(function () {});
         }
 

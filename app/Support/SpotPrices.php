@@ -12,12 +12,15 @@ use Illuminate\Support\Facades\Http;
  *   - latest(): the current prices, fetched at most every 15 s for all visitors
  *   - record(): saves one row a minute to spot_prices (called by `spot:record` and on live fetches)
  *   - candles(): OHLC candles for the charts, built from the saved rows
+ *   - addSample() / clearSample(): flagged sample history before the first real price, so new charts are not empty;
+ *     removed automatically once 24 hours of real prices exist (record())
  */
 class SpotPrices
 {
     private const SOURCE   = 'https://api.gold-api.com/price/';
     public const OZ_GRAMS  = 31.1034768;
     public const KEEP_DAYS = 120;
+    public const SAMPLE_HOURS = 24;
 
     // Timeframe in minutes => how many candles to send
     public const TIMEFRAMES = [1 => 240, 5 => 240, 15 => 240, 60 => 240];
@@ -74,6 +77,12 @@ class SpotPrices
                 'xau_usd' => $p['xau_usd'], 'xag_usd' => $p['xag_usd'], 'usd_inr' => $p['usd_inr'],
                 'recorded_at' => $minute->toDateTimeString(),
             ]);
+            if ($minute->minute === 0 && static::hasSample()) {
+                $firstReal = DB::table('spot_prices')->where('is_sample', false)->min('recorded_at');
+                if ($firstReal && CarbonImmutable::parse($firstReal, 'UTC')->lte(now('UTC')->subHours(self::SAMPLE_HOURS))) {
+                    static::clearSample();
+                }
+            }
         } catch (\Throwable $e) {
             report($e); // e.g. the table is not migrated yet; live prices still work
         }
@@ -85,7 +94,8 @@ class SpotPrices
     }
 
     /**
-     * Candles for one series, oldest first: [[time ms, open, close, low, high], …] (the order ECharts expects).
+     * Candles for one series, oldest first: ['candles' => [[time ms, open, close, low, high], …], 'sample' => bool]
+     * (the candle order ECharts expects; 'sample' is true when flagged sample rows are in the range).
      * Series: xau_usd, xag_usd, xau_inr_g, xag_inr_g (see App\Support\LiveCharts).
      */
     public static function candles(string $series, int $minutes): array
@@ -97,14 +107,16 @@ class SpotPrices
             $since = CarbonImmutable::now('UTC')->subSeconds($span * $count);
             try {
                 $rows = DB::table('spot_prices')->where('recorded_at', '>=', $since)->orderBy('recorded_at')
-                    ->get(['xau_usd', 'xag_usd', 'usd_inr', 'recorded_at']);
+                    ->get(['xau_usd', 'xag_usd', 'usd_inr', 'is_sample', 'recorded_at']);
             } catch (\Throwable $e) {
                 report($e);
-                return [];
+                return ['candles' => [], 'sample' => false];
             }
+            $sample = false;
 
             $buckets = [];
             foreach ($rows as $r) {
+                $sample = $sample || (bool) $r->is_sample;
                 $v = match ($series) {
                     'xau_usd'   => (float) $r->xau_usd,
                     'xag_usd'   => (float) $r->xag_usd,
@@ -122,10 +134,66 @@ class SpotPrices
             }
 
             $dp = $series === 'xag_usd' ? 3 : 2;
-            return array_values(array_map(
+            return ['sample' => $sample, 'candles' => array_values(array_map(
                 fn ($c) => [$c[0], round($c[1], $dp), round($c[2], $dp), round($c[3], $dp), round($c[4], $dp)],
                 $buckets
-            ));
+            ))];
         });
+    }
+
+    public static function hasSample(): bool
+    {
+        return DB::table('spot_prices')->where('is_sample', true)->exists();
+    }
+
+    /**
+     * Flagged sample history: one row a minute for SAMPLE_HOURS before the first real price, as a small random walk
+     * that ends at that real price (so the line joins up). Returns the number of rows added.
+     */
+    public static function addSample(): int
+    {
+        static::clearSample();
+        $first = DB::table('spot_prices')->where('is_sample', false)->orderBy('recorded_at')->first();
+        $p = $first ? ['xau_usd' => (float) $first->xau_usd, 'xag_usd' => (float) $first->xag_usd, 'usd_inr' => (float) $first->usd_inr] : static::fetch();
+        if (! $p) {
+            return 0;
+        }
+        $end = $first ? CarbonImmutable::parse($first->recorded_at, 'UTC') : CarbonImmutable::now('UTC')->startOfMinute()->addMinute();
+
+        $g = $p['xau_usd'];
+        $s = $p['xag_usd'];
+        $fx = $p['usd_inr'];
+        $step = fn (float $v, float $vol) => $v * (1 + $vol * (mt_rand(-1000, 1000) / 1000));
+        $rows = [];
+        for ($i = 1; $i <= self::SAMPLE_HOURS * 60; $i++) {
+            $g = $step($g, 0.0004);
+            $s = $step($s, 0.0007);
+            $fx = $step($fx, 0.00003);
+            $rows[] = ['xau_usd' => round($g, 2), 'xag_usd' => round($s, 3), 'usd_inr' => round($fx, 3), 'is_sample' => true,
+                       'recorded_at' => $end->subMinutes($i)->toDateTimeString()];
+        }
+        foreach (array_chunk($rows, 500) as $chunk) {
+            DB::table('spot_prices')->insert($chunk);
+        }
+        static::forgetCandles();
+
+        return count($rows);
+    }
+
+    public static function clearSample(): int
+    {
+        $n = DB::table('spot_prices')->where('is_sample', true)->delete();
+        static::forgetCandles();
+
+        return $n;
+    }
+
+    private static function forgetCandles(): void
+    {
+        foreach (LiveCharts::CHARTS as $chart) {
+            foreach (array_keys(self::TIMEFRAMES) as $tf) {
+                Cache::forget("spot.candles.{$chart['series']}.$tf");
+            }
+        }
     }
 }

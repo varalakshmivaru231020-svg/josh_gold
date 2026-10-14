@@ -9,7 +9,7 @@
 <article class="lc-chart" id="chart-{{ $key }}">
     <div class="lc-chart__head">
         <span class="lc-dot lc-dot--live" aria-hidden="true"></span>
-        <{{ $heading }} class="lc-chart__name">{{ $c['name'] }}<span class="lc-chart__sub">{{ $c['sub'] }} · live</span></{{ $heading }}>
+        <{{ $heading }} class="lc-chart__name">{{ $c['name'] }}<span class="lc-chart__sub">{{ $c['sub'] }} · live <span class="lc-sample lc-sample--chart" data-lc-sample hidden title="The earlier candles are sample data while real price history builds up; they are removed automatically after 24 hours of real prices.">Sample data</span></span></{{ $heading }}>
         <span class="lc-spacer"></span>
         <div class="lc-tfs" role="group" aria-label="{{ $c['name'] }} timeframe">
             @foreach([1 => '1m', 5 => '5m', 15 => '15m', 60 => '1h'] as $tf => $label)

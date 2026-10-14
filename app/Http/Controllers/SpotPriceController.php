@@ -31,7 +31,7 @@ class SpotPriceController extends Controller
 
         SpotPrices::latest(); // keeps the history recording while people watch
 
-        return response()->json(['tf' => $tf, 'candles' => SpotPrices::candles($chart['series'], $tf)])
+        return response()->json(['tf' => $tf] + SpotPrices::candles($chart['series'], $tf))
             ->header('Cache-Control', 'public, max-age=10');
     }
 }

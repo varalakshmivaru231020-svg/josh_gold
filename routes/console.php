@@ -22,3 +22,14 @@ Artisan::command('spot:record', function () {
 })->purpose('Save the live spot prices for the charts');
 
 \Illuminate\Support\Facades\Schedule::command('spot:record')->everyMinute()->withoutOverlapping();
+
+// Sample chart history (flagged, shown with a "Sample data" tag; removed automatically after 24 h of real prices)
+Artisan::command('spot:sample {--clear : Remove the sample rows}', function () {
+    if ($this->option('clear')) {
+        $this->info('Removed ' . \App\Support\SpotPrices::clearSample() . ' sample rows. Real prices were not touched.');
+        return;
+    }
+    $n = \App\Support\SpotPrices::addSample();
+    $this->info($n ? "Added $n sample rows (the 24 hours before the first real price). They are removed automatically after 24 hours of real prices, or with: php artisan spot:sample --clear"
+                   : 'Could not add sample rows: no live price available.');
+})->purpose('Add (or --clear) flagged sample history for the live charts');

@@ -149,3 +149,11 @@ body.lc { margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
     .lc-bar { gap: 8px; }
     .lc-title { font-size: 22px; }
 }
+.lc-sample--chart { margin-left: 0; cursor: help; }
+.lc-chart__name { min-width: 0; white-space: nowrap; }
+.lc-chart__sub { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lc-sample--chart { margin-left: 4px; padding: 1px 5px; font-size: 10px; text-transform: none; letter-spacing: .02em; }
+@media (min-width: 761px) and (max-width: 1500px) {
+    .lc-grid .lc-chart__head { flex-wrap: wrap; row-gap: 6px; }
+    .lc-grid .lc-chart__head > .lc-spacer { flex-basis: 0; }
+}
