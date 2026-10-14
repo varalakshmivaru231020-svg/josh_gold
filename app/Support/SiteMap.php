@@ -7,8 +7,8 @@ use App\Models\FooterLink;
 use App\Models\Page;
 
 /**
- * Every public page of the site, grouped. Used by the sitemap page, the contact page
- * and sitemap.xml so all three always list the same pages. The Rates, Company and
+ * Every public page of the site, grouped. Used by the sitemap page and sitemap.xml
+ * so both always list the same pages. The Rates, Company and
  * Notices groups follow the footer columns (Admin → Footer); cities follow Admin → Cities.
  */
 class SiteMap

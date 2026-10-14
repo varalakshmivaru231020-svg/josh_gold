@@ -209,20 +209,6 @@
         @endif
     </div>
 </section>
-
-{{-- Sitemap: every page of the site --}}
-<section class="jb-section jb-section--white" id="sitemap" style="border-top: 1px solid var(--jb-line-soft);">
-    <div class="jb-wrap">
-        <div class="jb-section__head">
-            <div>
-                <p class="jb-eyebrow">Sitemap</p>
-                <h2 class="jb-section__title">Find any page</h2>
-            </div>
-            <a class="jb-link" href="{{ route('sitemap') }}">Full sitemap →</a>
-        </div>
-        @include('partials.sitemap-links', ['groups' => \App\Support\SiteMap::groups()])
-    </div>
-</section>
 @endsection
 
 @push('styles')
