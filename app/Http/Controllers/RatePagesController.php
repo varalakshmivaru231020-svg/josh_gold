@@ -23,6 +23,14 @@ class RatePagesController extends Controller
         return view('rates.charts', $this->rates(0));
     }
 
+    // One live chart, full size, with the live rates panel: /charts/xauusd
+    public function chart(string $slug)
+    {
+        abort_unless(isset(\App\Support\LiveCharts::CHARTS[$slug]), 404);
+
+        return view('rates.chart', $this->rates(0) + ['slug' => $slug, 'chart' => \App\Support\LiveCharts::CHARTS[$slug]]);
+    }
+
     public function pulse()
     {
         $data = $this->rates(0);

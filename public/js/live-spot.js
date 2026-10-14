@@ -14,7 +14,12 @@
         usd2: function (v) { return '$' + v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); },
         usd3: function (v) { return '$' + v.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 }); },
         fx:   function (v) { return '₹' + v.toFixed(2); },
-        inr:  function (v) { return '₹' + inr.format(v); }
+        inr:  function (v) { return '₹' + inr.format(v); },
+        // Number only (the label carries the unit), for the charts rates panel
+        usd2n: function (v) { return v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); },
+        usd3n: function (v) { return v.toLocaleString('en-US', { minimumFractionDigits: 3, maximumFractionDigits: 3 }); },
+        fxn:   function (v) { return v.toFixed(2); },
+        inrn:  function (v) { return inr.format(v); }
     };
 
     nodes.forEach(function (n) {

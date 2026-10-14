@@ -24,6 +24,7 @@ Route::get('/live-rates/spot', [SpotPriceController::class, 'show'])->middleware
 Route::get('/gold-rate-today', [RatePagesController::class, 'gold'])->name('rates.gold');
 Route::get('/silver-rate-today', [RatePagesController::class, 'silver'])->name('rates.silver');
 Route::get('/charts', [RatePagesController::class, 'charts'])->name('rates.charts');
+Route::get('/charts/{slug}', [RatePagesController::class, 'chart'])->where('slug', '[a-z]+')->name('rates.chart');
 Route::get('/gold-pulse', [RatePagesController::class, 'pulse'])->name('rates.pulse');
 Route::get('/gold-rate', [RatePagesController::class, 'cities'])->name('rates.cities');
 Route::get('/gold-rate/{state}/{city}', [RatePagesController::class, 'city'])
