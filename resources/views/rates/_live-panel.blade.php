@@ -1,8 +1,9 @@
 {{--
-    Rates panel beside the live charts (/charts and /charts/{slug}), styled like allindiabullion.com:
-    each price sits in a blue box when it last went up and a red box when it went down.
-      - Spot products: live international prices (public/js/live-spot.js polls /live-rates/spot); a box blinks on every move.
-      - Gold and silver products: our published rate (Admin → Live Rates), coloured by the change since our previous rate.
+    Rates panel beside the live charts (/charts and /charts/{slug}), styled like allindiabullion.com.
+    Price badges stay in place and their backgrounds cycle gold / light green / light pink (a visual effect only).
+    The real direction is shown separately: green ▲ and a green border for up, red ▼ and a red border for down.
+      - Spot products: live international prices (public/js/live-spot.js polls /live-rates/spot); a badge glows briefly on every move.
+      - Gold and silver products: our published rate (Admin → Live Rates), marked by the change since our previous rate.
     Expects $rate (latest MetalRate or null).
 --}}
 @php
@@ -49,7 +50,7 @@
     <div class="lp-tiles lp-tiles--3">
         @foreach($spotTiles as [$label, $key, $fmt])
             <div class="lp-tile" data-spot-item>
-                <span class="lp-tile__label">{{ $label }}</span>
+                <span class="lp-tile__label">{{ $label }} <span class="jb-spot-dir" data-spot-dir aria-hidden="true">•</span></span>
                 <span class="lp-tile__value" data-spot="{{ $key }}" data-format="{{ $fmt }}" data-value="{{ $spot[$key] ?? '' }}">{{ $spotFmt($spot[$key] ?? null, rtrim($fmt, 'n')) }}</span>
             </div>
         @endforeach
@@ -61,14 +62,14 @@
             <div class="lp-tiles">
                 @foreach($tiles as [$label, $value])
                     <div class="lp-tile {{ $dirClass }}">
-                        <span class="lp-tile__label">{{ $label }}</span>
+                        <span class="lp-tile__label">{{ $label }} <span class="jb-spot-dir {{ $dirClass ? 'jb-spot-dir--' . substr($dirClass, 3) : '' }}" aria-hidden="true">{{ $dirClass === 'is-up' ? '▲' : ($dirClass === 'is-down' ? '▼' : '•') }}</span></span>
                         <span class="lp-tile__value">{{ $digits($value) }}</span>
                     </div>
                 @endforeach
             </div>
         @endforeach
         <p class="lc-note">
-            <span class="lp-key lp-key--up"></span> up <span class="lp-key lp-key--down"></span> down.
+            <span class="lp-key lp-key--up">▲</span> up <span class="lp-key lp-key--down">▼</span> down, against the previous price.
             Spot products are live international prices (spot in ₹ is before import duty and GST).
             Gold and silver products are our rates, published {{ $rate->published_at->format('d M Y, g:i A') }}@if($rate->is_sample)<span class="lc-sample">Sample data</span>@endif;
             “with GST” adds 3%, making charges extra. <a href="{{ route('contact') }}">Ask for a quote</a>.
