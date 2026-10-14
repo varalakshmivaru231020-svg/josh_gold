@@ -196,7 +196,7 @@
             </div>
 
             <div class="map-embed">
-                <iframe src="{{ $mapSrc }}" title="Map of our office" width="600" height="360" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+                <iframe src="{{ $mapSrc }}" title="Map of our office" width="1200" height="520" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
             </div>
         </div>
         @endif
@@ -299,7 +299,8 @@
     .map-address i { color: var(--jb-gold-strong); }
     .map-directions { width: auto !important; min-height: 46px; padding: 0 20px; text-decoration: none; white-space: nowrap; }
     .map-embed { overflow: hidden; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel-3); box-shadow: var(--jb-shadow-lg); }
-    .map-embed iframe { display: block; width: 100%; height: 360px; border: 0; }
+    .map-embed iframe { display: block; width: 100%; height: 520px; border: 0; }
+    @media (max-width: 767px) { .map-embed iframe { height: 380px; } }
 
     /* Responsive */
     @media (max-width: 991px) {
