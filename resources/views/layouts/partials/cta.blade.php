@@ -15,10 +15,10 @@
 @if($show)
 <style>
     /* Ivory band with a gold hairline (matches the home page quotation band). With a photo: ivory text on a dark wash. */
-    .cta-wrap { padding: 4rem 0; border-top: 1px solid var(--jb-line-soft); }
+    .cta-wrap { padding: 3.5rem 0 3rem; }
     .cta-card {
         position: relative; overflow: hidden; isolation: isolate;
-        padding: 3.75rem 1.5rem; border-radius: var(--jb-r-card); border: 1px solid var(--jb-line-strong);
+        padding: 3.75rem 1.5rem; border-radius: 32px; border: 1px solid var(--jb-line-strong);
         display: flex; align-items: center; justify-content: center; text-align: center;
         background: radial-gradient(600px 260px at 100% 0%, rgba(184, 138, 59, .12), transparent 65%), var(--jb-ivory);
         background-size: cover; background-position: center;
@@ -40,7 +40,7 @@
     .cta-card.has-photo .cta-text { color: rgba(248, 243, 233, .88); }
     .cta-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 2rem; }
     .cta-btn {
-        display: inline-flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 26px; border-radius: var(--jb-r-btn);
+        display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 28px; border-radius: 999px;
         font-size: 12.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; border: 1px solid transparent;
         transition: background-color .25s, border-color .25s, color .25s, transform .25s;
     }
@@ -51,7 +51,7 @@
     .cta-btn--solid:hover { color: var(--jb-obsidian); background: #c99c4c; border-color: #c99c4c; transform: translateY(-1px); }
     @media (max-width: 767px) {
         .cta-wrap { padding: 2.5rem 0; }
-        .cta-card { padding: 2.5rem 1.1rem; }
+        .cta-card { padding: 2.5rem 1.1rem; border-radius: 24px; }
         .cta-actions { flex-direction: column; align-items: stretch; }
         .cta-btn { justify-content: center; }
     }
