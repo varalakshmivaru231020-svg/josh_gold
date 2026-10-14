@@ -66,7 +66,7 @@ body.lc { margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
     .lc-main { padding: 10px; }
 }
 
-/* Rates panel. Badges stay in place; their backgrounds cycle gold → light green → light pink (smooth, 3.6 s,
+/* Rates panel. Badges stay in place; their backgrounds blink gold → light green → light pink like the top ticker (0.8 s each,
    staggered so neighbours differ). That cycle is decoration only: the real direction is the ▲/▼ mark and the badge
    border (green up, red down, none when unchanged). A moved live price gets one soft glow. */
 .lp-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
@@ -78,12 +78,12 @@ body.lc { margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
 .lp-tile .jb-spot-dir--down { color: #ef4444; }
 .lp-tile__value { display: block; margin-top: 7px; padding: 7px 4px; border-radius: 5px; background: #f2c45a; color: #1a1408; font: 800 18px/1.1 var(--jb-sans);
     font-variant-numeric: tabular-nums; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    box-shadow: inset 0 0 0 2px transparent; animation: lp-cycle 3.6s ease-in-out infinite; }
+    box-shadow: inset 0 0 0 2px transparent; animation: lp-cycle 2.4s steps(1, end) infinite; }
 .lp-tiles--3 .lp-tile__value { font-size: 16px; }
-.lp-tile:nth-child(3n+2) .lp-tile__value { animation-delay: -1.2s; }
-.lp-tile:nth-child(3n) .lp-tile__value { animation-delay: -2.4s; }
+.lp-tile:nth-child(3n+2) .lp-tile__value { animation-delay: -.8s; }
+.lp-tile:nth-child(3n) .lp-tile__value { animation-delay: -1.6s; }
 @keyframes lp-cycle {
-    0%, 100% { background-color: #f2c45a; }   /* premium gold */
+    0%       { background-color: #f2c45a; }   /* premium gold */
     33%      { background-color: #b8f2c8; }   /* light green */
     66%      { background-color: #ffc6d6; }   /* light pink */
 }
