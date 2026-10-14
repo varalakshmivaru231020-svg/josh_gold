@@ -3,7 +3,7 @@
 
     Home page "Shop by category":   @include('partials.collection-cards')
         → the active collections marked "Show on home page", in admin order (cached; cleared when a collection is saved or deleted).
-        Desktop lays out rows of four and stretches the last row to the full width (7 tiles = 4 + 3).
+        Desktop lays out rows of four and stretches the last row to the full width (e.g. 7 tiles = 4 + 3).
     Any list, as a one-row strip:   @include('partials.collection-cards', ['items' => $others, 'variant' => 'strip'])
 
     Loads public/css/collections.css itself (once per page) through @stack('styles').
