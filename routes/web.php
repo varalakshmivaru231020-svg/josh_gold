@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\LiveRatesController;
+use App\Http\Controllers\SpotPriceController;
 use App\Http\Controllers\RatePagesController;
 
 // ------------------------
@@ -17,6 +18,7 @@ Route::get('/login', function() {
 // Live Metal Rates (public)
 Route::get('/live-rates', [LiveRatesController::class, 'index'])->name('live-rates');
 Route::get('/live-rates/history', [LiveRatesController::class, 'history'])->middleware('throttle:120,1')->name('live-rates.history');
+Route::get('/live-rates/spot', [SpotPriceController::class, 'show'])->middleware('throttle:60,1')->name('live-rates.spot');
 
 // Main-menu rate pages (gold, silver, charts, Gold Pulse, cities)
 Route::get('/gold-rate-today', [RatePagesController::class, 'gold'])->name('rates.gold');

@@ -149,6 +149,87 @@
         </div>
     </section>
 
+    {{-- ─── Live rates: live spot prices, then our 24K / 22K / 18K / silver rates, then live charts ─── --}}
+    @php
+        $spot = \Illuminate\Support\Facades\Cache::get('spot.prices.last', []);
+        $spotFmt = fn ($v, $f) => $v === null ? '—' : match ($f) {
+            'usd2' => '$' . number_format($v, 2), 'usd3' => '$' . number_format($v, 3), 'fx' => '₹' . number_format($v, 2), default => $inr($v),
+        };
+        $spotTiles = [
+            ['Spot gold',      'xau_usd',       'usd2', 'USD per troy oz'],
+            ['Spot silver',    'xag_usd',       'usd3', 'USD per troy oz'],
+            ['Gold spot in ₹', 'gold_inr_10g',  'inr',  'per 10 g, before duty & GST'],
+            ['USD / INR',      'usd_inr',       'fx',   'exchange rate'],
+        ];
+        $tvMini = fn (string $symbol) => 'https://s.tradingview.com/widgetembed/?' . http_build_query([
+            'symbol' => $symbol, 'interval' => '5', 'theme' => 'dark', 'style' => 1, 'hidesidetoolbar' => 1, 'hide_top_toolbar' => 1,
+            'symboledit' => 0, 'saveimage' => 0, 'studies' => '[]', 'timezone' => 'Asia/Kolkata', 'locale' => 'en',
+        ], '', '&', PHP_QUERY_RFC3986);
+    @endphp
+    <section class="jb-section jb-dark jb-live-rates" id="live-rates" aria-labelledby="live-rates-title" style="scroll-margin-top: var(--jb-header-h);">
+        <div class="jb-wrap">
+            <div class="jb-lr__head">
+                <div>
+                    <p class="jb-eyebrow"><span class="jb-ticker__live"><span class="jb-live__dot" aria-hidden="true"></span>Live</span></p>
+                    <h2 class="jb-section__title" id="live-rates-title">Live <em>rates</em></h2>
+                </div>
+                <p class="jb-lr__updated">International spot · updated <span data-spot-time>{{ isset($spot['updated_at']) ? \Carbon\Carbon::parse($spot['updated_at'])->setTimezone(MetalRate::TIMEZONE)->format('g:i:s A') : '—' }}</span></p>
+            </div>
+
+            <div class="jb-lr__spot">
+                @foreach($spotTiles as [$label, $key, $fmt, $unit])
+                    <div class="jb-lr__tile" data-spot-item>
+                        <span class="jb-lr__label">{{ $label }} <span class="jb-spot-dir" data-spot-dir aria-hidden="true">•</span></span>
+                        <span class="jb-lr__value" data-spot="{{ $key }}" data-format="{{ $fmt }}" data-value="{{ $spot[$key] ?? '' }}">{{ $spotFmt($spot[$key] ?? null, $fmt) }}</span>
+                        <span class="jb-lr__unit">{{ $unit }}</span>
+                    </div>
+                @endforeach
+            </div>
+
+            @if($rate)
+                <div class="jb-lr__sub">
+                    <h3>Our rates today</h3>
+                    <span>{{ ucfirst($rate->session) }} rate · {{ $published->format('j M Y, g:i A') }}@if($rate->is_sample) <span class="jb-chip jb-chip--warn">Sample data</span>@endif</span>
+                </div>
+                <div class="jb-lr__ours">
+                    @foreach([
+                        ['24K Gold', '999', $rate->goldRate('24K', 10), $rate->goldRate('24K', 1), $goldChange, route('rates.gold')],
+                        ['22K Gold', '916', $rate->goldRate('22K', 10), $rate->goldRate('22K', 1), $goldChange, route('rates.gold')],
+                        ['18K Gold', '750', $rate->goldRate('18K', 10), $rate->goldRate('18K', 1), $goldChange, route('rates.gold')],
+                        ['Silver',   '999', $rate->silverRate(1000),   $rate->silverRate(10),   $silverChange, route('rates.silver')],
+                    ] as [$name, $purity, $main, $small, $change, $url])
+                        @php $isSilver = $name === 'Silver'; @endphp
+                        <a class="jb-lr__card" href="{{ $url }}">
+                            <span class="jb-lr__name">{{ $name }} <small>{{ $purity }}</small></span>
+                            <span class="jb-lr__price">{{ $inr($main) }}<small> / {{ $isSilver ? 'kg' : '10 g' }}</small></span>
+                            <span class="jb-lr__meta">
+                                <span>{{ $inr($small) }} / {{ $isSilver ? '10 g' : '1 g' }}</span>
+                                @if($change !== null && abs($change) >= 0.005)
+                                    <span class="jb-lr__chg jb-lr__chg--{{ $change > 0 ? 'up' : 'down' }}">{{ $change > 0 ? '▲' : '▼' }} {{ number_format(abs($change), 2) }}%</span>
+                                @else
+                                    <span class="jb-lr__chg">No change</span>
+                                @endif
+                            </span>
+                        </a>
+                    @endforeach
+                </div>
+            @endif
+
+            <div class="jb-lr__charts">
+                @foreach([['Spot gold', 'XAU/USD', 'OANDA:XAUUSD'], ['Spot silver', 'XAG/USD', 'OANDA:XAGUSD']] as [$name, $pair, $symbol])
+                    <figure class="jb-lr__chart">
+                        <figcaption><b>{{ $name }}</b> {{ $pair }} · live</figcaption>
+                        <iframe src="{{ $tvMini($symbol) }}" title="{{ $name }} live chart ({{ $pair }})" loading="lazy"></iframe>
+                    </figure>
+                @endforeach
+            </div>
+            <p class="jb-lr__foot">
+                <a class="jb-btn jb-btn--primary" href="{{ route('rates.charts') }}">Open live charts</a>
+                <span>Spot prices are international market prices (gold-api.com, TradingView). Indian rates add import duty and 3% GST; our rates above are what we quote.</span>
+            </p>
+        </div>
+    </section>
+
     {{-- ─── Trust band ─────────────────────────────────── --}}
     <section class="jb-trust" aria-label="Why buy from us">
         @php

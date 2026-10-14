@@ -41,6 +41,17 @@
         $jbStale = $jbRate->published_at->lt(now(MetalRate::TIMEZONE)->subHours(36));
     }
 
+    // Live international spot prices (public/js/live-spot.js keeps them updating); last known values render first
+    $jbSpot = \Illuminate\Support\Facades\Cache::get('spot.prices.last', []);
+    $jbSpotItems = [
+        ['Spot gold',   'xau_usd', 'usd2', '/ oz'],
+        ['Spot silver', 'xag_usd', 'usd3', '/ oz'],
+        ['USD / INR',   'usd_inr', 'fx',   ''],
+    ];
+    $jbSpotFmt = fn ($v, $f) => $v === null ? '—' : match ($f) {
+        'usd2' => '$' . number_format($v, 2), 'usd3' => '$' . number_format($v, 3), 'fx' => '₹' . number_format($v, 2), default => RateBook::inr($v),
+    };
+
     // Menu either side of the logo: [label, url, is current page, dropdown key]
     $jbLeft = [
         ['Shop',        route('home') . '#categories', request()->routeIs('home', 'collections.*'), 'shop'],
@@ -73,28 +84,45 @@
 {{-- ─── Market ticker ─── --}}
 <div class="jb-ticker" role="region" aria-label="Latest published rates">
     <div class="jb-wrap jb-ticker__row">
-        @if($jbRate)
-            <div class="jb-scroll-x jb-ticker__items">
-                @foreach($jbTicker as [$label, $value, $unit, $change, $url])
-                    @if(! $loop->first)<span class="jb-ticker__sep" aria-hidden="true"></span>@endif
-                    <a class="jb-ticker__item" href="{{ $url }}">
-                        <span class="jb-ticker__label">{{ $label }}</span>
-                        <span class="jb-ticker__value">{{ RateBook::inr($value) }}</span>
-                        <span class="jb-ticker__unit">/ {{ $unit }}</span>
-                        @if($change !== null && abs($change) >= 0.005)
-                            <span class="jb-change jb-change--{{ $change > 0 ? 'up' : 'down' }}">
-                                <span aria-hidden="true">{{ $change > 0 ? '▲' : '▼' }}</span>
-                                <span class="jb-sr">{{ $change > 0 ? 'up' : 'down' }}</span>{{ number_format(abs($change), 2) }}%<span class="jb-sr"> since our previous published rate</span>
-                            </span>
-                        @endif
-                    </a>
+        <span class="jb-ticker__live" title="International spot prices, updated every few seconds"><span class="jb-live__dot" aria-hidden="true"></span>Live</span>
+        <div class="jb-ticker__items">
+            <div class="jb-ticker__track">
+                @foreach([false, true] as $jbCopy)
+                    {{-- The second copy only makes the scroll seamless --}}
+                    <div class="jb-ticker__group" @if($jbCopy) aria-hidden="true" @endif>
+                        @foreach($jbSpotItems as [$label, $key, $fmt, $unit])
+                            <a class="jb-ticker__item jb-ticker__item--spot" href="{{ route('rates.charts') }}" data-spot-item @if($jbCopy) tabindex="-1" @endif>
+                                <span class="jb-ticker__label">{{ $label }}</span>
+                                <span class="jb-ticker__value" data-spot="{{ $key }}" data-format="{{ $fmt }}" data-value="{{ $jbSpot[$key] ?? '' }}">{{ $jbSpotFmt($jbSpot[$key] ?? null, $fmt) }}</span>
+                                @if($unit)<span class="jb-ticker__unit">{{ $unit }}</span>@endif
+                                <span class="jb-spot-dir" data-spot-dir aria-hidden="true">•</span>
+                            </a>
+                            <span class="jb-ticker__sep" aria-hidden="true"></span>
+                        @endforeach
+                        @foreach($jbTicker as [$label, $value, $unit, $change, $url])
+                            <a class="jb-ticker__item" href="{{ $url }}" @if($jbCopy) tabindex="-1" @endif>
+                                <span class="jb-ticker__label">{{ $label }}</span>
+                                <span class="jb-ticker__value">{{ RateBook::inr($value) }}</span>
+                                <span class="jb-ticker__unit">/ {{ $unit }}</span>
+                                @if($change !== null && abs($change) >= 0.005)
+                                    <span class="jb-change jb-change--{{ $change > 0 ? 'up' : 'down' }}">
+                                        <span aria-hidden="true">{{ $change > 0 ? '▲' : '▼' }}</span>
+                                        <span class="jb-sr">{{ $change > 0 ? 'up' : 'down' }}</span>{{ number_format(abs($change), 2) }}%<span class="jb-sr"> since our previous published rate</span>
+                                    </span>
+                                @endif
+                            </a>
+                            <span class="jb-ticker__sep" aria-hidden="true"></span>
+                        @endforeach
+                    </div>
                 @endforeach
             </div>
+        </div>
+        @if($jbRate)
             <div class="jb-ticker__meta">
                 @if($jbRate->is_sample)<span class="jb-chip jb-chip--warn">Sample data</span>@endif
                 <span class="jb-live" data-state="{{ $jbStale ? 'stale' : 'live' }}">
                     <span class="jb-live__dot" aria-hidden="true"></span>
-                    Updated <time datetime="{{ $jbRate->published_at->toIso8601String() }}">{{ $jbRate->published_at->format('j M Y, g:i A') }}</time>
+                    Our rates <time datetime="{{ $jbRate->published_at->toIso8601String() }}">{{ $jbRate->published_at->format('j M Y, g:i A') }}</time>
                 </span>
                 <a href="{{ route('live-rates') }}">All rates →</a>
             </div>
@@ -120,15 +148,22 @@
                             <a href="{{ route('home') }}#by-weight">Prices by weight <small>live</small></a>
                         </div>
                     @elseif($menu === 'gold')
-                        <div class="jb-lux__menu">
-                            <a href="{{ route('rates.gold') }}" @if(request()->routeIs('rates.gold')) aria-current="page" @endif>Gold rate today</a>
-                            <a href="{{ route('live-rates') }}" @if(request()->routeIs('live-rates')) aria-current="page" @endif>Full rate table</a>
-                            <a href="{{ route('rates.cities') }}" @if(request()->routeIs('rates.cities')) aria-current="page" @endif>Rates by city</a>
+                        <div class="jb-lux__menu jb-lux__menu--wide">
+                            <div>
+                                <a href="{{ route('rates.gold') }}" @if(request()->routeIs('rates.gold')) aria-current="page" @endif>Gold rate today</a>
+                                <a href="{{ route('live-rates') }}" @if(request()->routeIs('live-rates')) aria-current="page" @endif>Full rate table</a>
+                                <a href="{{ route('rates.charts') }}" @if(request()->routeIs('rates.charts')) aria-current="page" @endif>Live charts</a>
+                                <a href="{{ route('rates.cities') }}" @if(request()->routeIs('rates.cities')) aria-current="page" @endif>All cities</a>
+                            </div>
                             @if(count($jbMenuCities))
-                                <p class="jb-lux__menu-label">Cities</p>
-                                @foreach($jbMenuCities as $key => [$name])
-                                    <a href="{{ $jbCityUrl($key) }}" @if($jbOnCity($key)) aria-current="page" @endif>{{ $name }}</a>
-                                @endforeach
+                                <div>
+                                    <p class="jb-lux__menu-label">Gold rate by city</p>
+                                    <div class="jb-lux__cities">
+                                        @foreach(array_slice($jbMenuCities, 0, 12, true) as $key => [$name])
+                                            <a href="{{ $jbCityUrl($key) }}" @if($jbOnCity($key)) aria-current="page" @endif>{{ $name }}</a>
+                                        @endforeach
+                                    </div>
+                                </div>
                             @endif
                         </div>
                     @endif
