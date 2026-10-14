@@ -588,8 +588,6 @@ body.jb-locked { overflow: hidden; }
 .jb-footer__legal { display: flex; flex-wrap: wrap; gap: 6px 18px; }
 .jb-footer__legal a, .jb-footer__legal button { color: #b3a994; }
 .jb-footer__note { max-width: 920px; padding-bottom: 28px; font-size: 12px; line-height: 1.7; color: #8f8674; }
-.jb-footer .jb-footer__cookie { padding: 0; border: 0; background: none; font: inherit; color: #b3a994; cursor: pointer; }
-.jb-footer .jb-footer__cookie:hover { color: var(--jb-champagne); }
 
 /* Floating WhatsApp */
 .jb-wa-float { position: fixed; right: 18px; bottom: 18px; z-index: 30; width: 54px; height: 54px; display: grid; place-items: center; border-radius: 50%; background: var(--jb-whatsapp); color: #fff; box-shadow: 0 14px 30px -10px rgba(31, 120, 60, .6); transition: transform .3s var(--jb-ease); }

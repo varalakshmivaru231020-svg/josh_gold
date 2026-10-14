@@ -61,8 +61,7 @@
 <section class="jb-section"><div class="jb-wrap"><div class="jb-panel"><p class="jb-muted mb-0">Charts will appear here once rates are published.</p></div></div></section>
 @endif
 
-{{-- International spot charts from TradingView. Third-party iframes, so they load only with
-     embedded-content consent or when the visitor presses "Load chart" (public/js/consent.js). --}}
+{{-- International spot charts from TradingView (third-party iframes, loaded with the page), one per row --}}
 @php
     $tvChart = fn (string $id, string $symbol) => 'https://s.tradingview.com/widgetembed/?' . http_build_query([
         'frameElementId' => $id, 'symbol' => $symbol, 'interval' => 'D', 'hidesidetoolbar' => 1, 'symboledit' => 0,
@@ -84,19 +83,11 @@
             @foreach($usdCharts as $chart)
                 <div class="jb-usd-chart">
                     <h3 class="jb-usd-chart__title" id="usd-{{ $chart['key'] }}-title">{{ $chart['metal'] }} <span>{{ $chart['pair'] }} · per troy ounce</span></h3>
-                    <div class="jb-embed" data-consent-embed
-                         data-embed-src="{{ $chart['src'] }}"
-                         data-embed-title="{{ $chart['metal'] }} spot price in US dollars ({{ $chart['pair'] }}), chart by TradingView"
-                         data-embed-height="420">
-                        <div class="jb-embed__placeholder">
-                            <span class="jb-embed__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M3 3v18h18"/><path d="m7 15 4-5 3 3 5-7"/></svg></span>
-                            <p class="jb-embed__title">{{ $chart['metal'] }} · {{ $chart['pair'] }}</p>
-                            <p>This chart is provided by TradingView, which may set cookies.</p>
-                            <button type="button" class="jb-btn jb-btn--primary jb-btn--sm" data-embed-load aria-describedby="usd-{{ $chart['key'] }}-title">Load chart</button>
-                        </div>
+                    <div class="jb-usd-chart__frame">
+                        <iframe src="{{ $chart['src'] }}" title="{{ $chart['metal'] }} spot price in US dollars ({{ $chart['pair'] }}), chart by TradingView" width="1200" height="480" loading="lazy" allowtransparency="true"></iframe>
                     </div>
                     <p class="jb-usd-chart__credit">
-                        <a href="{{ $chart['link'] }}" target="_blank" rel="noopener">{{ $chart['pair'] }} chart by TradingView<span class="jbc-visually-hidden"> (opens in a new tab)</span></a>
+                        <a href="{{ $chart['link'] }}" target="_blank" rel="noopener">{{ $chart['pair'] }} chart by TradingView<span class="jb-sr"> (opens in a new tab)</span></a>
                     </p>
                 </div>
             @endforeach
@@ -133,10 +124,12 @@
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/rate-pages.css') }}?v={{ filemtime(public_path('css/rate-pages.css')) }}">
 <style>
-    /* US dollar spot charts: side by side on desktop, stacked on phones */
-    .jb-usd-charts { display: grid; gap: 22px; margin-top: 20px; }
-    @media (min-width: 992px) { .jb-usd-charts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; } }
+    /* US dollar spot charts: one per row, full width */
+    .jb-usd-charts { display: grid; gap: 40px; margin-top: 28px; }
     .jb-usd-chart { min-width: 0; }
+    .jb-usd-chart__frame { overflow: hidden; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: #fff; box-shadow: var(--jb-shadow); }
+    .jb-usd-chart__frame iframe { display: block; width: 100%; height: 480px; border: 0; }
+    @media (max-width: 767px) { .jb-usd-chart__frame iframe { height: 380px; } }
     .jb-usd-chart__title { margin: 0 0 10px !important; font-size: 18px; font-weight: 600; }
     .jb-usd-chart__title span { margin-left: 6px; color: var(--jb-muted); font: 600 11px/1 var(--jb-sans); letter-spacing: .12em; text-transform: uppercase; }
     .jb-usd-chart__credit { margin: 10px 2px 0 !important; font-size: 12.5px; }

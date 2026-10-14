@@ -16,7 +16,7 @@
     // so the map searches by the locality lines (all but the first) when there are 3 or more
     $mapSearch = count($addrLines) >= 3 ? implode(', ', array_slice($addrLines, 1)) : $mapQuery;
 
-    // The map loads only with the visitor's consent (data-consent-embed), so it needs a plain URL:
+    // The map is an iframe, so it needs a plain URL:
     // the src of the embed code pasted in admin, a URL pasted there, or Google Maps for the address
     $mapSrc = '';
     if ($mapEmbed !== '') {
@@ -195,15 +195,8 @@
                 @endif
             </div>
 
-            {{-- Loads only after the visitor allows embedded content or clicks "Load map" (public/js/consent.js) --}}
-            <div class="jb-embed map-embed" data-consent-embed data-embed-src="{{ $mapSrc }}" data-embed-title="Map of our office" data-embed-height="360">
-                <div class="jb-embed__placeholder">
-                    <span class="jb-embed__icon" aria-hidden="true"><i class="fas fa-map-marker-alt"></i></span>
-                    <p class="jb-embed__title">Map of our office</p>
-                    <p>This map is provided by Google, which may set cookies.</p>
-                    <button type="button" class="jb-btn jb-btn--primary jb-btn--sm" data-embed-load>Load map</button>
-                    <a href="{{ url('/cookie-policy') }}" class="map-embed__link">Cookie policy</a>
-                </div>
+            <div class="map-embed">
+                <iframe src="{{ $mapSrc }}" title="Map of our office" width="600" height="360" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
             </div>
         </div>
         @endif
@@ -305,10 +298,8 @@
     .map-address { margin: 0; color: var(--jb-muted); max-width: 640px; }
     .map-address i { color: var(--jb-gold-strong); }
     .map-directions { width: auto !important; min-height: 46px; padding: 0 20px; text-decoration: none; white-space: nowrap; }
-    /* The map card itself is .jb-embed (styled in public/css/consent.css) */
-    .map-embed { min-height: 360px; box-shadow: var(--jb-shadow-lg); }
-    .map-embed__link { color: var(--jb-gold-strong); font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
-    .map-embed__link:hover { color: var(--jb-gold-deep); }
+    .map-embed { overflow: hidden; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); background: var(--jb-panel-3); box-shadow: var(--jb-shadow-lg); }
+    .map-embed iframe { display: block; width: 100%; height: 360px; border: 0; }
 
     /* Responsive */
     @media (max-width: 991px) {

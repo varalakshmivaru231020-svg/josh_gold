@@ -1,4 +1,4 @@
-{{-- Icons, fonts, the theme, cookie-consent styles, the motion script and social-sharing tags,
+{{-- Icons, fonts, the theme, the motion script and social-sharing tags,
      shared by layouts/bullion and layouts/lawfirm. Fonts are self-hosted from public/fonts
      (see the @font-face rules at the top of bullion-theme.css).
      Pages may set @section('og_image', url) for a sharing image; the description comes from
@@ -10,7 +10,6 @@
 <link rel="preload" href="{{ asset('fonts/inter-latin-wght-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="{{ asset('fonts/cormorant-garamond-latin-500-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{{ asset('css/bullion-theme.css') }}?v={{ filemtime(public_path('css/bullion-theme.css')) }}">
-<link rel="stylesheet" href="{{ asset('css/consent.css') }}?v={{ filemtime(public_path('css/consent.css')) }}">
 <script src="{{ asset('js/site.js') }}?v={{ filemtime(public_path('js/site.js')) }}" defer></script>
 <link rel="canonical" href="{{ url()->current() }}">
 <meta property="og:site_name" content="{{ config('company.name') }}">
