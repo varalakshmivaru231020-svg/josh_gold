@@ -8,7 +8,7 @@
         <thead>
             <tr>
                 <th scope="col">{{ $metal === 'gold' ? 'Gold purity' : 'Silver grade' }}</th>
-                @foreach($weights as $label)<th scope="col">{{ $label }}</th>@endforeach
+                @foreach($weights as $label)<th scope="col" class="jb-table__unit">{{ $label }}</th>@endforeach
             </tr>
         </thead>
         <tbody>

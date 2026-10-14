@@ -162,3 +162,6 @@ body:focus { outline: none; }
     .jbc-banner__inner, .jbc-dialog__backdrop, .jbc-dialog__panel { animation: none; }
     .jbc-switch, .jbc-switch::after, .jbc-choice { transition: none; }
 }
+
+/* The consent choices keep sentence case (the site's uppercase button style is too wide here) */
+.jbc-choice.jb-btn { text-transform: none; letter-spacing: .01em; font-size: 13.5px; font-weight: 600; }

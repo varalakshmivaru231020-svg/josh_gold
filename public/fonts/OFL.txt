@@ -1,10 +1,10 @@
-Fonts in this folder (self-hosted copies of the Google Fonts releases, latin and latin-ext subsets):
+Fonts in this folder (self-hosted copies of the Fontsource releases of the Google Fonts families):
 
-  noto-serif-*.woff2       Noto Serif (variable, weights 400-700)
-  inclusive-sans-*.woff2   Inclusive Sans (regular and italic)
+  cormorant-garamond-*.woff2   Cormorant Garamond (500, 500 italic, 600; latin, plus latin-ext for 600)
+  inter-*-wght-normal.woff2    Inter (variable, weights 100-900; latin and latin-ext)
 
-Copyright 2022 The Noto Project Authors (https://github.com/notofonts/latin-greek-cyrillic)
-Copyright 2022 The Inclusive Sans Project Authors (https://github.com/LivKing/Inclusive-Sans)
+Copyright 2015 The Cormorant Project Authors (https://github.com/CatharsisFonts/Cormorant)
+Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter)
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:

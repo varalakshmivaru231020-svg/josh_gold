@@ -26,3 +26,20 @@ gold-bracelet-wide (gold jewellery card): Unsplash photo-1622398925373-3f91b1e27
 gold-rings-wide: Unsplash photo-1608042314453-ae338d80c427
 services/audits: Unsplash photo-1602751584552-8ba73aad10e1
 guide-hallmark (now a gold chain image): Unsplash photo-1602173574767-37ac01994b2a
+
+Premium redesign (14 Oct 2026), all Unsplash License, cropped from 2600 px sources:
+hero-bullion, hero-bullion-1200 (home hero): unsplash.com/photos/y7jRMXOz7pE (photo-1624365168056-daf44387e2ae)
+hero-necklace (hero frame): unsplash.com/photos/re1oHeWEPjI
+hero-diamond, diamond-necklace-wide (diamond jewellery card): unsplash.com/photos/LQdSOAw13KE (Hemant Latawa)
+gold-bracelet-wide (gold jewellery card): unsplash.com/photos/YgaCqcxE5og
+gold-coins-wide, gold-coins-card: unsplash.com/photos/uG3sjycquog
+gold-bars-2-wide, gold-bars-card: unsplash.com/photos/bRvjof5xYwc (Scottsdale Mint)
+gold-biscuits-wide: unsplash.com/photos/LyaBFrZod7A (Scottsdale Mint)
+silver-coins-wide, silver-coins-card: unsplash.com/photos/JTocA_Zdw-o (Scottsdale Mint)
+silver-bar-card (silver bars card): unsplash.com/photos/Y40F09ajloY (Scottsdale Mint)
+guide-bullion: unsplash.com/photos/Mx3tCAyN0vI
+guide-silver: unsplash.com/photos/hUqaxjL1Ews (Scottsdale Mint)
+guide-jewellery: unsplash.com/photos/vLIeyl_ml8s
+services/audits (storage/app/public/services): unsplash.com/photos/-DvXRvsxagg
+Note: several bullion photos show other mints' names (Scottsdale, Argor-Heraeus). They are illustrative;
+replace them with photos of your own stock when available.

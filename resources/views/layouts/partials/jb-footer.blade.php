@@ -2,10 +2,13 @@
     Site footer, floating WhatsApp button and the mobile-drawer script, used by layouts/bullion and layouts/lawfirm.
     Expects from the view composer: $socialLinks, $footerOffices, $footerPages
     Link columns, their headings, the about text and the note are managed in Admin → Footer;
-    the Contact column comes from Site Settings → Contact.
+    Shop lists the active collections (Admin → Collections), Services the active services (Admin → Services);
+    the contact details come from Site Settings → Contact.
 --}}
 @php
+    use App\Models\Collection;
     use App\Models\FooterLink;
+    use App\Models\Service;
     use App\Models\SiteSetting;
 
     $jfPhone    = trim((string) SiteSetting::get('contact_phone'));
@@ -17,16 +20,42 @@
     $jfColumns = FooterLink::activeByColumnCached(); // ['rates' => [['label', 'url', 'new_tab'], …], …]
     $jfAbout   = FooterLink::about();
     $jfNote    = FooterLink::note();
+
+    // Columns in order: admin "Rates", Shop, Services, then the other admin columns
+    $jfLists = [];
+    if (! empty($jfColumns['rates'])) $jfLists[] = [FooterLink::heading('rates'), $jfColumns['rates']];
+    $jfShop = Collection::activeCached()->map(fn ($c) => ['label' => $c->name, 'url' => $c->url, 'new_tab' => false])->all();
+    if ($jfShop) $jfLists[] = ['Shop', $jfShop];
+    $jfServices = Service::active()->ordered()->get(['title'])
+        ->map(fn ($s) => ['label' => $s->title, 'url' => route('contact', ['item' => $s->title]), 'new_tab' => false])->all();
+    if ($jfServices) $jfLists[] = ['Services', array_merge($jfServices, [['label' => 'All services', 'url' => route('services.index'), 'new_tab' => false]])];
+    foreach ($jfColumns as $jfKey => $jfLinks) {
+        if ($jfKey !== 'rates' && ! empty($jfLinks)) $jfLists[] = [FooterLink::heading($jfKey), $jfLinks];
+    }
 @endphp
 
 <footer class="jb-footer">
     <div class="jb-wrap">
-        <div class="jb-footer__grid">
+        <div class="jb-footer__cta">
+            <h2>Gold, diamonds &amp; silver, <em>quoted before you pay.</em></h2>
+            <div class="jb-footer__cta-actions">
+                <a class="jb-btn jb-btn--primary" href="{{ route('contact') }}">Request a quote</a>
+                <a class="jb-btn jb-btn--light" href="https://wa.me/{{ $jfWhatsapp }}" target="_blank" rel="noopener">WhatsApp us<span class="jb-sr"> (opens WhatsApp)</span></a>
+            </div>
+        </div>
+
+        <div class="jb-footer__grid" style="--jb-footer-cols: {{ count($jfLists) }};">
             <div>
                 <a href="{{ route('home') }}" class="jb-footer__logo">
                     <img src="{{ asset('images/brand/josha-logo.webp') }}" alt="{{ config('company.name') }}" width="200" height="165" loading="lazy">
                 </a>
                 @if($jfAbout !== '')<p class="jb-footer__about">{{ $jfAbout }}</p>@endif
+                <ul class="jb-footer__contact" style="margin-top: 20px;">
+                    @if($jfAddress !== '')<li>{!! nl2br(e($jfAddress)) !!}</li>@endif
+                    @if($jfPhone !== '')<li><a href="tel:{{ preg_replace('/[^\d+]/', '', $jfPhone) }}">{{ $jfPhone }}</a> · <a href="https://wa.me/{{ $jfWhatsapp }}" target="_blank" rel="noopener">WhatsApp</a></li>@endif
+                    @if($jfEmail !== '')<li><a href="mailto:{{ $jfEmail }}" style="word-break: break-all;">{{ $jfEmail }}</a></li>@endif
+                    @if($jfHours !== '')<li>{{ $jfHours }}</li>@endif
+                </ul>
                 @if($socialLinks->isNotEmpty())
                     <div class="jb-footer__social">
                         @foreach($socialLinks as $link)
@@ -38,10 +67,9 @@
                 @endif
             </div>
 
-            @foreach($jfColumns as $jfColumn => $jfLinks)
-                @continue(empty($jfLinks))
+            @foreach($jfLists as [$jfHeading, $jfLinks])
                 <div>
-                    <h4>{{ FooterLink::heading($jfColumn) }}</h4>
+                    <h4>{{ $jfHeading }}</h4>
                     <ul>
                         @foreach($jfLinks as $jfLink)
                             <li><a href="{{ url($jfLink['url']) }}" @if($jfLink['new_tab']) target="_blank" rel="noopener" @endif>{{ $jfLink['label'] }}</a></li>
@@ -49,21 +77,8 @@
                     </ul>
                 </div>
             @endforeach
-
-            <div>
-                <h4>Contact</h4>
-                <ul>
-                    @if($jfPhone !== '')<li><a href="tel:{{ preg_replace('/[^\d+]/', '', $jfPhone) }}">{{ $jfPhone }}</a></li>@endif
-                    @if($jfEmail !== '')<li><a href="mailto:{{ $jfEmail }}" style="word-break: break-all;">{{ $jfEmail }}</a></li>@endif
-                    <li><a href="https://wa.me/{{ $jfWhatsapp }}" target="_blank" rel="noopener">WhatsApp us</a></li>
-                    @if($jfHours !== '')<li>{{ $jfHours }}</li>@endif
-                    @if($jfAddress !== '')<li>{!! nl2br(e($jfAddress)) !!}</li>@endif
-                    <li><a href="{{ route('contact') }}">Contact page →</a></li>
-                </ul>
-            </div>
         </div>
     </div>
-    <hr class="jb-footer__rule">
     <div class="jb-wrap">
         <div class="jb-footer__bottom">
             <span>&copy; {{ date('Y') }} {{ config('company.name') }}. All rights reserved. · GSTIN {{ config('company.gstin') }}</span>

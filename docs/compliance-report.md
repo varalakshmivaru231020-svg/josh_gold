@@ -48,7 +48,7 @@ No analytics, advertising pixels, chat widgets, payment SDKs or API keys exist i
 | Asset | Source | Licence / status |
 |---|---|---|
 | Josha logo | Supplied by the client | Client-owned |
-| Fonts: Noto Serif, Inclusive Sans | Self-hosted in `public/fonts` | SIL Open Font License (`public/fonts/OFL.txt`) |
+| Fonts: Cormorant Garamond, Inter | Self-hosted in `public/fonts` | SIL Open Font License (`public/fonts/OFL.txt`) |
 | Font Awesome Free icons | cdnjs | Icons CC BY 4.0, fonts SIL OFL, code MIT |
 | Site photos | `public/images/site/SOURCES.txt` | Unsplash License, Pexels License, CC0 or public domain; no attribution required |
 | Service photos | Listed in `SOURCES.txt` | Public domain / Pexels License |

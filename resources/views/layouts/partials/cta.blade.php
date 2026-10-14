@@ -14,21 +14,19 @@
 
 @if($show)
 <style>
-    /* White-and-gold band (matches the home page contact band). With a photo: white text on a dark wash. */
-    .cta-wrap { padding: 3.5rem 0; border-top: 1px solid var(--jb-line-soft); }
+    /* Ivory band with a gold hairline (matches the home page quotation band). With a photo: ivory text on a dark wash. */
+    .cta-wrap { padding: 4rem 0; border-top: 1px solid var(--jb-line-soft); }
     .cta-card {
         position: relative; overflow: hidden; isolation: isolate;
-        padding: 3.25rem 1.5rem; border-radius: 22px; border: 1px solid var(--jb-line-strong);
+        padding: 3.75rem 1.5rem; border-radius: var(--jb-r-card); border: 1px solid var(--jb-line-strong);
         display: flex; align-items: center; justify-content: center; text-align: center;
-        background: radial-gradient(600px 260px at 100% 0%, rgba(214, 178, 95, .28), transparent 65%),
-            radial-gradient(500px 240px at 0% 100%, rgba(214, 178, 95, .16), transparent 65%), linear-gradient(180deg, #fffaf0, #fbf1da);
+        background: radial-gradient(600px 260px at 100% 0%, rgba(184, 138, 59, .12), transparent 65%), var(--jb-ivory);
         background-size: cover; background-position: center;
-        box-shadow: var(--jb-shadow-lg);
     }
-    /* Thin gold rule along the top edge */
+    /* Gold hairline along the top edge */
     .cta-card::after {
-        content: ''; position: absolute; top: 0; left: 18%; right: 18%; height: 2px;
-        background: linear-gradient(90deg, transparent, var(--jb-gold), transparent);
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+        background: var(--jb-hairline);
     }
     /* With a photo: darken it so the text stays readable */
     .cta-card.has-photo::before {
@@ -36,20 +34,21 @@
         background: linear-gradient(100deg, rgba(20, 14, 4, .86) 0%, rgba(20, 14, 4, .7) 55%, rgba(20, 14, 4, .5) 100%);
     }
     .cta-content { max-width: 820px; }
-    .cta-heading { color: var(--jb-ink); font-family: var(--jb-serif); font-weight: 600; font-size: clamp(1.6rem, 3.6vw, 2.6rem); line-height: 1.15; margin: 0; }
-    .cta-text { color: var(--jb-text); font-size: 15px; line-height: 1.65; max-width: 640px; margin: 1rem auto 0; }
-    .cta-card.has-photo .cta-heading { color: #fff; }
-    .cta-card.has-photo .cta-text { color: rgba(255, 255, 255, .85); }
-    .cta-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 1.75rem; }
+    .cta-heading { color: var(--jb-ink); font-family: var(--jb-serif); font-weight: 500; font-size: clamp(2rem, 4vw, 3.1rem); line-height: 1.08; margin: 0; text-wrap: balance; }
+    .cta-text { color: var(--jb-text); font-size: 15.5px; line-height: 1.7; max-width: 640px; margin: 1rem auto 0; }
+    .cta-card.has-photo .cta-heading { color: var(--jb-ivory); }
+    .cta-card.has-photo .cta-text { color: rgba(248, 243, 233, .88); }
+    .cta-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 2rem; }
     .cta-btn {
-        display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 22px; border-radius: var(--jb-r-btn);
-        font-size: 14.5px; font-weight: 700; text-decoration: none; border: 1px solid transparent;
-        transition: background-color .15s, border-color .15s, color .15s, filter .15s;
+        display: inline-flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 26px; border-radius: var(--jb-r-btn);
+        font-size: 12.5px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; border: 1px solid transparent;
+        transition: background-color .25s, border-color .25s, color .25s, transform .25s;
     }
-    .cta-btn--ghost { color: var(--jb-ink); border-color: var(--jb-line-strong); background: #fff; }
-    .cta-btn--ghost:hover { color: var(--jb-ink); border-color: var(--jb-gold); background: #fffaf0; }
-    .cta-btn--solid { color: #2a1d06; background: var(--jb-gold-band); border-color: #b48b3c; box-shadow: 0 10px 24px -14px rgba(138, 101, 22, .8), inset 0 1px 0 rgba(255, 255, 255, .45); }
-    .cta-btn--solid:hover { color: #2a1d06; filter: brightness(1.06); }
+    .cta-btn--ghost { color: var(--jb-ink); border-color: var(--jb-ink); background: transparent; }
+    .cta-btn--ghost:hover { color: var(--jb-ivory); border-color: var(--jb-ink); background: var(--jb-ink); }
+    .cta-card.has-photo .cta-btn--ghost { color: var(--jb-ivory); border-color: rgba(231, 214, 178, .6); }
+    .cta-btn--solid { color: var(--jb-obsidian); background: var(--jb-gold); border-color: var(--jb-gold); }
+    .cta-btn--solid:hover { color: var(--jb-obsidian); background: #c99c4c; border-color: #c99c4c; transform: translateY(-1px); }
     @media (max-width: 767px) {
         .cta-wrap { padding: 2.5rem 0; }
         .cta-card { padding: 2.5rem 1.1rem; }

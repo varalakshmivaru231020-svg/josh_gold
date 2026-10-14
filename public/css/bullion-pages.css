@@ -1,21 +1,21 @@
 /*
- * Inner pages (layouts/lawfirm): Bootstrap tuned to the white-and-gold palette,
+ * Inner pages (layouts/lawfirm): Bootstrap tuned to the obsidian, gold and ivory palette,
  * the legacy variables the page styles use, and shared page components.
  * Loaded after bullion-theme.css; page <style> blocks come after this file.
  */
 
 /* ── Legacy variables used by older page styles, mapped to the white-and-gold palette ── */
 :root {
-    --gold: #c9a35c;
-    --gold-light: #ead39c;
-    --gold-dark: #8a6516;
-    --navy: #2a2218;               /* was the brand dark; now a deep brown used for text */
-    --navy-mid: #3a3022;
-    --navy-light: #4b4436;
-    --cream: #fbf8f2;              /* page background */
-    --cream-dark: #f6eedb;
-    --text: #4b4436;
-    --text-muted: #776c57;
+    --gold: #b88a3b;
+    --gold-light: #e7d6b2;
+    --gold-dark: #87621f;
+    --navy: #171512;               /* was the brand dark; now obsidian, used for text */
+    --navy-mid: #2b2720;
+    --navy-light: #3f3a31;
+    --cream: #f8f3e9;              /* page background */
+    --cream-dark: #f1e8d6;
+    --text: #3f3a31;
+    --text-muted: #6f6656;
     --font-display: var(--jb-serif);
     --font-body: var(--jb-sans);
     --nav-height: 0px;             /* the header is in the page flow, not fixed */
@@ -23,20 +23,20 @@
     --announcement-offset: 0px;
 
     /* Bootstrap (light mode) in the brand colours */
-    --bs-body-bg: #fbf8f2;
-    --bs-body-color: #4b4436;
+    --bs-body-bg: #f8f3e9;
+    --bs-body-color: #3f3a31;
     --bs-body-font-family: var(--jb-sans);
-    --bs-emphasis-color: #1f1a12;
-    --bs-secondary-color: #776c57;
-    --bs-border-color: #ebdfc4;
-    --bs-heading-color: #1f1a12;
-    --bs-link-color: #8a6516;
-    --bs-link-color-rgb: 138, 101, 22;
-    --bs-link-hover-color: #6e5112;
-    --bs-link-hover-color-rgb: 110, 81, 18;
-    --bs-primary: #b8913f;
-    --bs-primary-rgb: 184, 145, 63;
-    --bs-focus-ring-color: rgba(201, 163, 92, .3);
+    --bs-emphasis-color: #171512;
+    --bs-secondary-color: #6f6656;
+    --bs-border-color: #e8dfd0;
+    --bs-heading-color: #171512;
+    --bs-link-color: #87621f;
+    --bs-link-color-rgb: 135, 98, 31;
+    --bs-link-hover-color: #6b4d17;
+    --bs-link-hover-color-rgb: 107, 77, 23;
+    --bs-primary: #b88a3b;
+    --bs-primary-rgb: 184, 138, 59;
+    --bs-focus-ring-color: rgba(184, 138, 59, .3);
 }
 
 .jb-inner { font-size: 15px; line-height: 1.6; }
@@ -60,9 +60,9 @@
 .jb-inner .alert { border-radius: 14px; }
 .jb-inner .modal-content { background: #fff; border: 1px solid var(--jb-line); border-radius: var(--jb-r-card); }
 .jb-inner .dropdown-menu { background: #fff; border-color: var(--jb-line); }
-.jb-inner .pagination { --bs-pagination-bg: #fff; --bs-pagination-border-color: var(--jb-line); --bs-pagination-color: var(--jb-text); --bs-pagination-hover-bg: #fbf3e1; --bs-pagination-hover-color: var(--jb-ink); --bs-pagination-active-bg: var(--jb-champagne); --bs-pagination-active-border-color: var(--jb-champagne-down); --bs-pagination-active-color: #2a1d06; --bs-pagination-disabled-bg: #fff; --bs-pagination-disabled-color: #b9ae98; }
-.jb-inner .btn { border-radius: var(--jb-r-btn); font-weight: 700; }
-.jb-inner .btn-primary { --bs-btn-bg: var(--jb-champagne); --bs-btn-border-color: var(--jb-champagne-down); --bs-btn-color: #2a1d06; --bs-btn-hover-bg: #e6c983; --bs-btn-hover-border-color: var(--jb-champagne-down); --bs-btn-hover-color: #2a1d06; --bs-btn-active-bg: var(--jb-champagne-down); --bs-btn-active-color: #2a1d06; }
+.jb-inner .pagination { --bs-pagination-bg: #fff; --bs-pagination-border-color: var(--jb-line); --bs-pagination-color: var(--jb-text); --bs-pagination-hover-bg: #fbf3e1; --bs-pagination-hover-color: var(--jb-ink); --bs-pagination-active-bg: var(--jb-obsidian); --bs-pagination-active-border-color: var(--jb-obsidian); --bs-pagination-active-color: var(--jb-ivory); --bs-pagination-disabled-bg: #fff; --bs-pagination-disabled-color: #b9ae98; }
+.jb-inner .btn { border-radius: var(--jb-r-btn); font-weight: 600; }
+.jb-inner .btn-primary { --bs-btn-bg: var(--jb-gold); --bs-btn-border-color: var(--jb-gold); --bs-btn-color: var(--jb-obsidian); --bs-btn-hover-bg: #c99c4c; --bs-btn-hover-border-color: #c99c4c; --bs-btn-hover-color: var(--jb-obsidian); --bs-btn-active-bg: #a67a30; --bs-btn-active-color: var(--jb-obsidian); }
 .jb-inner .btn-outline-primary, .jb-inner .btn-outline-secondary, .jb-inner .btn-outline-light, .jb-inner .btn-outline-dark {
     --bs-btn-color: var(--jb-ink); --bs-btn-border-color: var(--jb-line-strong); --bs-btn-hover-bg: #fbf3e1; --bs-btn-hover-border-color: var(--jb-gold); --bs-btn-hover-color: var(--jb-ink);
 }
@@ -81,10 +81,10 @@
 .jb-inner .text-navy { color: var(--jb-ink) !important; }
 .jb-inner .text-gold { color: var(--jb-gold) !important; }
 .jb-inner .bg-navy { background-color: var(--jb-panel-2) !important; }
-.jb-inner .bg-gold { background-color: var(--jb-gold) !important; color: #2a1d06 !important; }
+.jb-inner .bg-gold { background-color: var(--jb-gold) !important; color: var(--jb-obsidian) !important; }
 .jb-inner .bg-cream { background-color: var(--jb-ground) !important; }
-.jb-inner .btn-gold { background: var(--jb-gold-band); color: #2a1d06; border: 1px solid #b48b3c; }
-.jb-inner .btn-gold:hover { filter: brightness(1.06); color: #2a1d06; }
+.jb-inner .btn-gold { background: var(--jb-gold); color: var(--jb-obsidian); border: 1px solid var(--jb-gold); }
+.jb-inner .btn-gold:hover { background: #c99c4c; color: var(--jb-obsidian); }
 .jb-inner .btn-navy, .jb-inner .btn-outline-navy { background: #fff; color: var(--jb-ink); border: 1px solid var(--jb-line-strong); }
 .jb-inner .btn-navy:hover, .jb-inner .btn-outline-navy:hover { background: #fffaf0; border-color: var(--jb-gold); color: var(--jb-ink); }
 .jb-inner .label-brand { display: inline-block; color: var(--jb-gold-strong); font-size: 10.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; margin-bottom: 8px; }
@@ -98,20 +98,25 @@
 .jb-inner .floating-contact-btn:hover { transform: scale(1.08); }
 
 /* ── Page heading shared by the inner pages (layouts/partials/page-head) ── */
-.jb-pagehead { position: relative; overflow: hidden; padding: 40px 0 36px; border-bottom: 1px solid var(--jb-line); background:
-    radial-gradient(800px 340px at 88% 0%, rgba(214, 178, 95, .2), transparent 60%),
-    radial-gradient(600px 300px at 0% 100%, rgba(214, 178, 95, .12), transparent 60%),
-    linear-gradient(180deg, #fff, #fbf6ea); }
-@media (min-width: 768px) { .jb-pagehead { padding: 56px 0 48px; } }
+/* Obsidian band with a soft gold glow, continuing the dark header */
+.jb-pagehead { position: relative; overflow: hidden; padding: 48px 0 52px; color: var(--jb-on-dark); background:
+    radial-gradient(700px 320px at 88% 0%, rgba(184, 138, 59, .2), transparent 65%),
+    radial-gradient(520px 260px at 0% 100%, rgba(184, 138, 59, .1), transparent 65%),
+    var(--jb-obsidian); }
+.jb-pagehead::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--jb-hairline); opacity: .6; }
+@media (min-width: 768px) { .jb-pagehead { padding: 72px 0 76px; } }
 .jb-pagehead--center { text-align: center; }
-.jb-pagehead__crumbs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; color: var(--jb-muted); font-size: 12px; font-weight: 600; letter-spacing: .06em; }
+.jb-pagehead--center .jb-eyebrow::before { display: none; }
+.jb-pagehead .jb-eyebrow { color: var(--jb-gold); }
+.jb-pagehead__crumbs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; color: var(--jb-on-dark-muted); font-size: 11.5px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; }
 .jb-pagehead--center .jb-pagehead__crumbs { justify-content: center; }
-.jb-pagehead__crumbs a { color: var(--jb-gold-strong); text-decoration: none; }
-.jb-pagehead__crumbs a:hover { color: var(--jb-gold-deep); }
+.jb-pagehead__crumbs a { color: var(--jb-champagne); text-decoration: none; }
+.jb-pagehead__crumbs a:hover { color: #fff; }
+.jb-pagehead__crumbs a:focus-visible { outline-color: var(--jb-champagne); }
 .jb-pagehead__crumbs span[aria-hidden] { opacity: .5; }
-.jb-pagehead__title { margin-top: 10px !important; font-size: clamp(28px, 4.2vw, 44px); font-weight: 600; line-height: 1.12; }
-.jb-pagehead__title .jb-foil { display: inline; }
-.jb-pagehead__sub { max-width: 680px; margin-top: 12px !important; color: var(--jb-text); font-size: 15px; line-height: 1.65; }
+.jb-pagehead__title { margin-top: 14px !important; color: var(--jb-ivory) !important; font: 500 clamp(38px, 5.4vw, 66px)/1.02 var(--jb-serif); letter-spacing: -.01em; }
+.jb-pagehead__title .jb-foil { display: inline; font-style: italic; }
+.jb-pagehead__sub { max-width: 680px; margin-top: 18px !important; color: var(--jb-on-dark); font-size: 16px; line-height: 1.7; }
 .jb-pagehead--center .jb-pagehead__sub { margin-left: auto; margin-right: auto; }
 
 /* Generic panel for page content */

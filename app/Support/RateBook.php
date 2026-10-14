@@ -86,6 +86,20 @@ class RateBook
         return ($now !== null && $before) ? ($now - $before) / $before * 100 : null;
     }
 
+    // Change in the 999 rate of 'gold' or 'silver' since the previous published session, as a percentage.
+    // Null when there is no previous rate, or when the jump is too large to be a market move (over 15%
+    // between two sessions almost always means a mistyped rate), so the ticker never shows a false movement.
+    public static function sessionChange(MetalRate $rate, ?MetalRate $previous, string $metal): ?float
+    {
+        if (! $previous) {
+            return null;
+        }
+        $field  = $metal === 'silver' ? 'silver_999_rate' : 'gold_999_rate';
+        $change = self::change((float) $rate->{$field}, (float) $previous->{$field});
+
+        return ($change !== null && abs($change) <= 15) ? $change : null;
+    }
+
     // ₹ in the Indian grouping (1,48,000)
     public static function inr(float $value): string
     {
