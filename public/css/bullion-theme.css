@@ -736,4 +736,6 @@ body.jb-locked { overflow: hidden; }
     .jb-ticker__label { font-size: 9.5px; letter-spacing: .05em; }
     .jb-ticker__value { font-size: 13px; }
     .jb-ticker__unit, .jb-ticker .jb-change, .jb-ticker .jb-spot-dir { display: none; }
-}
+}.jb-footer__contact { margin-top: 14px !important; gap: 9px !important; }
+.jb-footer__contact :is(a, span) { display: inline-flex; align-items: flex-start; gap: 9px; font-size: 13px; line-height: 1.45; color: var(--jb-on-dark); overflow-wrap: anywhere; }
+.jb-footer__contact svg { width: 15px; height: 15px; flex: none; margin-top: 1px; color: var(--jb-gold); }

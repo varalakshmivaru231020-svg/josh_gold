@@ -73,13 +73,19 @@
                     </div>
                 @endforeach
 
-                {{-- Address (Site Settings → Contact) and social icons (Admin → Social Links) --}}
-                @if($jfAddress !== '' || $socialLinks->isNotEmpty())
-                    <div class="jb-footer__visit">
+                {{-- Address, then phone/WhatsApp/email/hours (Site Settings → Contact), then social icons (Admin → Social Links) --}}
+                <div class="jb-footer__visit">
                         <h4>Visit us</h4>
                         @if($jfAddress !== '')
                             <address class="jb-footer__address">{!! nl2br(e($jfAddress)) !!}</address>
                         @endif
+                        <ul class="jb-footer__contact">
+                            @if($jfPhone !== '')<li><a href="tel:{{ preg_replace('/[^\d+]/', '', $jfPhone) }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 3.5 6.2 2 2 0 0 1 5.5 4h3l1.5 4-2 1.5a12 12 0 0 0 5.5 5.5l1.5-2 4 1.5Z"/></svg>{{ $jfPhone }}</a></li>@endif
+                            <li><a href="https://wa.me/{{ $jfWhatsapp }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91A9.85 9.85 0 0 0 12.04 2Z"/></svg>WhatsApp</a></li>
+                            @if($jfEmail !== '')<li><a href="mailto:{{ $jfEmail }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>{{ $jfEmail }}</a></li>@endif
+                            @if($jfEmail2 !== '')<li><a href="mailto:{{ $jfEmail2 }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>{{ $jfEmail2 }}</a></li>@endif
+                            @if($jfHours !== '')<li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>{{ $jfHours }}</span></li>@endif
+                        </ul>
                         @if($socialLinks->isNotEmpty())
                             <div class="jb-footer__social">
                                 @foreach($socialLinks as $link)
@@ -89,19 +95,9 @@
                                 @endforeach
                             </div>
                         @endif
-                    </div>
-                @endif
+                </div>
             </div>
         </div>
-
-        {{-- Contact details as one row of chips --}}
-        <ul class="jb-footer__chips">
-            @if($jfPhone !== '')<li><a href="tel:{{ preg_replace('/[^\d+]/', '', $jfPhone) }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 15.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 3.5 6.2 2 2 0 0 1 5.5 4h3l1.5 4-2 1.5a12 12 0 0 0 5.5 5.5l1.5-2 4 1.5Z"/></svg>{{ $jfPhone }}</a></li>@endif
-            <li><a href="https://wa.me/{{ $jfWhatsapp }}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21c5.46 0 9.91-4.45 9.91-9.91A9.85 9.85 0 0 0 12.04 2Z"/></svg>WhatsApp</a></li>
-            @if($jfEmail !== '')<li><a href="mailto:{{ $jfEmail }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>{{ $jfEmail }}</a></li>@endif
-            @if($jfEmail2 !== '')<li><a href="mailto:{{ $jfEmail2 }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>{{ $jfEmail2 }}</a></li>@endif
-            @if($jfHours !== '')<li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>{{ $jfHours }}</span></li>@endif
-        </ul>
 
         <div class="jb-footer__bottom">
             <span>&copy; {{ date('Y') }} {{ config('company.name') }} · GSTIN {{ config('company.gstin') }}</span>
