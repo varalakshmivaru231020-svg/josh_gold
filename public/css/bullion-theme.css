@@ -605,6 +605,7 @@ body.jb-locked { overflow: hidden; }
 .jb-footer a:hover { color: var(--jb-champagne); }
 .jb-footer__links a { font-size: 13px; line-height: 1.45; }
 .jb-footer__social { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.jb-footer__address { margin: 0; font-style: normal; font-size: 13px; line-height: 1.6; color: var(--jb-on-dark); }
 .jb-footer__social a { width: 36px; height: 36px; display: grid; place-items: center; border: 1px solid var(--jb-line-dark); border-radius: 50%; color: var(--jb-champagne); transition: border-color .2s, background-color .2s, transform .25s; }
 .jb-footer__social a:hover { border-color: var(--jb-gold); background: rgba(184, 138, 59, .14); transform: translateY(-2px); }
 .jb-footer__social i { font-size: 13px; }

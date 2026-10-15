@@ -36,6 +36,7 @@
             ['route' => 'admin.footer.index',         'label' => 'Footer',         'icon' => 'fa-table-columns',    'active' => Route::is('admin.footer.*')],
             ['route' => 'admin.site-content.sliders', 'label' => 'Sliders',        'icon' => 'fa-panorama',         'active' => Route::is('admin.site-content.sliders*')],
             ['route' => 'admin.site-content.cta',     'label' => 'Call To Action', 'icon' => 'fa-bullhorn',         'active' => Route::is('admin.site-content.cta*')],
+            ['route' => 'admin.site-content.social-links', 'label' => 'Social Links', 'icon' => 'fa-share-nodes', 'active' => Route::is('admin.site-content.social-links*')],
             ['route' => 'admin.site-content.settings','label' => 'Site Settings',  'icon' => 'fa-sliders',          'active' => $settingsActive],
         ],
     ];

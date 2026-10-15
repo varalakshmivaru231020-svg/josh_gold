@@ -31,7 +31,8 @@
         ->map(fn ($s) => ['label' => $s->title, 'url' => route('contact', ['item' => $s->title]), 'new_tab' => false])->all();
     if ($jfServices) $jfLists[] = ['Services', array_merge($jfServices, [['label' => 'All services', 'url' => route('services.index'), 'new_tab' => false]])];
     foreach ($jfColumns as $jfKey => $jfLinks) {
-        if ($jfKey !== 'rates' && ! empty($jfLinks)) $jfLists[] = [FooterLink::heading($jfKey), $jfLinks];
+        // "Notices & letters" stays out of the footer; its place holds the address and social icons
+        if (! in_array($jfKey, ['rates', 'notices'], true) && ! empty($jfLinks)) $jfLists[] = [FooterLink::heading($jfKey), $jfLinks];
     }
 @endphp
 
@@ -58,15 +59,6 @@
                     <img src="{{ versioned_asset('images/brand/josha-logo.webp') }}" alt="{{ config('company.name') }}" width="200" height="165" loading="lazy">
                 </a>
                 @if($jfAbout !== '')<p class="jb-footer__about">{{ $jfAbout }}</p>@endif
-                @if($socialLinks->isNotEmpty())
-                    <div class="jb-footer__social">
-                        @foreach($socialLinks as $link)
-                            <a href="{{ $link->url }}" target="_blank" rel="noopener" aria-label="{{ $link->platform }}" title="{{ $link->platform }}">
-                                @if($link->icon)<i class="{{ $link->icon }}" aria-hidden="true"></i>@else{{ \Illuminate\Support\Str::substr($link->platform, 0, 1) }}@endif
-                            </a>
-                        @endforeach
-                    </div>
-                @endif
             </div>
 
             <div class="jb-footer__links">
@@ -80,6 +72,25 @@
                         </ul>
                     </div>
                 @endforeach
+
+                {{-- Address (Site Settings → Contact) and social icons (Admin → Social Links) --}}
+                @if($jfAddress !== '' || $socialLinks->isNotEmpty())
+                    <div class="jb-footer__visit">
+                        <h4>Visit us</h4>
+                        @if($jfAddress !== '')
+                            <address class="jb-footer__address">{!! nl2br(e($jfAddress)) !!}</address>
+                        @endif
+                        @if($socialLinks->isNotEmpty())
+                            <div class="jb-footer__social">
+                                @foreach($socialLinks as $link)
+                                    <a href="{{ $link->url }}" target="_blank" rel="noopener" aria-label="{{ $link->platform }}" title="{{ $link->platform }}">
+                                        @if($link->icon)<i class="{{ $link->icon }}" aria-hidden="true"></i>@else{{ \Illuminate\Support\Str::substr($link->platform, 0, 1) }}@endif
+                                    </a>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -90,7 +101,6 @@
             @if($jfEmail !== '')<li><a href="mailto:{{ $jfEmail }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>{{ $jfEmail }}</a></li>@endif
             @if($jfEmail2 !== '')<li><a href="mailto:{{ $jfEmail2 }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>{{ $jfEmail2 }}</a></li>@endif
             @if($jfHours !== '')<li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>{{ $jfHours }}</span></li>@endif
-            @if($jfAddress !== '')<li><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>{{ preg_replace('/\s*\n\s*/', ' ', $jfAddress) }}</span></li>@endif
         </ul>
 
         <div class="jb-footer__bottom">
