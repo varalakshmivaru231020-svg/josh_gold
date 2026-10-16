@@ -71,11 +71,10 @@
     $jbMenuCities  = RateBook::menuCities();
     $jbAllCities   = RateBook::cities();
 
-    // Drawer "Company" and "Notices & letters" follow the footer columns (Admin → Footer)
+    // Drawer "Company" follows the footer columns (Admin → Footer)
     $jbFooter = FooterLink::activeByColumnCached();
     $jbLink = fn (array $l) => [$l['label'], url($l['url']), url($l['url']) === url()->current()];
     $jbCompany = array_map($jbLink, $jbFooter['company'] ?? []);
-    $jbNotices = array_map($jbLink, $jbFooter['notices'] ?? []);
     $jbCaret = '<svg class="jb-lux__caret" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true" focusable="false"><path d="m2 3.5 3 3 3-3"/></svg>';
 @endphp
 
@@ -217,13 +216,6 @@
             @if(count($jbCompany))
                 <p class="jb-drawer__label">{{ FooterLink::heading('company') }}</p>
                 @foreach($jbCompany as [$label, $url, $active])
-                    <a href="{{ $url }}" class="jb-drawer__link" @if($active) aria-current="page" @endif>{{ $label }}</a>
-                @endforeach
-            @endif
-
-            @if(count($jbNotices))
-                <p class="jb-drawer__label">{{ FooterLink::heading('notices') }}</p>
-                @foreach($jbNotices as [$label, $url, $active])
                     <a href="{{ $url }}" class="jb-drawer__link" @if($active) aria-current="page" @endif>{{ $label }}</a>
                 @endforeach
             @endif
